@@ -126,19 +126,19 @@ class Series[X: ORD: CLM, T: CLM](
    * Access a boxed element of a Series at a single location
    * @param loc offset into Series
    */
-  def at(loc: Int): Scalar[T] = values(loc)
+  def at(loc: Int): Scalar[T] = values.at(loc)
 
   /**
-   * Access multiple locations of a Series, returning a new Series comprising those locations
+   * Access multiple locations of a Series, returning a Vec comprising values at those locations
    * @param locs Array of int offsets into Series
    */
-  def at(locs: Array[Int]): Series[X, T] = take(locs)
+  def at(locs: Array[Int]): Vec[T] = values.take(locs)
 
   /**
-   * Access multiple locations of a Series, returning a new Series comprising those locations
+   * Access multiple locations of a Series, returning a Vec comprising values at those locations
    * @param locs Sequence of Int
    */
-  def at(locs: Int*): Series[X, T] = take(locs.toArray)
+  def at(locs: Int*): Vec[T] = values.take(locs.toArray)
 
   /**
    * Get the first value of the Series
@@ -184,7 +184,7 @@ class Series[X: ORD: CLM, T: CLM](
    * Access a boxed element of a Series index at a single location
    * @param loc offset into Series
    */
-  def keyAt(loc: Int): Scalar[X] = index.raw(loc)
+  def keyAt(loc: Int): Scalar[X] = index.at(loc)
 
   /**
    * Access a multiple locations of a Series index, returning a new Index
