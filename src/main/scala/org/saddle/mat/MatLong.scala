@@ -54,9 +54,9 @@ private[saddle] class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[L
 
   def copy: Mat[Long] = new MatLong(numRows, numCols, values.clone())
 
-  def takeRows(locs: Array[Int]): Mat[Long] = MatImpl.takeRows(this, locs)
+  def takeRows(locs: Int*): Mat[Long] = MatImpl.takeRows(this, locs.toSet)
 
-  def withoutRows(locs: Array[Int]): Mat[Long] = MatImpl.withoutRows(this, locs)
+  def withoutRows(locs: Int*): Mat[Long] = MatImpl.withoutRows(this, locs.toSet)
 
   def reshape(r: Int, c: Int): Mat[Long] = new MatLong(r, c, values)
 

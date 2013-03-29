@@ -99,7 +99,7 @@ class MatCheck extends Specification with ScalaCheck {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
-           val res = m.takeRows(i.toArray)
+           val res = m.takeRows(i : _*)
            res.numRows must_== loc.size
            val exp = for (j <- 0 until m.numRows if loc.contains(j)) yield m.row(j)
            res must_== Mat(exp : _*).T
@@ -112,7 +112,7 @@ class MatCheck extends Specification with ScalaCheck {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
-           val res = m.takeCols(i.toArray)
+           val res = m.takeCols(i : _*)
            res.numCols must_== loc.size
            val exp = for (j <- 0 until m.numCols if loc.contains(j)) yield m.col(j)
            res must_== Mat(exp : _*)
@@ -125,7 +125,7 @@ class MatCheck extends Specification with ScalaCheck {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
-           val res = m.withoutRows(i.toArray)
+           val res = m.withoutRows(i : _*)
            res.numRows must_== (m.numRows - loc.size)
            val exp = for (j <- 0 until m.numRows if !loc.contains(j)) yield m.row(j)
            res must_== Mat(exp : _*).T
@@ -138,7 +138,7 @@ class MatCheck extends Specification with ScalaCheck {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
-           val res = m.withoutCols(i.toArray)
+           val res = m.withoutCols(i : _*)
            res.numCols must_== (m.numCols - loc.size)
            val exp = for (j <- 0 until m.numCols if !loc.contains(j)) yield m.col(j)
            res must_== Mat(exp : _*)
@@ -148,7 +148,7 @@ class MatCheck extends Specification with ScalaCheck {
 
      "rowsWithNA works (no NA)" in {
        forAll { (m: Mat[Double]) =>
-         m.rowsWithNA must_== Set.empty[Double]
+         m.rowsWithNA must_== List.empty[Double]
        }
      }
 
@@ -158,7 +158,7 @@ class MatCheck extends Specification with ScalaCheck {
          val exp = (m.rows() zip Range(0, m.numRows)).flatMap {
            case (a: Vec[_], b: Int) => if (a.hasNA) Some(b) else None
          }
-         m.rowsWithNA must_== exp.toSet
+         m.rowsWithNA must_== exp
        }
      }
 

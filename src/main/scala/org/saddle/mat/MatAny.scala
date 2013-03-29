@@ -54,9 +54,9 @@ private[saddle] class MatAny[T : CLM](r: Int, c: Int, values: Array[T]) extends 
 
   def copy: Mat[T] = new MatAny(numRows, numCols, values.clone())
 
-  def takeRows(locs: Array[Int]): Mat[T] = MatImpl.takeRows(this, locs)
+  def takeRows(locs: Int*): Mat[T] = MatImpl.takeRows(this, locs.toSet)
 
-  def withoutRows(locs: Array[Int]): Mat[T] = MatImpl.withoutRows(this, locs)
+  def withoutRows(locs: Int*): Mat[T] = MatImpl.withoutRows(this, locs.toSet)
 
   def reshape(r: Int, c: Int): Mat[T] = new MatAny(r, c, values)
 

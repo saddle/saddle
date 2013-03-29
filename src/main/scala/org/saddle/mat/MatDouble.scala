@@ -55,9 +55,9 @@ private[saddle] class MatDouble(r: Int, c: Int, values: Array[Double]) extends M
 
   def copy: Mat[Double] = new MatDouble(numRows, numCols, values.clone())
 
-  def takeRows(locs: Array[Int]): Mat[Double] = MatImpl.takeRows(this, locs)
+  def takeRows(locs: Int*): Mat[Double] = MatImpl.takeRows(this, locs.toSet)
 
-  def withoutRows(locs: Array[Int]): Mat[Double] = MatImpl.withoutRows(this, locs)
+  def withoutRows(locs: Int*): Mat[Double] = MatImpl.withoutRows(this, locs.toSet)
 
   def reshape(r: Int, c: Int): Mat[Double] = new MatDouble(r, c, values)
 

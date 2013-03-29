@@ -54,9 +54,9 @@ private[saddle] class MatBool(r: Int, c: Int, values: Array[Boolean]) extends Ma
 
   def copy: Mat[Boolean] = new MatBool(numRows, numCols, values.clone())
 
-  def takeRows(locs: Array[Int]): Mat[Boolean] = MatImpl.takeRows(this, locs)
+  def takeRows(locs: Int*): Mat[Boolean] = MatImpl.takeRows(this, locs.toSet)
 
-  def withoutRows(locs: Array[Int]): Mat[Boolean] = MatImpl.withoutRows(this, locs)
+  def withoutRows(locs: Int*): Mat[Boolean] = MatImpl.withoutRows(this, locs.toSet)
 
   def reshape(r: Int, c: Int): Mat[Boolean] = new MatBool(r, c, values)
 

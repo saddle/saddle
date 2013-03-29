@@ -46,10 +46,9 @@ private[saddle] object MatImpl {
     acc
   }
 
-  def withoutRows[@spec(Int, Long, Double) A: CLM](m: Mat[A], locs: Array[Int]): Mat[A] = {
+  def withoutRows[@spec(Int, Long, Double) A: CLM](m: Mat[A], locset: Set[Int]): Mat[A] = {
     if (m.length == 0) Mat.empty[A]
     else {
-      val locset = locs.toSet
       val buf = Buffer[A](m.length)
       var r = 0
       var nRows = 0
@@ -69,6 +68,6 @@ private[saddle] object MatImpl {
     }
   }
 
-  def takeRows[@spec(Int, Long, Double) A: CLM](m: Mat[A], locs: Array[Int]): Mat[A] =
-    withoutRows(m, Range(0, m.numRows).toSet.diff(locs.toSet).toArray)
+  def takeRows[@spec(Int, Long, Double) A: CLM](m: Mat[A], locset: Set[Int]): Mat[A] =
+    withoutRows(m, Range(0, m.numRows).toSet.diff(locset))
 }

@@ -174,34 +174,34 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Create Mat comprised of same values in specified rows
    *
    */
-  def takeRows(locs: Array[Int]): Mat[A]
+  def takeRows(locs: Int*): Mat[A]
 
   /**
    * Create Mat comprised of same values in specified columns
    *
    */
-  def takeCols(locs: Array[Int]): Mat[A] = T.takeRows(locs).T
+  def takeCols(locs: Int*): Mat[A] = T.takeRows(locs : _*).T
 
   /**
    * Create Mat comprised of same values without the specified rows
    *
    * @param locs Row locations to exclude
    */
-  def withoutRows(locs: Array[Int]): Mat[A]
+  def withoutRows(locs: Int*): Mat[A]
 
   /**
    * Create Mat comprised of same values without the specified columns
    *
    * @param locs Col locations to exclude
    */
-  def withoutCols(locs: Array[Int]): Mat[A] = T.withoutRows(locs).T
+  def withoutCols(locs: Int*): Mat[A] = T.withoutRows(locs : _*).T
 
   /**
    * Yields row indices where row has some NA value
    *
    */
-  def rowsWithNA(implicit ev: CLM[A]): Set[Int] = {
-    val builder = Set.newBuilder[Int]
+  def rowsWithNA(implicit ev: CLM[A]): List[Int] = {
+    val builder = List.newBuilder[Int]
     var i = 0
     while (i < numRows) {
       if (row(i).hasNA) builder += i
@@ -214,19 +214,19 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Yields column indices where column has some NA value
    *
    */
-  def colsWithNA(implicit ev: CLM[A]): Set[Int] = T.rowsWithNA
+  def colsWithNA(implicit ev: CLM[A]): List[Int] = T.rowsWithNA
 
   /**
    * Yields a matrix without those rows that have NA
    *
    */
-  def dropRowsWithNA(implicit ev: CLM[A]): Mat[A] = withoutRows(rowsWithNA.toArray)
+  def dropRowsWithNA(implicit ev: CLM[A]): Mat[A] = withoutRows(rowsWithNA : _*)
 
   /**
    * Yields a matrix without those cols that have NA
    *
    */
-  def dropColsWithNA(implicit ev: CLM[A]): Mat[A] = withoutCols(colsWithNA.toArray)
+  def dropColsWithNA(implicit ev: CLM[A]): Mat[A] = withoutCols(colsWithNA : _*)
 
   /**
    * Returns columns of matrix as an indexed sequence of Vec instances
