@@ -50,7 +50,7 @@ private[saddle] class MatInt(r: Int, c: Int, values: Array[Int]) extends Mat[Int
     matT
   }
 
-  def transpose = cachedT
+  def transposed = cachedT
 
   def copy: Mat[Int] = new MatInt(numRows, numCols, values.clone())
 

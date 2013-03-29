@@ -106,7 +106,7 @@ trait BinOpMat {
     implicit cb: CLM[A], na: NUM[A], nb: NUM[B]) =
     new BinOp[InnerProd, Vec[A], Mat[B], Mat[Double]] {
       def apply(m1: Vec[A], m2: Mat[B]): Mat[Double] = {
-        Mat(m1).transpose.mult(m2)
+        Mat(m1).transposed.mult(m2)
       }
     }
 

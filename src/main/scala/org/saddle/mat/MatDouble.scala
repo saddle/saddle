@@ -51,7 +51,7 @@ private[saddle] class MatDouble(r: Int, c: Int, values: Array[Double]) extends M
     matT
   }
 
-  def transpose = cachedT
+  def transposed = cachedT
 
   def copy: Mat[Double] = new MatDouble(numRows, numCols, values.clone())
 

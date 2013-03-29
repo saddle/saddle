@@ -50,7 +50,7 @@ private[saddle] class MatBool(r: Int, c: Int, values: Array[Boolean]) extends Ma
     matT
   }
 
-  def transpose = cachedT
+  def transposed = cachedT
 
   def copy: Mat[Boolean] = new MatBool(numRows, numCols, values.clone())
 

@@ -50,7 +50,7 @@ private[saddle] class MatAny[T : CLM](r: Int, c: Int, values: Array[T]) extends 
     matT
   }
 
-  def transpose = cachedT
+  def transposed = cachedT
 
   def copy: Mat[T] = new MatAny(numRows, numCols, values.clone())
 

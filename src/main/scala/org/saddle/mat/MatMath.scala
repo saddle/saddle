@@ -60,7 +60,7 @@ object MatMath {
     if (numRows < 2 || numCols < 2)
       throw new IllegalArgumentException("Matrix dimension must be at least [2 x 2]")
 
-    val input = mat.transpose.toArray.clone()
+    val input = mat.transposed.toArray.clone()
     val output = Array.ofDim[Double](numCols * numCols)
 
     // demean columns (in-place)

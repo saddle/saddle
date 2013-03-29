@@ -162,13 +162,13 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Transpose of original matrix
    *
    */
-  def transpose: Mat[A]
+  def transposed: Mat[A]
 
   /**
    * Transpose of original matrix
    *
    */
-  def T = transpose
+  def T = transposed
 
   /**
    * Create Mat comprised of same values in specified rows
@@ -441,7 +441,7 @@ object Mat extends BinOpMat {
       Mat.empty[T]
     else {
       require(values.forall(_.length == values(0).length), "All input vectors must be equal sizes")
-      apply(values.length, values(0).length, array.flatten(values)).transpose
+      apply(values.length, values(0).length, array.flatten(values)).transposed
     }
   }
 
