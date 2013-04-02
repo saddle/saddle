@@ -2,6 +2,8 @@
 Saddle: Scala Data Library
 ==========================
 
+[![Build Status](https://secure.travis-ci.org/saddle/saddle.png?branch=master)](http://travis-ci.org/saddle/saddle)
+
 Introduction
 ============
 
