@@ -84,7 +84,7 @@ object Shared {
         </developer>
       </developers>
     ),
-    version := "1.0.2-SNAPSHOT",
+    version := "1.1.0-SNAPSHOT",
     scalaVersion := "2.9.2",
     crossScalaVersions := Seq("2.9.2", "2.10.0"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
