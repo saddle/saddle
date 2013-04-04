@@ -23,7 +23,7 @@ import Series.Vec2RollingStats
  * Rolling statistical methods made available on numeric Series objects via enrichment.
  * These methods scan over the Series and compute cumulative values.
  */
-class SeriesRollingStats[X: ORD: ST, T: Vec2RollingStats: ST](s: Series[X, T]) {
+class SeriesRollingStats[X: ST: ORD, T: Vec2RollingStats: ST](s: Series[X, T]) {
   protected val ev = implicitly[Vec2RollingStats[T]]
 
   /**
@@ -68,6 +68,6 @@ object SeriesRollingStats {
    * @tparam X Type of index
    * @tparam T Type of elements
    */
-  def apply[X: ORD: ST, T: Vec2RollingStats: ST](s: Series[X, T]) =
+  def apply[X: ST: ORD, T: Vec2RollingStats: ST](s: Series[X, T]) =
     new SeriesRollingStats(s)
 }

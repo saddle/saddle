@@ -17,7 +17,9 @@
 package org
 
 import joda.time.DateTime
-import saddle.index.{SliceTo, SliceFrom, Slice, SliceAll}
+import org.saddle.index._
+
+// some typeclass interfaces we'll alias
 import org.saddle.scalar.ScalarTag
 
 /**
@@ -49,6 +51,30 @@ import org.saddle.scalar.ScalarTag
  * pandas data analysis library for Python, and the Scala collections library.
  */
 package object saddle {
+  // ********************** Some type aliases, save our fingers in typing
+
+  /**
+   * Shorthand for ordering typeclass
+   */
+  type ORD[C] = Ordering[C]
+
+  /**
+   * Shorthand for numeric typeclass
+   */
+  type NUM[C] = Numeric[C]
+
+  /**
+   * Shorthand for class manifest typeclass
+   */
+  type CLM[C] = ClassManifest[C]
+
+  /**
+   * Shorthand for scalar tag typeclass
+   */
+  type ST[C] = ScalarTag[C]
+
+  // **********************
+
   /**
    * Allow timing of an operation
    *
@@ -61,7 +87,7 @@ package object saddle {
     val s = System.nanoTime
     val r = op
     val e = System.nanoTime
-    ((s-e)/1e9, r)
+    ((e-s)/1e9, r)
   }
 
   /**
@@ -113,26 +139,6 @@ package object saddle {
    * }}}
    */
   def * = SliceAll()
-
-  /**
-   * Type alias: something is comparable if there is an ordering for it
-   */
-  type ORD[C] = Ordering[C]
-
-  /**
-   * Type alias shorthand for numeric evidence
-   */
-  type NUM[C] = Numeric[C]
-
-  /**
-   * Type alias shorthand for scalar tag evidence
-   */
-  type ST[C] = ScalarTag[C]
-
-  /**
-   * Type alias shorthand for class manifest evidence
-   */
-  type CLM[C] = ClassManifest[C]
 
   /**
    * `na` provides syntactic sugar for constructing primitives recognized as NA.
@@ -262,7 +268,7 @@ package object saddle {
    * @tparam RX Type of row index elements of Frame
    * @tparam CX Type of col index elements of Frame
    */
-  implicit def seqToFrame[RX: ORD: ST, CX: ORD: ST, T: ST](s: Seq[(RX, CX, T)]) = new {
+  implicit def seqToFrame[RX: ST: ORD, CX: ST: ORD, T: ST](s: Seq[(RX, CX, T)]) = new {
     def toFrame: Frame[RX, CX, T] = {
       val grp = s.map { case (r, c, v) => ((r, c), v) }
       grp.toSeries.pivot

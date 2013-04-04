@@ -45,7 +45,7 @@ import java.io.OutputStream
  * }}}
  *
  * `Mat` may be used in arithemetic expressions which operate on two `Mat`s or on a
- * `Mat` and a primitive value. A few examples:
+ * `Mat` and a primitive value. A fe examples:
  *
  * {{{
  *   val m = Mat(2,2,Array(1,2,3,4))
@@ -115,7 +115,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param i index
    */
   def at(i: Int): Scalar[A] = {
-    implicit val clm = scalarTag
+    implicit val tag = scalarTag
     raw(i)
   }
 
@@ -125,7 +125,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param c col index
    */
   def at(r: Int, c: Int): Scalar[A] = {
-    implicit val clm = scalarTag
+    implicit val tag = scalarTag
     raw(r, c)
   }
 
@@ -141,44 +141,31 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   /**
    * Maps a function over each element in the matrix
-   *
    */
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
 
   /**
-   * Performs a left fold over each element in the matrix in row-major order
-   * using a function (B, A) => B
-   *
-   */
-  def foldLeft[@spec(Boolean, Int, Long, Double) B](init: B)(f: (B, A) => B): B
-
-  /**
    * Changes the shape of matrix without changing the underlying data
-   *
    */
   def reshape(r: Int, c: Int): Mat[A]
 
   /**
    * Transpose of original matrix
-   *
    */
   def transpose: Mat[A]
 
   /**
    * Transpose of original matrix
-   *
    */
   def T = transpose
 
   /**
    * Create Mat comprised of same values in specified rows
-   *
    */
   def takeRows(locs: Array[Int]): Mat[A]
 
   /**
    * Create Mat comprised of same values in specified columns
-   *
    */
   def takeCols(locs: Array[Int]): Mat[A] = T.takeRows(locs).T
 
@@ -198,7 +185,6 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   /**
    * Yields row indices where row has some NA value
-   *
    */
   def rowsWithNA(implicit ev: ST[A]): Set[Int] = {
     val builder = Set.newBuilder[Int]
@@ -212,25 +198,21 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   /**
    * Yields column indices where column has some NA value
-   *
    */
   def colsWithNA(implicit ev: ST[A]): Set[Int] = T.rowsWithNA
 
   /**
    * Yields a matrix without those rows that have NA
-   *
    */
   def dropRowsWithNA(implicit ev: ST[A]): Mat[A] = withoutRows(rowsWithNA.toArray)
 
   /**
    * Yields a matrix without those cols that have NA
-   *
    */
   def dropColsWithNA(implicit ev: ST[A]): Mat[A] = withoutCols(colsWithNA.toArray)
 
   /**
    * Returns columns of matrix as an indexed sequence of Vec instances
-   *
    */
   def cols()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = {
     Range(0, numCols).map(c => flattenT.slice(c * numRows, (c + 1) * numRows))
@@ -238,7 +220,6 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   /**
    * Returns rows of matrix as an indexed sequence of Vec instances
-   *
    */
   def rows()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = {
     Range(0, numRows).map(r => flatten.slice(r * numCols, (r + 1) * numCols))
@@ -289,14 +270,19 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     map(rounder)
   }
 
+  /**
+   * Concatenate all rows into a single row-wise Vec instance
+   */
+  def toVec: Vec[A]
+
   private var flatCache: Option[Vec[A]] = None
-  private def flatten(implicit ev: ST[A]): Vec[A] = flatCache.getOrElse {
+  private def flatten(implicit st: ST[A]): Vec[A] = flatCache.getOrElse {
     flatCache = Some(Vec(toArray))
     flatCache.get
   }
 
   private var flatCacheT: Option[Vec[A]] = None
-  private def flattenT(implicit ev: ST[A]): Vec[A] = flatCacheT.getOrElse {
+  private def flattenT(implicit st: ST[A]): Vec[A] = flatCacheT.getOrElse {
     flatCacheT = Some(Vec(T.toArray))
     flatCacheT.get
   }
@@ -360,7 +346,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   }
 
   /** Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values. */
-  override def hashCode(): Int = foldLeft(1)(_ * 31 + _.hashCode())
+  override def hashCode(): Int = toVec.foldLeft(1)(_ * 31 + _.hashCode())
 
   /**
    * Row-by-row equality check of all values.
@@ -381,45 +367,30 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 }
 
 object Mat extends BinOpMat {
-  private val bc = classOf[Boolean]
-  private val ic = classOf[Int]
-  private val lc = classOf[Long]
-  private val dc = classOf[Double]
-
   /**
    * Factory method to create a new Mat from raw materials
    * @param rows Number of rows in Mat
    * @param cols Number of cols in Mat
    * @param arr A 1D array of backing data in row-major order
-   * @tparam C Type of data in array
+   * @tparam T Type of data in array
    */
-  def apply[C: ST](rows: Int, cols: Int, arr: Array[C]): Mat[C] = {
-    val (r, c, a) = if (rows == 0 || cols == 0) (0, 0, Array.empty[C]) else (rows, cols, arr)
-
-    val m = implicitly[ST[C]]
-
-    // ugly reification of type, but necessary to preserve specialization
-    m.runtimeClass match {
-      case k if k == bc => new MatBool(r, c, a.asInstanceOf[Array[Boolean]])
-      case k if k == ic => new MatInt(r, c, a.asInstanceOf[Array[Int]])
-      case k if k == lc => new MatLong(r, c, a.asInstanceOf[Array[Long]])
-      case k if k == dc => new MatDouble(r, c, a.asInstanceOf[Array[Double]])
-      case _            => new MatAny(r, c, a)
-    }
-  }.asInstanceOf[Mat[C]]
+  def apply[T](rows: Int, cols: Int, arr: Array[T])(implicit st: ST[T]): Mat[T] = {
+    val (r, c, a) = if (rows == 0 || cols == 0) (0, 0, Array.empty[T]) else (rows, cols, arr)
+    st.makeMat(r, c, a)
+  }
 
   /**
    * Allows implicit promoting from a Mat to a Frame instance
    * @param m Mat instance
-   * @tparam A The type of elements in Mat
+   * @tparam T The type of elements in Mat
    */
-  implicit def matToFrame[A: ST](m: Mat[A]) = Frame(m)
+  implicit def matToFrame[T: ST](m: Mat[T]) = Frame(m)
 
   /**
    * Factory method to create an empty Mat
    * @tparam T Type of Mat
    */
-  def empty[T: ST]: Mat[T] = Mat(0, 0, Array.empty[T])
+  def empty[T: ST]: Mat[T] = apply(0, 0, Array.empty[T])
 
   /**
    * Factory method to create an zero Mat (all zeros)

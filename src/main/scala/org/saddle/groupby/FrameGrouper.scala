@@ -21,7 +21,7 @@ import org.saddle._
 /**
  * Helper class to do combine or transform after a groupBy
  */
-class FrameGrouper[Z: ORD: ST, X: ORD: ST, Y: ORD: ST, T: ST](
+class FrameGrouper[Z: ST: ORD, X: ST: ORD, Y: ST: ORD, T: ST](
   ix: Index[Z], frame: Frame[X, Y, T], sorted: Boolean = true) {
 
   private lazy val uniq: Array[Z] = {
@@ -42,7 +42,7 @@ class FrameGrouper[Z: ORD: ST, X: ORD: ST, Y: ORD: ST, T: ST](
       .setColIndex(frame.colIx)
 
   // less powerful combine, ignores group key
-  def combine[U: ORD: ST](fn: Vec[T] => U): Frame[Z, Y, U] =
+  def combine[U: ST: ORD](fn: Vec[T] => U): Frame[Z, Y, U] =
     combine( (k, v) => fn(v) )
 
   def transform[U: ST](fn: (Z, Vec[T]) => Vec[U]): Frame[X, Y, U] =
@@ -54,10 +54,10 @@ class FrameGrouper[Z: ORD: ST, X: ORD: ST, Y: ORD: ST, T: ST](
 }
 
 object FrameGrouper {
-  def apply[Z: ORD: ST, Y: ORD: ST, T: ST](frame: Frame[Z, Y, T]) =
+  def apply[Z: ST: ORD, Y: ST: ORD, T: ST](frame: Frame[Z, Y, T]) =
     new FrameGrouper(frame.rowIx, frame)
 
-  def apply[Z: ORD: ST, X: ORD: ST, Y: ORD: ST, T: ST](
+  def apply[Z: ST: ORD, X: ST: ORD, Y: ST: ORD, T: ST](
     ix: Index[Z], frame: Frame[X, Y, T]) = new FrameGrouper(ix, frame)
 }
 

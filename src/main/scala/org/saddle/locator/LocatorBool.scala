@@ -16,7 +16,10 @@
 
 package org.saddle.locator
 
-private[saddle] class LocatorBool extends Locator[Boolean] {
+/**
+ * A bool-to-integer hash map
+ */
+class LocatorBool extends Locator[Boolean] {
   val map = Array.fill[Int](2)(-1)
   val cts = Array.ofDim[Int](2)
 
@@ -53,7 +56,3 @@ private[saddle] class LocatorBool extends Locator[Boolean] {
   def count(key: Boolean) = cts(if (key) 1 else 0)
 }
 
-private[saddle] object LocatorBool {
-  def apply(sz: Int) = new LocatorBool()
-  def apply() = new LocatorBool()
-}

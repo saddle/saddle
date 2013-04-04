@@ -57,7 +57,7 @@ trait VecExpandingStats[@spec(Int, Long, Double) A] {
   def cumProd: Vec[A]
 }
 
-private[saddle] class DoubleExpandingStats(r: Vec[Double]) extends VecExpandingStats[Double] {
+class DoubleExpandingStats(r: Vec[Double]) extends VecExpandingStats[Double] {
   private val sd = ScalarTagDouble
 
   def cumSum: Vec[Double] = r.filterScanLeft(sd.notMissing)(0d)(_ + _)
@@ -67,7 +67,7 @@ private[saddle] class DoubleExpandingStats(r: Vec[Double]) extends VecExpandingS
   def cumProd: Vec[Double] = r.filterScanLeft(sd.notMissing)(1d)(_ * _)
 }
 
-private[saddle] class IntExpandingStats(r: Vec[Int]) extends VecExpandingStats[Int] {
+class IntExpandingStats(r: Vec[Int]) extends VecExpandingStats[Int] {
   private val sa = ScalarTagInt
 
   def cumSum: Vec[Int] = r.filterScanLeft(sa.notMissing)(0)(_ + _)
@@ -77,7 +77,7 @@ private[saddle] class IntExpandingStats(r: Vec[Int]) extends VecExpandingStats[I
   def cumProd: Vec[Int] = r.filterScanLeft(sa.notMissing)(1)(_ * _)
 }
 
-private[saddle] class LongExpandingStats(r: Vec[Long]) extends VecExpandingStats[Long] {
+class LongExpandingStats(r: Vec[Long]) extends VecExpandingStats[Long] {
   private val sl = ScalarTagLong
 
   def cumSum: Vec[Long] = r.filterScanLeft(sl.notMissing)(0L)(_ + _)

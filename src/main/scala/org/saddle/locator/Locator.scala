@@ -41,7 +41,7 @@ import scala.{ specialized => spec }
  * }}}
  * where s(t) = min(i) for any i such that f(i) = t.
  */
-trait Locator[@spec(Int, Long, Double) T] {
+trait Locator[@spec(Boolean, Int, Long, Double) T] {
   /**
    * Whether the instance contains the key
    * @param key The key to query
@@ -92,23 +92,12 @@ trait Locator[@spec(Int, Long, Double) T] {
 }
 
 object Locator {
-  private val spB = classOf[Boolean]
-  private val spI = classOf[Int]
-  private val spL = classOf[Long]
-  private val spD = classOf[Double]
+  val INIT_CAPACITY = 16
 
   /**
    * Factory method to create a new Locator instance.
    * @param sz Backing hashmap size (default 16)
    * @tparam C Type of elements to be stored in Locator
    */
-  def apply[C: ST](sz: Int = 16): Locator[C] = {
-    implicitly[ST[C]].runtimeClass match {
-      case c if c == spB => LocatorBool(sz)
-      case c if c == spI => LocatorInt(sz)
-      case c if c == spL => LocatorLong(sz)
-      case c if c == spD => LocatorDouble(sz)
-      case _             => LocatorAny[C]()
-    }
-  }.asInstanceOf[Locator[C]]
+  def apply[C](sz: Int = 16)(implicit st: ST[C]): Locator[C] = st.makeLoc(sz)
 }

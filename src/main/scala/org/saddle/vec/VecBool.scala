@@ -21,7 +21,7 @@ import org.saddle._
 import org.saddle.scalar._
 import util.Concat.Promoter
 
-private[saddle] class VecBool(values: Array[Boolean]) extends Vec[Boolean] { self =>
+class VecBool(values: Array[Boolean]) extends Vec[Boolean] { self =>
   def length = values.length
 
   def scalarTag = ScalarTagBool

@@ -41,7 +41,7 @@ object Concat extends LowPriorityConcatImplicits {
   val sl = ScalarTagLong
   val sf = ScalarTagFloat
   val sd = ScalarTagDouble
-  val sr = ScalarTagAny[AnyRef]
+  val sr = new ScalarTagAny[AnyRef]
 
   /**
    * Existence of an instance of this class yields a way to promote instances of the first

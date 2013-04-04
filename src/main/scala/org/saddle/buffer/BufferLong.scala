@@ -16,10 +16,10 @@
 
 package org.saddle.buffer
 
-import it.unimi.dsi.fastutil.longs.{LongArrays, LongArrayList}
+import it.unimi.dsi.fastutil.longs.LongArrays
 import org.saddle.Buffer
 
-private[saddle] class BufferLong(sz: Int = LongArrayList.DEFAULT_INITIAL_CAPACITY) extends Buffer[Long] {
+class BufferLong(sz: Int = Buffer.INIT_CAPACITY) extends Buffer[Long] {
   var list = Array.ofDim[Long](sz)
   var count = 0
   var remain = sz

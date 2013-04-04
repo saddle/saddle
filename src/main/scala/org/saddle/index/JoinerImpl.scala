@@ -24,7 +24,7 @@ import locator.Locator
  * Concrete implementation of Joiner instance which is specialized on basic
  * types.
  */
-private[saddle] class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ORD: ST] extends Joiner[T] {
+class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T] {
   private implicit def wrapArray(arr: Array[Int]): Option[Array[Int]] = Some(arr)
 
   def join(left: Index[T], right: Index[T], how: JoinType): ReIndexer[T] = {
@@ -685,6 +685,6 @@ private[saddle] class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ORD: ST] e
 }
 
 private[saddle] object JoinerImpl {
-  def join[@spec(Boolean, Int, Long, Double) T: ORD: ST](
+  def join[@spec(Boolean, Int, Long, Double) T: ST: ORD](
     left: Index[T], right: Index[T], how: JoinType) = (new JoinerImpl[T]).join(left, right, how)
 }

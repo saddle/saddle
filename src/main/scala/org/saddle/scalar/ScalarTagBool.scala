@@ -17,6 +17,12 @@
 package org.saddle.scalar
 
 import org.saddle._
+import org.saddle.vec.VecBool
+import org.saddle.mat.MatBool
+import org.saddle.buffer.BufferAny
+import org.saddle.index.IndexAny
+import org.saddle.locator.LocatorBool
+import org.saddle.array.Sorter
 
 /**
  * Boolean ScalarTag
@@ -26,12 +32,9 @@ object ScalarTagBool extends ScalarTag[Boolean] {
   def isMissing(v: Boolean): Boolean = false
   def notMissing(v: Boolean): Boolean = true
 
-  def isTuple = false
-
   def compare(x: Boolean, y: Boolean)(implicit ev: ORD[Boolean]) = if (x > y) 1 else 0
 
   def toDouble(t: Boolean)(implicit ev: NUM[Boolean]) = if (t) 1.0 else 0.0
-  def isDouble = false
 
   def zero(implicit ev: NUM[Boolean]) = false
   def one(implicit ev: NUM[Boolean]) = true
@@ -41,4 +44,11 @@ object ScalarTagBool extends ScalarTag[Boolean] {
   def show(v: Boolean) = "%b" format v
 
   override def runtimeClass = implicitly[CLM[Boolean]].erasure
+
+  def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferAny[Boolean](sz)
+  def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorBool()
+  def makeVec(arr: Array[Boolean]) = new VecBool(arr)
+  def makeMat(r: Int, c: Int, arr: Array[Boolean]) = new MatBool(r, c, arr)
+  def makeIndex(vec: Vec[Boolean])(implicit ord: ORD[Boolean]): Index[Boolean] = new IndexAny[Boolean](vec)
+  def makeSorter(implicit ord: ORD[Boolean]): Sorter[Boolean] = Sorter.boolSorter
 }

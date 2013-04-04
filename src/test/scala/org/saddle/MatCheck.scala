@@ -71,16 +71,6 @@ class MatCheck extends Specification with ScalaCheck {
        }
      }
 
-     "foldLeft works" in {
-       implicit val arbMat = Arbitrary(MatArbitraries.matDoubleWithNA)
-
-       forAll { (m: Mat[Double]) =>
-         val res = m.foldLeft(0)((c: Int, x: Double) => c + { if (x.isNaN) 0 else 1 } )
-         val exp = Vec(m.contents).count
-         res must_== exp
-       }
-     }
-
      "transpose works" in {
        implicit val arbMat = Arbitrary(MatArbitraries.matDoubleWithNA)
 

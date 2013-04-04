@@ -234,7 +234,7 @@ package object array {
 
   /**
    * Sends values from an array to particular offsets so as to produce a new array.
-   * This does the opposite of 'take'; ie, each integer I at offset O in `offsets`
+   * This does the inverse of 'take'; ie, each integer I at offset O in `offsets`
    * works to "send" input[O] to output[I]. Eg, Array(2,0,1) permutes locations as
    * follows:
    *
@@ -372,60 +372,7 @@ package object array {
    *
    * @param arr Array to sort
    */
-  def argsort[T: ST: ORD](arr: Array[T]): Array[Int] = {
-    val res = range(0, arr.length)
-
-    val spB = classOf[Boolean]
-    val spY = classOf[Byte]
-    val spC = classOf[Char]
-    val spS = classOf[Short]
-    val spI = classOf[Int]
-    val spL = classOf[Long]
-    val spF = classOf[Float]
-    val spD = classOf[Double]
-
-    // choose appropriate specialized implementation
-    implicitly[ST[T]].runtimeClass match {
-      case c if c == spB => {
-        VecBool.argSort(arr.asInstanceOf[Array[Boolean]])
-      }
-      case c if c == spY => {
-        ByteArrays.radixSortIndirect(res, arr.asInstanceOf[Array[Byte]], true)
-        res
-      }
-      case c if c == spC => {
-        CharArrays.radixSortIndirect(res, arr.asInstanceOf[Array[Char]], true)
-        res
-      }
-      case c if c == spS => {
-        ShortArrays.radixSortIndirect(res, arr.asInstanceOf[Array[Short]], true)
-        res
-      }
-      case c if c == spI => {
-        IntArrays.radixSortIndirect(res, arr.asInstanceOf[Array[Int]], true)
-        res
-      }
-      case c if c == spF => {
-        val tmp = nanToNegInf(arr.asInstanceOf[Array[Float]])
-        FloatArrays.radixSortIndirect(res, tmp, true)
-        res
-      }
-      case c if c == spL => {
-        LongArrays.radixSortIndirect(res, arr.asInstanceOf[Array[Long]], true)
-        res
-      }
-      case c if c == spD => {
-        // todo: when fastutil fixes NaN bug, remove extra scan/copy
-        val tmp = nanToNegInf(arr.asInstanceOf[Array[Double]])
-        DoubleArrays.radixSortIndirect(res, tmp, true)
-        res
-      }
-      case _ => {
-        // todo: performance issues here
-        res.sortWith((a, b) => implicitly[ST[T]].compare(arr(a), arr(b)) < 0)
-      }
-    }
-  }
+  def argsort[T: ST: ORD](arr: Array[T]): Array[Int] = implicitly[ST[T]].makeSorter.argSorted(arr)
 
   /**
    * Stable sort of array argument (not destructive), using radix sort
@@ -433,90 +380,7 @@ package object array {
    *
    * @param arr Array to sort
    */
-  def sort[T: ORD: ST](arr: Array[T]): Array[T] = {
-    val spB = classOf[Boolean]
-    val spY = classOf[Byte]
-    val spC = classOf[Char]
-    val spS = classOf[Short]
-    val spI = classOf[Int]
-    val spF = classOf[Float]
-    val spL = classOf[Long]
-    val spD = classOf[Double]
-
-    // choose appropriate specialized implementation
-    implicitly[ST[T]].runtimeClass match {
-      case c if c == spB => {
-        val res = arr.clone()
-        VecBool.sort(res.asInstanceOf[Array[Boolean]]).asInstanceOf[Array[T]]
-      }
-      case c if c == spY => {
-        val res = arr.clone()
-        ByteArrays.radixSort(res.asInstanceOf[Array[Byte]])
-        res
-      }
-      case c if c == spC => {
-        val res = arr.clone()
-        CharArrays.radixSort(res.asInstanceOf[Array[Char]])
-        res
-      }
-      case c if c == spS => {
-        val res = arr.clone()
-        ShortArrays.radixSort(res.asInstanceOf[Array[Short]])
-        res
-      }
-      case c if c == spI => {
-        val res = arr.clone()
-        IntArrays.radixSort(res.asInstanceOf[Array[Int]])
-        res
-      }
-      case c if c == spF => {
-        // todo: when fastutil fixes NaN bug, remove extra scan/copy
-        val res = nanToNegInf(arr.asInstanceOf[Array[Float]])
-        FloatArrays.radixSort(res)
-        res.asInstanceOf[Array[T]]
-      }
-      case c if c == spL => {
-        val res = arr.clone()
-        LongArrays.radixSort(res.asInstanceOf[Array[Long]])
-        res
-      }
-      case c if c == spD => {
-        // todo: when fastutil fixes NaN bug, remove extra scan/copy
-        val res = nanToNegInf(arr.asInstanceOf[Array[Double]])
-        DoubleArrays.radixSort(res)
-        res.asInstanceOf[Array[T]]
-      }
-      case _ => {
-        val res = arr.clone()
-        java.util.Arrays.sort(
-          res.asInstanceOf[Array[Object]],
-          implicitly[ORD[T]].asInstanceOf[ORD[Object]])
-        res
-      }
-    }
-  }
-
-  private def nanToNegInf(arr: Array[Double]): Array[Double] = {
-    val tmp = arr.clone()
-    var i = 0
-    while (i < tmp.length) {
-      val ti = tmp(i)
-      if (ti != ti) tmp(i) = Double.NegativeInfinity
-      i += 1
-    }
-    tmp
-  }
-
-  private def nanToNegInf(arr: Array[Float]): Array[Float] = {
-    val tmp = arr.clone()
-    var i = 0
-    while (i < tmp.length) {
-      val ti = tmp(i)
-      if (ti != ti) tmp(i) = Float.NegativeInfinity
-      i += 1
-    }
-    tmp
-  }
+  def sort[T: ST: ORD](arr: Array[T]): Array[T] = implicitly[ST[T]].makeSorter.sorted(arr)
 
   /**
    * Reverse an array
@@ -563,7 +427,7 @@ package object array {
   /**
    * Flatten a sequence of arrays into a single array
    */
-  def flatten[@spec(Int, Long, Double) T: ST](arrs: Seq[Array[T]]): Array[T] = {
+  def flatten[@spec(Boolean, Int, Long, Double) T: ST](arrs: Seq[Array[T]]): Array[T] = {
     val size = arrs.map(_.length).sum
     val newArr = new Array[T](size)
     var i = 0
@@ -584,7 +448,7 @@ package object array {
   /**
    * Return the integer offset of the minimum element, or -1 for an empty array
    */
-  def argmin[@spec(Int, Long, Double) T: ORD: NUM: ST](arr: Array[T]): Int = {
+  def argmin[@spec(Int, Long, Double) T: ST: ORD: NUM](arr: Array[T]): Int = {
     val sca = implicitly[ST[T]]
     val sz = arr.length
     if (sz == 0) -1 else {
@@ -605,7 +469,7 @@ package object array {
   /**
    * Return the integer offset of the maximum element, or -1 for an empty array
    */
-  def argmax[@spec(Int, Long, Double) T: ORD: NUM: ST](arr: Array[T]): Int = {
+  def argmax[@spec(Int, Long, Double) T: ST: ORD: NUM](arr: Array[T]): Int = {
     val sca = implicitly[ST[T]]
     val sz = arr.length
     if (sz == 0) -1 else {

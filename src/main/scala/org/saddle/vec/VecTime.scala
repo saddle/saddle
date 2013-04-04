@@ -33,7 +33,8 @@ import util.Concat.Promoter
  */
 class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Vec[DateTime] {
 
-  val scalarTag = ScalarTagAny[DateTime]
+  val scalarTag = new ScalarTagAny[DateTime]
+
   val chrono = ISO_CHRONO.withZone(tzone)
 
   private val lmf = scalar.ScalarTagLong
@@ -53,7 +54,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
   // specialized concatenation
   def concat(x: VecTime) = vl2vt(Vec(util.Concat.append(times.toArray, x.times.toArray)))
 
-  // general concatenation                                                     millis
+  // general concatenation
   def concat[B, C](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C]) =
     Vec(util.Concat.append[DateTime, B, C](toArray, v.toArray))
 
@@ -92,7 +93,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 
   def shift(n: Int) = vl2vt(times.shift(n))
 
-  override def sorted(implicit ev: ORD[DateTime]) = take(array.argsort(times.toArray))
+  override def sorted(implicit ev: ORD[DateTime], st: ST[DateTime]) = take(array.argsort(times.toArray))
 
   override def pad: VecTime = vl2vt(times.pad)
 
@@ -106,7 +107,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 }
 
 object VecTime {
-  private val sm = ScalarTagAny[DateTime]
+  private val sm = new ScalarTagAny[DateTime]
   private val sl = ScalarTagLong
 
   def apply(times : Array[DateTime]): VecTime = {

@@ -415,7 +415,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
   }
 }
 
-private[saddle] class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
+class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
   val sd = ScalarTagDouble
 
   def sum: Double = r.filterFoldLeft(sd.notMissing)(0d)(_ + _)
@@ -455,7 +455,7 @@ private[saddle] class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
   def argmax: Int = array.argmax(r.toArray)
 }
 
-private[saddle] class IntStats(r: Vec[Int]) extends VecStats[Int] {
+class IntStats(r: Vec[Int]) extends VecStats[Int] {
   val si = ScalarTagInt
 
   def min: Option[Int] =
@@ -492,7 +492,7 @@ private[saddle] class IntStats(r: Vec[Int]) extends VecStats[Int] {
   def argmax: Int = array.argmax(r.toArray)
 }
 
-private[saddle] class LongStats(r: Vec[Long]) extends VecStats[Long] {
+class LongStats(r: Vec[Long]) extends VecStats[Long] {
   val sl = ScalarTagLong
 
   def min: Option[Long] =

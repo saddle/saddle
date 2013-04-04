@@ -38,7 +38,8 @@ import vec.VecTime
 class IndexTime(val times: Index[Long],
                 val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Index[DateTime] {
 
-  val scalarTag = ScalarTagAny[DateTime]
+  val scalarTag = new ScalarTagAny[DateTime]
+
   val chrono = ISO_CHRONO.withZone(tzone)
 
   private val lmf = ScalarTagLong
@@ -144,7 +145,7 @@ class IndexTime(val times: Index[Long],
 
   // maps
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD : ST](f: DateTime => B) =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: DateTime => B) =
     times.map(v => f(new DateTime(v, chrono)))
 
   private[saddle] def toArray = {

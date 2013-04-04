@@ -22,7 +22,7 @@ import org.saddle.Buffer
 /**
  * Buffer instance for Any type
  */
-private[saddle] class BufferAny[T: ST](sz: Int = 16) extends Buffer[T] {
+class BufferAny[T: ST](sz: Int = 16) extends Buffer[T] {
   var list = Array.ofDim[T](sz)
   var count = 0
   var remain = sz

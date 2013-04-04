@@ -18,7 +18,10 @@ package org.saddle.locator
 
 import it.unimi.dsi.fastutil.doubles.{Double2IntOpenHashMap, Double2IntLinkedOpenHashMap}
 
-private[saddle] class LocatorDouble(sz: Int = 16) extends Locator[Double] {
+/**
+ * A double-to-integer hash map, backed by fastutil implementation
+ */
+class LocatorDouble(sz: Int = Locator.INIT_CAPACITY) extends Locator[Double] {
   val map = new Double2IntLinkedOpenHashMap(sz)
   val cts = new Double2IntOpenHashMap(sz)
 
@@ -52,9 +55,4 @@ private[saddle] class LocatorDouble(sz: Int = 16) extends Locator[Double] {
     }
     res
   }
-}
-
-object LocatorDouble {
-  def apply(sz: Int) = new LocatorDouble(sz)
-  def apply() = new LocatorDouble()
 }

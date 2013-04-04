@@ -62,7 +62,7 @@ object CsvParser {
    * @tparam T The result type of the parsing function
    */
   def parse[T: ST](convert: String => T, cols: Seq[Int] = List(),
-                    params: CsvParams = CsvParams())(source: CsvSource): ParsedData[T] = {
+                   params: CsvParams = CsvParams())(source: CsvSource): ParsedData[T] = {
 
     require(params.separChar != params.quoteChar,
             "Separator character and quote character cannot be the same")
@@ -126,7 +126,7 @@ object CsvParser {
    * @tparam T The result type of the parsing function
    */
   def parsePar[T: ST](convert: String => T, cols: Seq[Int] = List(),
-                       params: CsvParams = CsvParams())(src: CsvSourcePar): ParsedData[T] = {
+                      params: CsvParams = CsvParams())(src: CsvSourcePar): ParsedData[T] = {
     val xserv = Executors.newFixedThreadPool(nProcs)           // create thread pool for N CPU bound threads
 
     var results = Seq.empty[Vec[T]]

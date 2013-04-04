@@ -25,7 +25,7 @@ import org.saddle._
 trait Melter[A, B, C] {
   def apply(a: A, b: B): C
 
-  def clm: ST[C]
+  def tag: ST[C]
   def ord: ORD[C]
 }
 
@@ -42,7 +42,7 @@ trait MelterLowerPriority {
    */
   protected def makeMelter[A: ST, B: ST, C: ST: ORD](fn: (A, B) => C) = new Melter[A, B, C] {
     def apply(a: A, b: B) = fn(a, b)
-    def clm = implicitly[ST[C]]
+    def tag = implicitly[ST[C]]
     def ord = implicitly[ORD[C]]
   }
 

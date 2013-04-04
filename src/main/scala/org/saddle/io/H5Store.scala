@@ -592,10 +592,10 @@ object H5Store {
   // common array-writing code
   private def writeArray[T: ST](group_id: Int, space_id: Int, name: String, data: Array[T],
                                  dataDims: Array[Long]): Int = {
-    val clm = implicitly[ST[T]]
+    val stag = implicitly[ST[T]]
 
     // extract the (possibly transformed) data type of the array
-    val (datatype_id, databuf) = clm.runtimeClass match {
+    val (datatype_id, databuf) = stag.runtimeClass match {
       // handle the case where it's a string, convert to bytes
       case c if c == sc => {
         // the (necessarily uniform) record length should be the length of max string encoding
@@ -704,9 +704,9 @@ object H5Store {
 
     val result = Array.ofDim[T](sz(0).toInt * sz(1).toInt)
 
-    val cm = implicitly[ST[T]]
+    val stag = implicitly[ST[T]]
 
-    val read_type = cm.runtimeClass match {
+    val read_type = stag.runtimeClass match {
       // doubles
       case c if c == dc => {
         assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_FLOAT, "Not a valid Double")
@@ -758,9 +758,9 @@ object H5Store {
 
     H5Reg.save(datatype, H5T)
 
-    val cm = implicitly[ST[X]]
+    val stag = implicitly[ST[X]]
 
-    val read_type = cm.runtimeClass match {
+    val read_type = stag.runtimeClass match {
       // doubles
       case c if c == dc => {
         assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_FLOAT, "Not a valid Double")
@@ -870,9 +870,9 @@ object H5Store {
 
   private def getPandasIndexAttribs[X: ST](index: Index[X]) = {
     val attribs = getPandasSeriesAttribs ++ List(("name", "N."))
-    val clm = implicitly[ST[X]]
+    val stag = implicitly[ST[X]]
     attribs ++ {
-      clm.runtimeClass match {
+      stag.runtimeClass match {
         case c if c == ic => List(("kind", "integer"))
         case c if c == lc => List(("kind", "integer"))
         case c if c == dc => List(("kind", "float"))
@@ -937,7 +937,7 @@ object H5Store {
     }
   }
 
-  private def readPandasSeries[X: ORD: ST, T: ST](
+  private def readPandasSeries[X: ST: ORD, T: ST](
     fileid: Int, name: String): Series[X, T] = {
     val grpid = openGroup(fileid, name)
     assertException(grpid >= 0, "Group : " + name + " is not a valid group")
@@ -979,7 +979,7 @@ object H5Store {
     result
   }
 
-  private def writePandasFrame[R: ORD: ST, C: ORD: ST, T: ST](
+  private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
     file: String, name: String, rx: Index[R], cx: Index[C], values: Mat[T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {

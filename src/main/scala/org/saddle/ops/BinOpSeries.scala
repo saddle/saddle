@@ -28,7 +28,7 @@ trait BinOpSeries {
   // ***************
 
   // Binary element-wise operation on one series and one scalar
-  final class SrScEOp[OP <: ScalarOp, X: ORD: ST, A, B, C: ST](
+  final class SrScEOp[OP <: ScalarOp, X: ST: ORD, A, B, C: ST](
                       op: BinOp[OP, Vec[A], B, Vec[C]]) extends BinOp[OP, Series[X, A], B, Series[X, C]] {
     def apply(v1: Series[X, A], v2: B) = Series(op(v1.values, v2), v1.index)
   }
@@ -65,7 +65,7 @@ trait BinOpSeries {
   // ***************
 
   // Binary element-wise operation on two series
-  final class SrSrEOp[OP <: ScalarOp, X: ORD: ST, A, B, C: ST](
+  final class SrSrEOp[OP <: ScalarOp, X: ST: ORD, A, B, C: ST](
                       opv: BinOp[OP, Vec[A], Vec[B], Vec[C]]) extends BinOp[OP, Series[X, A], Series[X, B], Series[X, C]] {
     def apply(v1: Series[X, A], v2: Series[X, B]) = {
       if (v1.index == v2.index) {

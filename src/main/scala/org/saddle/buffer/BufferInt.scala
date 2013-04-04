@@ -16,10 +16,10 @@
 
 package org.saddle.buffer
 
-import it.unimi.dsi.fastutil.ints.{IntArrays, IntArrayList}
+import it.unimi.dsi.fastutil.ints.IntArrays
 import org.saddle.Buffer
 
-private[saddle] class BufferInt(sz: Int = IntArrayList.DEFAULT_INITIAL_CAPACITY) extends Buffer[Int] {
+class BufferInt(sz: Int = Buffer.INIT_CAPACITY) extends Buffer[Int] {
   var list = Array.ofDim[Int](sz)
   var count = 0
   var remain = sz

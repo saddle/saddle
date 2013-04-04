@@ -19,7 +19,7 @@ package org.saddle.buffer
 import it.unimi.dsi.fastutil.booleans.BooleanArrays
 import org.saddle.Buffer
 
-private[saddle] class BufferBool(sz: Int = 16) extends Buffer[Boolean] {
+class BufferBool(sz: Int = 16) extends Buffer[Boolean] {
   var list = Array.ofDim[Boolean](sz)
   var count = 0
   var remain = sz

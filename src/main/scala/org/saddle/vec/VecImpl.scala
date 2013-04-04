@@ -21,8 +21,7 @@ import org.saddle._
 
 // Specialized method implementations for code reuse in implementations of Vec; NA-safe
 private[saddle] object VecImpl {
-  def mask[@spec(Boolean, Int, Long, Double) A](
-    v1: Vec[A], v2: Vec[Boolean], value: A)(implicit ma: ST[A]): Vec[A] = {
+  def mask[@spec(Boolean, Int, Long, Double) A: ST](v1: Vec[A], v2: Vec[Boolean], value: A): Vec[A] = {
     require(v1.length == v2.length, "Vectors must be the same length")
     val buf = Array.ofDim[A](v1.length)
     var i = 0
@@ -32,7 +31,7 @@ private[saddle] object VecImpl {
       buf(i) = if (!b) a else value
       i += 1
     }
-    Vec[A](buf)
+    Vec(buf)
   }
 
   def mask[@spec(Boolean, Int, Long, Double) A: ST](
@@ -45,10 +44,11 @@ private[saddle] object VecImpl {
       buf(i) = if (sa.isMissing(a) || !f(a)) a else value
       i += 1
     }
-    Vec[A](buf)
+    Vec(buf)
   }
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B](
+  def foldLeft[@spec(Boolean, Int, Long, Double) A: ST,
+               @spec(Boolean, Int, Long, Double) B](
     vec: Vec[A])(init: B)(f: (B, A) => B): B = {
     val sa = implicitly[ST[A]]
     var acc = init
@@ -65,7 +65,8 @@ private[saddle] object VecImpl {
    * Same as foldLeft, but with a condition that operates on the accumulator and element
    * that if false, breaks out of the fold
    */
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B](
+  def foldLeftWhile[@spec(Boolean, Int, Long, Double) A: ST,
+                    @spec(Boolean, Int, Long, Double) B](
     vec: Vec[A])(init: B)(f: (B, A) => B)(cond: (B, A) => Boolean): B = {
     val sa = implicitly[ST[A]]
     var acc = init
@@ -83,7 +84,8 @@ private[saddle] object VecImpl {
     acc
   }
 
-  def map[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
+  def map[@spec(Boolean, Int, Long, Double) A: ST,
+          @spec(Boolean, Int, Long, Double) B: ST](
     vec: Vec[A])(f: A => B): Vec[B] = {
     val sca = implicitly[ST[A]]
     val scb = implicitly[ST[B]]
@@ -97,13 +99,16 @@ private[saddle] object VecImpl {
         buf(i) = f(v)
       i += 1
     }
-    Vec[B](buf)
+    Vec(buf)
   }
 
   /**
-   * Save as foldLeft, but store and return intermediate accumulated results
+   * Same as foldLeft, but store and return intermediate accumulated results. Note this differs
+   * from the Scala collections library by not including the initial value at the head of the
+   * scan.
    */
-  def scanLeft[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
+  def scanLeft[@spec(Boolean, Int, Long, Double) A: ST,
+               @spec(Boolean, Int, Long, Double) B: ST](
     vec: Vec[A])(init: B)(f: (B, A) => B): Vec[B] = {
     val sca = implicitly[ST[A]]
     val scb = implicitly[ST[B]]
@@ -121,11 +126,10 @@ private[saddle] object VecImpl {
       }
       i += 1
     }
-    Vec[B](buf)
+    Vec(buf)
   }
 
-  def zipMap[@spec(Int, Long, Double) A: ST, @spec(Int, Long, Double) B: ST,
-             @spec(Boolean, Int, Long, Double) C: ST](
+  def zipMap[@spec(Int, Long, Double) A: ST, @spec(Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](
     v1: Vec[A], v2: Vec[B])(f: (A, B) => C): Vec[C] = {
     require(v1.length == v2.length, "Vectors must be the same length")
     val sca = implicitly[ST[A]]
@@ -144,7 +148,7 @@ private[saddle] object VecImpl {
       }
       i += 1
     }
-    Vec[C](buf)
+    Vec(buf)
   }
 
   def filterFoldLeft[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B](
@@ -180,7 +184,7 @@ private[saddle] object VecImpl {
       }
       i += 1
     }
-    Vec[B](buf)
+    Vec(buf)
   }
 
   def rolling[@spec(Boolean, Int, Long, Double) A, @spec(Boolean, Int, Long, Double) B: ST](vec: Vec[A])(
@@ -284,8 +288,7 @@ private[saddle] object VecImpl {
     Vec(buf.toArray)
   }
 
-  def where[@spec(Boolean, Int, Long, Double) A](vec: Vec[A])(pred: Array[Boolean])(
-    implicit ev: ST[A]): Vec[A] = {
+  def where[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: Array[Boolean]): Vec[A] = {
     var i = 0
     val buf = Buffer[A]()
     while(i < vec.length) {

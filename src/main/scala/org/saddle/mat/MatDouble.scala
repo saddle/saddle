@@ -24,7 +24,7 @@ import org.saddle.scalar._
 /**
  * A Mat instance containing elements of type Double
  */
-private[saddle] class MatDouble(r: Int, c: Int, values: Array[Double]) extends Mat[Double] {
+class MatDouble(r: Int, c: Int, values: Array[Double]) extends Mat[Double] {
   def repr = this
 
   def numRows = r
@@ -35,7 +35,7 @@ private[saddle] class MatDouble(r: Int, c: Int, values: Array[Double]) extends M
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Double) => B): Mat[B] = MatImpl.map(this)(f)
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, Double) => A): A = MatImpl.foldLeft(this)(init)(f)
+  def toVec = scalarTag.makeVec(toArray)
 
   // Cache the transpose: it's much faster to transpose and slice a continuous
   // bound than to take large strides, especially on large matrices where it

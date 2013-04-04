@@ -23,18 +23,18 @@ import org.saddle.scalar._
 /**
  * A Mat instance containing elements of type Any
  */
-private[saddle] class MatAny[T : ST](r: Int, c: Int, values: Array[T]) extends Mat[T] {
+class MatAny[T: ST](r: Int, c: Int, values: Array[T]) extends Mat[T] {
   def repr = this
 
   def numRows = r
 
   def numCols = c
 
-  lazy val scalarTag = ScalarTagAny[T]
+  lazy val scalarTag = implicitly[ST[T]]
+
+  def toVec = scalarTag.makeVec(toArray)
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (T) => B): Mat[B] = MatImpl.map(this)(f)
-
-  def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, T) => A): A = MatImpl.foldLeft(this)(init)(f)
 
   // Cache the transpose: it's much faster to transpose and slice a continuous
   // bound than to take large strides, especially on large matrices where it

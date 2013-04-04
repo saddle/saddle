@@ -28,7 +28,7 @@ import org.saddle.scalar._
 /**
  * Index with integer keys
  */
-private[saddle] class IndexInt(keys: Vec[Int]) extends Index[Int] {
+class IndexInt(keys: Vec[Int]) extends Index[Int] {
   val scalarTag = ScalarTagInt
 
   private lazy val (lmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
@@ -102,7 +102,7 @@ private[saddle] class IndexInt(keys: Vec[Int]) extends Index[Int] {
       -(binarySearch(keys, t) + 1)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: Int => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: Int => B): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Int] = keys.toArray

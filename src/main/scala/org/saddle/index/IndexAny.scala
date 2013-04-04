@@ -28,7 +28,7 @@ import locator.Locator
  * An implementation of [[org.saddle.Index]] generic in type T for which there is an Ordering[T]
  * and a ST[T] available in the implicit context.
  */
-class IndexAny[T : ORD: ST](keys: Vec[T]) extends Index[T] {
+class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   val scalarTag = keys.scalarTag
 
   private lazy val (lmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
@@ -118,7 +118,7 @@ class IndexAny[T : ORD: ST](keys: Vec[T]) extends Index[T] {
     bSearch(0, a.length - 1)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: T => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: T => B): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[T] = keys.toArray

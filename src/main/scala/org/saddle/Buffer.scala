@@ -16,7 +16,6 @@
 
 package org.saddle
 
-import buffer._
 import scala.{ specialized => spec }
 
 /**
@@ -47,15 +46,11 @@ trait Buffer[@spec(Boolean, Int, Long, Double) T] {
    */
   def toArray: Array[T]
 
-  override def toString =
-    "Buffer [" + util.buildStr(8, count(), (i: Int) => " " + apply(i).toString, " ... ") + " ]"
+  override def toString = "Buffer [" + util.buildStr(8, count(), (i: Int) => " " + apply(i).toString, " ... ") + " ]"
 }
 
 object Buffer {
-  private val spB = classOf[Boolean]
-  private val spI = classOf[Int]
-  private val spL = classOf[Long]
-  private val spD = classOf[Double]
+  val INIT_CAPACITY = 16
 
   /**
    * Construct a new buffer with size pre-allocation (default size 16)
@@ -63,17 +58,7 @@ object Buffer {
    * @param sz Initial size of buffer
    * @tparam C Type of elements to be stored in buffer
    */
-  def apply[C: ST](sz: Int = 16): Buffer[C] = {
-    val m = implicitly[ST[C]]
-
-    m.runtimeClass match {
-      case c if c == spB => BufferBool(sz)
-      case c if c == spI => BufferInt(sz)
-      case c if c == spL => BufferLong(sz)
-      case c if c == spD => BufferDouble(sz)
-      case _             => BufferAny(sz)(m)
-    }
-  }.asInstanceOf[Buffer[C]]
+  def apply[C](sz: Int = INIT_CAPACITY)(implicit st: ST[C]): Buffer[C] = st.makeBuf(sz)
 
   /**
    * Convert buffer to array implicitly

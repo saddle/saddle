@@ -29,7 +29,7 @@ import locator.Locator
  * is the default when creating a Saddle object such as [[org.saddle.Series]] which
  * requires and index and one is not supplied.
  */
-private[saddle] class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
+class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
   require( length >= 0, "Length must be non-negative!" )
 
   val scalarTag = ScalarTagInt
@@ -114,7 +114,7 @@ private[saddle] class IndexIntRange(val length: Int, val from: Int = 0) extends 
   def join(other: Index[Int], how: JoinType = LeftJoin): ReIndexer[Int] =
     JoinerImpl.join(this, other, how)
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: (Int) => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: (Int) => B): Index[B] =
     genIdx map f
 
   private[saddle] def toArray = asArr

@@ -26,7 +26,7 @@ import Vec.Vec2Stats
  * These methods scan over the Vec and compute values over a specified historical
  * window.
  */
-class VecRollingStats[@spec(Int, Long, Double) A: Vec2Stats: AddOp: SubOp: NUM: ST](v: Vec[A]) {
+class VecRollingStats[@spec(Int, Long, Double) A: ST: Vec2Stats: AddOp: SubOp: NUM](v: Vec[A]) {
   /**
    * Rolling count; compute count of number of elements in Vec over a sliding window, ignoring
    * any NA values.
@@ -56,8 +56,7 @@ class VecRollingStats[@spec(Int, Long, Double) A: Vec2Stats: AddOp: SubOp: NUM: 
   def rollingMedian(winSz: Int): Vec[Double] = new RollingMedian[A](winSz, v).evaluate
 }
 
-private[saddle] class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Int] {
-
+class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Int] {
   var i = 0
   var s = 0
   val sa = implicitly[ST[A]]
@@ -75,8 +74,7 @@ private[saddle] class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NU
   }
 }
 
-private[saddle] class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] extends Function1[Vec[A], A] {
-
+class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] extends Function1[Vec[A], A] {
   var i = 0
   val sa = implicitly[ST[A]]
   val add = implicitly[AddOp[A]]
@@ -96,8 +94,7 @@ private[saddle] class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: V
   }
 }
 
-private[saddle] class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Double] {
-
+class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Double] {
   var i = 0
   var s = 0d
   var c = 0
@@ -123,7 +120,7 @@ private[saddle] class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM
   }
 }
 
-private[saddle] class RollingMedian[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM](winSz:Int, origv: Vec[A]) {
+class RollingMedian[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM](winSz:Int, origv: Vec[A]) {
   val sa = implicitly[ST[A]]
 
   val len = origv.length

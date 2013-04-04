@@ -21,7 +21,7 @@ import it.unimi.dsi.fastutil.longs.{Long2IntLinkedOpenHashMap, Long2IntOpenHashM
 /**
  * A Long-to-integer hash map, backed by fastutil implementation
  */
-private[saddle] class LocatorLong(sz: Int = 16) extends Locator[Long] {
+class LocatorLong(sz: Int = Locator.INIT_CAPACITY) extends Locator[Long] {
   val map = new Long2IntLinkedOpenHashMap(sz)
   val cts = new Long2IntOpenHashMap(sz)
 
@@ -55,9 +55,4 @@ private[saddle] class LocatorLong(sz: Int = 16) extends Locator[Long] {
     }
     res
   }
-}
-
-object LocatorLong {
-  def apply(sz: Int) = new LocatorLong(sz)
-  def apply() = new LocatorLong()
 }

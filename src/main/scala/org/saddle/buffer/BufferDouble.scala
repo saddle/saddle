@@ -16,10 +16,10 @@
 
 package org.saddle.buffer
 
-import it.unimi.dsi.fastutil.doubles.{DoubleArrays, DoubleArrayList}
+import it.unimi.dsi.fastutil.doubles.DoubleArrays
 import org.saddle.Buffer
 
-private[saddle] class BufferDouble(sz: Int = DoubleArrayList.DEFAULT_INITIAL_CAPACITY) extends Buffer[Double] {
+class BufferDouble(sz: Int = Buffer.INIT_CAPACITY) extends Buffer[Double] {
   var list = Array.ofDim[Double](sz)
   var count = 0
   var remain = sz

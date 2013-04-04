@@ -23,7 +23,7 @@ import org.saddle.scalar._
 /**
  * A Mat instance containing elements of type Long
  */
-private[saddle] class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[Long] {
+class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[Long] {
   def repr = this
 
   def numRows = r
@@ -32,9 +32,9 @@ private[saddle] class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[L
 
   def scalarTag = ScalarTagLong
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Long) => B): Mat[B] = MatImpl.map(this)(f)
+  def toVec = scalarTag.makeVec(toArray)
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, Long) => A): A = MatImpl.foldLeft(this)(init)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Long) => B): Mat[B] = MatImpl.map(this)(f)
 
   // Cache the transpose: it's much faster to transpose and slice a continuous
   // bound than to take large strides, especially on large matrices where it

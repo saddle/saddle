@@ -18,13 +18,11 @@ package org.saddle
 
 import scala.{specialized => spec, Array}
 import index._
-import locator.Locator
-import util.Concat.Promoter
 import scalar._
+import locator.Locator
 import util.Concat.Promoter
 import vec.VecImpl
 import java.io.OutputStream
-import org.joda.time.DateTime
 
 /**
  * Index provides a constant-time look-up of a value within array-backed storage,
@@ -63,7 +61,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param loc Offset into index
    */
   def at(loc: Int): Scalar[T] = {
-    implicit val clm = scalarTag
+    implicit val tag = scalarTag
     raw(loc)
   }
 
@@ -192,9 +190,9 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * Returns an array of unique keys in the Index, in the order in which they
    * originally appeared in the backing Vec.
    * @param ord Implicit ORD for instances of type T
-   * @param clm Implicit ST for instances of type T
+   * @param tag Implicit ST for instances of type T
    */
-  def uniques(implicit ord: ORD[T], clm: ST[T]): Index[T] = Index(locator.keys())
+  def uniques(implicit ord: ORD[T], tag: ST[T]): Index[T] = Index(locator.keys())
 
   /**
    * Returns an array whose entries represent the number of times the corresponding
@@ -416,7 +414,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param current Key value to find
    */
   def prev(current: Scalar[T]): Scalar[T] = {
-    implicit val clm = scalarTag
+    implicit val tag = scalarTag
 
     if (!isContiguous)
       throw Index.IndexException("Cannot traverse index that is not contiguous in its values")
@@ -435,7 +433,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param current Key value to find
    */
   def next(current: Scalar[T]): Scalar[T] = {
-    implicit val clm = scalarTag
+    implicit val tag = scalarTag
 
     if (!isContiguous)
       throw Index.IndexException("Cannot traverse index that is not contiguous in its values")
@@ -454,7 +452,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param f Function to map with
    * @tparam B Type of resulting elements
    */
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: T => B): Index[B]
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: T => B): Index[B]
 
   /**
    * Convert Index elements to an IndexedSeq.
@@ -527,44 +525,19 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
 }
 
 object Index {
-  private val spB = classOf[Boolean]
-  private val spI = classOf[Int]
-  private val spL = classOf[Long]
-  private val spD = classOf[Double]
-  private val spT = classOf[DateTime]
+  /**
+   * Factory method to create an index from a Vec of elements
+   * @param values Vec
+   * @tparam C Type of elements in Vec
+   */
+  def apply[C: ST: ORD](values: Vec[C]): Index[C] = implicitly[ST[C]].makeIndex(values)
 
   /**
    * Factory method to create an index from an array of elements
    * @param arr Array
    * @tparam C Type of elements in array
    */
-  def apply[C: ORD: ST](arr: Array[C]): Index[C] = {
-    val m  = implicitly[ST[C]]
-    val ev = implicitly[ORD[C]]
-
-    m.runtimeClass match {
-      case c if c == spB => new IndexBool(Vec(arr.asInstanceOf[Array[Boolean]]))
-      case c if c == spI => new IndexInt(Vec(arr.asInstanceOf[Array[Int]]))
-      case c if c == spL => new IndexLong(Vec(arr.asInstanceOf[Array[Long]]))
-      case c if c == spD => new IndexDouble(Vec(arr.asInstanceOf[Array[Double]]))
-      case c if c == spT => new IndexTime(Index(arr.asInstanceOf[Array[DateTime]].map(_.getMillis)))
-      case _             => {
-        // compareProof is locked to a context where it can't do damage; we use it only within
-        // an AnyIndex of comparable Any's (ie, where C <: Any AND there exists an Ord[C])
-        implicit def compareProof(x: Any) = new Comparable[Any] {
-          def compareTo(o: Any) = ev.compare(x.asInstanceOf[C], o.asInstanceOf[C])
-        }
-        new IndexAny(Vec(arr))
-      }
-    }
-  }.asInstanceOf[Index[C]]
-
-  /**
-   * Factory method to create an index from a Vec of elements
-   * @param values Vec
-   * @tparam C Type of elements in Vec
-   */
-  def apply[C: ORD: ST](values: Vec[C]): Index[C] = Index(values.toArray)
+  def apply[C: ST: ORD](arr: Array[C]): Index[C] = Index(Vec(arr))
 
   /**
    * Factory method to create an index from a sequence of elements, eg
@@ -577,7 +550,7 @@ object Index {
    * @param values Seq[C]
    * @tparam C Type of elements in Seq
    */
-  def apply[C: ORD: ST](values: C*): Index[C] = Index(values.toArray)
+  def apply[C: ST: ORD](values: C*): Index[C] = Index(values.toArray)
 
   /**
    * Factory method to create an Index; the basic use case is to construct
@@ -600,7 +573,7 @@ object Index {
    * Factor method to create an empty Index
    * @tparam C type of Index
    */
-  def empty[C: ORD: ST]: Index[C] = Index(Array.empty[C])
+  def empty[C: ST: ORD]: Index[C] = Index(Array.empty[C])
 
   // (safe) conversions
 
@@ -609,14 +582,14 @@ object Index {
    * @param arr Array
    * @tparam C Type of elements in array
    */
-  implicit def arrayToIndex[C: ORD: ST](arr: Array[C]) = Index(arr)
+  implicit def arrayToIndex[C: ST: ORD](arr: Array[C]) = Index(arr)
 
   /**
    * A Vec may be implicitly converted to an Index
    * @param s Vec
    * @tparam C Type of elements in Vec
    */
-  implicit def vecToIndex[C: ORD: ST](s: Vec[C]) = Index(s.toArray)
+  implicit def vecToIndex[C: ST: ORD](s: Vec[C]) = Index(s.toArray)
 
   /**
    * Provides an index-specific exception

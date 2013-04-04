@@ -24,6 +24,8 @@ import index._
 import groupby._
 import scalar._
 import java.io.OutputStream
+import org.saddle.mat.MatCols
+
 
 /**
  * `Series` is an immutable container for 1D homogeneous data which is indexed by a
@@ -97,7 +99,7 @@ import java.io.OutputStream
  * @tparam X Type of elements in the index, for which there must be an implicit Ordering and ST
  * @tparam T Type of elements in the values array, for which there must be an implicit ST
  */
-class Series[X: ORD: ST, T: ST](
+class Series[X: ST: ORD, T: ST](
   val values: Vec[T], val index: Index[X]) extends NumericOps[Series[X, T]] {
 
   require(values.length == index.length,
@@ -258,7 +260,7 @@ class Series[X: ORD: ST, T: ST](
    * @param newIx A new Index
    * @tparam Y Type of elements of new Index
    */
-  def setIndex[Y: ORD: ST](newIx: Index[Y]): Series[Y, T] = Series(values, newIx)
+  def setIndex[Y: ST: ORD](newIx: Index[Y]): Series[Y, T] = Series(values, newIx)
 
   /**
    * Create a new Series whose values are the same, but whose Index has been changed
@@ -272,7 +274,7 @@ class Series[X: ORD: ST, T: ST](
    * @param fn The function X => Y with which to map
    * @tparam Y Result type of index, ie Index[Y]
    */
-  def mapIndex[Y: ORD: ST](fn: X => Y): Series[Y, T] = Series(values, index.map(fn))
+  def mapIndex[Y: ST: ORD](fn: X => Y): Series[Y, T] = Series(values, index.map(fn))
 
   /**
    * Concatenate two Series instances together whose indexes share the same type of
@@ -433,7 +435,7 @@ class Series[X: ORD: ST, T: ST](
    * Return Series whose index keys satisfy a predicate function
    * @param pred Predicate function from X => Boolean
    */
-  def filterIx(pred: X => Boolean): Series[X, T] = where(Vec(index.toArray).map(pred))
+  def filterIx(pred: X => Boolean): Series[X, T] = where(index.toVec.map(pred))
 
   /**
    * Return Series whose keys and values are chosen via a Vec[Boolean] or a
@@ -442,7 +444,7 @@ class Series[X: ORD: ST, T: ST](
    */
   def where(pred: Series[_, Boolean]): Series[X, T] = {
     val newVals = VecImpl.where(this.values)(pred.values.toArray)
-    val newIdx  = VecImpl.where(Vec(this.index.toArray))(pred.values.toArray)
+    val newIdx  = VecImpl.where(index.toVec)(pred.values.toArray)
     Series(newVals, Index(newIdx))
   }
 
@@ -577,7 +579,7 @@ class Series[X: ORD: ST, T: ST](
    * @param fn Function from X => Y
    * @tparam Y Type of function codomain
    */
-  def groupBy[Y: ORD: ST](fn: X => Y): SeriesGrouper[Y, X, T] = SeriesGrouper(this.index.map(fn), this)
+  def groupBy[Y: ST: ORD](fn: X => Y): SeriesGrouper[Y, X, T] = SeriesGrouper(this.index.map(fn), this)
 
   /**
    * Construct a [[org.saddle.groupby.SeriesGrouper]] with which further computations, such
@@ -586,7 +588,7 @@ class Series[X: ORD: ST, T: ST](
    * @param ix Index with which to perform grouping
    * @tparam Y Type of elements of ix
    */
-  def groupBy[Y: ORD: ST](ix: Index[Y]): SeriesGrouper[Y, X, T] = SeriesGrouper(ix, this)
+  def groupBy[Y: ST: ORD](ix: Index[Y]): SeriesGrouper[Y, X, T] = SeriesGrouper(ix, this)
 
   /**
    * Produce a Series whose values are the result of executing a function on a sliding window of
@@ -715,7 +717,7 @@ class Series[X: ORD: ST, T: ST](
     val indexer = this.index.join(other.index, how)
     val lseq = indexer.lTake.map(this.values.take(_)) getOrElse this.values
     val rseq = indexer.rTake.map(other.values.take(_)) getOrElse other.values
-    Frame(VecSeq(lseq, rseq), indexer.index, Array(0, 1))
+    Frame(MatCols(lseq, rseq), indexer.index, Array(0, 1))
   }
 
   /**
@@ -902,7 +904,7 @@ object Series extends BinOpSeries {
    * Enrich Series with rolling stats
    * @param s Series[_, T]
    */
-  implicit def seriesToRollingStats[X: ORD: ST, T: Vec2RollingStats: ST](
+  implicit def seriesToRollingStats[X: ST: ORD, T: Vec2RollingStats: ST](
     s: Series[X, T]): SeriesRollingStats[X, T] =
     SeriesRollingStats[X, T](s)
 
@@ -910,7 +912,7 @@ object Series extends BinOpSeries {
    * Enrich Series with expanding stats
    * @param s Series[_, T]
    */
-  implicit def seriesToExpandingStats[X: ORD: ST, T: Vec2ExpandingStats: ST](
+  implicit def seriesToExpandingStats[X: ST: ORD, T: Vec2ExpandingStats: ST](
     s: Series[X, T]): SeriesExpandingStats[X, T] =
     SeriesExpandingStats[X, T](s)
 
@@ -921,7 +923,7 @@ object Series extends BinOpSeries {
    * @tparam X Type of Index
    * @tparam T Type of values Vec
    */
-  implicit def serToFrame[X: ORD: ST, T: ST](s: Series[X, T]): Frame[X, Int, T] = Frame(s)
+  implicit def serToFrame[X: ST: ORD, T: ST](s: Series[X, T]): Frame[X, Int, T] = Frame(s)
 
   // some pimped-on logic methods. scala.Function1 is not specialized on
   // Boolean input. not sure I care to work around this
@@ -940,7 +942,7 @@ object Series extends BinOpSeries {
    * @tparam X Type of keys
    * @tparam T Type of values
    */
-  def empty[X: ORD: ST, T: ST] =
+  def empty[X: ST: ORD, T: ST] =
     new Series[X, T](Vec.empty[T], Index.empty[X])
 
   /**
@@ -950,7 +952,7 @@ object Series extends BinOpSeries {
    * @tparam X Type of keys
    * @tparam T Type of values
    */
-  def apply[X: ORD: ST, T: ST](values: Vec[T], index: Index[X]): Series[X, T] =
+  def apply[X: ST: ORD, T: ST](values: Vec[T], index: Index[X]): Series[X, T] =
     new Series[X, T](values, index)
 
   /**
@@ -975,6 +977,6 @@ object Series extends BinOpSeries {
    * @tparam T Type of value
    * @tparam X Type of key
    */
-  def apply[X: ORD: ST, T: ST](values: (X, T)*): Series[X, T] =
+  def apply[X: ST: ORD, T: ST](values: (X, T)*): Series[X, T] =
     new Series[X, T](Vec(values.map(_._2).toArray), Index(values.map(_._1).toArray))
 }

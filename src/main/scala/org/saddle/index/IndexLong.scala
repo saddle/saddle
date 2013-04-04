@@ -28,7 +28,7 @@ import locator.Locator
 /**
  * Index with long keys
  */
-private[saddle] class IndexLong(keys: Vec[Long]) extends Index[Long] {
+class IndexLong(keys: Vec[Long]) extends Index[Long] {
   val scalarTag = ScalarTagLong
 
   private lazy val (lmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
@@ -103,7 +103,7 @@ private[saddle] class IndexLong(keys: Vec[Long]) extends Index[Long] {
       -(binarySearch(keys, t) + 1)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: Long => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: Long => B): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Long] = keys.toArray

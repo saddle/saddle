@@ -17,6 +17,12 @@
 package org.saddle.scalar
 
 import org.saddle._
+import org.saddle.mat.MatLong
+import org.saddle.vec.VecLong
+import org.saddle.buffer.BufferLong
+import org.saddle.index.IndexLong
+import org.saddle.locator.LocatorLong
+import org.saddle.array.Sorter
 
 /**
  * Long ScalarTag
@@ -26,12 +32,9 @@ object ScalarTagLong extends ScalarTag[Long] {
   def isMissing(v: Long): Boolean = v == Long.MinValue
   def notMissing(v: Long): Boolean = v != Long.MinValue
 
-  def isTuple = false
-
   def compare(x: Long, y: Long)(implicit ev: ORD[Long]) = if (x == y) 0 else if (x > y) 1 else -1
 
   def toDouble(t: Long)(implicit ev: NUM[Long]) = if(isMissing(t)) ScalarTagDouble.missing else t.asInstanceOf[Double]
-  def isDouble = false
 
   def zero(implicit ev: NUM[Long]) = 0L
   def one(implicit ev: NUM[Long]) = 1L
@@ -40,5 +43,12 @@ object ScalarTagLong extends ScalarTag[Long] {
 
   def show(v: Long) = if (isMissing(v)) "%s" format "NA" else "%d" format v
 
-  override def runtimeClass = implicitly[CLM[Long]].erasure
+  override def runtimeClass = implicitly[ClassManifest[Long]].erasure
+
+  def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferLong(sz)
+  def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorLong(sz)
+  def makeVec(arr: Array[Long]) = new VecLong(arr)
+  def makeMat(r: Int, c: Int, arr: Array[Long]) = new MatLong(r, c, arr)
+  def makeIndex(vec: Vec[Long])(implicit ord: ORD[Long]): Index[Long] = new IndexLong(vec)
+  def makeSorter(implicit ord: ORD[Long]): Sorter[Long] = Sorter.longSorter
 }

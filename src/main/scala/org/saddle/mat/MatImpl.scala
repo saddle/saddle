@@ -24,29 +24,24 @@ import org.saddle._
  * Houses specialized method implementations for code reuse in Mat subclasses
  */
 private[saddle] object MatImpl {
-  def map[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B: ST](mat: Mat[A])(f: A => B): Mat[B] = {
+  def map[@spec(Boolean, Int, Long, Double) A: ST,
+          @spec(Boolean, Int, Long, Double) B: ST](mat: Mat[A])(f: A => B): Mat[B] = {
+    val sca = implicitly[ST[A]]
+    val scb = implicitly[ST[B]]
     val buf = Array.ofDim[B](mat.length)
     var i = 0
     while(i < mat.length) {
-      val m = mat(i)
-      buf(i) = f(m)
+      val v = mat(i)
+      if (sca.isMissing(v))
+        buf(i) = scb.missing
+      else
+        buf(i) = f(v)
       i += 1
     }
-    Mat(mat.numRows, mat.numCols, buf)
+    Mat[B](mat.numRows, mat.numCols, buf)
   }
 
-  def foldLeft[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B](mat: Mat[A])(init: B)(f: (B, A) => B): B = {
-    var acc = init
-    var i = 0
-    while(i < mat.length) {
-      val m = mat(i)
-      acc = f(acc, m)
-      i += 1
-    }
-    acc
-  }
-
-  def withoutRows[@spec(Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
+  def withoutRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
     if (m.length == 0) Mat.empty[A]
     else {
       val locset = locs.toSet
@@ -69,6 +64,6 @@ private[saddle] object MatImpl {
     }
   }
 
-  def takeRows[@spec(Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] =
+  def takeRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] =
     withoutRows(m, Range(0, m.numRows).toSet.diff(locs.toSet).toArray)
 }

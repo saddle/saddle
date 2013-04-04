@@ -25,10 +25,10 @@ import util.Concat.Promoter
 /**
  * Vec of Any
  */
-private[saddle] class VecAny[T : ST](values: Array[T]) extends Vec[T] { self =>
+class VecAny[T: ST](values: Array[T]) extends Vec[T] { self =>
   def length = values.length
 
-  lazy val scalarTag = implicitly[ST[T]]
+  def scalarTag = implicitly[ST[T]]
 
   def apply(i: Int): T = values(i)
 
