@@ -42,5 +42,5 @@ object ScalarTagChar extends ScalarTag[Char] {
 
   def show(v: Char) = if (isMissing(v)) "%s" format "NA" else "%s" format(v)
 
-  def erasure = implicitly[CLM[Char]].erasure
+  override def runtimeClass = implicitly[CLM[Char]].erasure
 }

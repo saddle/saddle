@@ -385,7 +385,7 @@ package object array {
     val spD = classOf[Double]
 
     // choose appropriate specialized implementation
-    implicitly[ST[T]].erasure match {
+    implicitly[ST[T]].runtimeClass match {
       case c if c == spB => {
         VecBool.argSort(arr.asInstanceOf[Array[Boolean]])
       }
@@ -444,7 +444,7 @@ package object array {
     val spD = classOf[Double]
 
     // choose appropriate specialized implementation
-    implicitly[ST[T]].erasure match {
+    implicitly[ST[T]].runtimeClass match {
       case c if c == spB => {
         val res = arr.clone()
         VecBool.sort(res.asInstanceOf[Array[Boolean]]).asInstanceOf[Array[T]]

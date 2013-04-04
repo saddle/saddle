@@ -399,7 +399,7 @@ object Mat extends BinOpMat {
     val m = implicitly[ST[C]]
 
     // ugly reification of type, but necessary to preserve specialization
-    m.erasure match {
+    m.runtimeClass match {
       case k if k == bc => new MatBool(r, c, a.asInstanceOf[Array[Boolean]])
       case k if k == ic => new MatInt(r, c, a.asInstanceOf[Array[Int]])
       case k if k == lc => new MatLong(r, c, a.asInstanceOf[Array[Long]])

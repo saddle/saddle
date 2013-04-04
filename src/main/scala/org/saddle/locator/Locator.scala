@@ -103,7 +103,7 @@ object Locator {
    * @tparam C Type of elements to be stored in Locator
    */
   def apply[C: ST](sz: Int = 16): Locator[C] = {
-    implicitly[ST[C]].erasure match {
+    implicitly[ST[C]].runtimeClass match {
       case c if c == spB => LocatorBool(sz)
       case c if c == spI => LocatorInt(sz)
       case c if c == spL => LocatorLong(sz)

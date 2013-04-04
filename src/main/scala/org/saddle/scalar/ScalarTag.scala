@@ -57,7 +57,12 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T] extends CLM[T] {
     case _               => false
   }
 
-  override def toString = "ScalarTag[%s]" format erasure
+  override def toString = "ScalarTag[%s]" format runtimeClass
+
+  override def erasure = runtimeClass
+
+  // forward 2.10 compatibility
+  def runtimeClass: Class[_]
 }
 
 object ScalarTag extends LowPriorityScalarTagImplicits {

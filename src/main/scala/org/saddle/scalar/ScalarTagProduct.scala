@@ -36,6 +36,6 @@ object ScalarTagProduct {
 
     def show(v: T) = "%s" format (if (v == null) "NA" else v.toString)
 
-    def erasure = implicitly[CLM[T]].erasure
+    override def runtimeClass = implicitly[CLM[T]].erasure
   }
 }

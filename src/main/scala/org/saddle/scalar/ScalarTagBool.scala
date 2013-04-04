@@ -40,5 +40,5 @@ object ScalarTagBool extends ScalarTag[Boolean] {
 
   def show(v: Boolean) = "%b" format v
 
-  def erasure = implicitly[CLM[Boolean]].erasure
+  override def runtimeClass = implicitly[CLM[Boolean]].erasure
 }

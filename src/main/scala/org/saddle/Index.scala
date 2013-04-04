@@ -542,7 +542,7 @@ object Index {
     val m  = implicitly[ST[C]]
     val ev = implicitly[ORD[C]]
 
-    m.erasure match {
+    m.runtimeClass match {
       case c if c == spB => new IndexBool(Vec(arr.asInstanceOf[Array[Boolean]]))
       case c if c == spI => new IndexInt(Vec(arr.asInstanceOf[Array[Int]]))
       case c if c == spL => new IndexLong(Vec(arr.asInstanceOf[Array[Long]]))

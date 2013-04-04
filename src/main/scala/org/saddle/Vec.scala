@@ -535,7 +535,7 @@ object Vec extends BinOpVec {
    */
   def apply[C: ST](arr: Array[C]): Vec[C] = {
     val m = implicitly[ST[C]]
-    m.erasure match {
+    m.runtimeClass match {
       case c if c == bc => new VecBool(arr.asInstanceOf[Array[Boolean]])
       case c if c == ic => new VecInt(arr.asInstanceOf[Array[Int]])
       case c if c == lc => new VecLong(arr.asInstanceOf[Array[Long]])

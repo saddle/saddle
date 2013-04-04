@@ -66,7 +66,7 @@ object Buffer {
   def apply[C: ST](sz: Int = 16): Buffer[C] = {
     val m = implicitly[ST[C]]
 
-    m.erasure match {
+    m.runtimeClass match {
       case c if c == spB => BufferBool(sz)
       case c if c == spI => BufferInt(sz)
       case c if c == spL => BufferLong(sz)

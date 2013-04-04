@@ -595,7 +595,7 @@ object H5Store {
     val clm = implicitly[ST[T]]
 
     // extract the (possibly transformed) data type of the array
-    val (datatype_id, databuf) = clm.erasure match {
+    val (datatype_id, databuf) = clm.runtimeClass match {
       // handle the case where it's a string, convert to bytes
       case c if c == sc => {
         // the (necessarily uniform) record length should be the length of max string encoding
@@ -706,7 +706,7 @@ object H5Store {
 
     val cm = implicitly[ST[T]]
 
-    val read_type = cm.erasure match {
+    val read_type = cm.runtimeClass match {
       // doubles
       case c if c == dc => {
         assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_FLOAT, "Not a valid Double")
@@ -760,7 +760,7 @@ object H5Store {
 
     val cm = implicitly[ST[X]]
 
-    val read_type = cm.erasure match {
+    val read_type = cm.runtimeClass match {
       // doubles
       case c if c == dc => {
         assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_FLOAT, "Not a valid Double")
@@ -872,7 +872,7 @@ object H5Store {
     val attribs = getPandasSeriesAttribs ++ List(("name", "N."))
     val clm = implicitly[ST[X]]
     attribs ++ {
-      clm.erasure match {
+      clm.runtimeClass match {
         case c if c == ic => List(("kind", "integer"))
         case c if c == lc => List(("kind", "integer"))
         case c if c == dc => List(("kind", "float"))
@@ -955,15 +955,15 @@ object H5Store {
 
     // type-check the index
     readAttrText(idxid, "kind") match {
-      case "integer"    => assertException(ixtype.erasure == classOf[Long] ||
-                                           ixtype.erasure == classOf[Int], "Index is not a long/int")
-      case "string"     => assertException(ixtype.erasure == classOf[String], "Index is not a string")
-      case "float"      => assertException(ixtype.erasure == classOf[Double], "Index is not a float")
-      case "datetime64" => assertException(ixtype.erasure == classOf[DateTime], "Index is not a datetime64")
+      case "integer"    => assertException(ixtype.runtimeClass == classOf[Long] ||
+                                           ixtype.runtimeClass == classOf[Int], "Index is not a long/int")
+      case "string"     => assertException(ixtype.runtimeClass == classOf[String], "Index is not a string")
+      case "float"      => assertException(ixtype.runtimeClass == classOf[Double], "Index is not a float")
+      case "datetime64" => assertException(ixtype.runtimeClass == classOf[DateTime], "Index is not a datetime64")
       case _@ t         => throw new IllegalArgumentException("Bad index type found: %s".format(t))
     }
 
-    val index = ixtype.erasure match {
+    val index = ixtype.runtimeClass match {
       case x if x == tc => {
         val data = Vec(readArray[Long](grpid, idxid))
         new IndexTime(new IndexLong(data / 1000000)).asInstanceOf[Index[X]]
@@ -1068,11 +1068,11 @@ object H5Store {
 
     // type-check the indices
     readAttrText(rowidx, "kind") match {
-      case "integer"    => assertException(rxtype.erasure == classOf[Long] ||
-                                           rxtype.erasure == classOf[Int], "Row index is not a long/int")
-      case "string"     => assertException(rxtype.erasure == classOf[String], "Row index is not a string")
-      case "float"      => assertException(rxtype.erasure == classOf[Double], "Row index is not a float")
-      case "datetime64" => assertException(rxtype.erasure == classOf[DateTime], "Row index is not a joda datetime64")
+      case "integer"    => assertException(rxtype.runtimeClass == classOf[Long] ||
+                                           rxtype.runtimeClass == classOf[Int], "Row index is not a long/int")
+      case "string"     => assertException(rxtype.runtimeClass == classOf[String], "Row index is not a string")
+      case "float"      => assertException(rxtype.runtimeClass == classOf[Double], "Row index is not a float")
+      case "datetime64" => assertException(rxtype.runtimeClass == classOf[DateTime], "Row index is not a joda datetime64")
       case _@ t         => throw new IllegalArgumentException("Bad row index type found: %s".format(t))
     }
 
@@ -1083,15 +1083,15 @@ object H5Store {
 
     // type-check the indices
     readAttrText(colidx, "kind") match {
-      case "integer"    => assertException(cxtype.erasure == classOf[Long] ||
-                                           cxtype.erasure == classOf[Int], "Col index is not a long/int")
-      case "string"     => assertException(cxtype.erasure == classOf[String], "Col index is not a string")
-      case "float"      => assertException(cxtype.erasure == classOf[Float], "Col index is not a float")
-      case "datetime64" => assertException(cxtype.erasure == classOf[DateTime], "Col index is not a joda datetime64")
+      case "integer"    => assertException(cxtype.runtimeClass == classOf[Long] ||
+                                           cxtype.runtimeClass == classOf[Int], "Col index is not a long/int")
+      case "string"     => assertException(cxtype.runtimeClass == classOf[String], "Col index is not a string")
+      case "float"      => assertException(cxtype.runtimeClass == classOf[Float], "Col index is not a float")
+      case "datetime64" => assertException(cxtype.runtimeClass == classOf[DateTime], "Col index is not a joda datetime64")
       case _@ t         => throw new IllegalArgumentException("Bad index type found: %s".format(t))
     }
 
-    val ix0 = rxtype.erasure match {
+    val ix0 = rxtype.runtimeClass match {
       case x if x == tc => {
         val data = Vec(readArray[Long](grpid, rowidx))
         new IndexTime(new IndexLong(data / 1000000)).asInstanceOf[Index[RX]]
@@ -1102,7 +1102,7 @@ object H5Store {
       }
     }
 
-    val ix1 = cxtype.erasure match {
+    val ix1 = cxtype.runtimeClass match {
       case x if x == tc => {
         val data = Vec(readArray[Long](grpid, colidx))
         new IndexTime(new IndexLong(data  / 1000000)).asInstanceOf[Index[CX]]
