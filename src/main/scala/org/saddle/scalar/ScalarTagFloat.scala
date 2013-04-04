@@ -21,14 +21,12 @@ import org.saddle._
 /**
  * Float ScalarTag
  */
-private[saddle] object ScalarTagFloat extends ScalarTag[Float] {
+object ScalarTagFloat extends ScalarTag[Float] {
   def missing: Float = Float.NaN
   def isMissing(v: Float): Boolean = (v != v)
   def notMissing(v: Float): Boolean = (v == v)
 
   def isTuple = false
-
-  def classTag = implicitly[CLM[Float]]
 
   // note, consider N/A's equal
   def compare(x: Float, y: Float)(implicit ev: ORD[Float]) =
@@ -43,4 +41,6 @@ private[saddle] object ScalarTagFloat extends ScalarTag[Float] {
   def negInf(implicit ev: NUM[Float]) = Float.NegativeInfinity
 
   def show(v: Float) = if (isMissing(v)) "%s" format "NA" else "%s" format(v)
+
+  def erasure = implicitly[CLM[Float]].erasure
 }

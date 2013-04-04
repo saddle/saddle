@@ -21,14 +21,12 @@ import org.saddle._
 /**
  * Char ScalarTag
  */
-private[saddle] object ScalarTagChar extends ScalarTag[Char] {
+object ScalarTagChar extends ScalarTag[Char] {
   def missing: Char = Char.MinValue
   def isMissing(v: Char): Boolean = (v == Char.MinValue)
   def notMissing(v: Char): Boolean = (v != Char.MinValue)
 
   def isTuple = false
-
-  def classTag = implicitly[CLM[Char]]
 
   // note, consider N/A's equal
   def compare(x: Char, y: Char)(implicit ev: ORD[Char]) =
@@ -43,4 +41,6 @@ private[saddle] object ScalarTagChar extends ScalarTag[Char] {
   def negInf(implicit ev: NUM[Char]) = Char.MinValue
 
   def show(v: Char) = if (isMissing(v)) "%s" format "NA" else "%s" format(v)
+
+  def erasure = implicitly[CLM[Char]].erasure
 }

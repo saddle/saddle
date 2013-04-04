@@ -28,7 +28,7 @@ import org.saddle.scalar._
  * Index with integer keys
  */
 private[saddle] class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
-  val scalarTag = getScalarTag[Boolean]
+  val scalarTag = ScalarTagBool
 
   private lazy val (kmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
 
@@ -45,7 +45,7 @@ private[saddle] class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
 
   def without(locs: Array[Int]): Index[Boolean] = Index(array.remove(keys, locs))
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[Boolean, B, C], mc: CLM[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](x: Index[B])(implicit wd: Promoter[Boolean, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Boolean, B, C](toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
@@ -89,7 +89,7 @@ private[saddle] class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
     locator.get(t) + locator.count(t)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B:ORD: CLM](f: Boolean => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B:ORD: ST](f: Boolean => B): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Boolean] = keys.toArray

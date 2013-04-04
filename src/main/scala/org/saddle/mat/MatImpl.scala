@@ -24,7 +24,7 @@ import org.saddle._
  * Houses specialized method implementations for code reuse in Mat subclasses
  */
 private[saddle] object MatImpl {
-  def map[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B: CLM](mat: Mat[A])(f: A => B): Mat[B] = {
+  def map[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B: ST](mat: Mat[A])(f: A => B): Mat[B] = {
     val buf = Array.ofDim[B](mat.length)
     var i = 0
     while(i < mat.length) {
@@ -46,7 +46,7 @@ private[saddle] object MatImpl {
     acc
   }
 
-  def withoutRows[@spec(Int, Long, Double) A: CLM](m: Mat[A], locs: Array[Int]): Mat[A] = {
+  def withoutRows[@spec(Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
     if (m.length == 0) Mat.empty[A]
     else {
       val locset = locs.toSet
@@ -69,6 +69,6 @@ private[saddle] object MatImpl {
     }
   }
 
-  def takeRows[@spec(Int, Long, Double) A: CLM](m: Mat[A], locs: Array[Int]): Mat[A] =
+  def takeRows[@spec(Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] =
     withoutRows(m, Range(0, m.numRows).toSet.diff(locs.toSet).toArray)
 }

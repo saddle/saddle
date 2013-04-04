@@ -51,7 +51,7 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeries[X: CLM: ORD, T: CLM](path: String, name: String): Series[X, T] = {
+  def readSeries[X: ST: ORD, T: ST](path: String, name: String): Series[X, T] = {
     monitor.lock()
     try {
       readPandasSeries[X, T](path, name)
@@ -72,7 +72,7 @@ object H5Store {
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrame[RX: CLM: ORD, CX: CLM: ORD, T: CLM](path: String, name: String): Frame[RX, CX, T] = {
+  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String): Frame[RX, CX, T] = {
     monitor.lock()
     try {
       readPandasFrame[RX, CX, T](path, name)
@@ -92,7 +92,7 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeries[X: CLM: ORD, T: CLM](fileid: Int, name: String): Series[X, T] = {
+  def readSeries[X: ST: ORD, T: ST](fileid: Int, name: String): Series[X, T] = {
     monitor.lock()
     try {
       readPandasSeries[X, T](fileid, name)
@@ -113,7 +113,7 @@ object H5Store {
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrame[RX: CLM: ORD, CX: CLM: ORD, T: CLM](fileid: Int, name: String): Frame[RX, CX, T] = {
+  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String): Frame[RX, CX, T] = {
     monitor.lock()
     try {
       readPandasFrame[RX, CX, T](fileid, name)
@@ -135,7 +135,7 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def writeSeries[X: CLM: ORD, T: CLM](path: String, name: String, s: Series[X, T]) {
+  def writeSeries[X: ST: ORD, T: ST](path: String, name: String, s: Series[X, T]) {
     monitor.lock()
     try {
       writePandasSeries(path, name, s.index, s.values)
@@ -156,7 +156,7 @@ object H5Store {
    * @tparam C Frame col index type
    * @tparam T Framevalues type
    */
-  def writeFrame[R: CLM: ORD, C: CLM: ORD, T: CLM](path: String, name: String, df: Frame[R, C, T]) {
+  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, name: String, df: Frame[R, C, T]) {
     monitor.lock()
     try {
       writePandasFrame(path, name, df.rowIx, df.colIx, df.toMat)
@@ -176,7 +176,7 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def writeSeries[X: CLM: ORD, T: CLM](fileid: Int, name: String, s: Series[X, T]) {
+  def writeSeries[X: ST: ORD, T: ST](fileid: Int, name: String, s: Series[X, T]) {
     monitor.lock()
     try {
       writePandasSeries(fileid, name, s.index, s.values)
@@ -197,7 +197,7 @@ object H5Store {
    * @tparam C Frame col index type
    * @tparam T Framevalues type
    */
-  def writeFrame[R: CLM: ORD, C: CLM: ORD, T: CLM](fileid: Int, name: String, df: Frame[R, C, T]) {
+  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, name: String, df: Frame[R, C, T]) {
     monitor.lock()
     try {
       writePandasFrame(fileid, name, df.rowIx, df.colIx, df.toMat)
@@ -544,7 +544,7 @@ object H5Store {
   // data set readers / writers
 
   // write a one-dimensional array (dataset) to a group
-  private def write1DArray[T: CLM](group_id: Int, name: String, data: Array[T],
+  private def write1DArray[T: ST](group_id: Int, name: String, data: Array[T],
                                    withAttr: List[(String, String)] = Nil) {
 
     // create space for array
@@ -566,7 +566,7 @@ object H5Store {
   }
 
   // write a two-dimensional array (dataset) to a group
-  private def write2DArray[T: CLM](group_id: Int, name: String, dim1: Int, dim2: Int, data: Array[T],
+  private def write2DArray[T: ST](group_id: Int, name: String, dim1: Int, dim2: Int, data: Array[T],
                                    withAttr: List[(String, String)] = Nil) {
     assertException(data.length == dim1 * dim2, "Data dimensions do not correspond to data length!")
 
@@ -590,9 +590,9 @@ object H5Store {
   }
 
   // common array-writing code
-  private def writeArray[T: CLM](group_id: Int, space_id: Int, name: String, data: Array[T],
+  private def writeArray[T: ST](group_id: Int, space_id: Int, name: String, data: Array[T],
                                  dataDims: Array[Long]): Int = {
-    val clm = implicitly[CLM[T]]
+    val clm = implicitly[ST[T]]
 
     // extract the (possibly transformed) data type of the array
     val (datatype_id, databuf) = clm.erasure match {
@@ -658,7 +658,7 @@ object H5Store {
   }
 
   // reads a dataset from file into an array in memory
-  private def readArray[X: CLM](grpid: Int, dsname: String): Array[X] = {
+  private def readArray[X: ST](grpid: Int, dsname: String): Array[X] = {
     // get dataset id
     val dsetid = H5.H5Dopen(grpid, dsname, HDF5Constants.H5P_DEFAULT)
     assertException(dsetid >= 0, "Dataset: " + dsname + " does not exist for this group")
@@ -674,7 +674,7 @@ object H5Store {
   private case class Array2D[T](rows: Int, cols: Int, data: Array[T])
 
   // read a two-dimensional array (dataset) and return (rowcount, colcount, values)
-  private def read2DArray[T: CLM](
+  private def read2DArray[T: ST](
     group_id: Int, dsname: String): Array2D[T] = {
     // get dataset id
     val dsetid = H5.H5Dopen(group_id, dsname, HDF5Constants.H5P_DEFAULT)
@@ -704,7 +704,7 @@ object H5Store {
 
     val result = Array.ofDim[T](sz(0).toInt * sz(1).toInt)
 
-    val cm = implicitly[CLM[T]]
+    val cm = implicitly[ST[T]]
 
     val read_type = cm.erasure match {
       // doubles
@@ -736,7 +736,7 @@ object H5Store {
     Array2D(sz(1).toInt, sz(0).toInt, result)
   }
 
-  private def readArray[X: CLM](grpid: Int, dsetid: Int): Array[X] = {
+  private def readArray[X: ST](grpid: Int, dsetid: Int): Array[X] = {
     // get space
     val dspaceid = H5.H5Dget_space(dsetid)
     assertException(dspaceid != 0, "Dataspace does not exist for dataset = " + dsetid)
@@ -758,7 +758,7 @@ object H5Store {
 
     H5Reg.save(datatype, H5T)
 
-    val cm = implicitly[CLM[X]]
+    val cm = implicitly[ST[X]]
 
     val read_type = cm.erasure match {
       // doubles
@@ -868,9 +868,9 @@ object H5Store {
     List(("CLASS", "ARRAY"), ("FLAVOR", "numpy"), ("TITLE", ""), ("VERSION", "2.3"))
   }
 
-  private def getPandasIndexAttribs[X: CLM](index: Index[X]) = {
+  private def getPandasIndexAttribs[X: ST](index: Index[X]) = {
     val attribs = getPandasSeriesAttribs ++ List(("name", "N."))
-    val clm = implicitly[CLM[X]]
+    val clm = implicitly[ST[X]]
     attribs ++ {
       clm.erasure match {
         case c if c == ic => List(("kind", "integer"))
@@ -884,7 +884,7 @@ object H5Store {
     }
   }
 
-  private def writePandasSeries[X: CLM, T: CLM](
+  private def writePandasSeries[X: ST, T: ST](
     file: String, name: String, index: Index[X], values: Array[T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {
@@ -909,7 +909,7 @@ object H5Store {
     }
   }
 
-  private def writePandasSeries[X: CLM, T: CLM](
+  private def writePandasSeries[X: ST, T: ST](
     fileid: Int, name: String, index: Index[X], values: Array[T]): Int = {
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
 
@@ -923,7 +923,7 @@ object H5Store {
     H5.H5Fflush(fileid, HDF5Constants.H5F_SCOPE_GLOBAL)
   }
 
-  private def readPandasSeries[X: CLM: ORD, T: CLM](
+  private def readPandasSeries[X: ST: ORD, T: ST](
     file: String, name: String): Series[X, T] = {
 
     val fileid = openFile(file)
@@ -937,7 +937,7 @@ object H5Store {
     }
   }
 
-  private def readPandasSeries[X: ORD: CLM, T: CLM](
+  private def readPandasSeries[X: ORD: ST, T: ST](
     fileid: Int, name: String): Series[X, T] = {
     val grpid = openGroup(fileid, name)
     assertException(grpid >= 0, "Group : " + name + " is not a valid group")
@@ -951,7 +951,7 @@ object H5Store {
     assertException(idxid >= 0, "index group is not valid")
     H5Reg.save(idxid, H5D)
 
-    val ixtype = implicitly[CLM[X]]
+    val ixtype = implicitly[ST[X]]
 
     // type-check the index
     readAttrText(idxid, "kind") match {
@@ -979,7 +979,7 @@ object H5Store {
     result
   }
 
-  private def writePandasFrame[R: ORD: CLM, C: ORD: CLM, T: CLM](
+  private def writePandasFrame[R: ORD: ST, C: ORD: ST, T: ST](
     file: String, name: String, rx: Index[R], cx: Index[C], values: Mat[T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {
@@ -1004,7 +1004,7 @@ object H5Store {
     }
   }
 
-  private def writePandasFrame[R: CLM: ORD, C: CLM: ORD, T: CLM](
+  private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
     fileid: Int, name: String, rx: Index[R], cx: Index[C], values: Mat[T]): Int = {
 
     val grpid = createGroup(fileid, "/" + name)
@@ -1028,7 +1028,7 @@ object H5Store {
     H5.H5Fflush(fileid, HDF5Constants.H5F_SCOPE_GLOBAL)
   }
 
-  private def readPandasFrame[RX: CLM: ORD, CX: CLM: ORD, T: CLM](
+  private def readPandasFrame[RX: ST: ORD, CX: ST: ORD, T: ST](
     file: String, name: String): Frame[RX, CX, T] = {
 
     val fileid = openFile(file)
@@ -1042,7 +1042,7 @@ object H5Store {
     }
   }
 
-  private def readPandasFrame[RX: CLM: ORD, CX: CLM: ORD, T: CLM](
+  private def readPandasFrame[RX: ST: ORD, CX: ST: ORD, T: ST](
     fileid: Int, name: String): Frame[RX, CX, T] = {
     val grpid = openGroup(fileid, name)
     assertException(grpid >= 0, "Group : " + name + " is not a valid group")
@@ -1058,8 +1058,8 @@ object H5Store {
     // data is stored transposed (ie, col-major order, so un-transpose it)
     val mx = Mat(arr2d.cols, arr2d.rows, arr2d.data)
 
-    val rxtype = implicitly[CLM[RX]]
-    val cxtype = implicitly[CLM[CX]]
+    val rxtype = implicitly[ST[RX]]
+    val cxtype = implicitly[ST[CX]]
 
     val rowidx = H5.H5Dopen(grpid, "axis1", HDF5Constants.H5P_DEFAULT)
     assertException(rowidx >= 0, "row index group is not valid")

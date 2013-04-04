@@ -21,12 +21,10 @@ import org.saddle._
 /**
  * Boolean ScalarTag
  */
-private[saddle] object ScalarTagBool extends ScalarTag[Boolean] {
+object ScalarTagBool extends ScalarTag[Boolean] {
   def missing: Boolean = false
   def isMissing(v: Boolean): Boolean = false
   def notMissing(v: Boolean): Boolean = true
-
-  def classTag = implicitly[CLM[Boolean]]
 
   def isTuple = false
 
@@ -41,4 +39,6 @@ private[saddle] object ScalarTagBool extends ScalarTag[Boolean] {
   def negInf(implicit ev: NUM[Boolean]) = false
 
   def show(v: Boolean) = "%b" format v
+
+  def erasure = implicitly[CLM[Boolean]].erasure
 }

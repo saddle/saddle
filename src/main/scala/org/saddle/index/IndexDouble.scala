@@ -23,12 +23,13 @@ import util.Concat.Promoter
 import index.IndexImpl.IndexProperties
 import vec.VecImpl
 import locator.Locator
+import org.saddle.scalar.ScalarTagDouble
 
 /**
  * Index with double keys
  */
 private[saddle] class IndexDouble(keys: Vec[Double]) extends Index[Double] {
-  val scalarTag = scalar.getScalarTag[Double]
+  val scalarTag = ScalarTagDouble
 
   private lazy val (kmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
 
@@ -45,7 +46,7 @@ private[saddle] class IndexDouble(keys: Vec[Double]) extends Index[Double] {
 
   def without(locs: Array[Int]): Index[Double] = Index(array.remove(keys, locs))
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[Double, B, C], mc: CLM[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](x: Index[B])(implicit wd: Promoter[Double, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Double, B, C](toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
@@ -101,7 +102,7 @@ private[saddle] class IndexDouble(keys: Vec[Double]) extends Index[Double] {
       -(binarySearch(keys, t) + 1)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: CLM](f: Double => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: Double => B): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Double] = keys.toArray

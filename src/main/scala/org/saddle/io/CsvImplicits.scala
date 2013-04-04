@@ -47,7 +47,7 @@ object CsvImplicits {
   /**
    * Provides enrichment on Frame object for writing to a Csv file.
    */
-  implicit def frame2CsvWriter[RX: CLM: ORD, CX: CLM: ORD, T: CLM](frame: Frame[RX, CX, T]) = new {
+  implicit def frame2CsvWriter[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T]) = new {
     /**
      * Write a frame in CSV format to a file at the path provided
      *

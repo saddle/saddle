@@ -18,6 +18,7 @@ package org
 
 import joda.time.DateTime
 import saddle.index.{SliceTo, SliceFrom, Slice, SliceAll}
+import org.saddle.scalar.ScalarTag
 
 /**
  * == Saddle ==
@@ -56,10 +57,11 @@ package object saddle {
    * }}}
    *
    */
-  def clock(op: => Unit) = {
+  def clock[T](op: => T): (Double, T) = {
     val s = System.nanoTime
-    op
-    (System.nanoTime - s) / 1e9
+    val r = op
+    val e = System.nanoTime
+    ((s-e)/1e9, r)
   }
 
   /**
@@ -123,7 +125,12 @@ package object saddle {
   type NUM[C] = Numeric[C]
 
   /**
-   * Type alias shorthand for class manifest/tag evidence
+   * Type alias shorthand for scalar tag evidence
+   */
+  type ST[C] = ScalarTag[C]
+
+  /**
+   * Type alias shorthand for class manifest evidence
    */
   type CLM[C] = ClassManifest[C]
 
@@ -159,14 +166,14 @@ package object saddle {
      */
     def to[T](implicit fn: na.type => T): T = fn(this)
 
-    implicit def naToByte(v: na.type): Byte = scalar.getScalarTag[Byte].missing
-    implicit def naToChar(v: na.type): Char = scalar.getScalarTag[Char].missing
-    implicit def naToShort(v: na.type): Short = scalar.getScalarTag[Short].missing
+    implicit def naToByte(v: na.type): Byte = scalar.ScalarTagByte.missing
+    implicit def naToChar(v: na.type): Char = scalar.ScalarTagChar.missing
+    implicit def naToShort(v: na.type): Short = scalar.ScalarTagShort.missing
 
-    implicit def naToInt(v: na.type): Int = scalar.getScalarTag[Int].missing
-    implicit def naToLong(v: na.type): Long = scalar.getScalarTag[Long].missing
-    implicit def naToFloat(v: na.type): Float = scalar.getScalarTag[Float].missing
-    implicit def naToDouble(v: na.type): Double = scalar.getScalarTag[Double].missing
+    implicit def naToInt(v: na.type): Int = scalar.ScalarTagInt.missing
+    implicit def naToLong(v: na.type): Long = scalar.ScalarTagLong.missing
+    implicit def naToFloat(v: na.type): Float = scalar.ScalarTagFloat.missing
+    implicit def naToDouble(v: na.type): Double = scalar.ScalarTagDouble.missing
 
     override def toString = "na"
   }
@@ -194,7 +201,7 @@ package object saddle {
    * @param s  A value of type Seq[T]
    * @tparam T Type of elements of Vec
    */
-  implicit def seqToVec[T: CLM](s: Seq[T]) = new {
+  implicit def seqToVec[T: ST](s: Seq[T]) = new {
     def toVec: Vec[T] = Vec(s : _*)
   }
 
@@ -211,7 +218,7 @@ package object saddle {
    * @param ix A value of type Seq[X]
    * @tparam X Type of index elements
    */
-  implicit def seqToIndex[X: CLM: ORD](ix: Seq[X]) = new {
+  implicit def seqToIndex[X: ST: ORD](ix: Seq[X]) = new {
     def toIndex: Index[X] = Index(ix : _*)
   }
 
@@ -229,7 +236,7 @@ package object saddle {
    * @tparam T Type of data elements of Series
    * @tparam X Type of index elements of Series
    */
-  implicit def seqToSeries[T: CLM, X: CLM: ORD](s: Seq[(X, T)]) = new {
+  implicit def seqToSeries[T: ST, X: ST: ORD](s: Seq[(X, T)]) = new {
     def toSeries: Series[X, T] = Series(s : _*)
   }
 
@@ -255,7 +262,7 @@ package object saddle {
    * @tparam RX Type of row index elements of Frame
    * @tparam CX Type of col index elements of Frame
    */
-  implicit def seqToFrame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](s: Seq[(RX, CX, T)]) = new {
+  implicit def seqToFrame[RX: ORD: ST, CX: ORD: ST, T: ST](s: Seq[(RX, CX, T)]) = new {
     def toFrame: Frame[RX, CX, T] = {
       val grp = s.map { case (r, c, v) => ((r, c), v) }
       grp.toSeries.pivot

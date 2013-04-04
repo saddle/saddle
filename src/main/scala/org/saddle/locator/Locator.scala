@@ -102,8 +102,8 @@ object Locator {
    * @param sz Backing hashmap size (default 16)
    * @tparam C Type of elements to be stored in Locator
    */
-  def apply[C: CLM](sz: Int = 16): Locator[C] = {
-    implicitly[CLM[C]].erasure match {
+  def apply[C: ST](sz: Int = 16): Locator[C] = {
+    implicitly[ST[C]].erasure match {
       case c if c == spB => LocatorBool(sz)
       case c if c == spI => LocatorInt(sz)
       case c if c == spL => LocatorLong(sz)

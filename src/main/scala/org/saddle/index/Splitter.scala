@@ -48,42 +48,42 @@ trait Splitter[I, OL, OR] {
  * Companion object houses implicit instances of Splitter
  */
 object Splitter {
-  implicit def split2nd[T1: ORD: CLM, T2: ORD: CLM] =
+  implicit def split2nd[T1: ORD: ST, T2: ORD: ST] =
     new Splitter[(T1, T2), T1, T2] {
       def apply(i: Index[(T1, T2)]) = (i.map(_._1), i.map(_._2))
     }
 
-  implicit def split3rd[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM] =
+  implicit def split3rd[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST] =
     new Splitter[(T1, T2, T3), (T1, T2), T3] {
       def apply(i: Index[(T1, T2, T3)]) = (i.map(t => (t._1, t._2)), i.map(_._3))
     }
 
-  implicit def split4th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM] =
+  implicit def split4th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST] =
     new Splitter[(T1, T2, T3, T4), (T1, T2, T3), T4] {
       def apply(i: Index[(T1, T2, T3, T4)]) = (i.map(t => (t._1, t._2, t._3)), i.map(_._4))
     }
 
-  implicit def split5th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM] =
+  implicit def split5th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST] =
     new Splitter[(T1, T2, T3, T4, T5), (T1, T2, T3, T4), T5] {
       def apply(i: Index[(T1, T2, T3, T4, T5)]) = (i.map(t => (t._1, t._2, t._3, t._4)), i.map(_._5))
     }
 
-  implicit def split6th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM] =
+  implicit def split6th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST] =
     new Splitter[(T1, T2, T3, T4, T5, T6), (T1, T2, T3, T4, T5), T6] {
       def apply(i: Index[(T1, T2, T3, T4, T5, T6)]) = (i.map(t => (t._1, t._2, t._3, t._4, t._5)), i.map(_._6))
     }
 
-  implicit def split7th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM, T7: ORD: CLM] =
+  implicit def split7th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST, T7: ORD: ST] =
     new Splitter[(T1, T2, T3, T4, T5, T6, T7), (T1, T2, T3, T4, T5, T6), T7] {
       def apply(i: Index[(T1, T2, T3, T4, T5, T6, T7)]) = (i.map(t => (t._1, t._2, t._3, t._4, t._5, t._6)), i.map(_._7))
     }
 
-  implicit def split8th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM, T7: ORD: CLM, T8: ORD: CLM] =
+  implicit def split8th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST, T7: ORD: ST, T8: ORD: ST] =
     new Splitter[(T1, T2, T3, T4, T5, T6, T7, T8), (T1, T2, T3, T4, T5, T6, T7), T8] {
       def apply(i: Index[(T1, T2, T3, T4, T5, T6, T7, T8)]) = (i.map(t => (t._1, t._2, t._3, t._4, t._5, t._6, t._7)), i.map(_._8))
     }
 
-  implicit def split9th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM, T7: ORD: CLM, T8: ORD: CLM, T9: ORD: CLM] =
+  implicit def split9th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST, T7: ORD: ST, T8: ORD: ST, T9: ORD: ST] =
     new Splitter[(T1, T2, T3, T4, T5, T6, T7, T8, T9), (T1, T2, T3, T4, T5, T6, T7, T8), T9] {
       def apply(i: Index[(T1, T2, T3, T4, T5, T6, T7, T8, T9)]) = (i.map(t => (t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8)), i.map(_._9))
     }

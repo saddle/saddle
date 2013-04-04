@@ -21,12 +21,10 @@ import org.saddle._
 /**
  * Int ScalarTag
  */
-private[saddle] object ScalarTagInt extends ScalarTag[Int] {
+object ScalarTagInt extends ScalarTag[Int] {
   def missing: Int = Int.MinValue
   def isMissing(v: Int): Boolean = v == Int.MinValue
   def notMissing(v: Int): Boolean = v != Int.MinValue
-
-  def classTag = implicitly[CLM[Int]]
 
   def isTuple = false
 
@@ -41,4 +39,6 @@ private[saddle] object ScalarTagInt extends ScalarTag[Int] {
   def negInf(implicit ev: NUM[Int]) = Int.MinValue
 
   def show(v: Int) = if (isMissing(v)) "%s" format "NA" else "%d" format v
+
+  def erasure = implicitly[CLM[Int]].erasure
 }

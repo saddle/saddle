@@ -29,7 +29,7 @@ trait BinOpVec {
   // ***************
 
   // Binary element-wise operation on one Vec and one scalar
-  final class VecSclrElemOp[OP <: ScalarOp, @spec(Boolean, Int, Long, Double) A, @spec(Boolean, Int, Long, Double) B, @spec(Boolean, Int, Long, Double) C: CLM](
+  final class VecSclrElemOp[OP <: ScalarOp, @spec(Boolean, Int, Long, Double) A, @spec(Boolean, Int, Long, Double) B, @spec(Boolean, Int, Long, Double) C: ST](
     val op: BinOp[OP, A, B, C]) extends BinOp[OP, Vec[A], B, Vec[C]] {
     def apply(v1: Vec[A], v2: B) = {
       val sz = v1.length
@@ -75,7 +75,7 @@ trait BinOpVec {
   // ***************
 
   // Binary element-wise operation on two Vecs
-  final class VecVecElemOp[OP <: ScalarOp, @spec(Boolean, Int, Long, Double) A, @spec(Boolean, Int, Long, Double) B, @spec(Boolean, Int, Long, Double) C: CLM](
+  final class VecVecElemOp[OP <: ScalarOp, @spec(Boolean, Int, Long, Double) A, @spec(Boolean, Int, Long, Double) B, @spec(Boolean, Int, Long, Double) C: ST](
     op: BinOp[OP, A, B, C]) extends BinOp[OP, Vec[A], Vec[B], Vec[C]] {
 
     def apply(v1: Vec[A], v2: Vec[B]) = {
@@ -124,7 +124,7 @@ trait BinOpVec {
 
   // Binary dot product of two vectors
 
-  final class VecVecDot[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B, @spec(Int, Long, Double) C: CLM: NUM](
+  final class VecVecDot[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B, @spec(Int, Long, Double) C: ST: NUM](
     opadd: BinOp[Add, C, C, C], opmul: BinOp[Multiply, A, B, C]) extends BinOp[InnerProd, Vec[A], Vec[B], C] {
 
     def apply(v1: Vec[A], v2: Vec[B]) = {
@@ -136,7 +136,7 @@ trait BinOpVec {
         ar(i) = opmul(v1(i), v2(i))
         i += 1
       }
-      Vec(ar).foldLeft(scalar.getScalarTag[C].zero)(opadd.apply)
+      Vec(ar).foldLeft(implicitly[ST[C]].zero)(opadd.apply)
     }
   }
 
@@ -154,7 +154,7 @@ trait BinOpVec {
 
   // Binary outer product of two vectors
 
-  final class VecVecOuter[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B, @spec(Int, Long, Double) C: CLM](
+  final class VecVecOuter[@spec(Int, Long, Double) A, @spec(Int, Long, Double) B, @spec(Int, Long, Double) C: ST](
     opmul: BinOp[Multiply, A, B, C]) extends BinOp[OuterProd, Vec[A], Vec[B], Mat[C]] {
 
     def apply(v1: Vec[A], v2: Vec[B]) = {

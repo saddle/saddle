@@ -30,7 +30,7 @@ private[saddle] object IndexImpl {
   def sentinelErr =
     throw new ArrayIndexOutOfBoundsException("Cannot access index position -1")
 
-  def keys2map[@spec(Boolean, Int, Long, Double) T: ORD: CLM](keys: Index[T]): (Locator[T], IndexProperties) = {
+  def keys2map[@spec(Boolean, Int, Long, Double) T: ORD: ST](keys: Index[T]): (Locator[T], IndexProperties) = {
     val map = Locator[T](keys.length)
     val sc = keys.scalarTag
     var i = 0

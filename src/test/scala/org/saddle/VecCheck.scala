@@ -328,13 +328,22 @@ class VecCheck extends Specification with ScalaCheck {
     "rolling works" in {
       forAll { (v: Vec[Double]) =>
         val res = v.rolling(2, _.sum)
-        val dat = v.contents
-        val exp = for {
-          i <- 0 until v.length - 1
-          a = dat(i)
-          b = dat(i + 1)
-        } yield (if (a.isNaN) 0 else a) + (if (b.isNaN) 0 else b)
-        res must_== Vec(exp : _*)
+
+        if (v.length == 0)
+          res must_== Vec.empty[Double]
+        else if (v.length == 1) {
+          res.raw(0) must_== v.sum
+        }
+        else {
+          val dat = v.contents
+          val exp = for {
+            i <- 0 until v.length - 1
+            a = dat(i)
+            b = dat(i + 1)
+          } yield (if (a.isNaN) 0 else a) + (if (b.isNaN) 0 else b)
+
+          res must_== Vec(exp : _*)
+        }
       }
     }
 

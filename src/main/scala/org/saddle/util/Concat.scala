@@ -18,6 +18,7 @@ package org.saddle.util
 
 import scala.{ specialized => spec }
 import org.saddle._
+import org.saddle.scalar._
 
 /**
  * Machinery for concatenating arrays of differing types, with NA-handling
@@ -33,14 +34,14 @@ private[saddle] trait LowPriorityConcatImplicits {
  * Key method is Concat.append(array1, array2)
  */
 object Concat extends LowPriorityConcatImplicits {
-  val sy = scalar.getScalarTag[Byte]
-  val sc = scalar.getScalarTag[Char]
-  val ss = scalar.getScalarTag[Short]
-  val si = scalar.getScalarTag[Int]
-  val sl = scalar.getScalarTag[Long]
-  val sf = scalar.getScalarTag[Float]
-  val sd = scalar.getScalarTag[Double]
-  val sr = scalar.getScalarTag[AnyRef]
+  val sy = ScalarTagByte
+  val sc = ScalarTagChar
+  val ss = ScalarTagShort
+  val si = ScalarTagInt
+  val sl = ScalarTagLong
+  val sf = ScalarTagFloat
+  val sd = ScalarTagDouble
+  val sr = ScalarTagAny[AnyRef]
 
   /**
    * Existence of an instance of this class yields a way to promote instances of the first
@@ -247,7 +248,7 @@ object Concat extends LowPriorityConcatImplicits {
    * @param a1 First array
    * @param a2 Second array
    * @param wd Evidence of instance of Promoter for involved types
-   * @param mc Evidence of CLM for result type
+   * @param mc Evidence of ST for result type
    * @tparam A First array type
    * @tparam B Second array type
    * @tparam C Result array type
@@ -255,7 +256,7 @@ object Concat extends LowPriorityConcatImplicits {
   def append[@spec(Boolean, Int, Long, Double) A,
              @spec(Boolean, Int, Long, Double) B,
              @spec(Boolean, Int, Long, Double) C](a1: Array[A], a2: Array[B])(
-    implicit wd: Promoter[A, B, C], mc: CLM[C]): Array[C] = {
+    implicit wd: Promoter[A, B, C], mc: ST[C]): Array[C] = {
     val result = array.empty[C](a1.length + a2.length)
     var i = 0
     while(i < a1.length) {

@@ -31,9 +31,9 @@ private[saddle] class MatDouble(r: Int, c: Int, values: Array[Double]) extends M
 
   def numCols = c
 
-  def scalarTag = getScalarTag[Double]
+  def scalarTag = ScalarTagDouble
 
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: (Double) => B): Mat[B] = MatImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Double) => B): Mat[B] = MatImpl.map(this)(f)
 
   def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, Double) => A): A = MatImpl.foldLeft(this)(init)(f)
 

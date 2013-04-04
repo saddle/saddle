@@ -63,7 +63,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param loc Offset into index
    */
   def at(loc: Int): Scalar[T] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     raw(loc)
   }
 
@@ -132,12 +132,12 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    *
    * @param other Other index to concatenate
    * @param p Implicit evidence of a Promoter which can send both T and B to C
-   * @param mc Implicit evidence of CLM[C]
+   * @param mc Implicit evidence of ST[C]
    * @param oc Implicit evidence of ORD[C]
    * @tparam B Type of other index
    * @tparam C Result of promoting types A, B
    */
-  def concat[B, C](other: Index[B])(implicit p: Promoter[T, B, C], mc: CLM[C], oc: ORD[C]): Index[C]
+  def concat[B, C](other: Index[B])(implicit p: Promoter[T, B, C], mc: ST[C], oc: ORD[C]): Index[C]
 
   /**
    * Find the first location whereby inserting a key would maintain a sorted index. Index
@@ -192,9 +192,9 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * Returns an array of unique keys in the Index, in the order in which they
    * originally appeared in the backing Vec.
    * @param ord Implicit ORD for instances of type T
-   * @param clm Implicit CLM for instances of type T
+   * @param clm Implicit ST for instances of type T
    */
-  def uniques(implicit ord: ORD[T], clm: CLM[T]): Index[T] = Index(locator.keys())
+  def uniques(implicit ord: ORD[T], clm: ST[T]): Index[T] = Index(locator.keys())
 
   /**
    * Returns an array whose entries represent the number of times the corresponding
@@ -304,7 +304,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * or -1 if no element satisfies the function.
    * @param pred Function from T => Boolean
    */
-  def findOne(pred: T => Boolean): Int = VecImpl.findOne(toVec)(pred)(scalarTag.classTag)
+  def findOne(pred: T => Boolean): Int = VecImpl.findOne(toVec)(pred)(scalarTag)
 
   /**
    * Returns true if there is an element which satisfies the predicate function,
@@ -416,7 +416,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param current Key value to find
    */
   def prev(current: Scalar[T]): Scalar[T] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
 
     if (!isContiguous)
       throw Index.IndexException("Cannot traverse index that is not contiguous in its values")
@@ -435,7 +435,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param current Key value to find
    */
   def next(current: Scalar[T]): Scalar[T] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
 
     if (!isContiguous)
       throw Index.IndexException("Cannot traverse index that is not contiguous in its values")
@@ -454,7 +454,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param f Function to map with
    * @tparam B Type of resulting elements
    */
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: CLM](f: T => B): Index[B]
+  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: T => B): Index[B]
 
   /**
    * Convert Index elements to an IndexedSeq.
@@ -538,8 +538,8 @@ object Index {
    * @param arr Array
    * @tparam C Type of elements in array
    */
-  def apply[C: ORD: CLM](arr: Array[C]): Index[C] = {
-    val m  = implicitly[CLM[C]]
+  def apply[C: ORD: ST](arr: Array[C]): Index[C] = {
+    val m  = implicitly[ST[C]]
     val ev = implicitly[ORD[C]]
 
     m.erasure match {
@@ -564,7 +564,7 @@ object Index {
    * @param values Vec
    * @tparam C Type of elements in Vec
    */
-  def apply[C: ORD: CLM](values: Vec[C]): Index[C] = Index(values.toArray)
+  def apply[C: ORD: ST](values: Vec[C]): Index[C] = Index(values.toArray)
 
   /**
    * Factory method to create an index from a sequence of elements, eg
@@ -577,7 +577,7 @@ object Index {
    * @param values Seq[C]
    * @tparam C Type of elements in Seq
    */
-  def apply[C: ORD: CLM](values: C*): Index[C] = Index(values.toArray)
+  def apply[C: ORD: ST](values: C*): Index[C] = Index(values.toArray)
 
   /**
    * Factory method to create an Index; the basic use case is to construct
@@ -600,7 +600,7 @@ object Index {
    * Factor method to create an empty Index
    * @tparam C type of Index
    */
-  def empty[C: ORD: CLM]: Index[C] = Index(Array.empty[C])
+  def empty[C: ORD: ST]: Index[C] = Index(Array.empty[C])
 
   // (safe) conversions
 
@@ -609,14 +609,14 @@ object Index {
    * @param arr Array
    * @tparam C Type of elements in array
    */
-  implicit def arrayToIndex[C: ORD: CLM](arr: Array[C]) = Index(arr)
+  implicit def arrayToIndex[C: ORD: ST](arr: Array[C]) = Index(arr)
 
   /**
    * A Vec may be implicitly converted to an Index
    * @param s Vec
    * @tparam C Type of elements in Vec
    */
-  implicit def vecToIndex[C: ORD: CLM](s: Vec[C]) = Index(s.toArray)
+  implicit def vecToIndex[C: ORD: ST](s: Vec[C]) = Index(s.toArray)
 
   /**
    * Provides an index-specific exception

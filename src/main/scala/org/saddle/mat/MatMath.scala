@@ -205,7 +205,7 @@ object MatMath {
 
   /** Efficient square matrix transpose (destructive)
     */
-  private[saddle] def squareTranspose[@spec(Int, Long, Double) S: CLM](out: Mat[S]) {
+  private[saddle] def squareTranspose[@spec(Int, Long, Double) S: ST](out: Mat[S]) {
     val csz = out.numCols
     val rsz = out.numRows
 

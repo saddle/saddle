@@ -32,7 +32,7 @@ import locator.Locator
 private[saddle] class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
   require( length >= 0, "Length must be non-negative!" )
 
-  val scalarTag = getScalarTag[Int]
+  val scalarTag = ScalarTagInt
 
   private lazy val asArr  = array.range(from, from + length)
   private lazy val genIdx = Index(asArr)
@@ -81,7 +81,7 @@ private[saddle] class IndexIntRange(val length: Int, val from: Int = 0) extends 
   def without(locs: Array[Int]): Index[Int] =
     array.remove(asArr, locs)
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[Int, B, C], mc: CLM[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](x: Index[B])(implicit wd: Promoter[Int, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Int, B, C](toArray, x.toArray))
 
   // find the first location whereby an insertion would maintain a sorted index
@@ -114,7 +114,7 @@ private[saddle] class IndexIntRange(val length: Int, val from: Int = 0) extends 
   def join(other: Index[Int], how: JoinType = LeftJoin): ReIndexer[Int] =
     JoinerImpl.join(this, other, how)
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: CLM](f: (Int) => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: (Int) => B): Index[B] =
     genIdx map f
 
   private[saddle] def toArray = asArr

@@ -30,9 +30,9 @@ private[saddle] class MatBool(r: Int, c: Int, values: Array[Boolean]) extends Ma
 
   def numCols = c
 
-  def scalarTag = getScalarTag[Boolean]
+  def scalarTag = ScalarTagBool
 
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: (Boolean) => B): Mat[B] = MatImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Boolean) => B): Mat[B] = MatImpl.map(this)(f)
 
   def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, Boolean) => A): A = MatImpl.foldLeft(this)(init)(f)
 

@@ -115,7 +115,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param i index
    */
   def at(i: Int): Scalar[A] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     raw(i)
   }
 
@@ -125,7 +125,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param c col index
    */
   def at(r: Int, c: Int): Scalar[A] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     raw(r, c)
   }
 
@@ -143,7 +143,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Maps a function over each element in the matrix
    *
    */
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: A => B): Mat[B]
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
 
   /**
    * Performs a left fold over each element in the matrix in row-major order
@@ -200,7 +200,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Yields row indices where row has some NA value
    *
    */
-  def rowsWithNA(implicit ev: CLM[A]): Set[Int] = {
+  def rowsWithNA(implicit ev: ST[A]): Set[Int] = {
     val builder = Set.newBuilder[Int]
     var i = 0
     while (i < numRows) {
@@ -214,25 +214,25 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Yields column indices where column has some NA value
    *
    */
-  def colsWithNA(implicit ev: CLM[A]): Set[Int] = T.rowsWithNA
+  def colsWithNA(implicit ev: ST[A]): Set[Int] = T.rowsWithNA
 
   /**
    * Yields a matrix without those rows that have NA
    *
    */
-  def dropRowsWithNA(implicit ev: CLM[A]): Mat[A] = withoutRows(rowsWithNA.toArray)
+  def dropRowsWithNA(implicit ev: ST[A]): Mat[A] = withoutRows(rowsWithNA.toArray)
 
   /**
    * Yields a matrix without those cols that have NA
    *
    */
-  def dropColsWithNA(implicit ev: CLM[A]): Mat[A] = withoutCols(colsWithNA.toArray)
+  def dropColsWithNA(implicit ev: ST[A]): Mat[A] = withoutCols(colsWithNA.toArray)
 
   /**
    * Returns columns of matrix as an indexed sequence of Vec instances
    *
    */
-  def cols()(implicit ev: CLM[A]): IndexedSeq[Vec[A]] = {
+  def cols()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = {
     Range(0, numCols).map(c => flattenT.slice(c * numRows, (c + 1) * numRows))
   }
 
@@ -240,7 +240,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Returns rows of matrix as an indexed sequence of Vec instances
    *
    */
-  def rows()(implicit ev: CLM[A]): IndexedSeq[Vec[A]] = {
+  def rows()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = {
     Range(0, numRows).map(r => flatten.slice(r * numCols, (r + 1) * numCols))
   }
 
@@ -249,7 +249,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    *
    * @param c Column index
    */
-  def col(c: Int)(implicit ev: CLM[A]): Vec[A] = {
+  def col(c: Int)(implicit ev: ST[A]): Vec[A] = {
     assert(c >= 0 && c < numCols, "Array index %d out of bounds" format c)
     flattenT.slice(c * numRows, (c + 1) * numRows)
   }
@@ -259,7 +259,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    *
    * @param r Row index
    */
-  def row(r: Int)(implicit ev: CLM[A]): Vec[A] = {
+  def row(r: Int)(implicit ev: ST[A]): Vec[A] = {
     assert(r >= 0 && r < numRows, "Array index %d out of bounds" format r)
     flatten.slice(r * numCols, (r + 1) * numCols)
   }
@@ -290,13 +290,13 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   }
 
   private var flatCache: Option[Vec[A]] = None
-  private def flatten(implicit ev: CLM[A]): Vec[A] = flatCache.getOrElse {
+  private def flatten(implicit ev: ST[A]): Vec[A] = flatCache.getOrElse {
     flatCache = Some(Vec(toArray))
     flatCache.get
   }
 
   private var flatCacheT: Option[Vec[A]] = None
-  private def flattenT(implicit ev: CLM[A]): Vec[A] = flatCacheT.getOrElse {
+  private def flattenT(implicit ev: ST[A]): Vec[A] = flatCacheT.getOrElse {
     flatCacheT = Some(Vec(T.toArray))
     flatCacheT.get
   }
@@ -393,10 +393,10 @@ object Mat extends BinOpMat {
    * @param arr A 1D array of backing data in row-major order
    * @tparam C Type of data in array
    */
-  def apply[C: CLM](rows: Int, cols: Int, arr: Array[C]): Mat[C] = {
+  def apply[C: ST](rows: Int, cols: Int, arr: Array[C]): Mat[C] = {
     val (r, c, a) = if (rows == 0 || cols == 0) (0, 0, Array.empty[C]) else (rows, cols, arr)
 
-    val m = implicitly[CLM[C]]
+    val m = implicitly[ST[C]]
 
     // ugly reification of type, but necessary to preserve specialization
     m.erasure match {
@@ -413,13 +413,13 @@ object Mat extends BinOpMat {
    * @param m Mat instance
    * @tparam A The type of elements in Mat
    */
-  implicit def matToFrame[A: CLM](m: Mat[A]) = Frame(m)
+  implicit def matToFrame[A: ST](m: Mat[A]) = Frame(m)
 
   /**
    * Factory method to create an empty Mat
    * @tparam T Type of Mat
    */
-  def empty[T: CLM]: Mat[T] = Mat(0, 0, Array.empty[T])
+  def empty[T: ST]: Mat[T] = Mat(0, 0, Array.empty[T])
 
   /**
    * Factory method to create an zero Mat (all zeros)
@@ -427,7 +427,7 @@ object Mat extends BinOpMat {
    * @param numCols Number of cols in Mat
    * @tparam T Type of elements in Mat
    */
-  def apply[T: CLM](numRows: Int, numCols: Int): Mat[T] =
+  def apply[T: ST](numRows: Int, numCols: Int): Mat[T] =
     apply(numRows, numCols, Array.ofDim[T](numRows * numCols))
 
   /**
@@ -436,7 +436,7 @@ object Mat extends BinOpMat {
    * @param values Array of arrays, each of which is to be a column
    * @tparam T Type of elements in inner array
    */
-  def apply[T: CLM](values: Array[Array[T]]): Mat[T] = {
+  def apply[T: ST](values: Array[Array[T]]): Mat[T] = {
     if (values.length == 0)
       Mat.empty[T]
     else {
@@ -451,7 +451,7 @@ object Mat extends BinOpMat {
    * @param values Array of Vec, each of which is to be a column
    * @tparam T Type of elements in Vec
    */
-  def apply[T: CLM](values: Array[Vec[T]]): Mat[T] =
+  def apply[T: ST](values: Array[Vec[T]]): Mat[T] =
     apply(values.map(_.toArray))
 
   /**
@@ -460,7 +460,7 @@ object Mat extends BinOpMat {
    * @param values Sequence of Vec, each of which is to be a column
    * @tparam T Type of elements in array
    */
-  def apply[T: CLM](values: Vec[T]*): Mat[T] =
+  def apply[T: ST](values: Vec[T]*): Mat[T] =
     apply(values.map(_.toArray).toArray)
 
   /**

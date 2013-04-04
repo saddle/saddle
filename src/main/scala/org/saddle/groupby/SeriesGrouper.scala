@@ -21,27 +21,27 @@ import org.saddle._
 /**
  * Helper class to do combine or transform after a groupBy
  */
-class SeriesGrouper[Y: ORD: CLM, X: ORD: CLM, T: CLM](
+class SeriesGrouper[Y: ORD: ST, X: ORD: ST, T: ST](
   ix: Index[Y], series: Series[X, T], sorted: Boolean = true) extends IndexGrouper[Y](ix, sorted) {
 
-  def combine[U: ORD: CLM](fn: (Y, Vec[T]) => U): Series[Y, U] =
+  def combine[U: ORD: ST](fn: (Y, Vec[T]) => U): Series[Y, U] =
     Series(SeriesGrouper.combine(ix, keys, series.values, fn), Index(keys))
 
   // less powerful combine, ignores group key
-  def combine[U: ORD: CLM](fn: Vec[T] => U): Series[Y, U] =
+  def combine[U: ORD: ST](fn: Vec[T] => U): Series[Y, U] =
     combine( (k, v) => fn(v) )
 
-  def transform[U: CLM](fn: (Y, Vec[T]) => Vec[U]): Series[X, U] =
+  def transform[U: ST](fn: (Y, Vec[T]) => Vec[U]): Series[X, U] =
     Series(SeriesGrouper.transform(series.values, groups, fn), series.index)
 
   // less powerful transform, ignores group key
-  def transform[U: CLM](fn: Vec[T] => Vec[U]): Series[X, U] =
+  def transform[U: ST](fn: Vec[T] => Vec[U]): Series[X, U] =
     transform( (k, v) => fn(v) )
 }
 
 object SeriesGrouper {
   // Collapses each group vector to a single value
-  private[saddle] def combine[Y: ORD: CLM, T: CLM, U: CLM](
+  private[saddle] def combine[Y: ORD: ST, T: ST, U: ST](
     ix: Index[Y], uniq: Array[Y], vec: Vec[T], fn: (Y, Vec[T]) => U): Vec[U] = {
     val sz = uniq.length
 
@@ -57,7 +57,7 @@ object SeriesGrouper {
   }
 
   // Transforms each group vector into a new vector
-  private[saddle] def transform[Y: ORD: CLM, T: CLM, U: CLM](
+  private[saddle] def transform[Y: ORD: ST, T: ST, U: ST](
     vec: Vec[T], groups: Array[(Y, Array[Int])], fn: (Y, Vec[T]) => Vec[U]): Vec[U] = {
     val iter = for ( (k, i) <- groups) yield (fn(k, vec(i)), i)
     val result = Array.ofDim[U](vec.length)
@@ -73,9 +73,9 @@ object SeriesGrouper {
     Vec(result)
   }
 
-  def apply[Y: ORD: CLM, X: ORD: CLM, T: CLM](ix: Index[Y], ser: Series[X, T]) =
+  def apply[Y: ORD: ST, X: ORD: ST, T: ST](ix: Index[Y], ser: Series[X, T]) =
     new SeriesGrouper(ix, ser)
 
-  def apply[Y: ORD: CLM, T: CLM](series: Series[Y, T]) =
+  def apply[Y: ORD: ST, T: ST](series: Series[Y, T]) =
     new SeriesGrouper(series.index, series)
 }

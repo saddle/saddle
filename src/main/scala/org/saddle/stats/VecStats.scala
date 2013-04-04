@@ -18,7 +18,8 @@ package org.saddle.stats
 
 import scala.{specialized => spec}
 import org.saddle._
-import vec._
+import org.saddle.vec._
+import org.saddle.scalar._
 
 /**
  * Trait which specifies how to break a rank tie
@@ -188,7 +189,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
   protected def _variance(r: Vec[A], subOp: (A, Double) => Double): Double = {
     val sa = r.scalarTag
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
     val c  = count
 
     if (c < 1)
@@ -206,7 +207,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
   protected def _skew(r: Vec[A], subOp: (A, Double) => Double): Double = {
     val sa = r.scalarTag
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
     val c  = count
 
     if (c > 2) {
@@ -223,7 +224,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
   protected def _kurt(r: Vec[A], subOp: (A, Double) => Double): Double = {
     val sa = r.scalarTag
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
     val c: Double = count
 
     if (c > 3) {
@@ -242,7 +243,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
  protected def _demeaned(r: Vec[A], subOp: (A, Double) => Double): Vec[Double] = {
     val sa = r.scalarTag
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
 
     val mn = mean
     val ar = Array.ofDim[Double](r.length)
@@ -260,7 +261,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
   // Fast median function that is N/A friendly; destructive to array
   protected def _median(r: Vec[A])(implicit n: NUM[A]): Double = {
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
 
     def _arrCopyToDblArr(r: Vec[A])(implicit n: NUM[A]): (Int, Array[Double]) = {
       val arr = Array.ofDim[Double](r.length)
@@ -317,7 +318,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
   // NB: destructive to argument v
   protected def _rank(v: Array[Double], tie: RankTie, ascending: Boolean): Vec[Double] = {
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
 
     val nan = if (ascending) Double.PositiveInfinity else Double.NegativeInfinity
     val len = v.length
@@ -393,7 +394,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 
   // percentile function: see: http://en.wikipedia.org/wiki/Percentile
   protected def _percentile(v: Vec[Double], tile: Double, method: PctMethod)(implicit n: NUM[A]): Double = {
-    val sd = scalar.getScalarTag[Double]
+    val sd = ScalarTagDouble
     val vf = v.dropNA
     if (vf.length == 0 || tile < 0 || tile > 100)
       sd.missing
@@ -415,7 +416,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
 }
 
 private[saddle] class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
-  val sd = scalar.getScalarTag[Double]
+  val sd = ScalarTagDouble
 
   def sum: Double = r.filterFoldLeft(sd.notMissing)(0d)(_ + _)
   def count: Int = r.filterFoldLeft(sd.notMissing)(0)((a, b) => a + 1)
@@ -455,7 +456,7 @@ private[saddle] class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
 }
 
 private[saddle] class IntStats(r: Vec[Int]) extends VecStats[Int] {
-  val si = scalar.getScalarTag[Int]
+  val si = ScalarTagInt
 
   def min: Option[Int] =
     if (r.count == 0) None
@@ -492,7 +493,7 @@ private[saddle] class IntStats(r: Vec[Int]) extends VecStats[Int] {
 }
 
 private[saddle] class LongStats(r: Vec[Long]) extends VecStats[Long] {
-  val sl = scalar.getScalarTag[Long]
+  val sl = ScalarTagLong
 
   def min: Option[Long] =
     if (r.count == 0) None

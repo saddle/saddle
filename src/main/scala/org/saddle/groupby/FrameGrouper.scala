@@ -21,7 +21,7 @@ import org.saddle._
 /**
  * Helper class to do combine or transform after a groupBy
  */
-class FrameGrouper[Z: ORD: CLM, X: ORD: CLM, Y: ORD: CLM, T: CLM](
+class FrameGrouper[Z: ORD: ST, X: ORD: ST, Y: ORD: ST, T: ST](
   ix: Index[Z], frame: Frame[X, Y, T], sorted: Boolean = true) {
 
   private lazy val uniq: Array[Z] = {
@@ -36,28 +36,28 @@ class FrameGrouper[Z: ORD: CLM, X: ORD: CLM, Y: ORD: CLM, T: CLM](
 
   def groups: Array[(Z, Array[Int])] = for (k <- keys) yield (k, ix.get(k))
 
-  def combine[U: CLM](fn: (Z, Vec[T]) => U): Frame[Z, Y, U] =
+  def combine[U: ST](fn: (Z, Vec[T]) => U): Frame[Z, Y, U] =
     Frame(frame.values.map(SeriesGrouper.combine(ix, keys, _, fn)) : _*)
       .setRowIndex(keys)
       .setColIndex(frame.colIx)
 
   // less powerful combine, ignores group key
-  def combine[U: ORD: CLM](fn: Vec[T] => U): Frame[Z, Y, U] =
+  def combine[U: ORD: ST](fn: Vec[T] => U): Frame[Z, Y, U] =
     combine( (k, v) => fn(v) )
 
-  def transform[U: CLM](fn: (Z, Vec[T]) => Vec[U]): Frame[X, Y, U] =
+  def transform[U: ST](fn: (Z, Vec[T]) => Vec[U]): Frame[X, Y, U] =
     Frame(frame.values.map(SeriesGrouper.transform(_, groups, fn)), frame.rowIx, frame.colIx)
 
   // less powerful transform, ignores group key
-  def transform[U: CLM](fn: Vec[T] => Vec[U]): Frame[X, Y, U] =
+  def transform[U: ST](fn: Vec[T] => Vec[U]): Frame[X, Y, U] =
     transform( (k, v) => fn(v) )
 }
 
 object FrameGrouper {
-  def apply[Z: ORD: CLM, Y: ORD: CLM, T: CLM](frame: Frame[Z, Y, T]) =
+  def apply[Z: ORD: ST, Y: ORD: ST, T: ST](frame: Frame[Z, Y, T]) =
     new FrameGrouper(frame.rowIx, frame)
 
-  def apply[Z: ORD: CLM, X: ORD: CLM, Y: ORD: CLM, T: CLM](
+  def apply[Z: ORD: ST, X: ORD: ST, Y: ORD: ST, T: ST](
     ix: Index[Z], frame: Frame[X, Y, T]) = new FrameGrouper(ix, frame)
 }
 

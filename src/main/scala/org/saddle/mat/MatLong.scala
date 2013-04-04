@@ -30,9 +30,9 @@ private[saddle] class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[L
 
   def numCols = c
 
-  def scalarTag = getScalarTag[Long]
+  def scalarTag = ScalarTagLong
 
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: (Long) => B): Mat[B] = MatImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Long) => B): Mat[B] = MatImpl.map(this)(f)
 
   def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, Long) => A): A = MatImpl.foldLeft(this)(init)(f)
 
@@ -77,7 +77,7 @@ private[saddle] class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[L
   private[saddle] def toDoubleArray(implicit ev: NUM[Long]): Array[Double] = arrCopyToDblArr(values)
 
   private[saddle] def arrCopyToDblArr(r: Array[Long]): Array[Double] = {
-    val sa = getScalarTag[Long]
+    val sa = ScalarTagLong
     val arr = Array.ofDim[Double](r.length)
     var i = 0
     while(i < r.length) {

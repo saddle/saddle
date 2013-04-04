@@ -26,27 +26,27 @@ import Vec.Vec2Stats
  * These methods scan over the Vec and compute values over a specified historical
  * window.
  */
-class VecRollingStats[@spec(Int, Long, Double) A: Vec2Stats: AddOp: SubOp: NUM: CLM](v: Vec[A]) {
+class VecRollingStats[@spec(Int, Long, Double) A: Vec2Stats: AddOp: SubOp: NUM: ST](v: Vec[A]) {
   /**
    * Rolling count; compute count of number of elements in Vec over a sliding window, ignoring
    * any NA values.
    * @param winSz Size of the sliding window
    */
-  def rollingCount(winSz: Int): Vec[Int] = v.rolling(winSz, new RollingCount[A](winSz))
+  def rollingCount(winSz: Int): Vec[Int] = v.rolling(winSz, new RollingCount[A])
 
   /**
    * Rolling sum; compute sum of elements in Vec over a sliding window, ignoring any NA
    * values.
    * @param winSz Size of the sliding window
    */
-  def rollingSum(winSz: Int): Vec[A] = v.rolling(winSz, new RollingSum[A](winSz))
+  def rollingSum(winSz: Int): Vec[A] = v.rolling(winSz, new RollingSum[A])
 
   /**
    * Rolling mean; compute mean of elements in Vec over a sliding window, ignoring any NA
    * values.
    * @param winSz Size of the sliding window
    */
-  def rollingMean(winSz: Int): Vec[Double] = v.rolling(winSz, new RollingMean[A](winSz))
+  def rollingMean(winSz: Int): Vec[Double] = v.rolling(winSz, new RollingMean[A])
 
   /**
    * Rolling median; compute median of elements in Vec over a sliding window, ignoring any NA
@@ -56,12 +56,11 @@ class VecRollingStats[@spec(Int, Long, Double) A: Vec2Stats: AddOp: SubOp: NUM: 
   def rollingMedian(winSz: Int): Vec[Double] = new RollingMedian[A](winSz, v).evaluate
 }
 
-private[saddle] class RollingCount[@spec(Int, Long, Double) A: CLM: Vec2Stats: NUM](
-  winSz:Int) extends Function1[Vec[A], Int] {
+private[saddle] class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Int] {
 
   var i = 0
   var s = 0
-  val sa = scalar.getScalarTag[A]
+  val sa = implicitly[ST[A]]
 
   def apply(v: Vec[A]): Int = {
     if (i == 0) {
@@ -76,11 +75,10 @@ private[saddle] class RollingCount[@spec(Int, Long, Double) A: CLM: Vec2Stats: N
   }
 }
 
-private[saddle] class RollingSum[@spec(Int, Long, Double) A: CLM: AddOp: SubOp: Vec2Stats: NUM](
-  winSz:Int) extends Function1[Vec[A], A] {
+private[saddle] class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] extends Function1[Vec[A], A] {
 
   var i = 0
-  val sa = scalar.getScalarTag[A]
+  val sa = implicitly[ST[A]]
   val add = implicitly[AddOp[A]]
   val sub = implicitly[SubOp[A]]
   var s = sa.zero
@@ -98,13 +96,12 @@ private[saddle] class RollingSum[@spec(Int, Long, Double) A: CLM: AddOp: SubOp: 
   }
 }
 
-private[saddle] class RollingMean[@spec(Int, Long, Double) A: CLM: Vec2Stats: NUM](
-  winSz:Int) extends Function1[Vec[A], Double] {
+private[saddle] class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Double] {
 
   var i = 0
   var s = 0d
   var c = 0
-  val sa = scalar.getScalarTag[A]
+  val sa = implicitly[ST[A]]
 
   def apply(v: Vec[A]): Double = {
     if (i == 0) {
@@ -126,18 +123,21 @@ private[saddle] class RollingMean[@spec(Int, Long, Double) A: CLM: Vec2Stats: NU
   }
 }
 
-private[saddle] class RollingMedian[@spec(Int, Long, Double) A: CLM: Vec2Stats: NUM](winSz:Int, origv: Vec[A]) {
-  val sa = scalar.getScalarTag[A]
+private[saddle] class RollingMedian[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM](winSz:Int, origv: Vec[A]) {
+  val sa = implicitly[ST[A]]
+
+  val len = origv.length
+  val win = if (winSz > len) len else winSz
 
   def evaluate: Vec[Double] = {
-    if (origv.length == 0 || winSz > origv.length || winSz < 1)
+    if (len == 0 || winSz <= 0)
       Vec.empty
     else {
-      val m = new Mediator(winSz)
-      val r = Array.ofDim[Double](origv.length - winSz + 1)
+      val m = new Mediator(win)
+      val r = Array.ofDim[Double](len - win + 1)
 
       var i = 0
-      while (i < winSz) {
+      while (i < win) {
         val v = sa.toDouble(origv.raw(i))
         m.push(v)
         i += 1
@@ -146,7 +146,7 @@ private[saddle] class RollingMedian[@spec(Int, Long, Double) A: CLM: Vec2Stats: 
       r(0) = m.median
 
       var j = 1
-      while (i < origv.length) {
+      while (i < len) {
         val v = sa.toDouble(origv.raw(i))
         m.push(v)
         i += 1

@@ -20,11 +20,10 @@ import scala.{ specialized => spec }
 import org.saddle._
 
 /**
- * Concrete implementations provide support to working with scalars
+ * Typeclass definition for scalar tags. Contains important meta-data regarding a scalar type;
+ * often implicitly required when dealing with objects in Saddle.
  */
-trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T] {
-  def classTag: CLM[T]
-
+trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T] extends CLM[T] {
   // representation of missing data
   def missing: T
   def isMissing(t: T): Boolean
@@ -51,12 +50,29 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T] {
 
   def show(v: T): String
 
-  override def hashCode(): Int = classTag.hashCode()
+  override def hashCode(): Int = super.hashCode()
 
   override def equals(o: Any): Boolean = o match {
-    case s: ScalarTag[_] => (this eq s) || (this.classTag == s.classTag)
-    case _ => false
+    case s: ScalarTag[_] => (this eq s) || super.equals(s)
+    case _               => false
   }
 
-  override def toString = "ScalarTag[%s]" format classTag.erasure
+  override def toString = "ScalarTag[%s]" format erasure
 }
+
+object ScalarTag extends LowPriorityScalarTagImplicits {
+  implicit val stChr = ScalarTagChar
+  implicit val stByt = ScalarTagByte
+  implicit val stBoo = ScalarTagBool
+  implicit val stSho = ScalarTagShort
+  implicit val stInt = ScalarTagInt
+  implicit val stFlo = ScalarTagFloat
+  implicit val stLon = ScalarTagLong
+  implicit val stDub = ScalarTagDouble
+}
+
+trait LowPriorityScalarTagImplicits {
+  implicit def stPrd[T <: Product : CLM] = ScalarTagProduct(implicitly[CLM[T]])
+  implicit def stAny[T : CLM] = ScalarTagAny[T](implicitly[CLM[T]])
+}
+

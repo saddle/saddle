@@ -28,7 +28,7 @@ sealed abstract class Scalar[+T] {
   def isNA: Boolean
   def get: T
 
-  @inline final def map[B: CLM](f: T => B): Scalar[B] =
+  @inline final def map[B: ST](f: T => B): Scalar[B] =
     if (isNA) NA else Value(f(get))
 
   @inline final def flatMap[B](f: T => Scalar[B]): Scalar[B] =
@@ -46,8 +46,8 @@ object Scalar {
     *  @param  x the value
     *  @return Value(value) if value not null or NA primitive; otherwise NA
     *  */
-  def apply[T: CLM](x: T): Scalar[T] =
-    if (x == null || scalar.getScalarTag[T].isMissing(x)) NA else Value(x)
+  def apply[T: ST](x: T): Scalar[T] =
+    if (x == null || implicitly[ST[T]].isMissing(x)) NA else Value(x)
 
   /**
    * Provides comparisons of Scalars, where NA always evaluates as less than non-NA
@@ -64,7 +64,7 @@ object Scalar {
   /**
    * Provides implicit boxing of primitive to scalar
    */
-  implicit def scalarBox[T : CLM](el: T): Scalar[T] = Scalar(el)
+  implicit def scalarBox[T : ST](el: T): Scalar[T] = Scalar(el)
 
   /**
    * Provides implicit unboxing from double scalar to primitive
@@ -87,8 +87,8 @@ object Scalar {
     if (sc.isNA) None else Some(sc.get)
 }
 
-case class Value[+T : CLM](el: T) extends Scalar[T] {
-  def isNA = getScalarTag[T].isMissing(el)
+case class Value[+T : ST](el: T) extends Scalar[T] {
+  def isNA = implicitly[ST[T]].isMissing(el)
   def get = el
 
   override def toString = el.toString

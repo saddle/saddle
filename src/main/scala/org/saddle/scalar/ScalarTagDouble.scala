@@ -21,14 +21,12 @@ import org.saddle._
 /**
  * Double ScalarTag
  */
-private[saddle] object ScalarTagDouble extends ScalarTag[Double] {
+object ScalarTagDouble extends ScalarTag[Double] {
   def missing: Double = Double.NaN
   def isMissing(v: Double): Boolean = (v != v)
   def notMissing(v: Double): Boolean = (v == v)
 
   def isTuple = false
-
-  def classTag = implicitly[CLM[Double]]
 
   // note, consider N/A's equal
   def compare(x: Double, y: Double)(implicit ev: ORD[Double]) =
@@ -43,4 +41,6 @@ private[saddle] object ScalarTagDouble extends ScalarTag[Double] {
   def negInf(implicit ev: NUM[Double]) = Double.NegativeInfinity
 
   def show(v: Double) = if (isMissing(v)) "%s" format "NA" else "%.4f" format(v)
+
+  def erasure = implicitly[CLM[Double]].erasure
 }

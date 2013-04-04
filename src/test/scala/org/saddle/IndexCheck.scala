@@ -82,6 +82,14 @@ class IndexCheck extends Specification with ScalaCheck {
       }
     }
 
+    "without dups, index union is outer join" in {
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
+
+      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
+        ix1.join(ix2, how=index.OuterJoin).index.toSeq.toSet must_== { ix1.toSeq ++ ix2.toSeq }.toSet
+      }
+    }
+
     "index intersect works" in {
       implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
 
@@ -178,6 +186,14 @@ class IndexCheck extends Specification with ScalaCheck {
 
       forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
         ix1.union(ix2).index.toSeq.toSet must_== { ix1.toSeq ++ ix2.toSeq }.toSet
+      }
+    }
+
+    "without dups, index union is outer join" in {
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeNoDups)
+
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
+        ix1.join(ix2, how=index.OuterJoin).index.toSeq.toSet must_== { ix1.toSeq ++ ix2.toSeq }.toSet
       }
     }
 

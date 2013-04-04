@@ -63,8 +63,8 @@ object Buffer {
    * @param sz Initial size of buffer
    * @tparam C Type of elements to be stored in buffer
    */
-  def apply[C: CLM](sz: Int = 16): Buffer[C] = {
-    val m = implicitly[CLM[C]]
+  def apply[C: ST](sz: Int = 16): Buffer[C] = {
+    val m = implicitly[ST[C]]
 
     m.erasure match {
       case c if c == spB => BufferBool(sz)

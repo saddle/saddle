@@ -40,22 +40,22 @@ object IndexMaker extends IndexMakerLowPriority {
   // -------------------------
   // IndexMaker instances
 
-  implicit def make2V[T[K] <: SeqLike[K], I1: ORD: CLM, I2: ORD: CLM] =
+  implicit def make2V[T[K] <: SeqLike[K], I1: ORD: ST, I2: ORD: ST] =
     new IndexMaker[(T[I1], T[I2]), (I1, I2)] {
       def apply(in: (T[I1], T[I2])) = zip2V(in._1, in._2)
     }
 
-  implicit def make3V[T[K] <: SeqLike[K], I1: ORD: CLM, I2: ORD: CLM, I3: ORD: CLM] =
+  implicit def make3V[T[K] <: SeqLike[K], I1: ORD: ST, I2: ORD: ST, I3: ORD: ST] =
     new IndexMaker[(T[I1], T[I2], T[I3]), (I1, I2, I3)] {
       def apply(in: (T[I1], T[I2], T[I3])) = zip3V(in._1, in._2, in._3)
     }
 
-  implicit def make4V[T[K] <: SeqLike[K], I1: ORD: CLM, I2: ORD: CLM, I3: ORD: CLM, I4: ORD: CLM] =
+  implicit def make4V[T[K] <: SeqLike[K], I1: ORD: ST, I2: ORD: ST, I3: ORD: ST, I4: ORD: ST] =
     new IndexMaker[(T[I1], T[I2], T[I3], T[I4]), (I1, I2, I3, I4)] {
       def apply(in: (T[I1], T[I2], T[I3], T[I4])) = zip4V(in._1, in._2, in._3, in._4)
     }
 
-  implicit def make5V[T[K] <: SeqLike[K], I1: ORD: CLM, I2: ORD: CLM, I3: ORD: CLM, I4: ORD: CLM, I5: ORD: CLM] =
+  implicit def make5V[T[K] <: SeqLike[K], I1: ORD: ST, I2: ORD: ST, I3: ORD: ST, I4: ORD: ST, I5: ORD: ST] =
     new IndexMaker[(T[I1], T[I2], T[I3], T[I4], T[I5]), (I1, I2, I3, I4, I5)] {
       def apply(in: (T[I1], T[I2], T[I3], T[I4], T[I5])) = zip5V(in._1, in._2, in._3, in._4, in._5)
     }
@@ -63,7 +63,7 @@ object IndexMaker extends IndexMakerLowPriority {
   // -------------------------
   // Zip helpers
 
-  private def zip2V[T[K] <: SeqLike[K], A: ORD: CLM, B: ORD: CLM](a: T[A], b: T[B]): Index[(A, B)] = {
+  private def zip2V[T[K] <: SeqLike[K], A: ORD: ST, B: ORD: ST](a: T[A], b: T[B]): Index[(A, B)] = {
     require(a.length == b.length,
             "Arguments must have same length")
     val sz = a.length
@@ -76,7 +76,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip3V[T[K] <: SeqLike[K], A: ORD: CLM, B: ORD: CLM, C: ORD: CLM](
+  private def zip3V[T[K] <: SeqLike[K], A: ORD: ST, B: ORD: ST, C: ORD: ST](
     a: T[A], b: T[B], c: T[C]): Index[(A, B, C)] = {
     require(a.length == b.length && b.length == c.length,
             "Arguments must have same length")
@@ -90,7 +90,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip4V[T[K] <: SeqLike[K], A: ORD: CLM, B: ORD: CLM, C: ORD: CLM, D: ORD: CLM](
+  private def zip4V[T[K] <: SeqLike[K], A: ORD: ST, B: ORD: ST, C: ORD: ST, D: ORD: ST](
     a: T[A], b: T[B], c: T[C], d: T[D]): Index[(A, B, C, D)] = {
     require(a.length == b.length && b.length == c.length && c.length == d.length,
             "Arguments must have same length")
@@ -104,7 +104,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip5V[T[K] <: SeqLike[K], A: ORD: CLM, B: ORD: CLM, C: ORD: CLM, D: ORD: CLM, E: ORD: CLM](
+  private def zip5V[T[K] <: SeqLike[K], A: ORD: ST, B: ORD: ST, C: ORD: ST, D: ORD: ST, E: ORD: ST](
     a: T[A], b: T[B], c: T[C], d: T[D], e: T[E]): Index[(A, B, C, D, E)] = {
     require(a.length == b.length && b.length == c.length && c.length == d.length && d.length == e.length,
             "Arguments must have same length")
@@ -122,7 +122,7 @@ object IndexMaker extends IndexMakerLowPriority {
 trait IndexMakerLowPriority {
   type SeqLike[K] = { def length: Int; def apply(i: Int): K }
 
-  implicit def make1V[T[K] <: SeqLike[K], A: ORD: CLM] = new IndexMaker[T[A], A] {
+  implicit def make1V[T[K] <: SeqLike[K], A: ORD: ST] = new IndexMaker[T[A], A] {
     def apply(in: T[A]): Index[A] = {
       val sz = in.length
       val arr = Array.ofDim[A](sz)

@@ -98,7 +98,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * @param loc offset into Vec
    */
   def at(loc: Int): Scalar[A] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm: ST[A] = scalarTag
     apply(loc)
   }
 
@@ -107,7 +107,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * @param loc offset into Vec
    */
   def raw(loc: Int): A = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     apply(loc)
   }
 
@@ -149,7 +149,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * Access the first element of a Vec[A], or NA if length is zero
    */
   def first: Scalar[A] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     if (length > 0) apply(0) else NA
   }
 
@@ -157,7 +157,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * Access the last element of a Vec[A], or NA if length is zero
    */
   def last: Scalar[A] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     if (length > 0) apply(length - 1) else NA
   }
 
@@ -211,7 +211,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    *
    * @param m Mask vector of Vec[Boolean]
    */
-  def mask(m: Vec[Boolean]): Vec[A] = VecImpl.mask(this, m, scalarTag.missing)(scalarTag.classTag)
+  def mask(m: Vec[Boolean]): Vec[A] = VecImpl.mask(this, m, scalarTag.missing)(scalarTag)
 
   /**
    * Returns Vec whose locations are NA where the result of the
@@ -219,7 +219,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    *
    * @param f A function taking an element and returning a Boolean
    */
-  def mask(f: A => Boolean): Vec[A] = VecImpl.mask(this, f, scalarTag.missing)(scalarTag.classTag)
+  def mask(f: A => Boolean): Vec[A] = VecImpl.mask(this, f, scalarTag.missing)(scalarTag)
 
   /**
    * Concatenate two Vec instances together, where there exists some way to
@@ -229,11 +229,11 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    *
    * @param v  Vec[B] to concat
    * @param wd Implicit evidence of Promoter[A, B, C]
-   * @param mc Implicit evidence of CLM[C]
+   * @param mc Implicit evidence of ST[C]
    * @tparam B type of other Vec elements
    * @tparam C type of resulting Vec elements
    */
-  def concat[B, C](v: Vec[B])(implicit wd: Promoter[A, B, C], mc: CLM[C]): Vec[C]
+  def concat[B, C](v: Vec[B])(implicit wd: Promoter[A, B, C], mc: ST[C]): Vec[C]
 
   /**
    * Additive inverse of Vec with numeric elements
@@ -247,27 +247,27 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
   /**
    * Map a function over the elements of the Vec, as in scala collections library
    */
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: A => B): Vec[B]
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Vec[B]
 
   /**
    * Left fold over the elements of the Vec, as in scala collections library
    */
-  def foldLeft[@spec(Boolean, Int, Long, Double) B: CLM](init: B)(f: (B, A) => B): B
+  def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, A) => B): B
 
   /**
    * Left scan over the elements of the Vec, as in scala collections library
    */
-  def scanLeft[@spec(Boolean, Int, Long, Double) B: CLM](init: B)(f: (B, A) => B): Vec[B]
+  def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, A) => B): Vec[B]
 
   /**
    * Filtered left fold over the elements of the Vec, as in scala collections library
    */
-  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: CLM](pred: A => Boolean)(init: B)(f: (B, A) => B): B
+  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: A => Boolean)(init: B)(f: (B, A) => B): B
 
   /**
    * Filtered left scan over elements of the Vec, as in scala collections library
    */
-  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: CLM](pred: A => Boolean)(init: B)(f: (B, A) => B): Vec[B]
+  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: A => Boolean)(init: B)(f: (B, A) => B): Vec[B]
 
   /**
    * Left fold that folds only while the test condition holds true. As soon as the condition function yields
@@ -275,7 +275,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    *
    * @param cond Function whose signature is the same as the fold function, except that it evaluates to Boolean
    */
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: CLM](init: B)(f: (B, A) => B)(cond: (B, A) => Boolean): B
+  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, A) => B)(cond: (B, A) => Boolean): B
 
   /**
    * Zips Vec with another Vec and applies a function to the paired elements. If either of the pair is NA, the
@@ -285,7 +285,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * @tparam B Parameter of other Vec
    * @tparam C Result of function
    */
-  def zipMap[@spec(Int, Long, Double) B: CLM, @spec(Boolean, Int, Long, Double) C: CLM](other: Vec[B])(f: (A, B) => C): Vec[C]
+  def zipMap[@spec(Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](other: Vec[B])(f: (A, B) => C): Vec[C]
 
   /**
    * Drop the elements of the Vec which are NA
@@ -301,7 +301,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * Execute a (side-effecting) operation on each (non-NA) element in the vec
    * @param op operation to execute
    */
-  def foreach(op: A => Unit) { VecImpl.foreach(this)(op)(scalarTag.classTag) }
+  def foreach(op: A => Unit) { VecImpl.foreach(this)(op)(scalarTag) }
 
   /**
    * Execute a (side-effecting) operation on each (non-NA) element in vec which satisfies
@@ -309,19 +309,19 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * @param pred Function A => Boolean
    * @param op Side-effecting function
    */
-  def forall(pred: A => Boolean)(op: A => Unit) { VecImpl.forall(this)(pred)(op)(scalarTag.classTag) }
+  def forall(pred: A => Boolean)(op: A => Unit) { VecImpl.forall(this)(pred)(op)(scalarTag) }
 
   /**
    * Return Vec of integer locations (offsets) which satisfy some predicate
    * @param pred Predicate function from A => Boolean
    */
-  def find(pred: A => Boolean): Vec[Int] = VecImpl.find(this)(pred)(scalarTag.classTag)
+  def find(pred: A => Boolean): Vec[Int] = VecImpl.find(this)(pred)(scalarTag)
 
   /**
    * Return first integer location which satisfies some predicate, or -1 if there is none
    * @param pred Predicate function from A => Boolean
    */
-  def findOne(pred: A => Boolean): Int = VecImpl.findOne(this)(pred)(scalarTag.classTag)
+  def findOne(pred: A => Boolean): Int = VecImpl.findOne(this)(pred)(scalarTag)
 
   /**
    * Return true if there exists some element of the Vec which satisfies the predicate function
@@ -333,13 +333,13 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * Return Vec whose elements satisfy a predicate function
    * @param pred Predicate function from A => Boolean
    */
-  def filter(pred: A => Boolean): Vec[A] = VecImpl.filter(this)(pred)(scalarTag.classTag)
+  def filter(pred: A => Boolean): Vec[A] = VecImpl.filter(this)(pred)(scalarTag)
 
   /**
    * Return Vec whose elements are selected via a Vec of booleans (where that Vec holds the value true)
    * @param pred Predicate vector: Vec[Boolean]
    */
-  def where(pred: Vec[Boolean]): Vec[A] = VecImpl.where(this)(pred.toArray)(scalarTag.classTag)
+  def where(pred: Vec[Boolean]): Vec[A] = VecImpl.where(this)(pred.toArray)(scalarTag)
 
   /**
    * Produce a Vec whose entries are the result of executing a function on a sliding window of the
@@ -348,19 +348,19 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * @param f Function Vec[A] => B to operate on sliding window
    * @tparam B Result type of function
    */
-  def rolling[@spec(Boolean, Int, Long, Double) B: CLM](winSz: Int, f: Vec[A] => B): Vec[B]
+  def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: Vec[A] => B): Vec[B]
 
   /**
    * Yield a Vec whose elements have been sorted (in ascending order)
    * @param ev evidence of Ordering[A]
    */
-  def sorted(implicit ev: ORD[A]) = take(array.argsort(toArray)(ev, scalarTag.classTag))
+  def sorted(implicit ev: ORD[A]) = take(array.argsort(toArray)(scalarTag, ev))
 
   /**
    * Yield a Vec whose elements have been reversed from their original order
    */
   def reversed: Vec[A] = {
-    implicit val clm = scalarTag.classTag
+    implicit val clm = scalarTag
     Vec(array.reverse(toArray))
   }
 
@@ -410,7 +410,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * }}}
    *
    */
-  def pad: Vec[A] = VecImpl.pad(this)(scalarTag.classTag)
+  def pad: Vec[A] = VecImpl.pad(this)(scalarTag)
 
   /**
    * Replaces all NA values for which there is a non-NA value at a lower offset
@@ -424,7 +424,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    * }}}
    *
    */
-  def padAtMost(n: Int): Vec[A] = VecImpl.pad(this, n)(scalarTag.classTag)
+  def padAtMost(n: Int): Vec[A] = VecImpl.pad(this, n)(scalarTag)
 
   /**
    * Fills NA values in vector with result of a function which acts on the index of
@@ -432,7 +432,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    *
    * @param f A function from Int => A; yields value for NA value at ith position
    */
-  def fillNA(f: Int => A): Vec[A] = VecImpl.vecfillNA(this)(f)(scalarTag.classTag)
+  def fillNA(f: Int => A): Vec[A] = VecImpl.vecfillNA(this)(f)(scalarTag)
 
   /**
    * Converts Vec to an indexed sequence (default implementation is immutable.Vector)
@@ -533,14 +533,14 @@ object Vec extends BinOpVec {
    * @param arr Array
    * @tparam C Type of elements in array
    */
-  def apply[C: CLM](arr: Array[C]): Vec[C] = {
-    val m = implicitly[CLM[C]]
+  def apply[C: ST](arr: Array[C]): Vec[C] = {
+    val m = implicitly[ST[C]]
     m.erasure match {
       case c if c == bc => new VecBool(arr.asInstanceOf[Array[Boolean]])
       case c if c == ic => new VecInt(arr.asInstanceOf[Array[Int]])
       case c if c == lc => new VecLong(arr.asInstanceOf[Array[Long]])
       case c if c == dc => new VecDouble(arr.asInstanceOf[Array[Double]])
-      case c if c == tc => VecTime(arr.asInstanceOf[Array[DateTime]])
+      case c if c == tc => new VecTime(Vec(arr.asInstanceOf[Array[DateTime]].map(_.getMillis)))
       case _            => new VecAny(arr)
     }
   }.asInstanceOf[Vec[C]]
@@ -556,14 +556,14 @@ object Vec extends BinOpVec {
    * @param values Sequence
    * @tparam C Type of elements in Vec
    */
-  def apply[C: CLM](values: C*): Vec[C] = Vec(values.toArray)
+  def apply[C: ST](values: C*): Vec[C] = Vec(values.toArray)
 
   /**
    * Creates an empty Vec of type C.
    *
    * @tparam C Vec type parameter
    */
-  def empty[C: CLM]: Vec[C] = Vec(Array.empty[C])
+  def empty[C: ST]: Vec[C] = Vec(Array.empty[C])
 
   // conversions
 
@@ -582,7 +582,7 @@ object Vec extends BinOpVec {
    * @param arr Array
    * @tparam T Type parameter of Array
    */
-  implicit def arrayToVec[T: CLM](arr: Array[T]) = Vec(arr)
+  implicit def arrayToVec[T: ST](arr: Array[T]) = Vec(arr)
 
   /**
    * A Vec may be implicitly ''widened'' to a Vec.
@@ -590,12 +590,12 @@ object Vec extends BinOpVec {
    * @param s Vec to widen to Series
    * @tparam A Type of elements in Vec
    */
-  implicit def vecToSeries[A: CLM](s: Vec[A]) = Series(s)
+  implicit def vecToSeries[A: ST](s: Vec[A]) = Series(s)
 
   /**
    * A Vec may be implicitly converted to a single column Mat
    */
-  implicit def vecToMat[A: CLM](s: Vec[A]): Mat[A] = Mat(s.length, 1, s.toArray)
+  implicit def vecToMat[A: ST](s: Vec[A]): Mat[A] = Mat(s.length, 1, s.toArray)
 
   // stats functions
 

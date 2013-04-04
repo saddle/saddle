@@ -52,12 +52,12 @@ package object array {
   /**
    * Create a new initialized empty array
    */
-  def empty[@spec(Boolean, Int, Long, Double) T: CLM](len: Int): Array[T] = Array.ofDim[T](len)
+  def empty[@spec(Boolean, Int, Long, Double) T: ST](len: Int): Array[T] = Array.ofDim[T](len)
 
   /**
    * Return a uniform random permutation of the array
    */
-  def shuffle[@spec(Boolean, Int, Long, Double) T: CLM](arr: Array[T]): Array[T] = {
+  def shuffle[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T]): Array[T] = {
     var i = 0
     val sz = arr.length
     val result = arr.clone()
@@ -76,7 +76,7 @@ package object array {
   /**
    * Repeat elements of the array some number of times
    */
-  def tile[@spec(Boolean, Int, Long, Double) T: CLM](arr: Array[T], n: Int): Array[T] = {
+  def tile[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], n: Int): Array[T] = {
     require(n >= 0, "n must not be negative")
     val sz = arr.length * n
     val res = empty[T](sz)
@@ -217,7 +217,7 @@ package object array {
    *   take(Array(5,6,7), Array(2,0,1), -1) == Array(7,5,6)
    * }}}
    */
-  def take[@spec(Boolean, Int, Long, Double) T: CLM](
+  def take[@spec(Boolean, Int, Long, Double) T: ST](
     arr: Array[T], offsets: Array[Int], missing: => T): Array[T] = {
     val res = empty[T](offsets.length)
     var i = 0
@@ -248,7 +248,7 @@ package object array {
    *   send(Array(5,6,7), Array(2,0,1)) == Array(6,7,5)
    * }}}
    */
-  def send[@spec(Boolean, Int, Long, Double) T: CLM](
+  def send[@spec(Boolean, Int, Long, Double) T: ST](
     arr: Array[T], offsets: Array[Int]): Array[T] = {
     val res = empty[T](offsets.length)
     var i = 0
@@ -263,7 +263,7 @@ package object array {
    * Remove values from array arr at particular offsets so as to
    * produce a new array.
    */
-  def remove[@spec(Boolean, Int, Long, Double) T: CLM](arr: Array[T], locs: Array[Int]): Array[T] = {
+  def remove[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], locs: Array[Int]): Array[T] = {
     val set = new IntOpenHashSet(locs)
     val len = arr.length - set.size()
     val res = empty[T](len)
@@ -327,7 +327,7 @@ package object array {
   /**
    * Fill array with value
    */
-  def fill[@spec(Boolean, Int, Long, Double) T: CLM](arr: Array[T], v: T) {
+  def fill[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], v: T) {
     var i = 0
     while (i < arr.length) {
       arr(i) = v
@@ -372,7 +372,7 @@ package object array {
    *
    * @param arr Array to sort
    */
-  def argsort[T: ORD: CLM](arr: Array[T]): Array[Int] = {
+  def argsort[T: ST: ORD](arr: Array[T]): Array[Int] = {
     val res = range(0, arr.length)
 
     val spB = classOf[Boolean]
@@ -383,10 +383,9 @@ package object array {
     val spL = classOf[Long]
     val spF = classOf[Float]
     val spD = classOf[Double]
-    val sca = scalar.getScalarTag[T]
 
     // choose appropriate specialized implementation
-    implicitly[CLM[T]].erasure match {
+    implicitly[ST[T]].erasure match {
       case c if c == spB => {
         VecBool.argSort(arr.asInstanceOf[Array[Boolean]])
       }
@@ -423,7 +422,7 @@ package object array {
       }
       case _ => {
         // todo: performance issues here
-        res.sortWith((a, b) => sca.compare(arr(a), arr(b)) < 0)
+        res.sortWith((a, b) => implicitly[ST[T]].compare(arr(a), arr(b)) < 0)
       }
     }
   }
@@ -434,7 +433,7 @@ package object array {
    *
    * @param arr Array to sort
    */
-  def sort[T: ORD: CLM](arr: Array[T]): Array[T] = {
+  def sort[T: ORD: ST](arr: Array[T]): Array[T] = {
     val spB = classOf[Boolean]
     val spY = classOf[Byte]
     val spC = classOf[Char]
@@ -445,7 +444,7 @@ package object array {
     val spD = classOf[Double]
 
     // choose appropriate specialized implementation
-    implicitly[CLM[T]].erasure match {
+    implicitly[ST[T]].erasure match {
       case c if c == spB => {
         val res = arr.clone()
         VecBool.sort(res.asInstanceOf[Array[Boolean]]).asInstanceOf[Array[T]]
@@ -491,7 +490,7 @@ package object array {
         val res = arr.clone()
         java.util.Arrays.sort(
           res.asInstanceOf[Array[Object]],
-          implicitly[ORD[T]].asInstanceOf[Ordering[Object]])
+          implicitly[ORD[T]].asInstanceOf[ORD[Object]])
         res
       }
     }
@@ -522,7 +521,7 @@ package object array {
   /**
    * Reverse an array
    */
-  def reverse[@spec(Boolean, Int, Long, Double) T: CLM](arr: Array[T]): Array[T] = {
+  def reverse[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T]): Array[T] = {
     val end = arr.length - 1
     val newArr = new Array[T](end + 1)
 
@@ -537,7 +536,7 @@ package object array {
   /**
    * Filter an array based on a predicate function, wherever that predicate is true
    */
-  def filter[@spec(Boolean, Int, Long, Double) T: CLM](f: T => Boolean)(arr: Array[T]): Array[T] = {
+  def filter[@spec(Boolean, Int, Long, Double) T: ST](f: T => Boolean)(arr: Array[T]): Array[T] = {
     var i = 0
     var count = 0
     while(i < arr.length) {
@@ -564,7 +563,7 @@ package object array {
   /**
    * Flatten a sequence of arrays into a single array
    */
-  def flatten[@spec(Int, Long, Double) T: CLM](arrs: Seq[Array[T]]): Array[T] = {
+  def flatten[@spec(Int, Long, Double) T: ST](arrs: Seq[Array[T]]): Array[T] = {
     val size = arrs.map(_.length).sum
     val newArr = new Array[T](size)
     var i = 0
@@ -585,8 +584,8 @@ package object array {
   /**
    * Return the integer offset of the minimum element, or -1 for an empty array
    */
-  def argmin[@spec(Int, Long, Double) T: ORD: CLM: NUM](arr: Array[T]): Int = {
-    val sca = scalar.getScalarTag[T]
+  def argmin[@spec(Int, Long, Double) T: ORD: NUM: ST](arr: Array[T]): Int = {
+    val sca = implicitly[ST[T]]
     val sz = arr.length
     if (sz == 0) -1 else {
       var (min, arg) = if (sca.isMissing(arr(0))) (sca.inf, -1) else (arr(0), 0)
@@ -606,8 +605,8 @@ package object array {
   /**
    * Return the integer offset of the maximum element, or -1 for an empty array
    */
-  def argmax[@spec(Int, Long, Double) T: ORD: CLM: NUM](arr: Array[T]): Int = {
-    val sca = scalar.getScalarTag[T]
+  def argmax[@spec(Int, Long, Double) T: ORD: NUM: ST](arr: Array[T]): Int = {
+    val sca = implicitly[ST[T]]
     val sz = arr.length
     if (sz == 0) -1 else {
       var (max, arg) = if (sca.isMissing(arr(0))) (sca.negInf, -1) else (arr(0), 0)

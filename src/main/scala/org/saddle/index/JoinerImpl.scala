@@ -24,10 +24,10 @@ import locator.Locator
  * Concrete implementation of Joiner instance which is specialized on basic
  * types.
  */
-private[saddle] class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ORD: CLM] extends Joiner[T] {
+private[saddle] class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ORD: ST] extends Joiner[T] {
   private implicit def wrapArray(arr: Array[Int]): Option[Array[Int]] = Some(arr)
 
-  def join(left: Index[T], right: Index[T], how: JoinType): ReIndexer[T] =
+  def join(left: Index[T], right: Index[T], how: JoinType): ReIndexer[T] = {
     if (left == right) {
       ReIndexer(None, None, right)
     }
@@ -59,6 +59,7 @@ private[saddle] class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ORD: CLM] 
         case _         => factorizedJoin(left, right, how)
       }
     }
+  }
 
   // unions two indices with set semantics
   private def union(left: Index[T], right: Index[T]): ReIndexer[T] = {
@@ -684,6 +685,6 @@ private[saddle] class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ORD: CLM] 
 }
 
 private[saddle] object JoinerImpl {
-  def join[@spec(Boolean, Int, Long, Double) T: ORD: CLM](
+  def join[@spec(Boolean, Int, Long, Double) T: ORD: ST](
     left: Index[T], right: Index[T], how: JoinType) = (new JoinerImpl[T]).join(left, right, how)
 }

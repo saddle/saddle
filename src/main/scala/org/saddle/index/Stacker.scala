@@ -64,16 +64,16 @@ trait Stacker[I, J, O] {
   def ord: ORD[O]
 
   /**
-   * Implementation of a CLM for O
+   * Implementation of a ST for O
    */
-  def clm: CLM[O]
+  def clm: ST[O]
 }
 
 /**
  * Companion object which houses implicit Stacker instances.
  */
 object Stacker extends StackerLowPriority {
-  implicit def stack3rd[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM] =
+  implicit def stack3rd[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST] =
     new Stacker[(T1, T2), T3, (T1, T2, T3)] {
       def apply(ix1: Index[(T1, T2)], ix2: Index[T3]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, y)
@@ -81,10 +81,10 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple3[T1, T2, T3]
-      def clm = implicitly[CLM[(T1, T2, T3)]]
+      def clm = implicitly[ST[(T1, T2, T3)]]
     }
 
-  implicit def stack4th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM] =
+  implicit def stack4th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST] =
     new Stacker[(T1, T2, T3), T4, (T1, T2, T3, T4)] {
       def apply(ix1: Index[(T1, T2, T3)], ix2: Index[T4]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, x._3, y)
@@ -92,10 +92,10 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple4[T1, T2, T3, T4]
-      def clm = implicitly[CLM[(T1, T2, T3, T4)]]
+      def clm = implicitly[ST[(T1, T2, T3, T4)]]
     }
 
-  implicit def stack5th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM] =
+  implicit def stack5th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST] =
     new Stacker[(T1, T2, T3, T4), T5, (T1, T2, T3, T4, T5)] {
       def apply(ix1: Index[(T1, T2, T3, T4)], ix2: Index[T5]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, x._3, x._4, y)
@@ -103,10 +103,10 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple5[T1, T2, T3, T4, T5]
-      def clm = implicitly[CLM[(T1, T2, T3, T4, T5)]]
+      def clm = implicitly[ST[(T1, T2, T3, T4, T5)]]
     }
 
-  implicit def stack6th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM] =
+  implicit def stack6th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST] =
     new Stacker[(T1, T2, T3, T4, T5), T6, (T1, T2, T3, T4, T5, T6)] {
       def apply(ix1: Index[(T1, T2, T3, T4, T5)], ix2: Index[T6]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, x._3, x._4, x._5, y)
@@ -114,10 +114,10 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple6[T1, T2, T3, T4, T5, T6]
-      def clm = implicitly[CLM[(T1, T2, T3, T4, T5, T6)]]
+      def clm = implicitly[ST[(T1, T2, T3, T4, T5, T6)]]
     }
 
-  implicit def stack7th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM, T7: ORD: CLM] =
+  implicit def stack7th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST, T7: ORD: ST] =
     new Stacker[(T1, T2, T3, T4, T5, T6), T7, (T1, T2, T3, T4, T5, T6, T7)] {
       def apply(ix1: Index[(T1, T2, T3, T4, T5, T6)], ix2: Index[T7]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, x._3, x._4, x._5, x._6, y)
@@ -125,10 +125,10 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple7[T1, T2, T3, T4, T5, T6, T7]
-      def clm = implicitly[CLM[(T1, T2, T3, T4, T5, T6, T7)]]
+      def clm = implicitly[ST[(T1, T2, T3, T4, T5, T6, T7)]]
     }
 
-  implicit def stack8th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM, T7: ORD: CLM, T8: ORD: CLM] =
+  implicit def stack8th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST, T7: ORD: ST, T8: ORD: ST] =
     new Stacker[(T1, T2, T3, T4, T5, T6, T7), T8, (T1, T2, T3, T4, T5, T6, T7, T8)] {
       def apply(ix1: Index[(T1, T2, T3, T4, T5, T6, T7)], ix2: Index[T8]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, x._3, x._4, x._5, x._6, x._7, y)
@@ -136,10 +136,10 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple8[T1, T2, T3, T4, T5, T6, T7, T8]
-      def clm = implicitly[CLM[(T1, T2, T3, T4, T5, T6, T7, T8)]]
+      def clm = implicitly[ST[(T1, T2, T3, T4, T5, T6, T7, T8)]]
     }
 
-  implicit def stack9th[T1: ORD: CLM, T2: ORD: CLM, T3: ORD: CLM, T4: ORD: CLM, T5: ORD: CLM, T6: ORD: CLM, T7: ORD: CLM, T8: ORD: CLM, T9: ORD: CLM] =
+  implicit def stack9th[T1: ORD: ST, T2: ORD: ST, T3: ORD: ST, T4: ORD: ST, T5: ORD: ST, T6: ORD: ST, T7: ORD: ST, T8: ORD: ST, T9: ORD: ST] =
     new Stacker[(T1, T2, T3, T4, T5, T6, T7, T8), T9, (T1, T2, T3, T4, T5, T6, T7, T8, T9)] {
       def apply(ix1: Index[(T1, T2, T3, T4, T5, T6, T7, T8)], ix2: Index[T9]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x._1, x._2, x._3, x._4, x._5, x._6, x._7, x._8, y)
@@ -147,7 +147,7 @@ object Stacker extends StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9]
-      def clm = implicitly[CLM[(T1, T2, T3, T4, T5, T6, T7, T8, T9)]]
+      def clm = implicitly[ST[(T1, T2, T3, T4, T5, T6, T7, T8, T9)]]
     }
 }
 
@@ -157,7 +157,7 @@ object Stacker extends StackerLowPriority {
  * to specialize the case when the left index is composed of Tuples.
  */
 trait StackerLowPriority {
-  implicit def stack2nd[T1: ORD: CLM, T2: ORD: CLM] =
+  implicit def stack2nd[T1: ORD: ST, T2: ORD: ST] =
     new Stacker[T1, T2, (T1, T2)] {
       def apply(ix1: Index[T1], ix2: Index[T2]) = {
         val data = for(x <- ix1.toArray; y <- ix2.toArray) yield (x, y)
@@ -165,6 +165,6 @@ trait StackerLowPriority {
       }
 
       def ord = scala.math.Ordering.Tuple2[T1, T2]
-      def clm = implicitly[CLM[(T1, T2)]]
+      def clm = implicitly[ST[(T1, T2)]]
     }
 }

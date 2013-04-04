@@ -7,13 +7,11 @@ import org.saddle._
  * Date: 3/6/13
  * Time: 5:55 PM
  */
-private[saddle] object ScalarTagProduct {
+object ScalarTagProduct {
   def apply[T <: Product: CLM] = new ScalarTag[T] {
     def missing: T = null.asInstanceOf[T]
     def isMissing(v: T): Boolean = v == null
     def notMissing(v: T): Boolean = v != null
-
-    def classTag = implicitly[CLM[T]]
 
     def isTuple = true
 
@@ -37,5 +35,7 @@ private[saddle] object ScalarTagProduct {
     }
 
     def show(v: T) = "%s" format (if (v == null) "NA" else v.toString)
+
+    def erasure = implicitly[CLM[T]].erasure
   }
 }

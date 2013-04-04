@@ -22,7 +22,7 @@ import org.saddle.Buffer
 /**
  * Buffer instance for Any type
  */
-private[saddle] class BufferAny[T: CLM](sz: Int = 16) extends Buffer[T] {
+private[saddle] class BufferAny[T: ST](sz: Int = 16) extends Buffer[T] {
   var list = Array.ofDim[T](sz)
   var count = 0
   var remain = sz
@@ -50,6 +50,6 @@ private[saddle] class BufferAny[T: CLM](sz: Int = 16) extends Buffer[T] {
 }
 
 object BufferAny {
-  def apply[T: CLM](sz: Int) = new BufferAny[T](sz)
-  def apply[T: CLM]() = new BufferAny[T]()
+  def apply[T: ST](sz: Int) = new BufferAny[T](sz)
+  def apply[T: ST]() = new BufferAny[T]()
 }

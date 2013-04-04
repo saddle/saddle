@@ -29,7 +29,7 @@ import locator.Locator
  * Index with long keys
  */
 private[saddle] class IndexLong(keys: Vec[Long]) extends Index[Long] {
-  val scalarTag = getScalarTag[Long]
+  val scalarTag = ScalarTagLong
 
   private lazy val (lmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
 
@@ -46,7 +46,7 @@ private[saddle] class IndexLong(keys: Vec[Long]) extends Index[Long] {
 
   def without(locs: Array[Int]): Index[Long] = Index(array.remove(keys, locs))
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[Long, B, C], mc: CLM[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](x: Index[B])(implicit wd: Promoter[Long, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Long, B, C](toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
@@ -103,7 +103,7 @@ private[saddle] class IndexLong(keys: Vec[Long]) extends Index[Long] {
       -(binarySearch(keys, t) + 1)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B: ORD: CLM](f: Long => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ORD: ST](f: Long => B): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Long] = keys.toArray

@@ -23,7 +23,7 @@ import org.saddle._
  *
  * @param columns A sequence of Vec instances containing data
  */
-case class ParsedData[T: CLM](headers: Vec[String], columns: Seq[Vec[T]]) {
+case class ParsedData[T: ST](headers: Vec[String], columns: Seq[Vec[T]]) {
   def toFrame: Frame[Int, String, T] = Frame(headers.toSeq zip columns : _*)
   def toFrameNoHeader: Frame[Int, Int, T] = Frame(columns.zipWithIndex.map { case (c, i) => (i, c) } : _*)
 

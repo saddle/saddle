@@ -21,14 +21,12 @@ import org.saddle._
 /**
  * Byte ScalarTag
  */
-private[saddle] object ScalarTagByte extends ScalarTag[Byte] {
+object ScalarTagByte extends ScalarTag[Byte] {
   def missing: Byte = Byte.MinValue
   def isMissing(v: Byte): Boolean = (v == Byte.MinValue)
   def notMissing(v: Byte): Boolean = (v != Byte.MinValue)
 
   def isTuple = false
-
-  def classTag = implicitly[CLM[Byte]]
 
   // note, consider N/A's equal
   def compare(x: Byte, y: Byte)(implicit ev: ORD[Byte]) =
@@ -43,4 +41,6 @@ private[saddle] object ScalarTagByte extends ScalarTag[Byte] {
   def negInf(implicit ev: NUM[Byte]) = Byte.MinValue
 
   def show(v: Byte) = if(isMissing(v)) "%s" format "NA" else "%s" format(v)
+
+  def erasure = implicitly[CLM[Byte]].erasure
 }

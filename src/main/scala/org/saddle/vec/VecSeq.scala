@@ -23,11 +23,11 @@ import org.saddle.scalar._
  * A sequence of Vecs; a container for 2D data. Isomorphic to IndexedSeq; adds some additional
  * functionality.
  */
-private[saddle] class VecSeq[A: CLM](vecs: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
+private[saddle] class VecSeq[A: ST](vecs: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
   require(vecs.length < 2 || vecs.foldLeft(true)(_ && _.length == vecs(0).length),
           "Vecs must all be the same length")
 
-  def scalarTag = getScalarTag[A]
+  def scalarTag = implicitly[ST[A]]
 
   def numRows = vecs.headOption.map(_.length) getOrElse 0
 
@@ -68,27 +68,27 @@ private[saddle] class VecSeq[A: CLM](vecs: IndexedSeq[Vec[A]]) extends IndexedSe
   def without(locs: Array[Int]): VecSeq[A] = array.remove(this.toArray, locs).toIndexedSeq
 
   // take all vecs that match provided type, along with their locations
-  private[saddle] def takeType[B: CLM]: (IndexedSeq[Vec[B]], Array[Int]) = {
-    val (v, i) = vecs.zipWithIndex.filter(_._1.scalarTag == getScalarTag[B]).unzip
+  private[saddle] def takeType[B: ST]: (IndexedSeq[Vec[B]], Array[Int]) = {
+    val (v, i) = vecs.zipWithIndex.filter(_._1.scalarTag == implicitly[ST[B]]).unzip
     (v.asInstanceOf[IndexedSeq[Vec[B]]], i.toArray)
   }
 }
 
 object VecSeq {
-  def empty[A: CLM]: VecSeq[A] = apply(Array.empty[Vec[A]])
+  def empty[A: ST]: VecSeq[A] = apply(Array.empty[Vec[A]])
 
-  def apply[A: CLM](vecs: Vec[A]*): VecSeq[A] = new VecSeq[A](vecs.toIndexedSeq)
+  def apply[A: ST](vecs: Vec[A]*): VecSeq[A] = new VecSeq[A](vecs.toIndexedSeq)
 
-  def apply[A: CLM](vecs: Array[Vec[A]]): VecSeq[A] = apply(vecs : _*)
+  def apply[A: ST](vecs: Array[Vec[A]]): VecSeq[A] = apply(vecs : _*)
 
-  def apply[A: CLM](mat: Mat[A]): VecSeq[A] = apply(mat.cols() : _*)
+  def apply[A: ST](mat: Mat[A]): VecSeq[A] = apply(mat.cols() : _*)
 
   // isomorphism
-  implicit def IndexSeq2VecSeq[A: CLM](vecs: IndexedSeq[Vec[A]]): VecSeq[A] = apply(vecs : _*)
-  implicit def VecSeq2IndexSeq[A: CLM](vecs: VecSeq[A]): IndexedSeq[Vec[A]] = vecs
+  implicit def IndexSeq2VecSeq[A: ST](vecs: IndexedSeq[Vec[A]]): VecSeq[A] = apply(vecs : _*)
+  implicit def VecSeq2IndexSeq[A: ST](vecs: VecSeq[A]): IndexedSeq[Vec[A]] = vecs
 
   // Logic to get string widths of columns in a sequence of vectors
-  private[saddle] def colLens[A: CLM](vecs: VecSeq[A], numCols: Int, len: Int): Map[Int, Int] = {
+  private[saddle] def colLens[A: ST](vecs: VecSeq[A], numCols: Int, len: Int): Map[Int, Int] = {
     val half = len / 2
     val maxf = (a: Int, b: String) => a.max(b.length)
 

@@ -121,7 +121,7 @@ import java.io.OutputStream
  * @tparam CX The type of column keys
  * @tparam T The type of entries in the frame
  */
-class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
+class Frame[RX: ORD: ST, CX: ORD: ST, T: ST](
   private[saddle] val values: VecSeq[T], val rowIx: Index[RX], val colIx: Index[CX])
   extends NumericOps[Frame[RX, CX, T]] {
 
@@ -478,7 +478,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * The result is a homogeneous frame consisting of the selected data.
    * @tparam U The type of columns to extract
    */
-  def colType[U: CLM]: Frame[RX, CX, U] = {
+  def colType[U: ST]: Frame[RX, CX, U] = {
     val (columns, locs) = values.takeType[U]
     Frame(columns, rowIx, colIx.take(locs))
   }
@@ -489,7 +489,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam U1 First type of columns to extract
    * @tparam U2 Second type of columns to extract
    */
-  def colType[U1: CLM, U2: CLM]: Frame[RX, CX, Any] = {
+  def colType[U1: ST, U2: ST]: Frame[RX, CX, Any] = {
     val (columns1, locs1) = values.takeType[U1]
     val (columns2, locs2) = values.takeType[U2]
 
@@ -508,7 +508,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param newIx A new Index
    * @tparam Y Type of elements of new Index
    */
-  def setRowIndex[Y: ORD: CLM](newIx: Index[Y]): Frame[Y, CX, T] = Frame(values, newIx, colIx)
+  def setRowIndex[Y: ORD: ST](newIx: Index[Y]): Frame[Y, CX, T] = Frame(values, newIx, colIx)
 
   /**
    * Map a function over the row index, resulting in a new Frame
@@ -516,7 +516,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param fn The function RX => Y with which to map
    * @tparam Y Result type of index, ie Index[Y]
    */
-  def mapRowIndex[Y: ORD: CLM](fn: RX => Y): Frame[Y, CX, T] = Frame(values, rowIx.map(fn), colIx)
+  def mapRowIndex[Y: ORD: ST](fn: RX => Y): Frame[Y, CX, T] = Frame(values, rowIx.map(fn), colIx)
 
   /**
    * Create a new Frame using the current values but with the new col index. Positions
@@ -524,7 +524,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param newIx A new Index
    * @tparam Y Type of elements of new Index
    */
-  def setColIndex[Y: ORD: CLM](newIx: Index[Y]): Frame[RX, Y, T] = Frame(values, rowIx, newIx)
+  def setColIndex[Y: ORD: ST](newIx: Index[Y]): Frame[RX, Y, T] = Frame(values, rowIx, newIx)
 
   /**
    * Map a function over the col index, resulting in a new Frame
@@ -532,7 +532,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param fn The function CX => Y with which to map
    * @tparam Y Result type of index, ie Index[Y]
    */
-  def mapColIndex[Y: ORD: CLM](fn: CX => Y): Frame[RX, Y, T] = Frame(values, rowIx, colIx.map(fn))
+  def mapColIndex[Y: ORD: ST](fn: CX => Y): Frame[RX, Y, T] = Frame(values, rowIx, colIx.map(fn))
 
   /**
    * Create a new Frame whose values are the same, but whose row index has been changed
@@ -659,7 +659,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
     var j = locs.length - 1
     while(j >= 0) {
       val tosort = colAt(locs(j)).values.take(order)
-      val reordr = Index(tosort)(ev, implicitly[CLM[T]]).argSort
+      val reordr = Index(tosort)(ev, implicitly[ST[T]]).argSort
       order = array.take(order, reordr, sys.error("Logic error"))
       j -= 1
     }
@@ -679,7 +679,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
     var j = locs.length - 1
     while(j >= 0) {
       val tosort = rowAt(locs(j)).values.take(order)
-      val reordr = Index(tosort)(ev, implicitly[CLM[T]]).argSort
+      val reordr = Index(tosort)(ev, implicitly[ST[T]]).argSort
       order = array.take(order, reordr, sys.error("Logic error"))
       j -= 1
     }
@@ -719,7 +719,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam U The type of the resulting values
    */
 
-  def mapValues[U: CLM](f: T => U): Frame[RX, CX, U] = Frame(values.map(v => v.map(f)), rowIx, colIx)
+  def mapValues[U: ST](f: T => U): Frame[RX, CX, U] = Frame(values.map(v => v.map(f)), rowIx, colIx)
 
   /**
    * Create a new Frame that, whenever the mask predicate function evaluates to
@@ -745,7 +745,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam U The type of other frame values
    * @tparam V The result type of the function
    */
-  def joinMap[U: CLM, V: CLM](other: Frame[RX, CX, U],
+  def joinMap[U: ST, V: ST](other: Frame[RX, CX, U],
                               rhow: JoinType = LeftJoin,
                               chow: JoinType = RightJoin)(f: (T, U) => V): Frame[RX, CX, V] = {
     val (l, r) = align(other, rhow, chow)
@@ -759,7 +759,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param f Function acting on Vec[T] and producing another Vec
    * @tparam U Type of result Vec of the function
    */
-  def mapVec[U: CLM](f: Vec[T] => Vec[U]): Frame[RX, CX, U] = Frame(values.map(f), rowIx, colIx)
+  def mapVec[U: ST](f: Vec[T] => Vec[U]): Frame[RX, CX, U] = Frame(values.map(f), rowIx, colIx)
 
   /**
    * Apply a function to each column series which results in a single value, and return the
@@ -767,7 +767,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param f Function taking a column (series) to a value
    * @tparam U The output type of the function
    */
-  def reduce[U: CLM](f: Series[RX, T] => U): Series[CX, U] =
+  def reduce[U: ST](f: Series[RX, T] => U): Series[CX, U] =
     Series(Vec(values.map(v => f(Series(v, rowIx))) : _*), colIx)
 
   /**
@@ -779,7 +779,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam U Type of values of result series of function
    * @tparam SX Type of index of result series of function
    */
-  def transform[U: CLM, SX: ORD: CLM](f: Series[RX, T] => Series[SX, U]): Frame[SX, CX, U] =
+  def transform[U: ST, SX: ORD: ST](f: Series[RX, T] => Series[SX, U]): Frame[SX, CX, U] =
     Frame(values.map(v => f(Series(v, rowIx))), colIx)
 
   // groupBy functionality (on rows)
@@ -799,7 +799,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param fn Function from RX => Y
    * @tparam Y Type of function codomain
    */
-  def groupBy[Y: ORD: CLM](fn: RX => Y) = FrameGrouper(this.rowIx.map(fn), this)
+  def groupBy[Y: ORD: ST](fn: RX => Y) = FrameGrouper(this.rowIx.map(fn), this)
 
   /**
    * Construct a [[org.saddle.groupby.FrameGrouper]] with which further computations, such
@@ -808,7 +808,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param ix Index with which to perform grouping
    * @tparam Y Type of elements of ix
    */
-  def groupBy[Y: ORD: CLM](ix: Index[Y]) = FrameGrouper(ix, this)
+  def groupBy[Y: ORD: ST](ix: Index[Y]) = FrameGrouper(ix, this)
 
   // concatenate two frames together (vertically), must have same number of columns
 
@@ -826,7 +826,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam V type of resulting Frame values
    */
   def concat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
-    implicit pro: Promoter[T, U, V], mu: CLM[U], md: CLM[V]): Frame[RX, CX, V] = {
+    implicit pro: Promoter[T, U, V], mu: ST[U], md: ST[V]): Frame[RX, CX, V] = {
 
     val ixr = colIx.join(other.colIx, how)
 
@@ -897,9 +897,14 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param f Function Series[X, T] => B to operate on sliding window
    * @tparam B Result type of function
    */
-  def rolling[B: CLM](winSz: Int, f: Series[RX, T] => B): Frame[RX, CX, B] = {
-    val tmp = values.map { v => Series(v, rowIx).rolling(winSz, f).values }
-    Frame(tmp, rowIx.slice(winSz - 1, values.numRows), colIx)
+  def rolling[B: ST](winSz: Int, f: Series[RX, T] => B): Frame[RX, CX, B] = {
+    if (winSz <= 0)
+      Frame.empty[RX, CX, B]
+    else {
+      val win = if (winSz > numRows) numRows else winSz
+      val tmp = values.map { v => Series(v, rowIx).rolling(win, f).values }
+      Frame(tmp, rowIx.slice(win - 1, values.numRows), colIx)
+    }
   }
 
   /**
@@ -910,14 +915,19 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param f Function taking the (sub) frame to B
    * @tparam B Result element type of Series
    */
-  def rollingFtoS[B: CLM](winSz: Int, f: Frame[RX, CX, T] => B): Series[RX, B] = {
-    val buf = new Array[B](numRows - winSz + 1)
-    var i = winSz
-    while (i <= numRows) {
-      buf(i - winSz) = f(rowSlice(i - winSz, i))
-      i += 1
+  def rollingFtoS[B: ST](winSz: Int, f: Frame[RX, CX, T] => B): Series[RX, B] = {
+    if (winSz <= 0)
+      Series.empty[RX, B]
+    else {
+      val win = if (winSz > numRows) numRows else winSz
+      val buf = new Array[B](numRows - win + 1)
+      var i = win
+      while (i <= numRows) {
+        buf(i - win) = f(rowSlice(i - win, i))
+        i += 1
+      }
+      Series(Vec(buf), rowIx.slice(win - 1, numRows))
     }
-    Series(Vec(buf), rowIx.slice(winSz - 1, numRows))
   }
 
   // ----------------------------------------
@@ -999,7 +1009,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @param rhow How to perform the join on the row indexes
    * @param chow How to perform the join on the col indexes
    */
-  def align[U: CLM](other: Frame[RX, CX, U],
+  def align[U: ST](other: Frame[RX, CX, U],
                     rhow: JoinType = OuterJoin,
                     chow: JoinType = OuterJoin): (Frame[RX, CX, T], Frame[RX, CX, U]) = {
     val rJoin = rowIx.join(other.rowIx, rhow)
@@ -1068,7 +1078,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
       i += 1
     }
 
-    Series[W, T](toMat.toArray, Index(ix)(melter.ord, melter.clm))(melter.ord, melter.clm, implicitly[CLM[T]])
+    Series[W, T](toMat.toArray, Index(ix)(melter.ord, melter.clm))(melter.ord, melter.clm, implicitly[ST[T]])
   }
 
   /**
@@ -1085,7 +1095,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam V The type of the stacked row index
    */
   def stack[O1, O2, V](implicit splt: Splitter[CX, O1, O2], stkr: Stacker[RX, O2, V],
-                       ord1: ORD[O1], ord2: ORD[O2], m1: CLM[O1], m2: CLM[O2]): Frame[V, O1, T] = {
+                       ord1: ORD[O1], ord2: ORD[O2], m1: ST[O1], m2: ST[O2]): Frame[V, O1, T] = {
     T.unstack.T
   }
 
@@ -1125,7 +1135,7 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
    * @tparam V The type of the stacked col index
    */
   def unstack[O1, O2, V](implicit splt: Splitter[RX, O1, O2], stkr: Stacker[CX, O2, V],
-                         ord1: ORD[O1], ord2: ORD[O2], m1: CLM[O1], m2: CLM[O2]): Frame[O1, V, T] = {
+                         ord1: ORD[O1], ord2: ORD[O2], m1: ST[O1], m2: ST[O2]): Frame[O1, V, T] = {
     implicit def ordV = stkr.ord
     implicit def clmV = stkr.clm
 
@@ -1189,23 +1199,23 @@ class Frame[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
   /**
    * See mapVec; operates row-wise
    */
-  def rmapVec[U: CLM](f: Vec[T] => Vec[U]) = T.mapVec(f).T
+  def rmapVec[U: ST](f: Vec[T] => Vec[U]) = T.mapVec(f).T
 
   /**
    * See reduce; operates row-wise
    */
-  def rreduce[U: CLM](f: Series[CX, T] => U): Series[RX, U] = T.reduce(f)
+  def rreduce[U: ST](f: Series[CX, T] => U): Series[RX, U] = T.reduce(f)
 
   /**
    * See transform; operates row-wise
    */
-  def rtransform[U: CLM, SX: ORD: CLM](f: Series[CX, T] => Series[SX, U]): Frame[RX, SX, U] = T.transform(f).T
+  def rtransform[U: ST, SX: ORD: ST](f: Series[CX, T] => Series[SX, U]): Frame[RX, SX, U] = T.transform(f).T
 
   /**
    * See concat; operates row-wise
    */
   def rconcat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
-    implicit wd1: Promoter[T, U, V], mu: CLM[U], md: CLM[V]): Frame[RX, CX, V] = T.concat(other.T, how).T
+    implicit wd1: Promoter[T, U, V], mu: ST[U], md: ST[V]): Frame[RX, CX, V] = T.concat(other.T, how).T
 
   /**
    * See where; operates row-wise
@@ -1445,7 +1455,7 @@ object Frame extends BinOpFrame {
   /**
    * Enrich a Frame to provide statistical methods
    */
-  implicit def frameToStats[RX, CX, T: CLM](f: Frame[RX, CX, T]) = new FrameStats[RX, CX, T](f)
+  implicit def frameToStats[RX, CX, T: ST](f: Frame[RX, CX, T]) = new FrameStats[RX, CX, T](f)
 
   // --------------------------------
   // instantiations
@@ -1456,7 +1466,7 @@ object Frame extends BinOpFrame {
    * @tparam CX Type of col keys
    * @tparam T Type of values
    */
-  def empty[RX: ORD: CLM, CX: ORD: CLM, T: CLM]: Frame[RX, CX, T] =
+  def empty[RX: ORD: ST, CX: ORD: ST, T: ST]: Frame[RX, CX, T] =
     new Frame[RX, CX, T](VecSeq.empty[T], Index.empty[RX], Index.empty[CX])
 
   // --------------------------------
@@ -1465,7 +1475,7 @@ object Frame extends BinOpFrame {
   /**
    * Factory method to create a Frame from a sequence of Vec objects
    */
-  def apply[T: CLM](values: Vec[T]*): Frame[Int, Int, T] =
+  def apply[T: ST](values: Vec[T]*): Frame[Int, Int, T] =
     if (values.isEmpty) empty[Int, Int, T]
     else {
       val asIdxSeq = values.toIndexedSeq
@@ -1476,7 +1486,7 @@ object Frame extends BinOpFrame {
    * Factory method to create a Frame from a sequence of Vec objects,
    * a row index, and a column index.
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST, T: ST](
     values: Seq[Vec[T]], rowIx: Index[RX], colIx: Index[CX]): Frame[RX, CX, T] =
     if (values.isEmpty) empty[RX, CX, T]
     else
@@ -1486,7 +1496,7 @@ object Frame extends BinOpFrame {
    * Factory method to create a Frame from a sequence of Vec objects
    * and a column index.
    */
-  def apply[CX: ORD: CLM, T: CLM](values: Seq[Vec[T]], colIx: Index[CX]): Frame[Int, CX, T] =
+  def apply[CX: ORD: ST, T: ST](values: Seq[Vec[T]], colIx: Index[CX]): Frame[Int, CX, T] =
     if (values.isEmpty) empty[Int, CX, T]
     else {
       val asIdxSeq = values.toIndexedSeq
@@ -1497,7 +1507,7 @@ object Frame extends BinOpFrame {
    * Factory method to create a Frame from tuples whose first element is
    * the column label and the second is a Vec of values.
    */
-  def apply[CX: ORD: CLM, T: CLM](values: (CX, Vec[T])*): Frame[Int, CX, T] = {
+  def apply[CX: ORD: ST, T: ST](values: (CX, Vec[T])*): Frame[Int, CX, T] = {
     val asIdxSeq = values.map(_._2).toIndexedSeq
     val idx = Index(values.map(_._1).toArray)
     asIdxSeq.length match {
@@ -1517,7 +1527,7 @@ object Frame extends BinOpFrame {
    * Factory method to create a Frame from a sequence of Series. The row labels
    * of the result are the outer join of the indexes of the series provided.
    */
-  def apply[RX: ORD: CLM, T: CLM: ID](values: Series[RX, T]*): Frame[RX, Int, T] = {
+  def apply[RX: ORD: ST, T: ST: ID](values: Series[RX, T]*): Frame[RX, Int, T] = {
     val asIdxSeq = values.toIndexedSeq
     asIdxSeq.length match {
       case 0 => empty[RX, Int, T]
@@ -1535,7 +1545,7 @@ object Frame extends BinOpFrame {
    * the column index to use. The row labels of the result are the outer join of
    * the indexes of the series provided.
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST, T: ST](
     values: Seq[Series[RX, T]], colIx: Index[CX]): Frame[RX, CX, T] = {
     val asIdxSeq = values.toIndexedSeq
     asIdxSeq.length match {
@@ -1555,7 +1565,7 @@ object Frame extends BinOpFrame {
    * of values. The row labels of the result are the outer join of the
    * indexes of the series provided.
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST, T: ST](
     values: (CX, Series[RX, T])*): Frame[RX, CX, T] = {
     val asIdxSeq = values.map(_._2).toIndexedSeq
     val idx = Index(values.map(_._1).toArray)
@@ -1576,13 +1586,13 @@ object Frame extends BinOpFrame {
   /**
    * Build a Frame from a provided Mat
    */
-  def apply[T: CLM](values: Mat[T]): Frame[Int, Int, T] =
+  def apply[T: ST](values: Mat[T]): Frame[Int, Int, T] =
     apply(values, new IndexIntRange(values.numRows), new IndexIntRange(values.numCols))
 
   /**
    * Build a Frame from a provided Mat, row index, and col index
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM, T: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST, T: ST](
     values: Mat[T], rowIx: Index[RX], colIx: Index[CX]): Frame[RX, CX, T] =
     if (values.length == 0)
       empty[RX, CX, T]
@@ -1603,7 +1613,7 @@ object Panel {
    * @tparam RX Type of row keys
    * @tparam CX Type of col keys
    */
-  def empty[RX: ORD: CLM, CX: ORD: CLM]: Frame[RX, CX, Any] =
+  def empty[RX: ORD: ST, CX: ORD: ST]: Frame[RX, CX, Any] =
     new Frame[RX, CX, Any](VecSeq.empty, Index.empty[RX], Index.empty[CX])
 
   // --------------------------------
@@ -1623,7 +1633,7 @@ object Panel {
    * Factory method to create a Frame from a sequence of Vec objects,
    * a row index, and a column index.
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST](
     values: Seq[Vec[_]], rowIx: Index[RX], colIx: Index[CX]): Frame[RX, CX, Any] = {
     val anySeq = values.toIndexedSeq
     if (values.isEmpty)
@@ -1636,7 +1646,7 @@ object Panel {
    * Factory method to create a Frame from a sequence of Vec objects
    * and a column index.
    */
-  def apply[CX: ORD: CLM](values: Seq[Vec[_]], colIx: Index[CX]): Frame[Int, CX, Any] =
+  def apply[CX: ORD: ST](values: Seq[Vec[_]], colIx: Index[CX]): Frame[Int, CX, Any] =
     if (values.isEmpty) empty[Int, CX]
     else {
       val asIdxSeq = values.toIndexedSeq
@@ -1650,7 +1660,7 @@ object Panel {
    * Factory method to create a Frame from tuples whose first element is
    * the column label and the second is a Vec of values.
    */
-  def apply[CX: ORD: CLM, T: CLM](
+  def apply[CX: ORD: ST, T: ST](
     values: (CX, Vec[_])*): Frame[Int, CX, Any] = {
     val asIdxSeq = values.map(_._2).toIndexedSeq
     val idx = Index(values.map(_._1).toArray)
@@ -1670,7 +1680,7 @@ object Panel {
    * Factory method to create a Frame from a sequence of Series. The row labels
    * of the result are the outer join of the indexes of the series provided.
    */
-  def apply[RX: ORD: CLM](values: Series[RX, _]*): Frame[RX, Int, Any] = {
+  def apply[RX: ORD: ST](values: Series[RX, _]*): Frame[RX, Int, Any] = {
     val asIdxSeq = toSeqSeries(values)
     asIdxSeq.length match {
       case 0 => empty[RX, Int]
@@ -1688,7 +1698,7 @@ object Panel {
    * the column index to use. The row labels of the result are the outer join of
    * the indexes of the series provided.
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST](
     values: Seq[Series[RX, _]], colIx: Index[CX]): Frame[RX, CX, Any] = {
     val asIdxSeq = toSeqSeries(values)
     asIdxSeq.length match {
@@ -1708,7 +1718,7 @@ object Panel {
    * of values. The row labels of the result are the outer join of the
    * indexes of the series provided.
    */
-  def apply[RX: ORD: CLM, CX: ORD: CLM](
+  def apply[RX: ORD: ST, CX: ORD: ST](
     values: (CX, Series[RX, _])*): Frame[RX, CX, Any] = {
     val asIdxSeq = toSeqSeries(values.map(_._2))
     val idx = Index(values.map(_._1).toArray)

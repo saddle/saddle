@@ -61,23 +61,23 @@ trait BinOp[O <: OpType,
  * Note scala.Function2 is not specialized on Boolean inputs, only output
  */
 object BinOp {
-  private final class BinOpImpl[O <: OpType, @spec(Int, Long, Double) Q: CLM, @spec(Int, Long, Double) R: CLM, @spec(Boolean, Int, Long, Double) S: CLM](
+  private final class BinOpImpl[O <: OpType, @spec(Int, Long, Double) Q: ST, @spec(Int, Long, Double) R: ST, @spec(Boolean, Int, Long, Double) S: ST](
     f: (Q, R) => S) extends BinOp[O, Q, R, S] {
-    val sq = scalar.getScalarTag[Q]
-    val sr = scalar.getScalarTag[R]
-    val ss = scalar.getScalarTag[S]
+    val sq = implicitly[ST[Q]]
+    val sr = implicitly[ST[R]]
+    val ss = implicitly[ST[S]]
     def apply(a: Q, b: R) = if(sq.isMissing(a) || sr.isMissing(b)) ss.missing else f(a, b)
   }
 
-  private final class BinOpImplDL[O <: OpType, @spec(Int, Long) R: CLM](
+  private final class BinOpImplDL[O <: OpType, @spec(Int, Long) R: ST](
     f: (Double, R) => Double) extends BinOp[O, Double, R, Double] {
-    val sc = scalar.getScalarTag[R]
+    val sc = implicitly[ST[R]]
     def apply(a: Double, b: R) = if(sc.isMissing(b)) Double.NaN else f(a, b)
   }
 
-  private final class BinOpImplLD[O <: OpType, @spec(Int, Long) Q: CLM](
+  private final class BinOpImplLD[O <: OpType, @spec(Int, Long) Q: ST](
     f: (Q, Double) => Double) extends BinOp[O, Q, Double, Double] {
-    val sc = scalar.getScalarTag[Q]
+    val sc = implicitly[ST[Q]]
     def apply(a: Q, b: Double) = if(sc.isMissing(a)) Double.NaN else f(a, b)
   }
 

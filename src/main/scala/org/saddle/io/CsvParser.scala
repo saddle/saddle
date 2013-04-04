@@ -61,7 +61,7 @@ object CsvParser {
    * @param source The csv data source to operate on
    * @tparam T The result type of the parsing function
    */
-  def parse[T: CLM](convert: String => T, cols: Seq[Int] = List(),
+  def parse[T: ST](convert: String => T, cols: Seq[Int] = List(),
                     params: CsvParams = CsvParams())(source: CsvSource): ParsedData[T] = {
 
     require(params.separChar != params.quoteChar,
@@ -125,7 +125,7 @@ object CsvParser {
    * @param params The CsvParams to utilize in parsing
    * @tparam T The result type of the parsing function
    */
-  def parsePar[T: CLM](convert: String => T, cols: Seq[Int] = List(),
+  def parsePar[T: ST](convert: String => T, cols: Seq[Int] = List(),
                        params: CsvParams = CsvParams())(src: CsvSourcePar): ParsedData[T] = {
     val xserv = Executors.newFixedThreadPool(nProcs)           // create thread pool for N CPU bound threads
 
@@ -272,14 +272,14 @@ object CsvParser {
   }
 
   // a task that parses a chunk, returns some ParseData
-  private def parseTask[T: CLM](convert: String => T, chunk: CsvSource, cols: Seq[Int], params: CsvParams) =
+  private def parseTask[T: ST](convert: String => T, chunk: CsvSource, cols: Seq[Int], params: CsvParams) =
     new Callable[ParsedData[T]] {
       val csvpar = params.copy(skipLines = 0)
       def call() = parse[T](convert, cols, csvpar)(chunk)
     }
 
   // concatenates a single column within the ParseData chunks, returns joined Vec
-  private def combineTask[T: CLM](chunks: IndexedSeq[ParsedData[T]], col: Int, sz: Int) =
+  private def combineTask[T: ST](chunks: IndexedSeq[ParsedData[T]], col: Int, sz: Int) =
     new Callable[Vec[T]] {
       def call() = {
         val arr = Array.ofDim[T](sz)

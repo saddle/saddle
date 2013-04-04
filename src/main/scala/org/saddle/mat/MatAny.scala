@@ -23,16 +23,16 @@ import org.saddle.scalar._
 /**
  * A Mat instance containing elements of type Any
  */
-private[saddle] class MatAny[T : CLM](r: Int, c: Int, values: Array[T]) extends Mat[T] {
+private[saddle] class MatAny[T : ST](r: Int, c: Int, values: Array[T]) extends Mat[T] {
   def repr = this
 
   def numRows = r
 
   def numCols = c
 
-  lazy val scalarTag = getScalarTag[T]
+  lazy val scalarTag = ScalarTagAny[T]
 
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: (T) => B): Mat[B] = MatImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (T) => B): Mat[B] = MatImpl.map(this)(f)
 
   def foldLeft[@spec(Boolean, Int, Long, Double) A](init: A)(f: (A, T) => A): A = MatImpl.foldLeft(this)(init)(f)
 

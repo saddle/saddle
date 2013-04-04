@@ -26,7 +26,7 @@ import org.saddle._
  * @tparam CX Type of the column index elements
  * @tparam T Type of the elements of the frame
  */
-class FrameStats[RX, CX, T: CLM](frame: Frame[RX, CX, T]) {
+class FrameStats[RX, CX, T: ST](frame: Frame[RX, CX, T]) {
   // --------------------------------------
   // helpful math ops
 
@@ -45,12 +45,12 @@ class FrameStats[RX, CX, T: CLM](frame: Frame[RX, CX, T]) {
   /**
    * Min of the elements of each column, ignoring NA values
    */
-  def min(implicit ev: S2Stats): Series[CX, T] = frame.reduce(_.min.getOrElse(scalar.getScalarTag[T].missing))
+  def min(implicit ev: S2Stats): Series[CX, T] = frame.reduce(_.min.getOrElse(implicitly[ST[T]].missing))
 
   /**
    * Max of the elements of each column, ignoring NA values
    */
-  def max(implicit ev: S2Stats): Series[CX, T] = frame.reduce(_.max.getOrElse(scalar.getScalarTag[T].missing))
+  def max(implicit ev: S2Stats): Series[CX, T] = frame.reduce(_.max.getOrElse(implicitly[ST[T]].missing))
 
   /**
    * Product of the elements of each column, ignoring NA values

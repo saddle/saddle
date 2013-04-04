@@ -33,10 +33,10 @@ import util.Concat.Promoter
  */
 class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Vec[DateTime] {
 
-  val scalarTag = getScalarTag[DateTime]
+  val scalarTag = ScalarTagAny[DateTime]
   val chrono = ISO_CHRONO.withZone(tzone)
 
-  private val lmf = scalar.getScalarTag[Long]
+  private val lmf = scalar.ScalarTagLong
 
   private def l2t(l: Long) = if (lmf.isMissing(l)) scalarTag.missing else new DateTime(l, chrono)
   private def t2l(t: DateTime) = if (scalarTag.isMissing(t)) lmf.missing else t.getMillis
@@ -54,37 +54,37 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
   def concat(x: VecTime) = vl2vt(Vec(util.Concat.append(times.toArray, x.times.toArray)))
 
   // general concatenation                                                     millis
-  def concat[B, C](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: CLM[C]) =
+  def concat[B, C](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C]) =
     Vec(util.Concat.append[DateTime, B, C](toArray, v.toArray))
 
   def unary_-() = sys.error("Cannot negate TimeVec")
 
-  def map[@spec(Boolean, Int, Long, Double) B: CLM](f: (DateTime) => B) =
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
     times.map(v => f(l2t(v)))
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) B: CLM](init: B)(f: (B, DateTime) => B) =
+  def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.foldLeft(init)((a,b) => f(a, l2t(b)))
 
-  def scanLeft[@spec(Boolean, Int, Long, Double) B: CLM](init: B)(f: (B, DateTime) => B) =
+  def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.scanLeft(init)((a,b) => f(a, l2t(b)))
 
-  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: CLM](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
+  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
     times.filterFoldLeft(l2t _ andThen pred)(init)((a, b) => f(a, l2t(b)))
 
-  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: CLM](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
+  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
     times.filterScanLeft(l2t _ andThen pred)(init)((a, b) => f(a, l2t(b)))
 
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: CLM](init: B)(f: (B, DateTime) => B)(
+  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B)(
     cond: (B, DateTime) => Boolean) = times.foldLeftWhile(init)((a, b) => f(a, l2t(b)))((a, b) => cond(a, l2t(b)))
 
-  def zipMap[@spec(Boolean, Int, Long, Double) B: CLM, @spec(Boolean, Int, Long, Double) C: CLM](
+  def zipMap[@spec(Boolean, Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](
     other: Vec[B])(f: (DateTime, B) => C) = times.zipMap(other)((a, b) => f(l2t(a), b))
 
   def dropNA = vl2vt(times.dropNA)
 
   def hasNA = times.hasNA
 
-  def rolling[@spec(Boolean, Int, Long, Double) B: CLM](winSz: Int, f: (Vec[DateTime]) => B) =
+  def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: (Vec[DateTime]) => B) =
     times.rolling(winSz, vl2vt _ andThen f)
 
   def slice(from: Int, until: Int, stride: Int) =
@@ -106,8 +106,8 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 }
 
 object VecTime {
-  private val sm = getScalarTag[DateTime]
-  private val sl = getScalarTag[Long]
+  private val sm = ScalarTagAny[DateTime]
+  private val sl = ScalarTagLong
 
   def apply(times : Array[DateTime]): VecTime = {
     val millis = array.empty[Long](times.length)

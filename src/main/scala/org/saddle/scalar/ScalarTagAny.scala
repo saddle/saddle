@@ -7,15 +7,13 @@ import org.saddle._
  * Date: 3/6/13
  * Time: 5:55 PM
  */
-private[saddle] object ScalarTagAny {
+object ScalarTagAny {
   def apply[T : CLM] = new ScalarTag[T] {
     def missing: T = null.asInstanceOf[T]
     def isMissing(v: T): Boolean = v == null
     def notMissing(v: T): Boolean = v != null
 
     def isTuple = false
-
-    def classTag = implicitly[CLM[T]]
 
     def compare(x: T, y: T)(implicit ev: ORD[T]): Int =
       if (x == null && y == null) 0
@@ -32,5 +30,7 @@ private[saddle] object ScalarTagAny {
     def negInf(implicit ev: NUM[T]) = sys.error("Infinities not supported")
 
     def show(v: T) = "%s" format (if (v == null) "NA" else v.toString)
+
+    def erasure = implicitly[CLM[T]].erasure
   }
 }

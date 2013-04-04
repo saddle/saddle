@@ -21,7 +21,7 @@ import org.saddle._
 /**
  * Creates groups for each unique key in an index
  */
-class IndexGrouper[Y: ORD: CLM](ix: Index[Y], sorted: Boolean = true) {
+class IndexGrouper[Y: ORD: ST](ix: Index[Y], sorted: Boolean = true) {
   private lazy val uniq: Array[Y] = {
     val arr = ix.uniques.toArray
     if (sorted && !ix.isMonotonic)
@@ -36,6 +36,6 @@ class IndexGrouper[Y: ORD: CLM](ix: Index[Y], sorted: Boolean = true) {
 }
 
 object IndexGrouper {
-  def apply[Y: ORD: CLM](ix: Index[Y]) = new IndexGrouper(ix)
-  def apply[Y: ORD: CLM](ix: Index[Y], sorted: Boolean = true) = new IndexGrouper(ix, sorted)
+  def apply[Y: ORD: ST](ix: Index[Y]) = new IndexGrouper(ix)
+  def apply[Y: ORD: ST](ix: Index[Y], sorted: Boolean = true) = new IndexGrouper(ix, sorted)
 }

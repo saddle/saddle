@@ -141,7 +141,7 @@ package object mat {
    * @param asRows if true, returns row-tiling; default is column-tiling
    * @tparam T type of elements in array
    */
-  def repeat[@spec(Boolean, Int, Long, Double) T: CLM](
+  def repeat[@spec(Boolean, Int, Long, Double) T: ST](
     v: Array[T], n: Int, asRows: Boolean = false): Mat[T] = {
 
     if (asRows) {
