@@ -90,6 +90,11 @@ trait Vec[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Vec[A]] {
    */
   private[saddle] def apply(loc: Int): A
 
+  /**
+   * Set to true when the vec is shifted over the backing array
+   */
+  protected def needsCopy: Boolean = false
+
   // ----------
   // get values
 

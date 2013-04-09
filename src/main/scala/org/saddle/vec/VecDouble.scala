@@ -81,6 +81,8 @@ private[saddle] class VecDouble(values: Array[Double]) extends Vec[Double] { sel
           throw new ArrayIndexOutOfBoundsException("Cannot access location %d >= length %d".format(loc, ub))
         self.apply(loc)
       }
+
+      override def needsCopy = length != self.length
     }
   }
 
@@ -103,6 +105,8 @@ private[saddle] class VecDouble(values: Array[Double]) extends Vec[Double] { sel
         else
           self.apply(loc)
       }
+
+      override def needsCopy = true
     }
   }
 
@@ -110,7 +114,7 @@ private[saddle] class VecDouble(values: Array[Double]) extends Vec[Double] { sel
 
   private[saddle] override def toArray: Array[Double] = {
     // need to check if we're a view on an array
-    if (values.length == length )
+    if (!needsCopy)
       values
     else {
       val buf = new Array[Double](length)

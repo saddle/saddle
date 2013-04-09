@@ -84,6 +84,8 @@ private[saddle] class VecAny[T : ST](values: Array[T]) extends Vec[T] { self =>
           throw new ArrayIndexOutOfBoundsException("Cannot access location %d >= length %d".format(loc, ub))
         self.apply(loc)
       }
+
+      override def needsCopy = length != self.length
     }
   }
 
@@ -106,12 +108,14 @@ private[saddle] class VecAny[T : ST](values: Array[T]) extends Vec[T] { self =>
         else
           self.apply(loc)
       }
+
+      override def needsCopy = true
     }
   }
 
   private[saddle] def toArray: Array[T] = {
     // need to check if we're a view on an array
-    if (values.length == length )
+    if (!needsCopy)
       values
     else {
       val buf = new Array[T](length)
