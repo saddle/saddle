@@ -69,3 +69,4 @@ Chris Lewis, Cheng Peng, & David Cru. Saddle was also inspired by
 previous work with [pandas](http://pandas.pydata.org/ "pandas"), a 
 data analysis library written in Python.
 
+[Browse the scaladoc](http://milo-minderbender.github.io/saddle/target/scala-2.9.2/api)
