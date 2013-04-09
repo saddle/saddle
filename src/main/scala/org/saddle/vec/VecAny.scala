@@ -85,7 +85,7 @@ private[saddle] class VecAny[T : ST](values: Array[T]) extends Vec[T] { self =>
         self.apply(loc)
       }
 
-      override def needsCopy = length != self.length
+      override def needsCopy = true
     }
   }
 

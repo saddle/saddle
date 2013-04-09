@@ -828,16 +828,17 @@ class Frame[RX: ORD: ST, CX: ORD: ST, T: ST](
   def concat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
     implicit pro: Promoter[T, U, V], mu: ST[U], md: ST[V]): Frame[RX, CX, V] = {
 
-    val ixr = colIx.join(other.colIx, how)
+    val ixc = colIx.join(other.colIx, how)
 
-    val lft = ixr.lTake.map(x => values.take(x)) getOrElse values
-    val rgt = ixr.rTake.map(x => other.values.take(x)) getOrElse other.values
+    val lft = ixc.lTake.map(x => values.take(x)) getOrElse values
+    val rgt = ixc.rTake.map(x => other.values.take(x)) getOrElse other.values
 
     val mfn = (v: Vec[T], u: Vec[U]) => v concat u
-    val dat = (lft zip rgt).map(v => mfn(v._1, v._2))
+    val zpp = lft zip rgt
+    val dat = zpp.map { case (top, bot) => mfn(top, bot) }
     val idx = array.flatten(Seq(rowIx.toArray, other.rowIx.toArray))
 
-    Frame(dat, idx, ixr.index)
+    Frame(dat, idx, ixc.index)
   }
 
   /**

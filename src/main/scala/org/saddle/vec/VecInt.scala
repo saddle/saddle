@@ -82,7 +82,7 @@ private[saddle] class VecInt(values: Array[Int]) extends Vec[Int] { self =>
         self.apply(loc)
       }
 
-      override def needsCopy = length != self.length
+      override def needsCopy = true
     }
   }
 

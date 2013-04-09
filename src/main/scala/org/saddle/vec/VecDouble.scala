@@ -82,7 +82,7 @@ private[saddle] class VecDouble(values: Array[Double]) extends Vec[Double] { sel
         self.apply(loc)
       }
 
-      override def needsCopy = length != self.length
+      override def needsCopy = true
     }
   }
 

@@ -81,7 +81,7 @@ private[saddle] class VecBool(values: Array[Boolean]) extends Vec[Boolean] { sel
         self.apply(loc)
       }
 
-      override def needsCopy = length != self.length
+      override def needsCopy = true
     }
   }
 
