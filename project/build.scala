@@ -64,7 +64,7 @@ object Shared {
     publishArtifact in Test := false,
     pomIncludeRepository := { x => false },
     pomExtra := (
-      <url>http://www.cakesolutions.org/specs2-spring.html</url>
+      <url>http://saddle.github.io/</url>
       <licenses>
         <license>
           <name>Apache 2.0</name>
