@@ -18,6 +18,11 @@ Saddle draws inspiration from several sources, among them the R programming
 language & statistical environment, the numpy and pandas Python libraries,
 and the Scala collections library.
 
+Documentation
+==============
+
+Browse the [scaladoc](http://saddle.github.io/saddle/target/scala-2.9.2/api).
+
 License
 =======
 
