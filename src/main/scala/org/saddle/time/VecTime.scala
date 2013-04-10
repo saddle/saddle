@@ -110,6 +110,9 @@ object VecTime {
   private val sm = ScalarTagTime
   private val sl = ScalarTagLong
 
+  /**
+   * Create a new VecTime from an array of times
+   */
   def apply(times : Array[DateTime]): VecTime = {
     val millis = array.empty[Long](times.length)
     var i = 0
@@ -118,6 +121,21 @@ object VecTime {
       millis(i) = if(sm.isMissing(t)) sl.missing else t.getMillis
       i += 1
     }
-    new VecTime(millis)
+    new VecTime(Vec(millis))
+  }
+
+  /**
+   * Create a new VecTime from a sequence of times
+   */
+  def apply(timeSeq : DateTime*): VecTime = {
+    val times = timeSeq.toArray
+    val millis = array.empty[Long](times.length)
+    var i = 0
+    while (i < millis.length) {
+      val t = times(i)
+      millis(i) = if(sm.isMissing(t)) sl.missing else t.getMillis
+      i += 1
+    }
+    new VecTime(Vec(millis))
   }
 }
