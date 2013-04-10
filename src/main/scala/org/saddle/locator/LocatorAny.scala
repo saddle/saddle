@@ -16,12 +16,13 @@
 
 package org.saddle.locator
 
+import org.saddle.ST
 import it.unimi.dsi.fastutil.objects.{Object2IntLinkedOpenHashMap, Object2IntOpenHashMap}
 
 /**
  * An object-to-integer hash map, backed by fastutil implementation
  */
-class LocatorAny[T](sz: Int = Locator.INIT_CAPACITY) extends Locator[T] {
+class LocatorAny[T: ST](sz: Int = Locator.INIT_CAPACITY) extends Locator[T] {
   val map = new Object2IntLinkedOpenHashMap[T](sz)
   val cts = new Object2IntOpenHashMap[T](sz)
 

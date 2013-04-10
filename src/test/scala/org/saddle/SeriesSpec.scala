@@ -26,4 +26,9 @@ class SeriesSpec extends Specification {
 
     s2.reindex(s1.index).index must_== s1.index
   }
+
+  "non-spec primitive groupby must work" in {
+    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
+    s.groupBy.combine(_.first.getOrElse(0)) must_== Series('a' -> 1, 'b' -> 2)
+  }
 }

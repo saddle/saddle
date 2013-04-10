@@ -537,7 +537,7 @@ object Index {
    * @param arr Array
    * @tparam C Type of elements in array
    */
-  def apply[C: ST: ORD](arr: Array[C]): Index[C] = Index(Vec(arr))
+  def apply[C: ST: ORD](arr: Array[C]): Index[C] = apply(Vec(arr))
 
   /**
    * Factory method to create an index from a sequence of elements, eg
@@ -550,7 +550,7 @@ object Index {
    * @param values Seq[C]
    * @tparam C Type of elements in Seq
    */
-  def apply[C: ST: ORD](values: C*): Index[C] = Index(values.toArray)
+  def apply[C: ST: ORD](values: C*): Index[C] = apply(values.toArray)
 
   /**
    * Factory method to create an Index; the basic use case is to construct
