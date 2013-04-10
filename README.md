@@ -21,7 +21,8 @@ and the Scala collections library.
 Documentation
 ==============
 
-Browse the [scaladoc](http://saddle.github.io/saddle/target/scala-2.9.2/api).
+ - [Guide](http://saddle.github.io/doc/)
+ - [API](http://saddle.github.io/saddle/target/scala-2.9.2/api)
 
 License
 =======
