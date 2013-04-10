@@ -19,10 +19,10 @@ language & statistical environment, the numpy and pandas Python libraries,
 and the Scala collections library.
 
 Documentation
-==============
+=============
 
  - [Guide](http://saddle.github.io/doc/)
- - [API](http://saddle.github.io/saddle/target/scala-2.9.2/api)
+ - [scaladoc](http://saddle.github.io/saddle/target/scala-2.9.2/api/#org.saddle.package)
 
 License
 =======
