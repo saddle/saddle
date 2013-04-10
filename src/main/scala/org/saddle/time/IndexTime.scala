@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
 
-package org.saddle.index
+package org.saddle.time
 
 import scala.{ specialized => spec }
 
@@ -24,9 +24,8 @@ import org.saddle.locator._
 
 import org.joda.time._
 
-import time._
-import util.Concat.Promoter
-import vec.VecTime
+import org.saddle.index.{JoinType, ReIndexer}
+import org.saddle.util.Concat.Promoter
 
 /**
  * A compact native int representation of posix times at millisecond resolution which
@@ -38,7 +37,7 @@ import vec.VecTime
 class IndexTime(val times: Index[Long],
                 val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Index[DateTime] {
 
-  val scalarTag = new ScalarTagAny[DateTime]
+  val scalarTag = ScalarTagTime
 
   val chrono = ISO_CHRONO.withZone(tzone)
 
@@ -74,7 +73,7 @@ class IndexTime(val times: Index[Long],
    *
    * @param tzone The time zone
    */
-  def withZone(tzone: DateTimeZone) = il2it(times)
+  def withZone(tzone: DateTimeZone) = new IndexTime(times, tzone)
 
   def length = times.length
 
@@ -156,5 +155,29 @@ class IndexTime(val times: Index[Long],
       i += 1
     }
     arr
+  }
+}
+
+object IndexTime {
+  private val st = ScalarTagTime
+  private val sl = ScalarTagLong
+
+  /**
+   * Create a new IndexTime from a sequence of times
+   */
+  def apply(times : DateTime*): IndexTime = apply(Vec(times : _*))
+
+  /**
+   * Create a new IndexTime from a Vec of times, with an attached timezone
+   */
+  def apply(times : Vec[DateTime], tzone: DateTimeZone = ISO_CHRONO.getZone): IndexTime = {
+    val millis = array.empty[Long](times.length)
+    var i = 0
+    while (i < millis.length) {
+      val t = times(i)
+      millis(i) = if(st.isMissing(t)) sl.missing else t.getMillis
+      i += 1
+    }
+    new IndexTime(Index(millis), tzone)
   }
 }

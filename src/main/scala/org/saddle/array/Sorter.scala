@@ -16,7 +16,7 @@
 
 package org.saddle.array
 
-import org.saddle.ORD
+import org.saddle.{array, ORD}
 import org.saddle.vec.VecBool
 import it.unimi.dsi.fastutil.chars.CharArrays
 import it.unimi.dsi.fastutil.bytes.ByteArrays
@@ -25,6 +25,8 @@ import it.unimi.dsi.fastutil.ints.IntArrays
 import it.unimi.dsi.fastutil.floats.FloatArrays
 import it.unimi.dsi.fastutil.longs.LongArrays
 import it.unimi.dsi.fastutil.doubles.DoubleArrays
+import org.joda.time.DateTime
+import org.saddle.scalar.ScalarTagTime
 
 /**
 * Typeclass interface for sorting implementations
@@ -122,6 +124,18 @@ object Sorter {
       val res = arr.clone()
       LongArrays.radixSort(res)
       res
+    }
+  }
+
+  object timeSorter extends Sorter[DateTime] {
+    def argSorted(arr: Array[DateTime]) = {
+      val res = range(0, arr.length)
+      LongArrays.radixSortIndirect(res, ScalarTagTime.time2LongArray(arr), true)
+      res
+    }
+
+    def sorted(arr: Array[DateTime]) = {
+      array.take(arr, argSorted(arr), ScalarTagTime.missing)
     }
   }
 

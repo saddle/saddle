@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
 
-package org.saddle.vec
+package org.saddle.time
 
 import org.saddle._
 import org.saddle.scalar._
@@ -33,7 +33,7 @@ import util.Concat.Promoter
  */
 class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Vec[DateTime] {
 
-  val scalarTag = new ScalarTagAny[DateTime]
+  val scalarTag = ScalarTagTime
 
   val chrono = ISO_CHRONO.withZone(tzone)
 
@@ -107,7 +107,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 }
 
 object VecTime {
-  private val sm = new ScalarTagAny[DateTime]
+  private val sm = ScalarTagTime
   private val sl = ScalarTagLong
 
   def apply(times : Array[DateTime]): VecTime = {

@@ -25,7 +25,7 @@ object SaddleBuild extends sbt.Build {
     project(id = "saddle",
             base = file("."),
             settings = Seq(
-              initialCommands := "import org.joda.time.DateTime; import org.saddle._; import org.saddle.io._",
+              initialCommands := "import org.joda.time.DateTime; import org.saddle._; import org.saddle.time._; import org.saddle.io._",
               libraryDependencies <++= scalaVersion (v => Seq(
                 "joda-time" % "joda-time" % "2.1",
                 "org.joda" % "joda-convert" % "1.2",

@@ -47,7 +47,7 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
   override def runtimeClass = implicitly[CLM[T]].erasure
 
   def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferAny[T](sz)(this)
-  def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorAny[T](sz)
+  def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorAny[T](sz)(this)
   def makeVec(arr: Array[T]) = new VecAny[T](arr)(this)
   def makeMat(r: Int, c: Int, arr: Array[T]) = new MatAny[T](r, c, arr)(this)
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T] = new IndexAny[T](vec)(this, ord)

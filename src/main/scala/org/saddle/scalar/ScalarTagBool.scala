@@ -51,4 +51,6 @@ object ScalarTagBool extends ScalarTag[Boolean] {
   def makeMat(r: Int, c: Int, arr: Array[Boolean]) = new MatBool(r, c, arr)
   def makeIndex(vec: Vec[Boolean])(implicit ord: ORD[Boolean]): Index[Boolean] = new IndexAny[Boolean](vec)
   def makeSorter(implicit ord: ORD[Boolean]): Sorter[Boolean] = Sorter.boolSorter
+
+  override def toString = "ScalarTagBool"
 }

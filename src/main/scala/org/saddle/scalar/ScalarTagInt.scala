@@ -51,4 +51,6 @@ object ScalarTagInt extends ScalarTag[Int] {
   def makeMat(r: Int, c: Int, arr: Array[Int]) = new MatInt(r, c, arr)
   def makeIndex(vec: Vec[Int])(implicit ord: ORD[Int]): Index[Int] = new IndexInt(vec)
   def makeSorter(implicit ord: ORD[Int]): Sorter[Int] = Sorter.intSorter
+
+  override def toString = "ScalarTagInt"
 }

@@ -20,6 +20,7 @@ import scala.{ specialized => spec }
 import org.saddle._
 import org.saddle.locator.Locator
 import org.saddle.array.Sorter
+import org.joda.time.DateTime
 
 /**
  * Typeclass definition for scalar tags. A ScalarTag contains important meta-data regarding
@@ -56,14 +57,15 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
 }
 
 object ScalarTag extends LowPriorityScalarTagImplicits {
-  implicit val stChr = ScalarTagChar
-  implicit val stByt = ScalarTagByte
-  implicit val stBoo = ScalarTagBool
-  implicit val stSho = ScalarTagShort
+  implicit val stChar = ScalarTagChar
+  implicit val stByte = ScalarTagByte
+  implicit val stBool = ScalarTagBool
+  implicit val stShort = ScalarTagShort
   implicit val stInt = ScalarTagInt
-  implicit val stFlo = ScalarTagFloat
-  implicit val stLon = ScalarTagLong
-  implicit val stDub = ScalarTagDouble
+  implicit val stFloat = ScalarTagFloat
+  implicit val stLong = ScalarTagLong
+  implicit val stDouble = ScalarTagDouble
+  implicit val stTime = ScalarTagTime
 }
 
 trait LowPriorityScalarTagImplicits extends LowerPriorityScalarTagImplicits {

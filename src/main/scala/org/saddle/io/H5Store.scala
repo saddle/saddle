@@ -21,12 +21,13 @@ import ncsa.hdf.hdf5lib.{ H5, HDF5Constants }
 import ncsa.hdf.hdf5lib.exceptions.HDF5LibraryException
 
 import org.saddle._
-import index.{IndexLong, IndexTime}
+import index.{IndexLong}
 import org.joda.time.DateTime
 
 import java.util.concurrent.locks.ReentrantLock
 
 import scala.util.control.Exception._
+import org.saddle.time.IndexTime
 
 /**
  * Implements (thread-safe) HDF5 I/O functionality for Series and Frames.

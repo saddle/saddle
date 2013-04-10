@@ -16,10 +16,9 @@
 
 package org.saddle
 
-import index.IndexTime
 import org.joda.time.{DateTimeField, DateTimeFieldType, Chronology, DateTime}
 import org.joda.time.chrono.ISOChronology
-import vec.VecTime
+import org.saddle.time.{VecTime, IndexTime}
 
 /**
  * Functionality to assist in TimeSeries related operations

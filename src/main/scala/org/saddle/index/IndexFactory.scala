@@ -3,6 +3,7 @@ package org.saddle.index
 import org.saddle._
 import org.joda.time.DateTime
 import org.saddle.vec.VecLong
+import org.saddle.time.IndexTime
 
 /**
  * Interface for instantiating a Buffer

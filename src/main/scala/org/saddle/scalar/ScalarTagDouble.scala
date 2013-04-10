@@ -54,4 +54,6 @@ object ScalarTagDouble extends ScalarTag[Double] {
   def makeMat(r: Int, c: Int, arr: Array[Double]) = new MatDouble(r, c, arr)
   def makeIndex(vec: Vec[Double])(implicit ord: ORD[Double]): Index[Double] = new IndexDouble(vec)
   def makeSorter(implicit ord: ORD[Double]): Sorter[Double] = Sorter.doubleSorter
+
+  override def toString = "ScalarTagDouble"
 }
