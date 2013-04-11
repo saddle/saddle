@@ -274,4 +274,9 @@ package object saddle {
       grp.toSeries.pivot
     }
   }
+
+  /**
+   * Constant used in string byte-level manipulation
+   */
+  val UTF8 = "UTF-8"
 }

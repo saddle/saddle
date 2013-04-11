@@ -21,13 +21,12 @@ import ncsa.hdf.hdf5lib.{ H5, HDF5Constants }
 import ncsa.hdf.hdf5lib.exceptions.HDF5LibraryException
 
 import org.saddle._
-import index.{IndexLong}
+import org.saddle.index.{IndexTime, IndexLong}
 import org.joda.time.DateTime
 
 import java.util.concurrent.locks.ReentrantLock
 
 import scala.util.control.Exception._
-import org.saddle.time.IndexTime
 
 /**
  * Implements (thread-safe) HDF5 I/O functionality for Series and Frames.
@@ -399,7 +398,7 @@ object H5Store {
     val tcsz = H5.H5Tcopy(HDF5Constants.H5T_C_S1)
     H5Reg.save(tcsz, H5T)
 
-    val strB = text.getBytes("UTF-8")
+    val strB = text.getBytes(UTF8)
     H5.H5Tset_size(tcsz, strB.length.max(1))
 
     // open new scalar space for string constant
@@ -478,7 +477,7 @@ object H5Store {
     H5Reg.close(memtype_id, H5T)
 
     // convert to java string
-    new String(dset_data, "UTF-8")
+    new String(dset_data, UTF8)
   }
 
   // write a long attribute to a group
@@ -603,14 +602,14 @@ object H5Store {
         val strid = H5.H5Tcopy(HDF5Constants.H5T_C_S1)
         H5Reg.save(strid, H5T)
 
-        val maxsz = data.foldLeft(1) { (a, b) => a.max(b.asInstanceOf[String].getBytes("UTF-8").length) }
+        val maxsz = data.foldLeft(1) { (a, b) => a.max(b.asInstanceOf[String].getBytes(UTF8).length) }
         H5.H5Tset_size(strid, maxsz)
 
         // copy string as utf8 encoded bytes into buffer
         val byteBuff = new Array[Byte](data.length * maxsz)
         var i = 0
         data.foreach { s =>
-          val asBytes = s.asInstanceOf[String].getBytes("UTF-8") // "ISO-8859-1"
+          val asBytes = s.asInstanceOf[String].getBytes(UTF8) // "ISO-8859-1"
           System.arraycopy(asBytes, 0, byteBuff, i, asBytes.length)
           i += maxsz
         }
@@ -807,7 +806,7 @@ object H5Store {
           }
           val tmpBuf = Array.ofDim[Byte](sz)
           System.arraycopy(byteBuff, j, tmpBuf, 0, sz)
-          result(i) = new String(tmpBuf, "UTF-8").asInstanceOf[X]
+          result(i) = new String(tmpBuf, UTF8).asInstanceOf[X]
           j += sdim
           i += 1
         }

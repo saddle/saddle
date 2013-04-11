@@ -20,17 +20,14 @@ import org.joda.time._
 
 import org.saddle._
 import org.saddle.array.Sorter
-import sun.reflect.generics.reflectiveObjects.NotImplementedException
-import org.saddle.buffer.BufferAny
-import org.saddle.locator.LocatorAny
-import org.saddle.mat.MatAny
 import org.joda.time.format.DateTimeFormat
-import org.saddle.time.{VecTime, IndexTime}
+import org.saddle.vec.VecTime
+import org.saddle.index.IndexTime
 
 /**
  * DateTime ScalarTag
  */
-object ScalarTagTime extends ScalarTag[DateTime] {
+object ScalarTagTime extends ScalarTagAny[DateTime] {
   def time2LongArray(arr: Array[DateTime]): Array[Long] = {
     val sz = arr.length
     val larr = Array.ofDim[Long](sz)
@@ -54,34 +51,12 @@ object ScalarTagTime extends ScalarTag[DateTime] {
   override def makeSorter(implicit ord: ORD[DateTime]): Sorter[DateTime] =
     Sorter.timeSorter
 
-  // for numeric scalars
-  def toDouble(t: DateTime)(implicit ev: NUM[DateTime]) = 0.0
-
-  def zero(implicit ev: NUM[DateTime]) = throw new NotImplementedException
-  def one(implicit ev: NUM[DateTime]) = throw new NotImplementedException
-  def inf(implicit ev: NUM[DateTime]) = throw new NotImplementedException
-  def negInf(implicit ev: NUM[DateTime]) = throw new NotImplementedException
-
-  // representation of missing data
-  def missing = null
-  def isMissing(t: DateTime) = (t == null)
-  def notMissing(t: DateTime) = (t != null)
-
   private val fmtZ = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSSZZ")
 
-  def show(v: DateTime) = Option(v) map { fmtZ.print(_) } getOrElse("NA")
+  override def show(v: DateTime) = Option(v) map { fmtZ.print(_) } getOrElse("NA")
 
   // forward 2.10 compatibility
-  def runtimeClass = implicitly[CLM[DateTime]].erasure
-
-  // for comparable scalars
-  def compare(a: DateTime, b: DateTime)(implicit ev: ORD[DateTime]) = ev.compare(a, b)
-
-  def makeBuf(sz: Int) = new BufferAny[DateTime]
-
-  def makeLoc(sz: Int) = new LocatorAny[DateTime]
-
-  def makeMat(r: Int, c: Int, arr: Array[DateTime]) = new MatAny[DateTime](r, c, arr)
+  override def runtimeClass = classOf[DateTime]
 
   override def toString = "ScalarTagTime"
 }

@@ -19,7 +19,8 @@ package org.saddle.io
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import java.io._
-import org.saddle.{na, Index, Vec, Frame}
+import org.saddle.{na, Index, Vec, Frame, UTF8}
+
 
 class CsvCheck extends Specification with ScalaCheck {
   "csv string parsing works" in {
@@ -29,7 +30,7 @@ class CsvCheck extends Specification with ScalaCheck {
         |4,5,6,
         |7, "8",    "9",   """.stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes("UTF-8"))))
+    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
       def reset() {}
@@ -49,7 +50,7 @@ class CsvCheck extends Specification with ScalaCheck {
         |4,5,"test",
         |7, "8",    "9",   """.stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes("UTF-8"))))
+    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
       def reset() {}
@@ -69,7 +70,7 @@ class CsvCheck extends Specification with ScalaCheck {
         |4,5,
         |7, "8",    "9",   """.stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes("UTF-8"))))
+    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
       def reset() {}

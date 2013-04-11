@@ -66,6 +66,7 @@ object ScalarTag extends LowPriorityScalarTagImplicits {
   implicit val stLong = ScalarTagLong
   implicit val stDouble = ScalarTagDouble
   implicit val stTime = ScalarTagTime
+  implicit val stString = ScalarTagString
 }
 
 trait LowPriorityScalarTagImplicits extends LowerPriorityScalarTagImplicits {

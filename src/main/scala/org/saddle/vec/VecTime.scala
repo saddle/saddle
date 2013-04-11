@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
 
-package org.saddle.time
+package org.saddle.vec
 
 import org.saddle._
 import org.saddle.scalar._
@@ -22,6 +22,8 @@ import org.saddle.scalar._
 import org.joda.time._
 import scala.{specialized => spec}
 import util.Concat.Promoter
+import org.saddle.time._
+import org.saddle.util.Concat.Promoter
 
 /**
  * A compact native int representation of posix times at millisecond resolution which

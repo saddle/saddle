@@ -16,7 +16,12 @@
 
 package org.saddle.scalar
 
+import org.saddle._
+import org.saddle.array.Sorter
+
 /**
  * Char ScalarTag
  */
-object ScalarTagChar extends ScalarTagAny[Char]
+object ScalarTagChar extends ScalarTagAny[Char] {
+  override def makeSorter(implicit ord: ORD[Char]): Sorter[Char] = Sorter.charSorter
+}

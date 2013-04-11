@@ -19,6 +19,7 @@ package org.saddle.io
 import java.io.{InputStreamReader, BufferedReader, RandomAccessFile}
 import java.nio.channels.FileChannel
 import it.unimi.dsi.io.ByteBufferInputStream
+import org.saddle.UTF8
 
 /**
  * CsvFile provides an implementation of a [[org.saddle.io.CsvSourcePar]] for
@@ -36,7 +37,7 @@ import it.unimi.dsi.io.ByteBufferInputStream
  * @param path Path to file
  * @param encoding Encoding of text file
  */
-class CsvFile(path: String, encoding: String = "UTF-8") extends CsvSourcePar {
+class CsvFile(path: String, encoding: String = UTF8) extends CsvSourcePar {
   private val file = new RandomAccessFile(path, "r")
   private val chan = file.getChannel
   private val sz = chan.size()
@@ -103,7 +104,7 @@ class CsvFile(path: String, encoding: String = "UTF-8") extends CsvSourcePar {
 }
 
 object CsvFile {
-  def apply(path: String, encoding: String = "UTF-8") = new CsvFile(path, encoding)
+  def apply(path: String, encoding: String = UTF8) = new CsvFile(path, encoding)
 
   implicit def convertToCsvSource(f: CsvFile): CsvSource = f.makeChunk(0, f.chan.size())
 }

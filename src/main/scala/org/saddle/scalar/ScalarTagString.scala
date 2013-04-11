@@ -17,10 +17,13 @@
 package org.saddle.scalar
 
 import org.saddle._
-import org.saddle.array.Sorter
+import org.saddle.vec.VecString
+
 /**
- * Short ScalarTag
+ * DateTime ScalarTag
  */
-object ScalarTagShort extends ScalarTagAny[Short] {
-  override def makeSorter(implicit ord: ORD[Short]): Sorter[Short] = Sorter.shortSorter
+object ScalarTagString extends ScalarTagAny[String] {
+  override def makeVec(arr: Array[String]): Vec[String] = VecString(arr)
+
+  override def toString = "ScalarTagString"
 }

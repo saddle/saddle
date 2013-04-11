@@ -55,5 +55,16 @@ class LocatorAny[T: ST](sz: Int = Locator.INIT_CAPACITY) extends Locator[T] {
     res
   }
 
-  def keys() = map.keySet().toArray.asInstanceOf[Array[T]]
+  def keys() = {
+    val ks = map.keySet()
+    val it = ks.iterator()
+    val sz = ks.size()
+    val newArr = implicitly[ST[T]].newArray(sz)
+    var i = 0
+    while (i < sz) {
+      newArr(i) = it.next()
+      i += 1
+    }
+    newArr
+  }
 }

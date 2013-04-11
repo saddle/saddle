@@ -299,6 +299,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   // use with caution, may not return copy
   private[saddle] def toDoubleArray(implicit ev: NUM[A]): Array[Double]
 
+  // todo: remove this, unnecessary
   // use with caution, for destructive matrix ops
   private[saddle] def update(i: Int, v: A)
 

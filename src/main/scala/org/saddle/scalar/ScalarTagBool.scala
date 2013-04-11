@@ -43,7 +43,7 @@ object ScalarTagBool extends ScalarTag[Boolean] {
 
   def show(v: Boolean) = "%b" format v
 
-  override def runtimeClass = implicitly[CLM[Boolean]].erasure
+  override def runtimeClass = classOf[Boolean]
 
   def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferAny[Boolean](sz)
   def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorBool()

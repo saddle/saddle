@@ -16,7 +16,12 @@
 
 package org.saddle.scalar
 
+import org.saddle._
+import org.saddle.array.Sorter
+
 /**
  * Float ScalarTag
  */
-object ScalarTagFloat extends ScalarTagAny[Float]
+object ScalarTagFloat extends ScalarTagAny[Float] {
+  override def makeSorter(implicit ord: ORD[Float]): Sorter[Float] = Sorter.floatSorter
+}

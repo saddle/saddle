@@ -233,6 +233,31 @@ package object array {
   }
 
   /**
+   * Compute the sum of the array at particular offets. If any of the offets is -1,
+   * the pass-by-name value 'missing' is used instead.
+   *
+   * For example,
+   *
+   * {{{
+   *   sum(Array(1,2,3,4), Array(0,2,), 0)
+   * }}}
+   */
+  def sum[@spec(Boolean, Int, Long, Double) T: ST: NUM: ops.AddOp](
+    arr: Array[T], offsets: Array[Int], missing: => T): T = {
+    val st = implicitly[ST[T]]
+    val nm = implicitly[NUM[T]]
+    val op = implicitly[ops.AddOp[T]]
+    var res = st.zero(nm)
+    var i = 0
+    while(i < offsets.length) {
+      val idx = offsets(i)
+      res = if (idx == -1) op(res, missing) else op(res, arr(idx))
+      i += 1
+    }
+    res
+  }
+
+  /**
    * Sends values from an array to particular offsets so as to produce a new array.
    * This does the inverse of 'take'; ie, each integer I at offset O in `offsets`
    * works to "send" input[O] to output[I]. Eg, Array(2,0,1) permutes locations as
@@ -264,11 +289,19 @@ package object array {
    * produce a new array.
    */
   def remove[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], locs: Array[Int]): Array[T] = {
-    val set = new IntOpenHashSet(locs)
+    val set = new IntOpenHashSet(locs.length)
+
+    var i = 0
+    while (i < locs.length) {
+      val loc = locs(i)
+      if (loc >= 0 && loc < arr.length) set.add(loc)
+      i += 1
+    }
+
     val len = arr.length - set.size()
     val res = empty[T](len)
 
-    var i = 0
+    i = 0
     var k = 0
     while (i < arr.length) {
       if (!set.contains(i)) {

@@ -46,7 +46,7 @@ object ScalarTagDouble extends ScalarTag[Double] {
 
   def show(v: Double) = if (isMissing(v)) "%s" format "NA" else "%.4f" format(v)
 
-  override def runtimeClass = implicitly[CLM[Double]].erasure
+  override def runtimeClass = classOf[Double]
 
   def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferDouble(sz)
   def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorDouble(sz)

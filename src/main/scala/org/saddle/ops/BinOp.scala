@@ -44,7 +44,7 @@ import org.saddle._
  * The multiplication above relies on two BinOp implementations: the first is BinOp[Multiply, Vec, Vec, Vec],
  * whose implementation in turn relies on BinOp[Multiply, Int, Int, Int].
  */
-@implicitNotFound(msg = "No ${O} instance available to operate on values of type ${X} and ${Y}")
+@implicitNotFound(msg = "No BinOp ${O} instance available to operate on values of type ${X} and ${Y}")
 trait BinOp[O <: OpType,
             @spec(Boolean, Int, Long, Double) -X,
             @spec(Boolean, Int, Long, Double) -Y,

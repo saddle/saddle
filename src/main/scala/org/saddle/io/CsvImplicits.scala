@@ -31,7 +31,7 @@ import scalar.ScalarTag
 case class CsvSettings(separChar: Char = ',',
                        quoteChar: Char = '"',
                        useQuote: Boolean = true,
-                       encoding: String = "UTF-8")
+                       encoding: String = UTF8)
 
 /**
  * Provides implicit functionality for writing data to CSV file format. Usage:

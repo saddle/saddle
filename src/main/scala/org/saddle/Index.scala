@@ -192,7 +192,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param ord Implicit ORD for instances of type T
    * @param tag Implicit ST for instances of type T
    */
-  def uniques(implicit ord: ORD[T], tag: ST[T]): Index[T] = Index(locator.keys())
+  def uniques(implicit ord: ORD[T], tag: ST[T]): Index[T] = Index(Vec(locator.keys()))
 
   /**
    * Returns an array whose entries represent the number of times the corresponding

@@ -18,7 +18,8 @@ package org.saddle
 
 import org.joda.time.{DateTimeField, DateTimeFieldType, Chronology, DateTime}
 import org.joda.time.chrono.ISOChronology
-import org.saddle.time.{VecTime, IndexTime}
+import org.saddle.vec.VecTime
+import org.saddle.index.IndexTime
 
 /**
  * Functionality to assist in TimeSeries related operations

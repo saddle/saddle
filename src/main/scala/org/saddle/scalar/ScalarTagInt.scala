@@ -43,7 +43,7 @@ object ScalarTagInt extends ScalarTag[Int] {
 
   def show(v: Int) = if (isMissing(v)) "%s" format "NA" else "%d" format v
 
-  override def runtimeClass = implicitly[CLM[Int]].erasure
+  override def runtimeClass = classOf[Int]
 
   def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferInt(sz)
   def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorInt(sz)

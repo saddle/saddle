@@ -14,7 +14,7 @@
  * limitations under the License.
  **/
 
-package org.saddle.time
+package org.saddle.index
 
 import scala.{ specialized => spec }
 
@@ -24,7 +24,8 @@ import org.saddle.locator._
 
 import org.joda.time._
 
-import org.saddle.index.{JoinType, ReIndexer}
+import org.saddle.vec.VecTime
+import org.saddle.time._
 import org.saddle.util.Concat.Promoter
 
 /**

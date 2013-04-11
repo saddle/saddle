@@ -21,7 +21,7 @@ import org.saddle.vec.VecAny
 import org.saddle.mat.MatAny
 import org.saddle.buffer.BufferAny
 import org.saddle.index.IndexAny
-import org.saddle.locator.LocatorAny
+import org.saddle.locator.{Locator, LocatorAny}
 import org.saddle.array.Sorter
 
 class ScalarTagAny[T: CLM] extends ScalarTag[T] {
@@ -46,9 +46,9 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
 
   override def runtimeClass = implicitly[CLM[T]].erasure
 
-  def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferAny[T](sz)(this)
-  def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorAny[T](sz)(this)
-  def makeVec(arr: Array[T]) = new VecAny[T](arr)(this)
+  def makeBuf(sz: Int = Buffer.INIT_CAPACITY): Buffer[T] = new BufferAny[T](sz)(this)
+  def makeLoc(sz: Int = Buffer.INIT_CAPACITY): Locator[T] = new LocatorAny[T](sz)(this)
+  def makeVec(arr: Array[T]): Vec[T] = new VecAny[T](arr)(this)
   def makeMat(r: Int, c: Int, arr: Array[T]) = new MatAny[T](r, c, arr)(this)
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T] = new IndexAny[T](vec)(this, ord)
   def makeSorter(implicit ord: ORD[T]): Sorter[T] = Sorter.anySorter[T]
