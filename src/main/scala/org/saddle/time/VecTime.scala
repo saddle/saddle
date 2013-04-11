@@ -18,7 +18,6 @@ package org.saddle.time
 
 import org.saddle._
 import org.saddle.scalar._
-import time._
 
 import org.joda.time._
 import scala.{specialized => spec}
@@ -58,7 +57,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
   def concat[B, C](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C]) =
     Vec(util.Concat.append[DateTime, B, C](toArray, v.toArray))
 
-  def unary_-() = sys.error("Cannot negate TimeVec")
+  def unary_-() = sys.error("Cannot negate VecTime")
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
     times.map(v => f(l2t(v)))
