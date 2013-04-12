@@ -19,7 +19,6 @@ package org.saddle.scalar
 import org.saddle._
 import org.saddle.vec.VecString
 import org.saddle.mat.MatString
-import org.saddle.buffer.{BufferInt, BufferByte}
 
 /**
  * String ScalarTag
