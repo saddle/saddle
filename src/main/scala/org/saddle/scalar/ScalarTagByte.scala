@@ -18,10 +18,12 @@ package org.saddle.scalar
 
 import org.saddle._
 import org.saddle.array.Sorter
+import org.saddle.buffer.BufferByte
 
 /**
  * Byte ScalarTag
  */
 object ScalarTagByte extends ScalarTagAny[Byte] {
+  override def makeBuf(sz: Int = Buffer.INIT_CAPACITY): Buffer[Byte] = new BufferByte(sz)
   override def makeSorter(implicit ord: ORD[Byte]): Sorter[Byte] = Sorter.byteSorter
 }

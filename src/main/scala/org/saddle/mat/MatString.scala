@@ -55,6 +55,14 @@ class MatString(val data: Array[Byte], val offsets: Mat[Int], val lengths: Mat[I
   def withoutRows(locs: Array[Int]) =
     new MatString(data, offsets.withoutRows(locs), lengths.withoutRows(locs))
 
+  // todo: switch to row by row caching
+
+  private lazy val lazyRows = Range(0, numRows).map(row _)
+  override def rows()(implicit ev: ST[String]): IndexedSeq[Vec[String]] = lazyRows
+
+  private lazy val lazyCols = Range(0, numCols).map(col _)
+  override def cols()(implicit ev: ST[String]): IndexedSeq[Vec[String]] = lazyCols
+
   def toVec: Vec[String] = new VecString(data, offsets.toVec, lengths.toVec)
 
   // access like vector in row-major order

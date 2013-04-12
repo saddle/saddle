@@ -18,12 +18,27 @@ package org.saddle.scalar
 
 import org.saddle._
 import org.saddle.vec.VecString
+import org.saddle.mat.MatString
+import org.saddle.buffer.{BufferInt, BufferByte}
 
 /**
- * DateTime ScalarTag
+ * String ScalarTag
  */
 object ScalarTagString extends ScalarTagAny[String] {
   override def makeVec(arr: Array[String]): Vec[String] = VecString(arr)
+  override def makeMat(r: Int, c: Int, arr: Array[String]): Mat[String] = MatString(r, c, arr.toSeq)
+
+  /**
+   * Alternative constructor necessary to avoid unboxing & boxing strings for Mat[String]
+   * construction via Vec[String] instances.
+   */
+  override protected def altMatConstructor(nr: Int, nc: Int, arr: Array[Vec[String]])(
+    implicit st: ST[String]): Mat[String] = {
+    val newVec = VecString.concat(arr)
+    val offMat = Mat(nr, nc, newVec.offsets)
+    val lenMat = Mat(nr, nc, newVec.lengths)
+    new MatString(newVec.data, offMat.T, lenMat.T)
+  }
 
   override def toString = "ScalarTagString"
 }

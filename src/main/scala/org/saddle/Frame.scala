@@ -129,7 +129,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   require(values.numRows == rowIx.length, "Row index length is incorrect")
   require(values.numCols == colIx.length, "Col index length is incorrect")
 
-  private var cachedRows: Option[MatCols[T]] = None
   private var cachedMat: Option[Mat[T]] = None
 
   /**
@@ -509,7 +508,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * @param newIx A new Index
    * @tparam Y Type of elements of new Index
    */
-  def setRowIndex[Y: ST: ORD](newIx: Index[Y]): Frame[Y, CX, T] = Frame(values, newIx, colIx)
+  def setRowIndex[Y: ST: ORD](newIx: Index[Y]): Frame[Y, CX, T] =
+    Frame(values, newIx, colIx) withMat cachedMat
 
   /**
    * Map a function over the row index, resulting in a new Frame
@@ -517,7 +517,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * @param fn The function RX => Y with which to map
    * @tparam Y Result type of index, ie Index[Y]
    */
-  def mapRowIndex[Y: ST: ORD](fn: RX => Y): Frame[Y, CX, T] = Frame(values, rowIx.map(fn), colIx)
+  def mapRowIndex[Y: ST: ORD](fn: RX => Y): Frame[Y, CX, T] =
+    Frame(values, rowIx.map(fn), colIx) withMat cachedMat
 
   /**
    * Create a new Frame using the current values but with the new col index. Positions
@@ -525,7 +526,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * @param newIx A new Index
    * @tparam Y Type of elements of new Index
    */
-  def setColIndex[Y: ST: ORD](newIx: Index[Y]): Frame[RX, Y, T] = Frame(values, rowIx, newIx)
+  def setColIndex[Y: ST: ORD](newIx: Index[Y]): Frame[RX, Y, T] =
+    Frame(values, rowIx, newIx) withMat cachedMat
 
   /**
    * Map a function over the col index, resulting in a new Frame
@@ -533,19 +535,22 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * @param fn The function CX => Y with which to map
    * @tparam Y Result type of index, ie Index[Y]
    */
-  def mapColIndex[Y: ST: ORD](fn: CX => Y): Frame[RX, Y, T] = Frame(values, rowIx, colIx.map(fn))
+  def mapColIndex[Y: ST: ORD](fn: CX => Y): Frame[RX, Y, T] =
+    Frame(values, rowIx, colIx.map(fn)) withMat cachedMat
 
   /**
    * Create a new Frame whose values are the same, but whose row index has been changed
    * to the bound [0, numRows - 1), as in an array.
    */
-  def resetRowIndex: Frame[Int, CX, T] = Frame(values, IndexIntRange(numRows), colIx)
+  def resetRowIndex: Frame[Int, CX, T] =
+    Frame(values, IndexIntRange(numRows), colIx) withMat cachedMat
 
   /**
    * Create a new Frame whose values are the same, but whose col index has been changed
    * to the bound [0, numCols - 1), as in an array.
    */
-  def resetColIndex: Frame[RX, Int, T] = Frame(values, rowIx, IndexIntRange(numCols))
+  def resetColIndex: Frame[RX, Int, T] =
+    Frame(values, rowIx, IndexIntRange(numCols)) withMat cachedMat
 
   // ----------------------------------------
   // some helpful ops
@@ -1073,7 +1078,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     implicit val ord = melter.ord
     implicit val tag = melter.tag
 
-    Series[W, T](toMat.toArray, Index(ix))
+    Series[W, T](toMat.toVec, Index(ix))
   }
 
   /**
@@ -1173,9 +1178,10 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * information)
    */
   def toMat: Mat[T] = {
-    if (cachedMat.isEmpty)
-      useMat(Mat(numCols, numRows, flattened).T)
-    cachedMat.get
+    synchronized {
+      if (cachedMat.isEmpty) withMat(Some(Mat(values.toArray)))
+      cachedMat.get
+    }
   }
 
   // ---------------------------------------------------------------
@@ -1295,18 +1301,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   // ------------------------------------------------
   // internal contiguous caching of data for efficiency
 
-  private def useMat(m: Mat[T]) {
-    cachedMat  = Some(m)
-    cachedRows = Some(m.rows())
+  private def withMat(m: Option[Mat[T]]): Frame[RX, CX, T] = {
+    cachedMat = m
+    this
   }
 
-  private def flattened = array.flatten(values.map(_.toArray))
-
-  private def rows(): MatCols[T] = {
-    if (cachedRows.isEmpty)
-      useMat(Mat(numCols, numRows, flattened).T)
-    cachedRows.get
-  }
+  private def rows(): MatCols[T] = MatCols(toMat.T.cols() : _*)
 
   // --------------------------------------
   // pretty-printing
@@ -1587,14 +1587,11 @@ object Frame extends BinOpFrame {
   /**
    * Build a Frame from a provided Mat, row index, and col index
    */
-  def apply[RX: ST: ORD, CX: ST: ORD, T: ST](
-    values: Mat[T], rowIx: Index[RX], colIx: Index[CX]): Frame[RX, CX, T] =
-    if (values.length == 0)
+  def apply[RX: ST: ORD, CX: ST: ORD, T: ST](mat: Mat[T], rowIx: Index[RX], colIx: Index[CX]): Frame[RX, CX, T] =
+    if (mat.length == 0)
       empty[RX, CX, T]
     else {
-      val dbk = new Frame[RX, CX, T](values.cols(), rowIx, colIx)
-      dbk.useMat(values)
-      dbk
+      new Frame[RX, CX, T](mat.cols(), rowIx, colIx) withMat Some(mat)
     }
 }
 

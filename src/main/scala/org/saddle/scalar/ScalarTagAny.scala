@@ -49,7 +49,7 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
   def makeBuf(sz: Int = Buffer.INIT_CAPACITY): Buffer[T] = new BufferAny[T](sz)(this)
   def makeLoc(sz: Int = Buffer.INIT_CAPACITY): Locator[T] = new LocatorAny[T](sz)(this)
   def makeVec(arr: Array[T]): Vec[T] = new VecAny[T](arr)(this)
-  def makeMat(r: Int, c: Int, arr: Array[T]) = new MatAny[T](r, c, arr)(this)
+  def makeMat(r: Int, c: Int, arr: Array[T]): Mat[T] = new MatAny[T](r, c, arr)(this)
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T] = new IndexAny[T](vec)(this, ord)
   def makeSorter(implicit ord: ORD[T]): Sorter[T] = Sorter.anySorter[T]
 }

@@ -20,7 +20,6 @@ import scala.{ specialized => spec }
 import org.saddle._
 import org.saddle.locator.Locator
 import org.saddle.array.Sorter
-import org.joda.time.DateTime
 
 /**
  * Typeclass definition for scalar tags. A ScalarTag contains important meta-data regarding
@@ -103,4 +102,25 @@ trait SpecializedFactory[@spec(Boolean, Int, Long, Float, Double) T] {
   def makeMat(r: Int, c: Int, arr: Array[T]): Mat[T]
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T]
   def makeSorter(implicit ord: ORD[T]): Sorter[T]
+
+  /**
+   * An alternative Mat factory method using array of Vecs
+   */
+  final def makeMat(arr: Array[Vec[T]])(implicit st: ST[T]): Mat[T] = {
+    val c = arr.length
+    if (c == 0) st.makeMat(0, 0, st.newArray(0)) else {
+      val r = arr(0).length
+      if (r == 0) st.makeMat(0, 0, st.newArray(0)) else {
+        require(arr.foldLeft(true)(_ && _.length == r), "All vec inputs must have the same length")
+        altMatConstructor(r, c, arr)
+      }
+    }
+  }
+
+  /**
+   * Can override this default construction methodology to avoid the toArray call if you
+   * don't want to extract elements that way.
+   */
+  protected def altMatConstructor(r: Int, c: Int, arr: Array[Vec[T]])(implicit st: ST[T]): Mat[T] =
+    makeMat(c, r, array.flatten(arr.map(_.toArray))).T
 }

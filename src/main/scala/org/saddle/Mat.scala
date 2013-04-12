@@ -212,20 +212,6 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def dropColsWithNA(implicit ev: ST[A]): Mat[A] = withoutCols(colsWithNA.toArray)
 
   /**
-   * Returns columns of matrix as an indexed sequence of Vec instances
-   */
-  def cols()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = {
-    Range(0, numCols).map(c => flattenT.slice(c * numRows, (c + 1) * numRows))
-  }
-
-  /**
-   * Returns rows of matrix as an indexed sequence of Vec instances
-   */
-  def rows()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = {
-    Range(0, numRows).map(r => flatten.slice(r * numCols, (r + 1) * numCols))
-  }
-
-  /**
    * Returns a specific column of the Mat as a Vec
    *
    * @param c Column index
@@ -236,6 +222,28 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   }
 
   /**
+   * Access Mat columns at a particular integer offsets
+   * @param locs a sequence of integer offsets
+   */
+  def col(locs: Int*)(implicit ev: ST[A]): Mat[A] = takeCols(locs.toArray)
+
+  /**
+   * Access Mat columns at a particular integer offsets
+   * @param locs an array of integer offsets
+   */
+  def col(locs: Array[Int])(implicit ev: ST[A]): Mat[A] = takeCols(locs)
+
+  /**
+   * Returns columns of Mat as an indexed sequence of Vec instances
+   */
+  def cols()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = Range(0, numCols).map(col _)
+
+  /**
+   * Returns columns of Mat as an indexed sequence of Vec instances
+   */
+  def cols(seq: IndexedSeq[Int])(implicit ev: ST[A]): IndexedSeq[Vec[A]] = seq.map(col _)
+
+  /**
    * Returns a specific row of the Mat as a Vec
    *
    * @param r Row index
@@ -244,6 +252,28 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     assert(r >= 0 && r < numRows, "Array index %d out of bounds" format r)
     flatten.slice(r * numCols, (r + 1) * numCols)
   }
+
+  /**
+   * Access Mat rows at a particular integer offsets
+   * @param locs a sequence of integer offsets
+   */
+  def row(locs: Int*)(implicit ev: ST[A]): Mat[A] = takeRows(locs.toArray)
+
+  /**
+   * Access Mat rows at a particular integer offsets
+   * @param locs an array of integer offsets
+   */
+  def row(locs: Array[Int])(implicit ev: ST[A]): Mat[A] = takeRows(locs)
+
+  /**
+   * Returns rows of matrix as an indexed sequence of Vec instances
+   */
+  def rows()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = Range(0, numRows).map(row _)
+
+  /**
+   * Returns rows of matrix as an indexed sequence of Vec instances
+   */
+  def rows(seq: IndexedSeq[Int])(implicit ev: ST[A]): IndexedSeq[Vec[A]] = seq.map(row _)
 
   /**
    * Multiplies this matrix against another
@@ -277,14 +307,18 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   private var flatCache: Option[Vec[A]] = None
   private def flatten(implicit st: ST[A]): Vec[A] = flatCache.getOrElse {
-    flatCache = Some(toVec)
-    flatCache.get
+    this.synchronized {
+      flatCache = Some(toVec)
+      flatCache.get
+    }
   }
 
   private var flatCacheT: Option[Vec[A]] = None
   private def flattenT(implicit st: ST[A]): Vec[A] = flatCacheT.getOrElse {
-    flatCacheT = Some(T.toVec)
-    flatCacheT.get
+    this.synchronized {
+      flatCacheT = Some(T.toVec)
+      flatCacheT.get
+    }
   }
 
   // access like vector in row-major order
@@ -305,18 +339,28 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param ncols Max number of cols to include
    */
   def stringify(nrows: Int = 8, ncols: Int = 8): String = {
-    val half = nrows / 2
+    val halfr = nrows / 2
+    val halfc = ncols / 2
 
     val buf = new StringBuilder()
     buf.append("[%d x %d]\n".format(numRows, numCols))
 
-    val maxf = (a: Int, b: String) => a.max(b.length)
-    val vlen = util.grab(toArray, half).map(scalarTag.show(_)).foldLeft(0)(maxf)
+    implicit val st = scalarTag
+
+    val maxStrLen = (a: Int, b: String) => a.max(b.length)
+    val maxColLen = (c: Vec[A]) => (c.head(halfr) concat c.tail(halfr)).map(scalarTag.show(_)).foldLeft(0)(maxStrLen)
+    val colIdx = util.grab(Range(0, numCols), halfc)
+    val lenSeq = colIdx.map { c => c -> maxColLen(col(c)) }
+    val lenMap = lenSeq.toMap.withDefault(_ => 1)
 
     // function to build a row
     def createRow(r: Int) = {
       val buf = new StringBuilder()
-      buf.append(util.buildStr(ncols, numCols, col => "%" + vlen + "s " format scalarTag.show(apply(r, col))))
+      val strFn = (col: Int) => {
+        val l = lenMap(col)
+        "%" + { if (l > 0) l else 1 } + "s " format scalarTag.show(apply(r, col))
+      }
+      buf.append(util.buildStr(ncols, numCols, strFn))
       buf.append("\n")
       buf.toString()
     }
@@ -398,14 +442,7 @@ object Mat extends BinOpMat {
    * @param values Array of arrays, each of which is to be a column
    * @tparam T Type of elements in inner array
    */
-  def apply[T: ST](values: Array[Array[T]]): Mat[T] = {
-    if (values.length == 0)
-      Mat.empty[T]
-    else {
-      require(values.forall(_.length == values(0).length), "All input vectors must be equal sizes")
-      apply(values.length, values(0).length, array.flatten(values)).transpose
-    }
-  }
+  def apply[T: ST](values: Array[Array[T]]): Mat[T] = implicitly[ST[T]].makeMat(values.map(Vec(_)))
 
   /**
    * Factory method to create a Mat from an array of Vec. Each inner Vec
@@ -413,8 +450,7 @@ object Mat extends BinOpMat {
    * @param values Array of Vec, each of which is to be a column
    * @tparam T Type of elements in Vec
    */
-  def apply[T: ST](values: Array[Vec[T]]): Mat[T] =
-    apply(values.map(_.toArray))
+  def apply[T: ST](values: Array[Vec[T]]): Mat[T] = implicitly[ST[T]].makeMat(values)
 
   /**
    * Factory method to create a Mat from a sequence of Vec. Each inner Vec
@@ -422,8 +458,7 @@ object Mat extends BinOpMat {
    * @param values Sequence of Vec, each of which is to be a column
    * @tparam T Type of elements in array
    */
-  def apply[T: ST](values: Vec[T]*): Mat[T] =
-    apply(values.map(_.toArray).toArray)
+  def apply[T: ST](values: Vec[T]*): Mat[T] = implicitly[ST[T]].makeMat(values.toArray)
 
   /**
    * Factory method to create an identity matrix; ie with ones along the

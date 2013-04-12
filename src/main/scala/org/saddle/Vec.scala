@@ -492,17 +492,17 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
 
     val buf = new StringBuilder()
 
+    implicit val st = scalarTag
+
     val maxf = (a: Int, b: String) => math.max(a, b.length)
-    def grab(arr: Array[T]) = arr.take(half) ++ arr.takeRight(half)
 
-    val varr = toArray
-
-    if (varr.length == 0)
+    if (length == 0)
       buf append "Empty Vec"
     else {
       buf.append("[%d x 1]\n" format (length))
-      val vlen = grab(varr).map(scalarTag.show(_)).foldLeft(0)(maxf)
-      def createRow(r: Int): String = ("%" + vlen + "s\n").format(scalarTag.show(apply(r)))
+      val vlen = { head(half) concat tail(half) }.map(scalarTag.show(_)).foldLeft(0)(maxf)
+
+      def createRow(r: Int): String = ("%" + { if (vlen > 0) vlen else 1 } + "s\n").format(scalarTag.show(apply(r)))
       buf append util.buildStr(len, length, createRow, " ... \n" )
     }
 
@@ -581,7 +581,7 @@ object Vec extends BinOpVec with VecStatsImplicits with VecBoolEnricher {
   /**
    * A Vec may be implicitly converted to a single column Mat
    */
-  implicit def vecToMat[A: ST](s: Vec[A]): Mat[A] = Mat(s.length, 1, s.toArray)
+  implicit def vecToMat[A: ST](s: Vec[A]): Mat[A] = Mat(s)
 }
 
 

@@ -70,7 +70,7 @@ class FrameCheck extends Specification with ScalaCheck {
       }
     }
 
-    "Stringify works for pne col, zero rows" in {
+    "Stringify works for one col, zero rows" in {
       val f = Frame(Array(Vec.empty[Double]) : _*)
       f.toString must throwAn[RuntimeException].not
     }

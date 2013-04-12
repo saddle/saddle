@@ -108,10 +108,13 @@ class VecString(val data: Array[Byte], val offsets: Array[Int], val lengths: Arr
 
     if (e <= b)
       Vec.empty
-    else
-      new VecString(data,
-        Vec(offsets).slice(from, until, stride).toArray,
-        Vec(lengths).slice(from, until, stride).toArray)
+    else if (from <= 0 && until >= length && stride == 1)
+      this
+    else {
+      val newOff = Vec(offsets).slice(from, until, stride).toArray
+      val newLen = Vec(lengths).slice(from, until, stride).toArray
+      new VecString(data, newOff, newLen)
+    }
   }
 
   def shift(n: Int) = new VecString(data, Vec(offsets).shift(n).toArray, Vec(lengths).shift(n).toArray)
@@ -141,7 +144,7 @@ object VecString {
     val offsets = new BufferInt(nStrs)
 
     val bufSz = strings.foldLeft(0) { (off, str) =>
-      val bytes = str.getBytes(UTF8)
+      val bytes = Option(str).map { _.getBytes(UTF8) } getOrElse Array.empty[Byte]
       val len = bytes.length
       encodings.add(bytes)
       lengths.add(len)
@@ -164,4 +167,34 @@ object VecString {
    * Create VecString from array of strings
    */
   def apply(strings: Array[String]): VecString = apply(strings.toSeq)
+
+  /**
+   * Concatenate several Vec[String] instances into one
+   */
+  def concat(arr: IndexedSeq[Vec[String]]): VecString = {
+    val vecs = arr.map { _ match {
+      case vs: VecString => vs
+      case v             => VecString(v.toArray)
+    } }
+
+    // calculate offset for each subsequent vec of bytes
+    val voffset = vecs.scanLeft(0) { case (o, vs) => o + vs.data.length }
+
+    val databuf = Array.ofDim[Byte](voffset.last)
+    val offsets = new BufferInt(1024)
+    val lengths = new BufferInt(1024)
+
+    var bc = 0 // byte counter
+    vecs.zipWithIndex.foreach { case (v, vidx) =>
+      val vlen = v.data.length
+      var i = 0
+      while (i < vlen) { databuf(bc) = v.data.apply(i); i += 1; bc += 1 }
+      i = 0
+      while (i < v.offsets.length) { offsets.add(v.offsets(i) + voffset(vidx)); i += 1 }
+      i = 0
+      while (i < v.lengths.length) { lengths.add(v.lengths(i)); i += 1 }
+    }
+
+    new VecString(databuf, offsets.toArray, lengths.toArray)
+  }
 }

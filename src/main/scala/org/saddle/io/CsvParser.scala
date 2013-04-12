@@ -19,6 +19,8 @@ package org.saddle.io
 import org.saddle._
 import collection.mutable.ArrayBuffer
 import java.util.concurrent.{Executors, Callable}
+import org.saddle.mat.MatString
+import org.saddle.vec.VecString
 
 /**
  * Holds parameters to customize CSV parsing
@@ -55,14 +57,11 @@ object CsvParser {
    *   data.toFrameNoHeader
    * }}}
    *
-   * @param convert A callback for token conversion; convert from String => T
    * @param cols The column offsets to parse (if empty, parse everything)
    * @param params The CsvParams to utilize in parsing
    * @param source The csv data source to operate on
-   * @tparam T The result type of the parsing function
    */
-  def parse[T: ST](convert: String => T, cols: Seq[Int] = List(),
-                   params: CsvParams = CsvParams())(source: CsvSource): ParsedData[T] = {
+  def parse(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(source: CsvSource): ParsedData = {
 
     require(params.separChar != params.quoteChar,
             "Separator character and quote character cannot be the same")
@@ -82,29 +81,42 @@ object CsvParser {
     // what column locations to extract
     if (locs.length == 0) locs = (0 until firstLine.length).toArray
 
-    // set up buffers to store parsed column data
-    val buffers = { for (c <- locs) yield Buffer[T](1024) }.toIndexedSeq
+    // set up buffers to store parsed data
+    val bufdata = for { c <- locs } yield Buffer[Byte](1024)
+    val offsets = for { c <- locs } yield Buffer[Int](1024)
+    val lengths = for { c <- locs } yield Buffer[Int](1024)
+    val curOffs = for { c <- locs } yield 0
 
-    def addToBuffer(i: Int, s: String) {
-      buffers(i).add(convert(s))
+    def addToBuffer(s: String, buf: Int) {
+      val bytes = s.getBytes(UTF8)
+      val len = bytes.length
+      var i = 0
+      while(i < len) {
+        bufdata(buf).add(bytes(i))
+        i += 1
+      }
+      offsets(buf).add(curOffs(buf))
+      lengths(buf).add(len)
+      curOffs(buf) += len
     }
 
     // first line is either header, or needs to be processed
     val fields = Vec(firstLine).take(locs)
     val headers = if (params.hasHeader) fields else {
-      fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(i, s) }
+      fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
       Vec.empty[String]
     }
 
     // parse remaining rows
     var str: String = null
+    var nln: Int = 0
     while ( { str = source.readLine; str != null } ) {
       extractFields(str, addToBuffer, locs, params)
+      nln += 1
     }
 
-    val vecs = buffers.map(b => Vec(b.toArray))
-
-    ParsedData(headers, vecs)
+    val zipped = { bufdata zip offsets zip lengths } map { case ((d, o), l) => new VecString(d, o, l) }
+    ParsedData(headers, zipped)
   }
 
   /**
@@ -120,22 +132,19 @@ object CsvParser {
    *   data.toFrame
    * }}}
    *
-   * @param convert A callback for token conversion; convert from String => T
    * @param cols The column offsets to parse (if empty, parse everything)
    * @param params The CsvParams to utilize in parsing
-   * @tparam T The result type of the parsing function
    */
-  def parsePar[T: ST](convert: String => T, cols: Seq[Int] = List(),
-                      params: CsvParams = CsvParams())(src: CsvSourcePar): ParsedData[T] = {
+  def parsePar(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(src: CsvSourcePar): ParsedData = {
     val xserv = Executors.newFixedThreadPool(nProcs)           // create thread pool for N CPU bound threads
 
-    var results = Seq.empty[Vec[T]]
+    var results = IndexedSeq.empty[Vec[String]]
     var header = Vec.empty[String]
 
     try {
       // submit chunks to parse
       val parseTasks = for ((chunk, i) <- src.getChunks(nProcs).zipWithIndex) yield {
-        xserv submit parseTask(convert, chunk, cols, params.copy(hasHeader = i == 0 && params.hasHeader))
+        xserv submit parseTask(chunk, cols, params.copy(hasHeader = i == 0 && params.hasHeader))
       }
 
       val chunks = parseTasks.map(_.get())                     // wait on, retrieve parse results
@@ -161,7 +170,7 @@ object CsvParser {
     ParsedData(header, results.map(v => v.slice(params.skipLines, v.length)))
   }
 
-  private def extractFields(line: String, callback: (Int, String) => Unit,
+  private def extractFields(line: String, callback: (String, Int) => Unit,
                             locs: Array[Int], params: CsvParams) {
 
     val quote = params.quoteChar
@@ -194,7 +203,7 @@ object CsvParser {
 
       if (!inQ && chr == sep) {         // we're not in quoted field & we hit a separator
         if (curFld == locs(locIdx)) {   // we want this field
-          callback(locIdx, String.valueOf(carr, curBeg, curEnd - curBeg - inQoff))
+          callback(String.valueOf(carr, curBeg, curEnd - curBeg - inQoff), locIdx)
           locIdx += 1
           inQoff = 0
         }
@@ -208,7 +217,7 @@ object CsvParser {
     // handle final field, may/not be terminated with separChar
     if (locIdx < locs.length && curFld == locs(locIdx) && curBeg < slen) {
       inQoff = if (carr(curEnd - 1) == quote && stripQuote) 1 else 0
-      callback(locIdx, String.valueOf(carr, curBeg, curEnd - curBeg - inQoff))
+      callback(String.valueOf(carr, curBeg, curEnd - curBeg - inQoff), locIdx)
       locIdx += 1
     }
 
@@ -272,29 +281,18 @@ object CsvParser {
   }
 
   // a task that parses a chunk, returns some ParseData
-  private def parseTask[T: ST](convert: String => T, chunk: CsvSource, cols: Seq[Int], params: CsvParams) =
-    new Callable[ParsedData[T]] {
+  private def parseTask(chunk: CsvSource, cols: Seq[Int], params: CsvParams) =
+    new Callable[ParsedData] {
       val csvpar = params.copy(skipLines = 0)
-      def call() = parse[T](convert, cols, csvpar)(chunk)
+      def call() = parse(cols, csvpar)(chunk)
     }
 
   // concatenates a single column within the ParseData chunks, returns joined Vec
-  private def combineTask[T: ST](chunks: IndexedSeq[ParsedData[T]], col: Int, sz: Int) =
-    new Callable[Vec[T]] {
+  private def combineTask(chunks: IndexedSeq[ParsedData], col: Int, sz: Int) =
+    new Callable[Vec[String]] {
       def call() = {
-        val arr = Array.ofDim[T](sz)
-        var c = 0
-        for (i <- 0 until chunks.length) {
-          val src = chunks(i).columns(col)
-          val sz = src.length
-          var j = 0
-          while (j < sz) {
-            arr(c) = src(j)
-            j += 1
-            c += 1
-          }
-        }
-        Vec(arr)
+        val vecs = for (i <- 0 until chunks.length) yield chunks(i).columns(col)
+        VecString.concat(vecs)
       }
     }
 

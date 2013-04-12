@@ -23,16 +23,15 @@ import org.saddle._
  *
  * @param columns A sequence of Vec instances containing data
  */
-case class ParsedData[T: ST](headers: Vec[String], columns: Seq[Vec[T]]) {
-  def toFrame: Frame[Int, String, T] = Frame(headers.toSeq zip columns : _*)
-  def toFrameNoHeader: Frame[Int, Int, T] = Frame(columns.zipWithIndex.map { case (c, i) => (i, c) } : _*)
-
+case class ParsedData(headers: Vec[String], columns: IndexedSeq[Vec[String]]) {
+  def toFrame: Frame[Int, String, String] = Frame(columns : _*).setColIndex(Index(headers))
+  def toFrameNoHeader: Frame[Int, Int, String] = Frame(columns : _*)
 }
 
 /**
  * Allows implicit conversion from ParseData to Frame
  */
 object ParsedData {
-  implicit def tf1[T](fd: ParsedData[T]): Frame[Int, String, T] = fd.toFrame
-  implicit def tf2[T](fd: ParsedData[T]): Frame[Int, Int, T] = fd.toFrameNoHeader
+  implicit def tf1(fd: ParsedData): Frame[Int, String, String] = fd.toFrame
+  implicit def tf2(fd: ParsedData): Frame[Int, Int, String] = fd.toFrameNoHeader
 }
