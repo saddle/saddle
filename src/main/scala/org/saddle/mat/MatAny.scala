@@ -18,7 +18,6 @@ package org.saddle.mat
 
 import scala.{specialized => spec}
 import org.saddle._
-import org.saddle.scalar._
 
 /**
  * A Mat instance containing elements of type Any
@@ -40,19 +39,17 @@ class MatAny[T: ST](r: Int, c: Int, values: Array[T]) extends Mat[T] {
   // bound than to take large strides, especially on large matrices where it
   // seems to eject cache lines on each stride (something like 10x slowdown)
   lazy val cachedT = {
-    val matT = new MatAny(numCols, numRows, values.clone())
+    val arrT = values.clone()
 
     if (this.isSquare)
-      MatMath.squareTranspose(matT)
+      MatMath.squareTranspose(numCols, arrT)
     else
-      MatMath.blockTranspose(this, matT)
+      MatMath.blockTranspose(numRows, numCols, this.toArray, arrT)
 
-    matT
+    new MatAny[T](numCols, numRows, arrT)
   }
 
   def transpose = cachedT
-
-  def copy: Mat[T] = new MatAny(numRows, numCols, values.clone())
 
   def takeRows(locs: Array[Int]): Mat[T] = MatImpl.takeRows(this, locs)
 
@@ -65,11 +62,6 @@ class MatAny[T: ST](r: Int, c: Int, values: Array[T]) extends Mat[T] {
 
   // implement access like matrix(i, j)
   private[saddle] def apply(r: Int, c: Int) = apply(r * numCols + c)
-
-  // use with caution, for destructive matrix ops
-  private[saddle] def update(i: Int, v: T) {
-    values(i) = v
-  }
 
   // use with caution, may not return copy
   private[saddle] def toArray = values

@@ -1,62 +1,74 @@
+/**
+ * Copyright (c) 2013 Saddle Development Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
+
 package org.saddle.mat
 
 import org.saddle._
 import org.saddle.Mat
 import org.saddle.scalar.ScalarTagString
 import scala.{ specialized => spec }
+import vec.VecString
 
-class MatString private (data: Array[Byte], offsets: Mat[Int], lengths: Mat[Int]) extends Mat[String] {
+/**
+ * A compact byte buffer representation of UTF8 strings which conforms to and extends
+ * the interface of Mat[String]
+ *
+ * @param data An array of bytes representing UTF-8 encoded strings all smashed together in row-major order
+ * @param offsets Offsets into byte buffer, where UTF8 strings begin; offset < 0 to represent NA
+ * @param lengths Lengths of strings embedded in byte buffer, where each array cell corresponds
+ */
+class MatString(val data: Array[Byte], val offsets: Mat[Int], val lengths: Mat[Int]) extends Mat[String] {
+
   require(offsets.numRows == lengths.numRows && offsets.numCols == lengths.numCols,
           "Offsets matrix and lengths matrix do not match dimensions")
 
   def scalarTag = ScalarTagString
 
-  /**
-   * Returns number of rows in the matrix shape
-   *
-   */
   def numRows = offsets.numRows
 
-  /**
-   * Returns number of columns in the matrix shape
-   *
-   */
   def numCols = offsets.numCols
 
-  /**
-   * Maps a function over each element in the matrix
-   */
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) = null
 
-  /**
-   * Changes the shape of matrix without changing the underlying data
-   */
-  def reshape(r: Int, c: Int) = null
+  def reshape(r: Int, c: Int) =
+    new MatString(data, offsets.reshape(r, c), lengths.reshape(r, c))
 
-  /**
-   * Transpose of original matrix
-   */
-  def transpose = null
+  def transpose =
+    new MatString(data, offsets.transpose, lengths.transpose)
 
-  /**
-   * Create Mat comprised of same values in specified rows
-   */
-  def takeRows(locs: Array[Int]) = null
+  def takeRows(locs: Array[Int]) =
+    new MatString(data, offsets.takeRows(locs), lengths.takeRows(locs))
 
-  /**
-   * Create Mat comprised of same values without the specified rows
-   *
-   * @param locs Row locations to exclude
-   */
-  def withoutRows(locs: Array[Int]) = null
+  def withoutRows(locs: Array[Int]) =
+    new MatString(data, offsets.withoutRows(locs), lengths.withoutRows(locs))
 
-  /**
-   * Concatenate all rows into a single row-wise Vec instance
-   */
-  def toVec = null
+  def toVec: Vec[String] = new VecString(data, offsets.toVec, lengths.toVec)
 
   // access like vector in row-major order
-  private[saddle] def apply(i: Int) = null
+  private[saddle] def apply(loc: Int) = {
+    val len = lengths(loc)
+    val off = offsets(loc)
+    if (off < 0)
+      scalarTag.missing
+    else {
+      val bytes = Array.ofDim[Byte](len)
+      System.arraycopy(data, off, bytes, 0, len)
+      new String(bytes, UTF8)
+    }
+  }
 
   // implement access like matrix(i, j)
   private[saddle] def apply(r: Int, c: Int) = {
@@ -72,25 +84,18 @@ class MatString private (data: Array[Byte], offsets: Mat[Int], lengths: Mat[Int]
   }
 
   // use with caution, may not return copy
-  private[saddle] def toArray = { cols.foldLeft(Vec.empty[String]) { case (x, y) => x concat y } }.toArray
+  private[saddle] def toArray = toVec.toArray
 
   // use with caution, may not return copy
-  private[saddle] def toDoubleArray(implicit ev: NUM[String]) = null
-
-  // use with caution, for destructive matrix ops
-  private[saddle] def update(i: Int, v: String) {}
-
-  /**
-   * Copy of original matrix
-   *
-   */
-  protected def copy = null
+  private[saddle] def toDoubleArray(implicit ev: NUM[String]) =
+    throw new UnsupportedOperationException
 }
 
 object MatString {
-  def apply(cols: Seq[Vec[String]]): Mat[String] = {
-    // flatten all vecs into one buffer
-    // make mats of offset/lengths
-    null
+  def apply(r: Int, c: Int, strs: Seq[String]): Mat[String] = {
+    val dataVec = VecString(strs)
+    val offsets = new MatInt(r, c, dataVec.offsets)
+    val lengths = new MatInt(r, c, dataVec.lengths)
+    new MatString(dataVec.data, offsets, lengths)
   }
 }

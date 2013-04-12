@@ -171,12 +171,12 @@ object MatMath {
   /** Efficient block-based non-square matrix transpose that is sensitive to cache line
     * effects (destructive to out matrix)
     */
-  private[saddle] def blockTranspose[@spec(Int, Long, Double) S](in: Mat[S], out: Mat[S]) {
+  private[saddle] def blockTranspose[@spec(Int, Long, Double) S](inR: Int, inC: Int, in: Array[S], out: Array[S]) {
     val XOVER = 60
 
     var r = 0
-    val rsz = in.numRows
-    val csz = in.numCols
+    val rsz = inR
+    val csz = inC
     while (r < rsz) {
       val blockHeight = if (XOVER < rsz - r) XOVER else rsz - r
       var inRow  = r * csz  // first element of current row
@@ -205,9 +205,9 @@ object MatMath {
 
   /** Efficient square matrix transpose (destructive)
     */
-  private[saddle] def squareTranspose[@spec(Int, Long, Double) S: ST](out: Mat[S]) {
-    val csz = out.numCols
-    val rsz = out.numRows
+  private[saddle] def squareTranspose[@spec(Int, Long, Double) S: ST](sz: Int, out: Array[S]) {
+    val csz = sz
+    val rsz = sz
 
     var i = 0
     var idx1 = 1

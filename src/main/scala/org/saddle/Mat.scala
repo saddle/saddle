@@ -134,7 +134,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * row-major order
    *
    */
-  def contents: Array[A] = copy.toArray
+  def contents: Array[A] = toVec.toArray
 
   // Must implement specialized methods using non-specialized subclasses as workaround to
   // https://issues.scala-lang.org/browse/SI-5281
@@ -277,13 +277,13 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   private var flatCache: Option[Vec[A]] = None
   private def flatten(implicit st: ST[A]): Vec[A] = flatCache.getOrElse {
-    flatCache = Some(Vec(toArray))
+    flatCache = Some(toVec)
     flatCache.get
   }
 
   private var flatCacheT: Option[Vec[A]] = None
   private def flattenT(implicit st: ST[A]): Vec[A] = flatCacheT.getOrElse {
-    flatCacheT = Some(Vec(T.toArray))
+    flatCacheT = Some(T.toVec)
     flatCacheT.get
   }
 
@@ -298,16 +298,6 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   // use with caution, may not return copy
   private[saddle] def toDoubleArray(implicit ev: NUM[A]): Array[Double]
-
-  // todo: remove this, unnecessary
-  // use with caution, for destructive matrix ops
-  private[saddle] def update(i: Int, v: A)
-
-  /**
-   * Copy of original matrix
-   *
-   */
-  protected def copy: Mat[A]
 
   /**
    * Creates a string representation of Mat

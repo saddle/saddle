@@ -40,30 +40,23 @@ class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[Long] {
   // bound than to take large strides, especially on large matrices where it
   // seems to eject cache lines on each stride (something like 10x slowdown)
   lazy val cachedT = {
-    val matT = new MatLong(numCols, numRows, values.clone())
+    val arrT = values.clone()
 
     if (this.isSquare)
-      MatMath.squareTranspose(matT)
+      MatMath.squareTranspose(numCols, arrT)
     else
-      MatMath.blockTranspose(this, matT)
+      MatMath.blockTranspose(numRows, numCols, this.toArray, arrT)
 
-    matT
+    new MatLong(numCols, numRows, arrT)
   }
 
   def transpose = cachedT
-
-  def copy: Mat[Long] = new MatLong(numRows, numCols, values.clone())
 
   def takeRows(locs: Array[Int]): Mat[Long] = MatImpl.takeRows(this, locs)
 
   def withoutRows(locs: Array[Int]): Mat[Long] = MatImpl.withoutRows(this, locs)
 
   def reshape(r: Int, c: Int): Mat[Long] = new MatLong(r, c, values)
-
-  // use with caution, for destructive matrix ops
-  private[saddle] def update(i: Int, v: Long) {
-    values(i) = v
-  }
 
   // access like vector in row-major order
   private[saddle] def apply(i: Int) = values(i)

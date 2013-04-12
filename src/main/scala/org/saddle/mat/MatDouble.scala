@@ -41,19 +41,17 @@ class MatDouble(r: Int, c: Int, values: Array[Double]) extends Mat[Double] {
   // bound than to take large strides, especially on large matrices where it
   // seems to eject cache lines on each stride (something like 10x slowdown)
   lazy val cachedT = {
-    val matT = new MatDouble(numCols, numRows, values.clone())
+    val arrT = values.clone()
 
     if (this.isSquare)
-      MatMath.squareTranspose(matT)
+      MatMath.squareTranspose(numCols, arrT)
     else
-      MatMath.blockTranspose(this, matT)
+      MatMath.blockTranspose(numRows, numCols, this.toArray, arrT)
 
-    matT
+    new MatDouble(numCols, numRows, arrT)
   }
 
   def transpose = cachedT
-
-  def copy: Mat[Double] = new MatDouble(numRows, numCols, values.clone())
 
   def takeRows(locs: Array[Int]): Mat[Double] = MatImpl.takeRows(this, locs)
 
@@ -66,11 +64,6 @@ class MatDouble(r: Int, c: Int, values: Array[Double]) extends Mat[Double] {
 
   // implement access like matrix(i, j)
   private[saddle] def apply(r: Int, c: Int) = apply(r * numCols + c)
-
-  // updates values: use with caution!
-  private[saddle] def update(i: Int, v: Double) {
-    values(i) = v
-  }
 
   // use with caution, may not return copy
   private[saddle] def toArray: Array[Double] = values

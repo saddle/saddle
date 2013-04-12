@@ -32,7 +32,7 @@ import org.saddle.buffer.{BufferInt, BufferAny}
  * @param lengths Lengths of strings embedded in byte buffer, where each array cell corresponds
  *                with offset's
  */
-class VecString private (val data: Array[Byte], val offsets: Array[Int], val lengths: Array[Int])
+class VecString(val data: Array[Byte], val offsets: Array[Int], val lengths: Array[Int])
   extends Vec[String] { self =>
 
   require(offsets.length == lengths.length,
