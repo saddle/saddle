@@ -41,7 +41,7 @@ class MatCheck extends Specification with ScalaCheck {
 
      "map works" in {
        forAll { (m: Mat[Double]) =>
-         val res = m.map(_ + 1)
+         val res = m.mapValues(_ + 1)
          val exp = m.contents.map(_ + 1)
          res.contents must_== exp
        }
@@ -65,9 +65,9 @@ class MatCheck extends Specification with ScalaCheck {
      "map works" in {
        forAll { (m: Mat[Double]) =>
          val data = m.contents
-         m.map(_ + 1.0) must_== Mat(m.numRows, m.numCols, data.map(_ + 1.0))
-         m.map(d => 5.0) must_== Mat(m.numRows, m.numCols, (data.map(d => if (d.isNaN) na.to[Double] else 5.0)))
-         m.map(d => 5) must_== Mat[Int](m.numRows, m.numCols, data.map(d => if (d.isNaN) na.to[Int] else 5))
+         m.mapValues(_ + 1.0) must_== Mat(m.numRows, m.numCols, data.map(_ + 1.0))
+         m.mapValues(d => 5.0) must_== Mat(m.numRows, m.numCols, (data.map(d => if (d.isNaN) na.to[Double] else 5.0)))
+         m.mapValues(d => 5) must_== Mat[Int](m.numRows, m.numCols, data.map(d => if (d.isNaN) na.to[Int] else 5))
        }
      }
 
@@ -88,10 +88,9 @@ class MatCheck extends Specification with ScalaCheck {
        forAll { (m: Mat[Double]) =>
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
-           val loc = Set(i : _*)
            val res = m.takeRows(i.toArray)
-           res.numRows must_== loc.size
-           val exp = for (j <- 0 until m.numRows if loc.contains(j)) yield m.row(j)
+           res.numRows must_== i.size
+           val exp = for (j <- i) yield m.row(j)
            res must_== Mat(exp : _*).T
          }
        }
@@ -101,10 +100,9 @@ class MatCheck extends Specification with ScalaCheck {
        forAll { (m: Mat[Double]) =>
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
-           val loc = Set(i : _*)
            val res = m.takeCols(i.toArray)
-           res.numCols must_== loc.size
-           val exp = for (j <- 0 until m.numCols if loc.contains(j)) yield m.col(j)
+           res.numCols must_== i.size
+           val exp = for (j <- i) yield m.col(j)
            res must_== Mat(exp : _*)
          }
        }

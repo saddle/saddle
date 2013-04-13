@@ -21,6 +21,7 @@ import scalar.{Scalar, ScalarTag}
 import ops.{BinOpMat, NumericOps}
 import scala.{specialized => spec}
 import java.io.OutputStream
+import org.saddle.index.{IndexIntRange, Slice}
 
 /**
  * `Mat` is an immutable container for 2D homogeneous data (a "matrix"). It is
@@ -114,20 +115,53 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    *
    * @param i index
    */
-  def at(i: Int): Scalar[A] = {
-    implicit val tag = scalarTag
-    raw(i)
+  def at(i: Int)(implicit st: ScalarTag[A]): Scalar[A] = {
+    Scalar(raw(i))
   }
 
   /**
-   * Return scalar value of matrix at at row/column
+   * Return scalar value of Mat at at row/column
    * @param r row index
    * @param c col index
    */
-  def at(r: Int, c: Int): Scalar[A] = {
-    implicit val tag = scalarTag
-    raw(r, c)
+  def at(r: Int, c: Int)(implicit st: ScalarTag[A]): Scalar[A] = {
+    Scalar(raw(r, c))
   }
+
+  /**
+   * Access a slice of the Mat by integer offsets
+   * @param r Array of row offsets
+   * @param c Array of col offsets
+   */
+  def at(r: Array[Int], c: Array[Int])(implicit st: ScalarTag[A]): Mat[A] = {
+    row(r).col(c)
+  }
+
+  /**
+   * Access a slice of the Mat by integer offsets
+   * @param r Array of row offsets
+   * @param c Integer col offset
+   */
+  def at(r: Array[Int], c: Int)(implicit st: ScalarTag[A]): Vec[A] = {
+    row(r).col(c)
+  }
+
+  /**
+   * Access a slice of the Mat by integer offsets
+   * @param r Integer row offset
+   * @param c Array of col offsets
+   */
+  def at(r: Int, c: Array[Int])(implicit st: ScalarTag[A]): Vec[A] = {
+    col(c).row(r)
+  }
+
+  /**
+   * Access a slice of the Mat by Slice parameters
+   * @param r Slice to apply to rows
+   * @param c Slice to apply to cols
+   */
+  def at(r: Slice[Int], c: Slice[Int])(implicit st: ScalarTag[A]): Mat[A] =
+    row(r).col(c)
 
   /**
    * Returns (a copy of) the contents of matrix as a single array in
@@ -142,7 +176,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   /**
    * Maps a function over each element in the matrix
    */
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
 
   /**
    * Changes the shape of matrix without changing the underlying data
@@ -234,6 +268,15 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def col(locs: Array[Int])(implicit ev: ST[A]): Mat[A] = takeCols(locs)
 
   /**
+   * Access mat columns specified by a slice
+   * @param slice a slice specifier
+   */
+  def col(slice: Slice[Int]): Mat[A] = {
+    val (a, b) = slice(IndexIntRange(numCols))
+    takeCols(a until b toArray)
+  }
+
+  /**
    * Returns columns of Mat as an indexed sequence of Vec instances
    */
   def cols()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = Range(0, numCols).map(col _)
@@ -264,6 +307,15 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param locs an array of integer offsets
    */
   def row(locs: Array[Int])(implicit ev: ST[A]): Mat[A] = takeRows(locs)
+
+  /**
+   * Access Mat rows specified by a slice
+   * @param slice a slice specifier
+   */
+  def row(slice: Slice[Int]): Mat[A] = {
+    val (a, b) = slice(IndexIntRange(numCols))
+    takeRows(a until b toArray)
+  }
 
   /**
    * Returns rows of matrix as an indexed sequence of Vec instances
@@ -297,7 +349,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def roundTo(sig: Int = 2)(implicit ev: NUM[A]): Mat[Double] = {
     val pwr = math.pow(10, sig)
     val rounder = (x: A) => math.round(scalarTag.toDouble(x) * pwr) / pwr
-    map(rounder)
+    mapValues(rounder)
   }
 
   /**

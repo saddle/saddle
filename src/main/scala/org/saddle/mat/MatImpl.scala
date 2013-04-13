@@ -59,11 +59,28 @@ private[saddle] object MatImpl {
         }
         r += 1
       }
-      if (nRows == 0) Mat.empty[A]
-      else Mat(nRows, m.numCols, buf)
+      if (nRows == 0)
+        Mat.empty[A]
+      else
+        Mat(nRows, m.numCols, buf)
     }
   }
 
-  def takeRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] =
-    withoutRows(m, Range(0, m.numRows).toSet.diff(locs.toSet).toArray)
+  def takeRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
+    if (m.length == 0) Mat.empty[A]
+    else {
+      val buf = Buffer[A](m.length)
+      var r = 0
+      while (r < locs.length) {
+        val currRow = locs(r)
+        var c = 0
+        while (c < m.numCols) {
+          buf.add(m(currRow, c))
+          c += 1
+        }
+        r += 1
+      }
+      Mat(r, m.numCols, buf.toArray)
+    }
+  }
 }

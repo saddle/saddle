@@ -826,12 +826,13 @@ class Series[X: ST: ORD, T: ST](
       val maxf = (a: List[Int], b: List[String]) => (a zip b).map(v => v._1.max(v._2.length))
 
       val isca = index.scalarTag
-      val iarr = index.toArray
-      val ilens = util.grab(iarr, half).map(isca.strList(_)).foldLeft(isca.strList(iarr(0)).map(_.length))(maxf)
+      val vidx = index.toVec
+      val idxHf = { vidx.head(half) concat vidx.tail(half) }
+      val ilens = idxHf.map(isca.strList(_)).foldLeft(isca.strList(vidx(0)).map(_.length))(maxf)
 
       val vsca = values.scalarTag
-      val varr = values.toArray
-      val vlen = util.grab(varr, half).map(vsca.show(_)).foldLeft(0)((a, b) => math.max(a, b.length))
+      val vlHf = { values.head(half) concat values.tail(half) }
+      val vlen = vlHf.map(vsca.show(_)).foldLeft(0)((a, b) => math.max(a, b.length))
 
       def enumZip[A, B](a: List[A], b: List[B]): List[(Int, A, B)] =
         for ( v <- (a.zipWithIndex zip b) ) yield (v._1._2, v._1._1, v._2)

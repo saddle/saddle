@@ -41,7 +41,7 @@ class MatString(val data: Array[Byte], val offsets: Mat[Int], val lengths: Mat[I
 
   def numCols = offsets.numCols
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) = null
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) = null
 
   def reshape(r: Int, c: Int) =
     new MatString(data, offsets.reshape(r, c), lengths.reshape(r, c))
@@ -55,13 +55,31 @@ class MatString(val data: Array[Byte], val offsets: Mat[Int], val lengths: Mat[I
   def withoutRows(locs: Array[Int]) =
     new MatString(data, offsets.withoutRows(locs), lengths.withoutRows(locs))
 
-  // todo: switch to row by row caching
+  private var rowCache: Map[Int, Vec[String]] = Map.empty
 
-  private lazy val lazyRows = Range(0, numRows).map(row _)
-  override def rows()(implicit ev: ST[String]): IndexedSeq[Vec[String]] = lazyRows
+  override def row(r: Int)(implicit ev: ST[String]): Vec[String] = {
+    assert(r >= 0 && r < numRows, "Array index %d out of bounds" format r)
+    synchronized {
+      rowCache.getOrElse(r, {
+        val tmp = super.row(r)
+        rowCache += (r -> tmp)
+        tmp
+      })
+    }
+  }
 
-  private lazy val lazyCols = Range(0, numCols).map(col _)
-  override def cols()(implicit ev: ST[String]): IndexedSeq[Vec[String]] = lazyCols
+  private var colCache: Map[Int, Vec[String]] = Map.empty
+
+  override def col(c: Int)(implicit ev: ST[String]): Vec[String] = {
+    assert(c >= 0 && c < numCols, "Array index %d out of bounds" format c)
+    synchronized {
+      colCache.getOrElse(c, {
+        val tmp = super.col(c)
+        colCache += (c -> tmp)
+        tmp
+      })
+    }
+  }
 
   def toVec: Vec[String] = new VecString(data, offsets.toVec, lengths.toVec)
 

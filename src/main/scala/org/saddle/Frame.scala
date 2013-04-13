@@ -1298,8 +1298,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
       }
     }
 
-  // ------------------------------------------------
-  // internal contiguous caching of data for efficiency
+  // ------------------------------------------------------
+  // internal contiguous caching of row data for efficiency
 
   private def withMat(m: Option[Mat[T]]): Frame[RX, CX, T] = {
     cachedMat = m
