@@ -179,6 +179,11 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
 
   /**
+   * Maps a function over the tuple (row index, col index, element) in the matrix
+   */
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int, A) => B): Mat[B]
+
+  /**
    * Changes the shape of matrix without changing the underlying data
    */
   def reshape(r: Int, c: Int): Mat[A]

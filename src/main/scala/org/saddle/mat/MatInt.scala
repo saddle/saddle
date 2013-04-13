@@ -34,7 +34,9 @@ class MatInt(r: Int, c: Int, values: Array[Int]) extends Mat[Int] {
 
   def toVec = scalarTag.makeVec(toArray)
 
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (Int) => B): Mat[B] = MatImpl.map(this)(f)
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (Int) => B): Mat[B] = MatImpl.mapValues(this)(f)
+
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int, Int) => B): Mat[B] = MatImpl.map(this)(f)
 
   // Cache the transpose: it's much faster to transpose and slice a continuous
   // bound than to take large strides, especially on large matrices where it

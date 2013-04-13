@@ -41,7 +41,9 @@ class MatString(val data: Array[Byte], val offsets: Mat[Int], val lengths: Mat[I
 
   def numCols = offsets.numCols
 
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) = null
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int, String) => B): Mat[B] = MatImpl.map(this)(f)
+
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) = MatImpl.mapValues(this)(f)
 
   def reshape(r: Int, c: Int) =
     new MatString(data, offsets.reshape(r, c), lengths.reshape(r, c))
