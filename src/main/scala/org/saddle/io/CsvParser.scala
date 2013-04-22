@@ -205,8 +205,8 @@ object CsvParser {
         if (curFld == locs(locIdx)) {   // we want this field
           callback(String.valueOf(carr, curBeg, curEnd - curBeg - inQoff), locIdx)
           locIdx += 1
-          inQoff = 0
         }
+        inQoff = 0
         curBeg = curEnd + 1             // start a new field
         curFld += 1
       }
