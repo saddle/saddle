@@ -65,6 +65,33 @@ object H5Store {
   }
 
   /**
+   * Read a Series slice from an HDF5 file. Note that this still loads the entire series into
+   * memory, so this is NOT meant to work with very large data chunks.
+   *
+   * @param path Path to file to read
+   * @param name Name of hdf5 group holding series data
+   * @param from Starting index of slice
+   * @param to Ending index of slice
+   * @param inclusive Whether to include or exclude ending index label (default true)
+   * @tparam X Series index type
+   * @tparam T Series values type
+   */
+  def readSeriesSlice[X: ST: ORD, T: ST](path: String, name: String,
+                                         from: X, to: X, inclusive: Boolean): Series[X, T] = {
+    monitor.lock()
+    try {
+      val series = readPandasSeries[X, T](path, name)
+      series.sliceBy(from, to, inclusive)
+    }
+    catch {
+      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
+    }
+    finally {
+      monitor.unlock()
+    }
+  }
+
+  /**
    * Read a Frame from an HDF5 file.
    * @param path Path to file to read
    * @param name Name of hdf5 group holding frame data
@@ -76,6 +103,38 @@ object H5Store {
     monitor.lock()
     try {
       readPandasFrame[RX, CX, T](path, name)
+    }
+    catch {
+      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
+    }
+    finally {
+      monitor.unlock()
+    }
+  }
+
+  /**
+   * Read a Frame slice from an HDF5 file. Note that the whole frame is still read into memory,
+   * so this isn't meant for working with huge data.
+   *
+   * @param path Path to file to read
+   * @param name Name of hdf5 group holding frame data
+   * @param rowFrom row to start slice
+   * @param rowTo row to end slice
+   * @param colFrom col to start slice
+   * @param colTo col to end slice
+   * @param rowInclusive whether to include or exclude rowTo label in slice
+   * @param colInclusive whether to include or exclude colTo label in slice
+   * @tparam RX Frame row index type
+   * @tparam CX Frame col index type
+   * @tparam T Frame values type
+   */
+  def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String,
+                                                      rowFrom: RX, rowTo: RX, colFrom: CX, colTo: CX,
+                                                      rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = {
+    monitor.lock()
+    try {
+      val fr = readPandasFrame[RX, CX, T](path, name)
+      fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
     }
     catch {
       case e: HDF5LibraryException => throw wrapHdf5Exception(e)
@@ -106,6 +165,33 @@ object H5Store {
   }
 
   /**
+   * Read a Series slice from an HDF5 file. Note that this still loads the entire series into
+   * memory, so this is NOT meant to work with very large data chunks.
+   *
+   * @param fileid HDF5 file handle returned from `openFile`
+   * @param name Name of hdf5 group holding series data
+   * @param from Starting index of slice
+   * @param to Ending index of slice
+   * @param inclusive Whether to include or exclude ending index label (default true)
+   * @tparam X Series index type
+   * @tparam T Series values type
+   */
+  def readSeriesSlice[X: ST: ORD, T: ST](fileid: Int, name: String,
+                                         from: X, to: X, inclusive: Boolean): Series[X, T] = {
+    monitor.lock()
+    try {
+      val series = readPandasSeries[X, T](fileid, name)
+      series.sliceBy(from, to, inclusive)
+    }
+    catch {
+      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
+    }
+    finally {
+      monitor.unlock()
+    }
+  }
+
+  /**
    * Read a Frame from an HDF5 file.
    * @param fileid HDF5 file handle returned from `openFile`
    * @param name Name of hdf5 group holding frame data
@@ -117,6 +203,38 @@ object H5Store {
     monitor.lock()
     try {
       readPandasFrame[RX, CX, T](fileid, name)
+    }
+    catch {
+      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
+    }
+    finally {
+      monitor.unlock()
+    }
+  }
+
+  /**
+   * Read a Frame slice from an HDF5 file. Note that the whole frame is still read into memory,
+   * so this isn't meant for working with huge data.
+   *
+   * @param fileid HDF5 file handle returned from `openFile`
+   * @param name Name of hdf5 group holding frame data
+   * @param rowFrom row to start slice
+   * @param rowTo row to end slice
+   * @param colFrom col to start slice
+   * @param colTo col to end slice
+   * @param rowInclusive whether to include or exclude rowTo label in slice
+   * @param colInclusive whether to include or exclude colTo label in slice
+   * @tparam RX Frame row index type
+   * @tparam CX Frame col index type
+   * @tparam T Frame values type
+   */
+  def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String,
+                                                      rowFrom: RX, rowTo: RX, colFrom: CX, colTo: CX,
+                                                      rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = {
+    monitor.lock()
+    try {
+      val fr = readPandasFrame[RX, CX, T](fileid, name)
+      fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
     }
     catch {
       case e: HDF5LibraryException => throw wrapHdf5Exception(e)

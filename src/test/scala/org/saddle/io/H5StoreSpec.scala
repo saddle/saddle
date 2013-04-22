@@ -131,6 +131,9 @@ class H5StoreSpec extends Specification {
       H5Store.readSeries[Long, Double](fid, "s4") must_== s4
       H5Store.readSeries[Double, Double](fid, "s5") must_== s5
 
+      // try slicing
+      H5Store.readSeriesSlice[DateTime, Double](fid, "s1", d2, d3, true) must_== s1.sliceBy(d2, d3)
+
       H5Store.closeFile(fid)
 
       Files.deleteIfExists(Paths.get(tmp))
@@ -190,6 +193,9 @@ class H5StoreSpec extends Specification {
       H5Store.readFrame[Int, Int, Double](fid, "df3") must_== df3
       H5Store.readFrame[Long, Int, Double](fid, "df4") must_== df4
       H5Store.readFrame[Double, Int, Double](fid, "df5") must_== df5
+
+      // try slicing
+      H5Store.readFrameSlice[DateTime, Int, Double](fid, "df1", d2, d3, 2, 3, true, true) must_== df1.colSliceBy(2, 3).rowSliceBy(d2, d3)
 
       H5Store.closeFile(fid)
 
