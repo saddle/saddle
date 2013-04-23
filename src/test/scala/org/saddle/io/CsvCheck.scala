@@ -26,8 +26,9 @@ class CsvCheck extends Specification with ScalaCheck {
   "csv string parsing works" in {
     val data =
       """a,"b,c,d",e
-        |1,2,3
-        |4,5,6,
+        |1,25,36,
+        |4,55, "6"
+        |5,9,38
         |7, "8",    "9",   """.stripMargin
 
     val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
@@ -38,7 +39,7 @@ class CsvCheck extends Specification with ScalaCheck {
     }
 
     val frame = CsvParser.parse()(src).toFrame
-    val expect = Frame(Vec("1","4","7"), Vec("2", "5", "8"), Vec("3", "6", "9")).setColIndex(Index("a", "b,c,d","e"))
+    val expect = Frame(Vec("1","4","5","7"), Vec("25", "55", "9", "8"), Vec("36", "6", "38", "9")).setColIndex(Index("a", "b,c,d","e"))
 
     frame must_== expect
   }

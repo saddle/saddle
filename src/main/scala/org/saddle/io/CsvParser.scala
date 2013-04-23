@@ -19,7 +19,6 @@ package org.saddle.io
 import org.saddle._
 import collection.mutable.ArrayBuffer
 import java.util.concurrent.{Executors, Callable}
-import org.saddle.mat.MatString
 import org.saddle.vec.VecString
 
 /**
