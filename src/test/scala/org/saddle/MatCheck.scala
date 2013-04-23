@@ -88,7 +88,7 @@ class MatCheck extends Specification with ScalaCheck {
        forAll { (m: Mat[Double]) =>
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
-           val res = m.takeRows(i.toArray)
+           val res = m.takeRows(i : _*)
            res.numRows must_== i.size
            val exp = for (j <- i) yield m.row(j)
            res must_== Mat(exp : _*).T
@@ -100,7 +100,7 @@ class MatCheck extends Specification with ScalaCheck {
        forAll { (m: Mat[Double]) =>
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
-           val res = m.takeCols(i.toArray)
+           val res = m.takeCols(i : _*)
            res.numCols must_== i.size
            val exp = for (j <- i) yield m.col(j)
            res must_== Mat(exp : _*)
@@ -113,7 +113,7 @@ class MatCheck extends Specification with ScalaCheck {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
-           val res = m.withoutRows(i.toArray)
+           val res = m.withoutRows(i : _*)
            res.numRows must_== (m.numRows - loc.size)
            val exp = for (j <- 0 until m.numRows if !loc.contains(j)) yield m.row(j)
            res must_== Mat(exp : _*).T
@@ -126,7 +126,7 @@ class MatCheck extends Specification with ScalaCheck {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
-           val res = m.withoutCols(i.toArray)
+           val res = m.withoutCols(i : _*)
            res.numCols must_== (m.numCols - loc.size)
            val exp = for (j <- 0 until m.numCols if !loc.contains(j)) yield m.col(j)
            res must_== Mat(exp : _*)
