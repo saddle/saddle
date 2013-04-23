@@ -16,8 +16,6 @@
 
 import sbt._
 import Keys._
-import sbtassembly.Plugin._
-import sbtassembly.Plugin.AssemblyKeys._
 
 object SaddleBuild extends sbt.Build {
 
@@ -39,23 +37,16 @@ object SaddleBuild extends sbt.Build {
                 "it.unimi.dsi" % "dsiutils" % "2.0.15",
                 "org.scala-saddle" % "jhdf5" % "2.9"
               ) ++ Shared.testDeps),
-              jarName in assembly <<= version { v => "saddle-%s.jar" format (v) },
-              assembleArtifact in packageScala := false,
-              mergeStrategy in assembly := {
-                case "META-INF/MANIFEST.MF" | "META-INF/LICENSE" | "META-INF/BCKEY.DSA" => MergeStrategy.discard
-                case _ => MergeStrategy.first
-              },
               testOptions in Test += Tests.Argument("console", "junitxml")
             ))
 
   def project(id: String, base: File, settings: Seq[Project.Setting[_]] = Nil) =
     Project(id = id,
             base = base,
-            settings = assemblySettings ++ Project.defaultSettings ++ Shared.settings ++ settings)
+            settings = Project.defaultSettings ++ Shared.settings ++ settings)
 }
 
 object Shared {
-  /** Resolve specs version for the current scala version (thanks @n8han). */
   val testDeps = Seq(
     "org.specs2" %% "specs2" % "1.12.3" % "test",
     "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
@@ -107,5 +98,3 @@ object Shared {
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
   )
 }
-
-
