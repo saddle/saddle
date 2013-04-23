@@ -204,9 +204,19 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def takeRows(locs: Array[Int]): Mat[A]
 
   /**
+   * Create Mat comprised of same values in specified rows
+   */
+  def takeRows(locs: Int*): Mat[A] = takeRows(locs.toArray)
+
+  /**
    * Create Mat comprised of same values in specified columns
    */
   def takeCols(locs: Array[Int]): Mat[A] = T.takeRows(locs).T
+
+  /**
+   * Create Mat comprised of same values in specified columns
+   */
+  def takeCols(locs: Int*): Mat[A] = takeCols(locs.toArray)
 
   /**
    * Create Mat comprised of same values without the specified rows
@@ -216,11 +226,25 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def withoutRows(locs: Array[Int]): Mat[A]
 
   /**
+   * Create Mat comprised of same values without the specified rows
+   *
+   * @param locs Row locations to exclude
+   */
+  def withoutRows(locs: Int*): Mat[A] = withoutRows(locs.toArray)
+
+  /**
    * Create Mat comprised of same values without the specified columns
    *
    * @param locs Col locations to exclude
    */
   def withoutCols(locs: Array[Int]): Mat[A] = T.withoutRows(locs).T
+
+  /**
+   * Create Mat comprised of same values without the specified columns
+   *
+   * @param locs Col locations to exclude
+   */
+  def withoutCols(locs: Int*): Mat[A] = withoutCols(locs.toArray)
 
   /**
    * Yields row indices where row has some NA value
