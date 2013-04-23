@@ -289,10 +289,8 @@ class Series[X: ST: ORD, T: ST](
    * @tparam U type of other Series Values
    * @tparam V type of resulting Series values
    */
-  def concat[U, V](other: Series[X, U])(implicit pro: Promoter[T, U, V], md: ST[V]): Series[X, V] = {
-    val newIdx = Index(array.flatten(Seq(index.toArray, other.index.toArray)))
-    Series(values concat other.values, newIdx)
-  }
+  def concat[U, V](other: Series[X, U])(implicit pro: Promoter[T, U, V], md: ST[V]): Series[X, V] =
+    Series(values concat other.values, index concat other.index)
 
   /**
    * Additive inverse of Series with numeric elements

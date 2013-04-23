@@ -55,5 +55,7 @@ object ScalarTagDouble extends ScalarTag[Double] {
   def makeIndex(vec: Vec[Double])(implicit ord: ORD[Double]): Index[Double] = new IndexDouble(vec)
   def makeSorter(implicit ord: ORD[Double]): Sorter[Double] = Sorter.doubleSorter
 
+  def concat(arrs: IndexedSeq[Vec[Double]]): Vec[Double] = Vec(array.flatten(arrs.map(_.toArray)))
+
   override def toString = "ScalarTagDouble"
 }

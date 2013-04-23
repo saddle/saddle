@@ -18,14 +18,7 @@ package org.saddle
 
 import scala.{ specialized => spec }
 import util.Random
-import vec.VecBool
-import it.unimi.dsi.fastutil.ints.{IntArrays, IntOpenHashSet}
-import it.unimi.dsi.fastutil.longs.LongArrays
-import it.unimi.dsi.fastutil.doubles.DoubleArrays
-import it.unimi.dsi.fastutil.bytes.ByteArrays
-import it.unimi.dsi.fastutil.chars.CharArrays
-import it.unimi.dsi.fastutil.shorts.ShortArrays
-import it.unimi.dsi.fastutil.floats.FloatArrays
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 
 /**
  * This package contains utilities for working with arrays that

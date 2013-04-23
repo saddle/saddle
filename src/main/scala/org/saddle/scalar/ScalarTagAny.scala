@@ -52,4 +52,6 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
   def makeMat(r: Int, c: Int, arr: Array[T]): Mat[T] = new MatAny[T](r, c, arr)(this)
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T] = new IndexAny[T](vec)(this, ord)
   def makeSorter(implicit ord: ORD[T]): Sorter[T] = Sorter.anySorter[T]
+
+  def concat(arrs: IndexedSeq[Vec[T]]): Vec[T] = Vec(array.flatten(arrs.map(_.toArray)))
 }

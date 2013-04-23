@@ -74,6 +74,11 @@ class FrameCheck extends Specification with ScalaCheck {
       val f = Frame(Array(Vec.empty[Double]) : _*)
       f.toString must throwAn[RuntimeException].not
     }
+
+    "Transpose must work for a string frame" in {
+      val f = Frame(Vec("a", "b", "c"), Vec("d", "e", "f"))
+      f.T must_== Frame(Vec("a", "d"), Vec("b", "e"), Vec("c", "f"))
+    }
   }
 
 }

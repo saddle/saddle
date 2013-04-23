@@ -59,4 +59,6 @@ object ScalarTagTime extends ScalarTagAny[DateTime] {
   override def runtimeClass = classOf[DateTime]
 
   override def toString = "ScalarTagTime"
+
+  override def concat(vecs: IndexedSeq[Vec[DateTime]]): VecTime = VecTime.concat(vecs)
 }

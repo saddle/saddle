@@ -40,4 +40,6 @@ object ScalarTagString extends ScalarTagAny[String] {
   }
 
   override def toString = "ScalarTagString"
+
+  override def concat(vecs: IndexedSeq[Vec[String]]): Vec[String] = VecString.concat(vecs)
 }

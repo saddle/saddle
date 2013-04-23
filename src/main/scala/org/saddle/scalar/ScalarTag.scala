@@ -27,7 +27,7 @@ import org.saddle.array.Sorter
  * as an array. Often implicitly required when dealing with objects in Saddle
  */
 trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
-  extends SpecializedFactory[T] with ClassManifest[T] with CouldBeOrdered[T] with CouldBeNumber[T] {
+  extends ClassManifest[T] with SpecializedFactory[T] with CouldBeOrdered[T] with CouldBeNumber[T] with ScalarHelperOps[T] {
   // representation of missing data
   def missing: T
   def isMissing(t: T): Boolean
@@ -84,6 +84,13 @@ trait CouldBeOrdered[@spec(Boolean, Int, Long, Float, Double) T] {
   def iseq(a: T, b: T)(implicit ev: ORD[T]) = compare(a, b) == 0
 }
 
+trait ScalarHelperOps[@spec(Boolean, Int, Long, Float, Double) T] {
+  /**
+   * Offer a type-specific way to concat vecs
+   */
+  def concat(vecs: IndexedSeq[Vec[T]]): Vec[T]
+}
+
 trait CouldBeNumber[@spec(Boolean, Int, Long, Float, Double) T] {
   // for numeric scalars
   def toDouble(t: T)(implicit ev: NUM[T]): Double
@@ -122,5 +129,5 @@ trait SpecializedFactory[@spec(Boolean, Int, Long, Float, Double) T] {
    * don't want to extract elements that way.
    */
   protected def altMatConstructor(r: Int, c: Int, arr: Array[Vec[T]])(implicit st: ST[T]): Mat[T] =
-    makeMat(c, r, array.flatten(arr.map(_.toArray))).T
+    makeMat(c, r, st.concat(arr).toArray).T
 }

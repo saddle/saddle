@@ -842,7 +842,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     val mfn = (v: Vec[T], u: Vec[U]) => v concat u
     val zpp = lft zip rgt
     val dat = zpp.map { case (top, bot) => mfn(top, bot) }
-    val idx = array.flatten(Seq(rowIx.toArray, other.rowIx.toArray))
+    val idx = rowIx concat other.rowIx
 
     Frame(dat, idx, ixc.index)
   }
@@ -1178,8 +1178,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * information)
    */
   def toMat: Mat[T] = {
+    val st = implicitly[ST[T]]
     synchronized {
-      if (cachedMat.isEmpty) withMat(Some(Mat(values.toArray)))
+      if (cachedMat.isEmpty) {
+        val m = Mat(values.numCols, values.numRows, st.concat(values)).T
+        withMat(Some(m))
+      }
       cachedMat.get
     }
   }
