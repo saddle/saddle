@@ -36,7 +36,7 @@ object SaddleBuild extends sbt.Build {
                 "it.unimi.dsi" % "fastutil" % "6.5.2",
                 "it.unimi.dsi" % "dsiutils" % "2.0.15",
                 "org.scala-saddle" % "jhdf5" % "2.9"
-              ) ++ Shared.testDeps),
+              ) ++ Shared.testDeps(v)),
               testOptions in Test += Tests.Argument("console", "junitxml")
             ))
 
@@ -47,11 +47,20 @@ object SaddleBuild extends sbt.Build {
 }
 
 object Shared {
-  val testDeps = Seq(
-    "org.specs2" %% "specs2" % "1.12.3" % "test",
-    "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
-    "junit" % "junit" % "4.7" % "test"
-  )
+  def testDeps(version: String) = {
+    val specs2 = if (version.startsWith("2.10"))
+      "org.specs2" %% "specs2" % "1.14" % "test"
+    else if (version.startsWith("2.9.3"))
+      "org.specs2" % "specs2_2.9.2" % "1.12.4" % "test"
+    else
+      "org.specs2" %% "specs2" % "1.12.4" % "test"
+
+    Seq(
+      specs2,
+      "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
+      "junit" % "junit" % "4.7" % "test"
+    )
+  }
 
   val settings = Seq(
     organization := "org.scala-saddle",
@@ -81,7 +90,7 @@ object Shared {
     ),
     version := "1.1.0-SNAPSHOT",
     scalaVersion := "2.9.2",
-    crossScalaVersions := Seq("2.9.2", "2.10.0"),
+    crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.0"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
     shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },
     resolvers ++= Seq(
