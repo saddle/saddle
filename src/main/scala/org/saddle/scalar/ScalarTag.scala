@@ -55,7 +55,7 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
   def runtimeClass: Class[_]
 }
 
-object ScalarTag extends LowPriorityScalarTagImplicits {
+object ScalarTag extends ScalarTagImplicits {
   implicit val stChar = ScalarTagChar
   implicit val stByte = ScalarTagByte
   implicit val stBool = ScalarTagBool
@@ -65,14 +65,16 @@ object ScalarTag extends LowPriorityScalarTagImplicits {
   implicit val stLong = ScalarTagLong
   implicit val stDouble = ScalarTagDouble
   implicit val stTime = ScalarTagTime
-  implicit val stString = ScalarTagString
+
+  // experimental: going to change this to different implementation
+  // implicit val stString = ScalarTagString
 }
 
-trait LowPriorityScalarTagImplicits extends LowerPriorityScalarTagImplicits {
+trait ScalarTagImplicits extends LowPriorityScalarTagImplicits {
   implicit def stPrd[T <: Product : CLM] = new ScalarTagProduct[T]
 }
 
-trait LowerPriorityScalarTagImplicits {
+trait LowPriorityScalarTagImplicits {
   implicit def stAny[T : CLM] = new ScalarTagAny[T]
 }
 
