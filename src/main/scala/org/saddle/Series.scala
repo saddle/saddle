@@ -436,6 +436,12 @@ class Series[X: ST: ORD, T: ST](
   def filterIx(pred: X => Boolean): Series[X, T] = where(index.toVec.map(pred))
 
   /**
+   * Return Series whose offets satisfy a predicate function
+   * @param pred Predicate function from Int => Boolean
+   */
+  def filterAt(pred: Int => Boolean) = Series(values.filterAt(pred), Index(index.toVec.filterAt(pred)))
+
+  /**
    * Return Series whose keys and values are chosen via a Vec[Boolean] or a
    * Series[_, Boolean] where the latter contains a true value.
    * @param pred Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)

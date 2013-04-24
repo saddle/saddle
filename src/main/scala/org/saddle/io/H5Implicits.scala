@@ -18,20 +18,22 @@ package org.saddle.io
 
 import org.saddle._
 
-/**
- * Container to hold data that comes back from parsing a csv
- *
- * @param columns A sequence of Vec instances containing data
- */
-case class ParsedData(headers: Vec[String], columns: IndexedSeq[Vec[String]]) {
-  def toFrame: Frame[Int, String, String] = Frame(columns : _*).setColIndex(Index(headers))
-  def toFrameNoHeader: Frame[Int, Int, String] = Frame(columns : _*)
-}
+object H5Implicits {
+  /**
+   * Provides enrichment on Frame object for writing to an HDF5 file.
+   */
+  implicit def frame2H5Writer[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T]) = new {
 
-/**
- * Allows implicit conversion from ParseData to Frame
- */
-object ParsedData {
-  implicit def tf1(fd: ParsedData): Frame[Int, String, String] = fd.toFrame
-  implicit def tf2(fd: ParsedData): Frame[Int, Int, String] = fd.toFrameNoHeader
+    /**
+     * Write a frame in HDF5 format to a file at the path provided
+     *
+     * @param path File to write
+     * @param id Name of the HDF group in which to store frame data
+     */
+    def writeHdfFile(path: String, id: String) {
+      H5Store.writeFrame(path, id, frame)
+    }
+
+  } // end new
+
 }

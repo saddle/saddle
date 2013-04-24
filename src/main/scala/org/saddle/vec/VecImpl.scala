@@ -288,6 +288,17 @@ private[saddle] object VecImpl {
     Vec(buf.toArray)
   }
 
+  def filterAt[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: Int => Boolean): Vec[A] = {
+    var i = 0
+    val buf = Buffer[A]()
+    while(i < vec.length) {
+      val v: A = vec(i)
+      if (pred(i)) buf.add(v)
+      i += 1
+    }
+    Vec(buf.toArray)
+  }
+
   def where[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: Array[Boolean]): Vec[A] = {
     var i = 0
     val buf = Buffer[A]()

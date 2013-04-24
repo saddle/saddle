@@ -16,8 +16,6 @@
 
 package org.saddle
 
-import org.saddle.time._
-
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
@@ -207,6 +205,22 @@ class SeriesCheck extends Specification with ScalaCheck {
           proxied.at(i) must_== s2.at(i)
         }
         all.foldLeft(true)((acc, v) => acc && v.isSuccess)
+      }
+    }
+
+    "filter works" in {
+      forAll { (s1: Series[Int, Double]) =>
+        s1.filter(_ > 0).sum >= 0 must beTrue
+        s1.filter(_ < 0).sum <= 0 must beTrue
+      }
+    }
+
+    "filterAt works" in {
+      forAll { (s: Series[Int, Double]) =>
+        val idx = Gen.choose(0, s.length - 1)
+        forAll(idx) { i =>
+          (s.filterAt(_ != i).length == 0 || s.filterAt(_ != i).length == s.length - 1) must beTrue
+        }
       }
     }
 

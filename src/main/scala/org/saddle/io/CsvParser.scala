@@ -56,11 +56,18 @@ object CsvParser {
    *   data.toFrameNoHeader
    * }}}
    *
+   * @param source The csv data source to operate on
+   */
+  def parse(source: CsvSource): Frame[Int, Int, String] = parse()(source)
+
+  /**
+   * Another parse function.
+   *
    * @param cols The column offsets to parse (if empty, parse everything)
    * @param params The CsvParams to utilize in parsing
    * @param source The csv data source to operate on
    */
-  def parse(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(source: CsvSource): ParsedData = {
+  def parse(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(source: CsvSource): Frame[Int, Int, String] = {
 
     require(params.separChar != params.quoteChar,
             "Separator character and quote character cannot be the same")
@@ -101,10 +108,7 @@ object CsvParser {
 
     // first line is either header, or needs to be processed
     val fields = Vec(firstLine).take(locs)
-    val headers = if (params.hasHeader) fields else {
-      fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
-      Vec.empty[String]
-    }
+    fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
 
     // parse remaining rows
     var str: String = null
@@ -115,7 +119,7 @@ object CsvParser {
     }
 
     val zipped = { bufdata zip offsets zip lengths } map { case ((d, o), l) => new VecString(d, o, l) }
-    ParsedData(headers, zipped)
+    Frame(zipped : _*).row(params.skipLines -> *)
   }
 
   /**
@@ -134,11 +138,10 @@ object CsvParser {
    * @param cols The column offsets to parse (if empty, parse everything)
    * @param params The CsvParams to utilize in parsing
    */
-  def parsePar(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(src: CsvSourcePar): ParsedData = {
+  def parsePar(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(src: CsvSourcePar): Frame[Int, Int, String] = {
     val xserv = Executors.newFixedThreadPool(nProcs)           // create thread pool for N CPU bound threads
 
     var results = IndexedSeq.empty[Vec[String]]
-    var header = Vec.empty[String]
 
     try {
       // submit chunks to parse
@@ -148,14 +151,11 @@ object CsvParser {
 
       val chunks = parseTasks.map(_.get())                     // wait on, retrieve parse results
 
-      header = chunks(0).headers
-
-      if (chunks(0).columns.length > 0) {
-        val nRows = chunks.map(_.columns(0).length).sum        // total rows across all chunks
-        val nCols = header.length                              // number of parsed out columns
+      if (chunks(0).numCols > 0) {
+        val nRows = chunks.map(_.numRows).sum                  // total rows across all chunks
 
         // submit chunks for combination
-        val combineTasks = for (i <- 0 until nCols) yield {
+        val combineTasks = for (i <- 0 until chunks(0).numCols) yield {
           xserv submit combineTask(chunks, i, nRows)
         }
 
@@ -166,7 +166,7 @@ object CsvParser {
       xserv.shutdown()
     }
 
-    ParsedData(header, results.map(v => v.slice(params.skipLines, v.length)))
+    Frame(results : _*).row(params.skipLines -> *)
   }
 
   private def extractFields(line: String, callback: (String, Int) => Unit,
@@ -281,16 +281,16 @@ object CsvParser {
 
   // a task that parses a chunk, returns some ParseData
   private def parseTask(chunk: CsvSource, cols: Seq[Int], params: CsvParams) =
-    new Callable[ParsedData] {
+    new Callable[Frame[Int, Int, String]] {
       val csvpar = params.copy(skipLines = 0)
       def call() = parse(cols, csvpar)(chunk)
     }
 
   // concatenates a single column within the ParseData chunks, returns joined Vec
-  private def combineTask(chunks: IndexedSeq[ParsedData], col: Int, sz: Int) =
+  private def combineTask(chunks: IndexedSeq[Frame[Int, Int, String]], col: Int, sz: Int) =
     new Callable[Vec[String]] {
       def call() = {
-        val vecs = for (i <- 0 until chunks.length) yield chunks(i).columns(col)
+        val vecs = for (i <- 0 until chunks.length) yield chunks(i).colAt(col).toVec
         VecString.concat(vecs)
       }
     }

@@ -96,6 +96,14 @@ package object vec {
   def zeros(sz: Int): Vec[Double] = Vec(array.empty[Double](sz))
 
   /**
+   * Generate a Vec[Int] containing the range of integers specified
+   * @param from Start of range
+   * @param until End of range, excluded from result
+   * @param step Stride of range
+   */
+  def range(from: Int, until: Int, step: Int = 1): Vec[Int] = array.range(from, until, step)
+
+  /**
    * Repeats a particular array some number of times
    *
    * @param v array of values to repeat

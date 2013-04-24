@@ -340,6 +340,12 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   def filter(pred: T => Boolean): Vec[T] = VecImpl.filter(this)(pred)(scalarTag)
 
   /**
+   * Return vec whose offets satisfy a predicate function
+   * @param pred Predicate function from Int => Boolean
+   */
+  def filterAt(pred: Int => Boolean): Vec[T] = VecImpl.filterAt(this)(pred)(scalarTag)
+
+  /**
    * Return Vec whose elements are selected via a Vec of booleans (where that Vec holds the value true)
    * @param pred Predicate vector: Vec[Boolean]
    */

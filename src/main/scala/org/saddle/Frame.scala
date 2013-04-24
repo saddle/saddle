@@ -512,6 +512,22 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     Frame(values, newIx, colIx) withMat cachedMat
 
   /**
+   * Create a new Frame using the current values but with the new row index specified
+   * by the column at a particular offset, and with that column removed from the frame
+   * data body.
+   */
+  def withRowIndex(col: Int)(implicit ordT: ORD[T]): Frame[T, CX, T] =
+    this.setRowIndex(Index(this.colAt(col).toVec)).filterAt(_ != col)
+
+  /**
+   * Overloaded method to create hierarchical index from two cols.
+   */
+  def withRowIndex(col1: Int, col2: Int)(implicit ordT: ORD[T]): Frame[(T, T), CX, T] = {
+    val newIx: Index[(T, T)] = Index.make(this.colAt(col1).toVec, this.colAt(col2).toVec)
+    this.setRowIndex(newIx).filterAt { case c => !Set(col1, col2).contains(c) }
+  }
+
+  /**
    * Map a function over the row index, resulting in a new Frame
    *
    * @param fn The function RX => Y with which to map
@@ -528,6 +544,22 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    */
   def setColIndex[Y: ST: ORD](newIx: Index[Y]): Frame[RX, Y, T] =
     Frame(values, rowIx, newIx) withMat cachedMat
+
+  /**
+   * Create a new Frame using the current values but with the new col index specified
+   * by the row at a particular offset, and with that row removed from the frame
+   * data body.
+   */
+  def withColIndex(row: Int)(implicit ordT: ORD[T]): Frame[RX, T, T] =
+    this.setColIndex(Index(this.rowAt(row).toVec)).rfilterAt(_ != row)
+
+  /**
+   * Overloaded method to create hierarchical index from two rows.
+   */
+  def withColIndex(row1: Int, row2: Int)(implicit ordT: ORD[T]): Frame[RX, (T, T), T] = {
+    val newIx: Index[(T, T)] = Index.make(this.rowAt(row1).toVec, this.rowAt(row2).toVec)
+    this.setColIndex(newIx).rfilterAt { case r => !Set(row1, row2).contains(r) }
+  }
 
   /**
    * Map a function over the col index, resulting in a new Frame
@@ -893,6 +925,13 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   def filterIx(pred: CX => Boolean) = where(colIx.toVec.map(pred))
 
   /**
+   * Return Frame whose columns satisfy a predicate function operating on the
+   * column index offset
+   * @param pred Predicate function from CX => Boolean
+   */
+  def filterAt(pred: Int => Boolean) = where(vec.range(0, numCols).map(pred))
+
+  /**
    * Return Frame excluding any of those columns which have an NA value
    */
   def dropNA: Frame[RX, CX, T] = filter(s => !s.hasNA)
@@ -1241,6 +1280,11 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * See filterIx; operates row-wise
    */
   def rfilterIx(pred: RX => Boolean) = rwhere(rowIx.toVec.map(pred))
+
+  /**
+   * See filterAt; operates row-wise
+   */
+  def rfilterAt(pred: Int => Boolean) = rwhere(vec.range(0, numRows).map(pred))
 
   /**
    * See joinS; operates row-wise

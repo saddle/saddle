@@ -38,7 +38,7 @@ class CsvCheck extends Specification with ScalaCheck {
       def readLine = buf.readLine()
     }
 
-    val frame = CsvParser.parse()(src).toFrame
+    val frame = CsvParser.parse()(src).withColIndex(0).resetRowIndex
     val expect = Frame(Vec("1","4","5","7"), Vec("25", "55", "9", "8"), Vec("36", "6", "38", "9")).setColIndex(Index("a", "b,c,d","e"))
 
     frame must_== expect
@@ -58,7 +58,7 @@ class CsvCheck extends Specification with ScalaCheck {
       def readLine = buf.readLine()
     }
 
-    val frame = CsvParser.parse()(src).toFrame.mapValues(CsvParser.parseInt _)
+    val frame = CsvParser.parse()(src).withColIndex(0).resetRowIndex.mapValues(CsvParser.parseInt _)
     val expect = Frame(Vec(1, 4, 7), Vec(2, 5, 8), Vec(3, na.to[Int], 9)).setColIndex(Index("a", "b,c,d","e"))
 
     frame must_== expect
@@ -78,6 +78,6 @@ class CsvCheck extends Specification with ScalaCheck {
       def readLine = buf.readLine()
     }
 
-    CsvParser.parse()(src).toFrame must throwAn[ArrayIndexOutOfBoundsException]
+    CsvParser.parse()(src) must throwAn[ArrayIndexOutOfBoundsException]
   }
 }

@@ -45,6 +45,25 @@ case class CsvSettings(separChar: Char = ',',
  */
 object CsvImplicits {
   /**
+   * Provides enrichment on Series object for writing to a Csv file.
+   */
+  implicit def series2CsvWriter[X: ST: ORD, T: ST](series: Series[X, T]) = new {
+    def writeCsvFile(path: String,
+                     withColIx: Boolean = false,
+                     withRowIx: Boolean = true,
+                     settings: CsvSettings = new CsvSettings()) {
+      frame2CsvWriter(Frame(series)).writeCsvFile(path, withColIx, withRowIx, settings)
+    }
+
+    def writeCsvStream(stream: OutputStream,
+                       withColIx: Boolean = false,
+                       withRowIx: Boolean = true,
+                       settings: CsvSettings = new CsvSettings()) {
+      frame2CsvWriter(Frame(series)).writeCsvStream(stream, withColIx, withRowIx, settings)
+    }
+  }     // end new
+
+  /**
    * Provides enrichment on Frame object for writing to a Csv file.
    */
   implicit def frame2CsvWriter[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T]) = new {
@@ -71,16 +90,6 @@ object CsvImplicits {
         stream.close()
         file.close()
       }
-    }
-
-    /**
-     * Write a frame in CSV format to a file at the path provided
-     *
-     * @param path File to write
-     * @param id Name of the HDF group in which to store frame data
-     */
-    def writeHdfFile(path: String, id: String) {
-      H5Store.writeFrame(path, id, frame)
     }
 
     /**
@@ -160,5 +169,7 @@ object CsvImplicits {
         writeRows(rsm)
       }
     }
-  }
+
+  }   // end new
+
 }

@@ -145,6 +145,16 @@ class VecCheck extends Specification with ScalaCheck {
       }
     }
 
+    "filterAt works" in {
+      forAll { (v: Vec[Double]) =>
+        val idx = Gen.choose(0, v.length)
+        forAll(idx) { i =>
+          val res = v.filterAt(_ != i)
+          (res.length <= i) || (res.length must_== v.length - 1)
+        }
+      }
+    }
+
     "where works" in {
       forAll { (v: Vec[Double]) =>
         val whereVec = (v < 0)
