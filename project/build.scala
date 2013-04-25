@@ -21,7 +21,7 @@ object SaddleBuild extends sbt.Build {
 
   lazy val root =
     project(id = "saddle",
-            base = file(".")) aggregate(core)
+            base = file(".")) aggregate(core, hdf5)
 
   lazy val core =
     project(id = "saddle-core",
@@ -38,11 +38,25 @@ object SaddleBuild extends sbt.Build {
                 "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.19",
                 "org.apache.commons" % "commons-math" % "2.2",
                 "it.unimi.dsi" % "fastutil" % "6.5.2",
-                "it.unimi.dsi" % "dsiutils" % "2.0.15",
-                "org.scala-saddle" % "jhdf5" % "2.9"
+                "it.unimi.dsi" % "dsiutils" % "2.0.15"
               ) ++ Shared.testDeps(v)),
               testOptions in Test += Tests.Argument("console", "junitxml")
             ))
+
+  lazy val hdf5 =
+    project(id = "saddle-hdf5",
+            base = file("saddle-hdf5"),
+            settings = Seq(
+              initialCommands := """
+                |import org.joda.time.DateTime
+                |import org.saddle._
+                |import org.saddle.time._
+                |import org.saddle.io._""".stripMargin('|'),
+              libraryDependencies <++= scalaVersion (v => Seq(
+                "org.scala-saddle" % "jhdf5" % "2.9"
+              ) ++ Shared.testDeps(v)),
+              testOptions in Test += Tests.Argument("console", "junitxml")
+            )) dependsOn(core)
 
   def project(id: String, base: File, settings: Seq[Project.Setting[_]] = Nil) =
     Project(id = id,
@@ -89,6 +103,14 @@ object Shared {
           <id>adamklein</id>
           <name>Adam Klein</name>
           <url>http://blog.adamdklein.com</url>
+        </developer>
+        <developer>
+          <id>chrislewis</id>
+          <name>Chris Lewis</name>
+          <email>chris@thegodcode.net</email>
+          <url>http://www.thegodcode.net/</url>
+          <organizationUrl>https://www.novus.com/</organizationUrl>
+          <timezone>-5</timezone>
         </developer>
       </developers>
     ),
