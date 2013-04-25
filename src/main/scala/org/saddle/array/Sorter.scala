@@ -100,7 +100,7 @@ object Sorter {
 
   object floatSorter extends Sorter[Float] {
     def argSorted(arr: Array[Float]) = {
-      val tmp = nanToNegInf(arr)
+      val tmp = nanToNegInf(arr)               // fastutil sorts NaN to PosInf
       val res = range(0, arr.length)
       FloatArrays.radixSortIndirect(res, tmp, true)
       res
@@ -141,7 +141,7 @@ object Sorter {
 
   object doubleSorter extends Sorter[Double] {
     def argSorted(arr: Array[Double]) = {
-      val tmp = nanToNegInf(arr)
+      val tmp = nanToNegInf(arr)                // fastutil sorts NaN to PosInf
       val res = range(0, arr.length)
       DoubleArrays.radixSortIndirect(res, tmp, true)
       res

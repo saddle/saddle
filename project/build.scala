@@ -33,7 +33,7 @@ object SaddleBuild extends sbt.Build {
                 "org.joda" % "joda-convert" % "1.2",
                 "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.19",
                 "org.apache.commons" % "commons-math" % "2.2",
-                "it.unimi.dsi" % "fastutil" % "6.5.2",
+                "it.unimi.dsi" % "fastutil" % "6.5.4",
                 "it.unimi.dsi" % "dsiutils" % "2.0.15",
                 "org.scala-saddle" % "jhdf5" % "2.9"
               ) ++ Shared.testDeps(v)),
