@@ -2,5 +2,6 @@
 *.class
 .idea/
 .idea_modules/
+saddle.sublime-workspace
 project/target/
 target/

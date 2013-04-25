@@ -21,7 +21,11 @@ object SaddleBuild extends sbt.Build {
 
   lazy val root =
     project(id = "saddle",
-            base = file("."),
+            base = file(".")) aggregate(core)
+
+  lazy val core =
+    project(id = "saddle-core",
+            base = file("saddle-core"),
             settings = Seq(
               initialCommands := """
                 |import org.joda.time.DateTime
