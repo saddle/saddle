@@ -63,9 +63,9 @@ class H5StoreSpec extends Specification {
     match {
       case Left(exception) => Skipped("Could not import HDF5")
       case Right(result)   => {
-        test ! {
+        test in {
           logic
-          ncsa.hdf.hdf5lib.H5.getOpenIDCount must_== 0           // check for any resource leaks
+          H5Store.openResourceCount must_== 0  // check for any resource leaks
         }
       }
     }

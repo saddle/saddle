@@ -462,6 +462,19 @@ object H5Store {
     }
   }
 
+  /**
+   * Query for number of open resource handles held by HDF5 Library
+   */
+  def openResourceCount: Int = {
+    monitor.lock()
+    try {
+      ncsa.hdf.hdf5lib.H5.getOpenIDCount
+    }
+    finally {
+      monitor.unlock()
+    }
+  }
+
   // *** private helper functions
 
   // release resources / cleanup on JVM shutdown
