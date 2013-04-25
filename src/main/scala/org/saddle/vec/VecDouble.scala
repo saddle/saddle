@@ -39,7 +39,7 @@ class VecDouble(values: Array[Double]) extends Vec[Double] { self =>
 
   def hasNA: Boolean = VecImpl.findOneNA(this)
 
-  def unary_-(): Vec[Double] = map(-_)
+  def unary_-(): Vec[Double] = mapValues(-_)
 
   def concat[B, C](v: Vec[B])(implicit wd: Promoter[Double, B, C], mc: ST[C]): Vec[C] =
     Vec(util.Concat.append[Double, B, C](toArray, v.toArray))
@@ -56,7 +56,9 @@ class VecDouble(values: Array[Double]) extends Vec[Double] { self =>
   def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: Vec[Double] => B): Vec[B] =
     VecImpl.rolling(this)(winSz, f)
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: Double => B): Vec[B] = VecImpl.map[Double, B](this)(f)
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: Double => B): Vec[B] = VecImpl.mapValues[Double, B](this)(f)
+
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Double) => B): Vec[B] = VecImpl.map(this)(f)
 
   def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, Double) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 

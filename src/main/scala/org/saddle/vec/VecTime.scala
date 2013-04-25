@@ -62,8 +62,11 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 
   def unary_-() = sys.error("Cannot negate VecTime")
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
-    times.map(v => f(l2t(v)))
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
+    times.mapValues(v => f(l2t(v)))
+
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, DateTime) => B): Vec[B] =
+    times.map { case (i, v) => f(i, l2t(v)) }
 
   def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.foldLeft(init)((a,b) => f(a, l2t(b)))

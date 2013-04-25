@@ -757,7 +757,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * @tparam U The type of the resulting values
    */
 
-  def mapValues[U: ST](f: T => U): Frame[RX, CX, U] = Frame(values.map(v => v.map(f)), rowIx, colIx)
+  def mapValues[U: ST](f: T => U): Frame[RX, CX, U] = Frame(values.map(v => v.mapValues(f)), rowIx, colIx)
 
   /**
    * Create a new Frame that, whenever the mask predicate function evaluates to
@@ -922,14 +922,14 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * column index
    * @param pred Predicate function from CX => Boolean
    */
-  def filterIx(pred: CX => Boolean) = where(colIx.toVec.map(pred))
+  def filterIx(pred: CX => Boolean) = where(colIx.toVec.mapValues(pred))
 
   /**
    * Return Frame whose columns satisfy a predicate function operating on the
    * column index offset
    * @param pred Predicate function from CX => Boolean
    */
-  def filterAt(pred: Int => Boolean) = where(vec.range(0, numCols).map(pred))
+  def filterAt(pred: Int => Boolean) = where(vec.range(0, numCols).mapValues(pred))
 
   /**
    * Return Frame excluding any of those columns which have an NA value
@@ -1279,12 +1279,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   /**
    * See filterIx; operates row-wise
    */
-  def rfilterIx(pred: RX => Boolean) = rwhere(rowIx.toVec.map(pred))
+  def rfilterIx(pred: RX => Boolean) = rwhere(rowIx.toVec.mapValues(pred))
 
   /**
    * See filterAt; operates row-wise
    */
-  def rfilterAt(pred: Int => Boolean) = rwhere(vec.range(0, numRows).map(pred))
+  def rfilterAt(pred: Int => Boolean) = rwhere(vec.range(0, numRows).mapValues(pred))
 
   /**
    * See joinS; operates row-wise

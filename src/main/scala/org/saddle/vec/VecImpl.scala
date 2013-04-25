@@ -47,8 +47,7 @@ private[saddle] object VecImpl {
     Vec(buf)
   }
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) A: ST,
-               @spec(Boolean, Int, Long, Double) B](
+  def foldLeft[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B](
     vec: Vec[A])(init: B)(f: (B, A) => B): B = {
     val sa = implicitly[ST[A]]
     var acc = init
@@ -65,8 +64,7 @@ private[saddle] object VecImpl {
    * Same as foldLeft, but with a condition that operates on the accumulator and element
    * that if false, breaks out of the fold
    */
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) A: ST,
-                    @spec(Boolean, Int, Long, Double) B](
+  def foldLeftWhile[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B](
     vec: Vec[A])(init: B)(f: (B, A) => B)(cond: (B, A) => Boolean): B = {
     val sa = implicitly[ST[A]]
     var acc = init
@@ -84,8 +82,24 @@ private[saddle] object VecImpl {
     acc
   }
 
-  def map[@spec(Boolean, Int, Long, Double) A: ST,
-          @spec(Boolean, Int, Long, Double) B: ST](
+  def map[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
+    vec: Vec[A])(f: (Int, A) => B): Vec[B] = {
+    val sca = implicitly[ST[A]]
+    val scb = implicitly[ST[B]]
+    val buf = Array.ofDim[B](vec.length)
+    var i = 0
+    while(i < vec.length) {
+      val v = vec(i)
+      if (sca.isMissing(v))
+        buf(i) = scb.missing
+      else
+        buf(i) = f(i, v)
+      i += 1
+    }
+    Vec(buf)
+  }
+
+  def mapValues[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
     vec: Vec[A])(f: A => B): Vec[B] = {
     val sca = implicitly[ST[A]]
     val scb = implicitly[ST[B]]
@@ -107,8 +121,7 @@ private[saddle] object VecImpl {
    * from the Scala collections library by not including the initial value at the head of the
    * scan.
    */
-  def scanLeft[@spec(Boolean, Int, Long, Double) A: ST,
-               @spec(Boolean, Int, Long, Double) B: ST](
+  def scanLeft[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
     vec: Vec[A])(init: B)(f: (B, A) => B): Vec[B] = {
     val sca = implicitly[ST[A]]
     val scb = implicitly[ST[B]]

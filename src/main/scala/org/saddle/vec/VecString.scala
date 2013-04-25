@@ -74,7 +74,10 @@ class VecString(val data: Array[Byte], val offsets: Array[Int], val lengths: Arr
 
   def unary_-() = throw new UnsupportedOperationException("Cannot negate Vec[String]")
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) =
+  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (String) => B) =
+    VecImpl.mapValues(this)(f)
+
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, String) => B): Vec[B] =
     VecImpl.map(this)(f)
 
   def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, String) => B) =

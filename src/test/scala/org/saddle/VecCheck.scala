@@ -91,9 +91,9 @@ class VecCheck extends Specification with ScalaCheck {
     "map works" in {
       forAll { (v: Vec[Double]) =>
         val data = v.contents
-        v.map(_ + 1.0) must_== Vec(data.map(_ + 1.0))
-        v.map(d => 5.0) must_== Vec(data.map(d => if (d.isNaN) na.to[Double] else 5.0))
-        v.map(d => 5) must_== Vec[Int](data.map(d => if (d.isNaN) na.to[Int] else 5))
+        v.mapValues(_ + 1.0) must_== Vec(data.map(_ + 1.0))
+        v.mapValues(d => 5.0) must_== Vec(data.map(d => if (d.isNaN) na.to[Double] else 5.0))
+        v.mapValues(d => 5) must_== Vec[Int](data.map(d => if (d.isNaN) na.to[Int] else 5))
       }
     }
 
@@ -293,7 +293,7 @@ class VecCheck extends Specification with ScalaCheck {
         val exp = v.countif(_ <= 0.5)
         res must_== exp
 
-        val res2 = v.mask(v.map(_ > 0.5)).count
+        val res2 = v.mask(v.mapValues(_ > 0.5)).count
         res2 must_== exp
       }
     }

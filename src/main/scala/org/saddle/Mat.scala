@@ -429,7 +429,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     implicit val st = scalarTag
 
     val maxStrLen = (a: Int, b: String) => a.max(b.length)
-    val maxColLen = (c: Vec[A]) => (c.head(halfr) concat c.tail(halfr)).map(scalarTag.show(_)).foldLeft(0)(maxStrLen)
+    val maxColLen = (c: Vec[A]) => (c.head(halfr) concat c.tail(halfr)).mapValues(scalarTag.show(_)).foldLeft(0)(maxStrLen)
     val colIdx = util.grab(Range(0, numCols), halfc)
     val lenSeq = colIdx.map { c => c -> maxColLen(col(c)) }
     val lenMap = lenSeq.toMap.withDefault(_ => 1)

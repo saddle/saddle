@@ -81,11 +81,11 @@ package object time {
 
     protected def getField(field: DateTimeField, isTime: Boolean = false): Vec[Int] =
       if (chrono != ISO_CHRONO_UTC || !isTime)
-        times.map { (ms: Long) => field.get(ms) }
+        times.mapValues { (ms: Long) => field.get(ms) }
       else
         getFieldFast(field)
 
-    protected def extractor(unit: Long, range: Long): Vec[Int] = times.map { (t: Long) =>
+    protected def extractor(unit: Long, range: Long): Vec[Int] = times.mapValues { (t: Long) =>
       if (t >= 0L) {
         ((t / unit) % range).toInt
       }
@@ -113,7 +113,7 @@ package object time {
   implicit def vecTimeAccessors(vec: Vec[DateTime]): TimeAccessors[Vec[Int]] = {
     val (times, chrono: Chronology) = vec match {
       case tv : VecTime => (tv.times, tv.chrono)
-      case _            => { val tmp = new VecTime(vec.map(_.getMillis)); (tmp.times, tmp.chrono) }
+      case _            => { val tmp = new VecTime(vec.mapValues(_.getMillis)); (tmp.times, tmp.chrono) }
     }
     new TimeAccessors(times, chrono, identity)
   }

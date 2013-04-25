@@ -90,7 +90,7 @@ class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
   }
 
   def map[@spec(Boolean, Int, Long, Double) B:ST: ORD](f: Boolean => B): Index[B] =
-    Index(VecImpl.map(keys)(f).toArray)
+    Index(VecImpl.mapValues(keys)(f).toArray)
 
   def toArray: Array[Boolean] = keys.toArray
 
