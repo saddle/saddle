@@ -34,8 +34,8 @@ import scala.util.control.Exception._
  * We serialize all reads and writes to the underlying library as recommended here:
  *
  * http://www.hdfgroup.org/hdf-java-html/JNI/
- *   -- Following the JNI specification, the recommended procedure is to use Java
- *      synchronization to create a monitor to serialize access to the library."
+ *   -- "Following the JNI specification, the recommended procedure is to use Java
+ *       synchronization to create a monitor to serialize access to the library."
  */
 object H5Store {
   private val monitor = new ReentrantLock()

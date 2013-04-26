@@ -21,6 +21,10 @@ object SaddleBuild extends sbt.Build {
 
   lazy val root =
     project(id = "saddle",
+            settings = Seq(
+              /* 'console' in root acts as if in core. */
+              console <<= (console in core in Compile) { identity }
+            ),
             base = file(".")) aggregate(core, hdf5)
 
   lazy val core =
