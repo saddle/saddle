@@ -19,7 +19,6 @@ package org.saddle.io
 import org.saddle._
 import collection.mutable.ArrayBuffer
 import java.util.concurrent.{Executors, Callable}
-import org.saddle.vec.VecString
 
 /**
  * Holds parameters to customize CSV parsing
@@ -88,22 +87,17 @@ object CsvParser {
     if (locs.length == 0) locs = (0 until firstLine.length).toArray
 
     // set up buffers to store parsed data
-    val bufdata = for { c <- locs } yield Buffer[Byte](1024)
-    val offsets = for { c <- locs } yield Buffer[Int](1024)
-    val lengths = for { c <- locs } yield Buffer[Int](1024)
-    val curOffs = for { c <- locs } yield 0
+    val bufdata = for { c <- locs } yield Buffer[String](1024)
 
+    // this seriously helps reduce memory footprint w/o major perf. impact
+    val interner = new scala.collection.mutable.HashSet[String]()
     def addToBuffer(s: String, buf: Int) {
-      val bytes = s.getBytes(UTF8)
-      val len = bytes.length
-      var i = 0
-      while(i < len) {
-        bufdata(buf).add(bytes(i))
-        i += 1
+      if (!interner.contains(s)) {
+        interner.add(s)
+        bufdata(buf).add(s)
       }
-      offsets(buf).add(curOffs(buf))
-      lengths(buf).add(len)
-      curOffs(buf) += len
+      else
+        interner.findEntry(s).map(bufdata(buf).add(_))
     }
 
     // first line is either header, or needs to be processed
@@ -118,8 +112,9 @@ object CsvParser {
       nln += 1
     }
 
-    val zipped = { bufdata zip offsets zip lengths } map { case ((d, o), l) => new VecString(d, o, l) }
-    Frame(zipped : _*).row(params.skipLines -> *)
+    val columns = bufdata map { b => Vec(b.toArray) }
+
+    Frame(columns : _*).row(params.skipLines -> *)
   }
 
   /**
@@ -288,12 +283,24 @@ object CsvParser {
 
   // concatenates a single column within the ParseData chunks, returns joined Vec
   private def combineTask(chunks: IndexedSeq[Frame[Int, Int, String]], col: Int, sz: Int) =
-    new Callable[Vec[String]] {
-      def call() = {
-        val vecs = for (i <- 0 until chunks.length) yield chunks(i).colAt(col).toVec
-        VecString.concat(vecs)
+    new Callable[Vec[String]] { def call() = concat(chunks.map { c => c.colAt(col).toVec }) }
+
+  // helper function to concatenate vecs of strings
+  private def concat(vecs: IndexedSeq[Vec[String]]): Vec[String] = {
+    val totL = vecs.foldLeft(0) { case (l, v) => l + v.length }
+    val arr = Array.ofDim[String](totL)
+    var i = 0
+    vecs.foreach { v =>
+      val len = v.length
+      var j = 0
+      while (j < len) {
+        arr(i) = v(j)
+        j += 1
+        i += 1
       }
     }
+    Vec(arr)
+  }
 
   def parseInt(s: String) =
     try { java.lang.Integer.parseInt(s) } catch { case _ : NumberFormatException => Int.MinValue }
