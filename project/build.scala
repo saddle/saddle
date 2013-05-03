@@ -15,7 +15,9 @@
  **/
 
 import sbt._
-import Keys._
+import sbt.Keys._
+import sbtassembly.Plugin._
+import sbtassembly.Plugin.AssemblyKeys._
 
 object SaddleBuild extends sbt.Build {
 
@@ -23,7 +25,15 @@ object SaddleBuild extends sbt.Build {
     project(id = "saddle",
             settings = Seq(
               /* 'console' in root acts as if in core. */
-              console <<= (console in core in Compile) { identity }
+              console <<= (console in core in Compile) { identity },
+              /* so we can package up everything into deployable jar and invoke programs */
+              // mainClass in assembly := Some("org.saddle.util.RandomGen"),
+              jarName in assembly <<= version { v => "saddle-%s.jar" format (v) },
+              assembleArtifact in packageScala := false,
+              mergeStrategy in assembly := {
+                case "META-INF/MANIFEST.MF" | "META-INF/LICENSE" | "META-INF/BCKEY.DSA" => MergeStrategy.discard
+                case _ => MergeStrategy.first
+              }
             ),
             base = file(".")) aggregate(core, hdf5)
 
@@ -65,7 +75,7 @@ object SaddleBuild extends sbt.Build {
   def project(id: String, base: File, settings: Seq[Project.Setting[_]] = Nil) =
     Project(id = id,
             base = base,
-            settings = Project.defaultSettings ++ Shared.settings ++ settings)
+            settings = assemblySettings ++ Project.defaultSettings ++ Shared.settings ++ settings)
 }
 
 object Shared {

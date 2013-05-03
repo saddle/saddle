@@ -138,7 +138,7 @@ object XorShift {
   def makeRNG(tup: (Int, Int, Int), seed: Long): () => Long = {
     var seedL = seed
     val (a, b, c) = tup
-    () => seedL ^= seedL << a; seedL ^= seedL >>> b; seedL ^= seedL << c; seedL
+    () => seedL ^= (seedL << a); seedL ^= (seedL >> b); seedL ^= (seedL << c); seedL
   }
 }
 
@@ -154,20 +154,15 @@ object LFib4 {
 
   def makeRNG(seed: Long): () => Long = {
     val jrand = new java.util.Random(seed)
-    val state = Array.ofDim[Byte](256)
-    var r = jrand.nextLong
+    val state = Array.ofDim[Long](256)      // 2K of memory
+    for (i <- 0 until 256) state(i) = jrand.nextLong
     var c = 0
-    jrand.nextBytes(state)
+
     () => {
-      var i = 0
-      while (i < 8) {
-        c += 1
-        c &= 255
-        state(c) = { state(c) + state((c+58) & 255) + state((c+119) & 255) + state((c+178) & 255) }.asInstanceOf[Byte]
-        r = (r << 8) ^ state(c)
-        i += 1
-      }
-      r
+      c += 1
+      c &= 0xFF
+      state(c) = state(c) + state((c+58) & 0xFF) + state((c+119) & 0xFF) + state((c+178) & 0xFF)
+      state(c)
     }
   }
 }
@@ -221,7 +216,7 @@ case class RandomStream(rng: () => Long) extends InputStream {
       case 7 => r >>> 48
       case 8 => c = 0; val tmp = (r >>> 56); r = rng(); tmp
     }
-    (byte & 255).asInstanceOf[Int]
+    (byte & 0xFF).asInstanceOf[Int]
   }
 }
 
