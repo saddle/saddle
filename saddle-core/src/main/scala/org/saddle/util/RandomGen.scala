@@ -22,9 +22,11 @@ package org.saddle.util
  *
  * http://www.iro.umontreal.ca/~simardr/testu01/tu01.html
  *
- * A stdin wrapper that I used for the latter can be found at
+ * A stdin wrapper that I used for the latter can be found within
  *
- * https://code.google.com/p/csrng/test/TestU01_raw_stdin_input_with_log.c
+ * http://code.google.com/p/csrng/
+ *
+ * In particular the file test/TestU01_raw_stdin_input_with_log.c
  *
  * which can be used to replicate the results in "TestU01: A C Library for Empirical
  * Testing of Random Number Generators"; L'Ecuyer and Simard; 2007.
