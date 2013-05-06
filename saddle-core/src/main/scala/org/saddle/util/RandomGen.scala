@@ -18,15 +18,11 @@ package org.saddle.util
 
 /**
  * This file consists of a few main programs to generate an infinite stream of raw
- * random bytes to stdin; designed to feed into Dieharder battery of tests
- *
- * http://www.phy.duke.edu/~rgb/General/dieharder.php
- *
- * or to the TestU01 battery:
+ * random bytes to stdin; designed to feed into the TestU01 battery of tests:
  *
  * http://www.iro.umontreal.ca/~simardr/testu01/tu01.html
  *
- * A useful stdin wrapper for the latter can be found at
+ * A stdin wrapper that I used for the latter can be found at
  *
  * https://code.google.com/p/csrng/test/TestU01_raw_stdin_input_with_log.c
  *
@@ -35,7 +31,7 @@ package org.saddle.util
  *
  * For example, after compiling per instructions, can run:
  *
- *   java -cp ... org.saddle.util.Xor64 | ./dieharder -a -g 200
+ *   java -cp ... org.saddle.util.Xor64 | ./TestU01_raw_stdin_input_with_log --normal
  */
 
 import java.io.BufferedInputStream
@@ -55,6 +51,39 @@ import java.io.BufferedInputStream
  *   8  MatrixRank                       eps
  *  ----------------------------------------------
  *  All other tests were passed
+ *
+ * ========= Summary results of BigCrush =========
+ *  Version:          TestU01 1.2.3
+ *  Generator:        STDIN
+ *  Number of statistics:  160
+ *  Total CPU time:   08:31:19.41
+ *  The following tests gave p-values outside [0.001, 0.9990]:
+ *  (eps  means a value < 1.0e-300):
+ *  (eps1 means a value < 1.0e-15):
+ *
+ *        Test                          p-value
+ *  ----------------------------------------------
+ *   2  SerialOver, r = 22               eps
+ *   3  CollisionOver, t = 2           6.8e-22
+ *   6  CollisionOver, t = 3             eps
+ *  12  CollisionOver, t = 21            eps
+ *  13  BirthdaySpacings, t = 2        1.7e-18
+ *  15  BirthdaySpacings, t = 4          eps
+ *  18  BirthdaySpacings, t = 8       7.2e-289
+ *  19  BirthdaySpacings, t = 8          eps
+ *  21  BirthdaySpacings, t = 16       3.8e-66
+ *  37  Gap, r = 20                      eps
+ *  68  MatrixRank, L=1000, r=0          eps
+ *  69  MatrixRank, L=1000, r=26         eps
+ *  70  MatrixRank, L=5000               eps
+ *  71  MatrixRank, L=5000               eps
+ *  77  RandomWalk1 H (L=1000, r=20)     eps
+ *  77  RandomWalk1 M (L=1000, r=20)     eps
+ *  77  RandomWalk1 J (L=1000, r=20)     eps
+ *  80  LinearComp, r = 0              1 - eps1
+ *  81  LinearComp, r = 29             1 - eps1
+ *  ----------------------------------------------
+ *  All other tests were passed
  */
 object Xor64 {
   def main(args: Array[String]) {
@@ -65,19 +94,27 @@ object Xor64 {
 
 /**
  * ========= Summary results of SmallCrush =========
- * Version:               TestU01 1.2.3
- * Generator:             STDIN
- * Number of statistics:  15
- * Total CPU time:        00:00:19.03
- * The following tests gave p-values outside [0.001, 0.9990]:
- * (eps  means a value < 1.0e-300):
- * (eps1 means a value < 1.0e-15):
+ *  Version:               TestU01 1.2.3
+ *  Generator:             STDIN
+ *  Number of statistics:  15
+ *  Total CPU time:        00:00:19.03
+ *  The following tests gave p-values outside [0.001, 0.9990]:
+ *  (eps  means a value < 1.0e-300):
+ *  (eps1 means a value < 1.0e-15):
  *
- *       Test                          p-value
- * ----------------------------------------------
- * 10  RandomWalk1 J                   0.9997
- * ----------------------------------------------
- * All other tests were passed
+ *        Test                          p-value
+ *  ----------------------------------------------
+ *  10  RandomWalk1 J                   0.9997
+ *  ----------------------------------------------
+ *  All other tests were passed
+ *
+ * ========= Summary results of BigCrush =========
+ *  Version:          TestU01 1.2.3
+ *  Generator:        STDIN
+ *  Number of statistics:  160
+ *  Total CPU time:   08:38:24.56
+ *
+ *  All tests were passed
  */
 object LFib {
   def main(args: Array[String]) {
@@ -88,12 +125,28 @@ object LFib {
 
 /**
  * ========= Summary results of SmallCrush =========
- * Version:               TestU01 1.2.3
- * Generator:             STDIN
- * Number of statistics:  15
- * Total CPU time:        00:00:18.85
+ *  Version:               TestU01 1.2.3
+ *  Generator:             STDIN
+ *  Number of statistics:  15
+ *  Total CPU time:        00:00:18.85
  *
- * All tests were passed
+ *  All tests were passed
+ *
+ * ========= Summary results of BigCrush =========
+ *  Version:          TestU01 1.2.3
+ *  Generator:        STDIN
+ *  Number of statistics:  160
+ *  Total CPU time:   08:57:21.49
+ *  The following tests gave p-values outside [0.001, 0.9990]:
+ *  (eps  means a value < 1.0e-300):
+ *  (eps1 means a value < 1.0e-15):
+ *
+ *        Test                          p-value
+ *  ----------------------------------------------
+ *  80  LinearComp, r = 0              1 - eps1
+ *  81  LinearComp, r = 29             1 - eps1
+ *  ----------------------------------------------
+ *  All other tests were passed
  */
 object Ziff {
   def main(args: Array[String]) {
