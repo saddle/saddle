@@ -27,7 +27,6 @@ object SaddleBuild extends sbt.Build {
               /* 'console' in root acts as if in core. */
               console <<= (console in core in Compile) { identity },
               /* so we can package up everything into deployable jar and invoke programs */
-              // mainClass in assembly := Some("org.saddle.util.RandomGen"),
               jarName in assembly <<= version { v => "saddle-%s.jar" format (v) },
               assembleArtifact in packageScala := false,
               mergeStrategy in assembly := {
