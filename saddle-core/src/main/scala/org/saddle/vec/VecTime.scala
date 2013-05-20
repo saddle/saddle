@@ -68,7 +68,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, DateTime) => B): Vec[B] =
     times.map { case (i, v) => f(i, l2t(v)) }
 
-  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: DateTime => Traversable[B]): Vec[B] =
+  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: DateTime => Vec[B]): Vec[B] =
     VecImpl.flatMap(this)(f)
 
   def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =

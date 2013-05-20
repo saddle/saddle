@@ -66,7 +66,7 @@ class VecAny[T: ST](values: Array[T]) extends Vec[T] { self =>
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, T) => B): Vec[B] = VecImpl.map(this)(f)
 
-  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: T => Traversable[B]): Vec[B] = VecImpl.flatMap(this)(f)
+  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: T => Vec[B]): Vec[B] = VecImpl.flatMap(this)(f)
 
   def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 

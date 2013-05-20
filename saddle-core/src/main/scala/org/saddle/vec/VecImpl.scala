@@ -118,15 +118,15 @@ private[saddle] object VecImpl {
 
   def flatMap[@spec(Boolean, Int, Long, Double) A: ST,
               @spec(Boolean, Int, Long, Double) B: ST](
-    vec: Vec[A])(f: A => Traversable[B]): Vec[B] = {
+    vec: Vec[A])(f: A => Vec[B]): Vec[B] = {
     var i = 0
-    val a = Array.ofDim[Array[B]](vec.length)
+    val b = implicitly[ST[B]].makeBuf(vec.length)
     while (i < vec.length) {
       val v: A = vec(i)
-      a(i) = f(v).toArray
+      for { u <- f(v) } b.add(u)
       i += 1
     }
-    Vec(array.flatten(a))
+    Vec(b.toArray)
   }
 
 

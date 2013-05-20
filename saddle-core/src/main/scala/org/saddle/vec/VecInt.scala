@@ -60,7 +60,7 @@ class VecInt(values: Array[Int]) extends Vec[Int] { self =>
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int) => B): Vec[B] = VecImpl.map(this)(f)
 
-  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: Int => Traversable[B]): Vec[B] = VecImpl.flatMap(this)(f)
+  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: Int => Vec[B]): Vec[B] = VecImpl.flatMap(this)(f)
 
   def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, Int) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 
