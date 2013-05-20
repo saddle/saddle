@@ -105,8 +105,8 @@ private[saddle] object VecImpl {
     val scb = implicitly[ST[B]]
     val buf = Array.ofDim[B](vec.length)
     var i = 0
-    while(i < vec.length) {
-      val v = vec(i)
+    while (i < vec.length) {
+      val v: A = vec(i)
       if (sca.isMissing(v))
         buf(i) = scb.missing
       else
@@ -115,6 +115,20 @@ private[saddle] object VecImpl {
     }
     Vec(buf)
   }
+
+  def flatMap[@spec(Boolean, Int, Long, Double) A: ST,
+              @spec(Boolean, Int, Long, Double) B: ST](
+    vec: Vec[A])(f: A => Traversable[B]): Vec[B] = {
+    var i = 0
+    val a = Array.ofDim[Array[B]](vec.length)
+    while (i < vec.length) {
+      val v: A = vec(i)
+      a(i) = f(v).toArray
+      i += 1
+    }
+    Vec(array.flatten(a))
+  }
+
 
   /**
    * Same as foldLeft, but store and return intermediate accumulated results. Note this differs

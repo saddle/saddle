@@ -516,6 +516,16 @@ class Series[X: ST: ORD, T: ST](
   // manipulating
 
   /**
+   * Map over the key-value pairs of the Series, resulting in a new Series. Applies a
+   * function to each pair of values in the series.
+   *
+   * @param f Function from (X,T) to (Y,U)
+   * @tparam Y The type of the resulting index
+   * @tparam U The type of the resulting values
+   */
+  def map[Y: ST: ORD, U: ST](f: ((X, T)) => (Y, U)): Series[Y, U] = Series(toSeq.map(f) : _*)
+
+  /**
    * Map over the values of the Series, resulting in a new Series. Applies a function
    * to each (non-na) value in the series, returning a new series whose index remains
    * the same.

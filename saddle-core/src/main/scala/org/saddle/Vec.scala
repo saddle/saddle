@@ -258,6 +258,11 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, T) => B): Vec[B]
 
   /**
+   * Maps a function over elements of the Vec and flattens the result.
+   */
+  def flatMap[B : ST](f: T => Traversable[B]): Vec[B]
+
+  /**
    * Left fold over the elements of the Vec, as in scala collections library
    */
   def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B): B

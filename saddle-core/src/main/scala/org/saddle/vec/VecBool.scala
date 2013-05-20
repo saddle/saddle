@@ -62,6 +62,8 @@ class VecBool(values: Array[Boolean]) extends Vec[Boolean] { self =>
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Boolean) => B): Vec[B] = VecImpl.map(this)(f)
 
+  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: Boolean => Traversable[B]): Vec[B] = VecImpl.flatMap(this)(f)
+
   def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, Boolean) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 
   def zipMap[@spec(Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](other: Vec[B])(f: (Boolean, B) => C): Vec[C] =

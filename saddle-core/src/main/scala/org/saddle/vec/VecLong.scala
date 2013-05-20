@@ -63,6 +63,8 @@ class VecLong(values: Array[Long]) extends Vec[Long] { self =>
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Long) => B): Vec[B] = VecImpl.map(this)(f)
 
+  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: Long => Traversable[B]): Vec[B] = VecImpl.flatMap(this)(f)
+
   def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, Long) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 
   def zipMap[@spec(Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](other: Vec[B])(f: (Long, B) => C): Vec[C] =

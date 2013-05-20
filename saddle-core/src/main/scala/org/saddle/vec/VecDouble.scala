@@ -60,6 +60,8 @@ class VecDouble(values: Array[Double]) extends Vec[Double] { self =>
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Double) => B): Vec[B] = VecImpl.map(this)(f)
 
+  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: Double => Traversable[B]): Vec[B] = VecImpl.flatMap(this)(f)
+
   def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, Double) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 
   def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (Double) => Boolean)(init: B)(f: (B, Double) => B): Vec[B] =
