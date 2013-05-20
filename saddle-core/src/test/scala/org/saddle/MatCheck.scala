@@ -41,7 +41,7 @@ class MatCheck extends Specification with ScalaCheck {
 
      "map works" in {
        forAll { (m: Mat[Double]) =>
-         val res = m.mapValues(_ + 1)
+         val res = m.map(_ + 1)
          val exp = m.contents.map(_ + 1)
          res.contents must_== exp
        }
@@ -65,9 +65,9 @@ class MatCheck extends Specification with ScalaCheck {
      "map works" in {
        forAll { (m: Mat[Double]) =>
          val data = m.contents
-         m.mapValues(_ + 1.0) must_== Mat(m.numRows, m.numCols, data.map(_ + 1.0))
-         m.mapValues(d => 5.0) must_== Mat(m.numRows, m.numCols, (data.map(d => if (d.isNaN) na.to[Double] else 5.0)))
-         m.mapValues(d => 5) must_== Mat[Int](m.numRows, m.numCols, data.map(d => if (d.isNaN) na.to[Int] else 5))
+         m.map(_ + 1.0) must_== Mat(m.numRows, m.numCols, data.map(_ + 1.0))
+         m.map(d => 5.0) must_== Mat(m.numRows, m.numCols, (data.map(d => if (d.isNaN) na.to[Double] else 5.0)))
+         m.map(d => 5) must_== Mat[Int](m.numRows, m.numCols, data.map(d => if (d.isNaN) na.to[Int] else 5))
        }
      }
 

@@ -250,12 +250,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   /**
    * Map a function over the elements of the Vec, as in scala collections library
    */
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: T => B): Vec[B]
-
-  /**
-   * Map a function over the elements of the Vec and its index
-   */
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, T) => B): Vec[B]
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: T => B): Vec[B]
 
   /**
    * Maps a function over elements of the Vec and flattens the result.
@@ -516,7 +511,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
       buf append "Empty Vec"
     else {
       buf.append("[%d x 1]\n" format (length))
-      val vlen = { head(half) concat tail(half) }.mapValues(scalarTag.show(_)).foldLeft(0)(maxf)
+      val vlen = { head(half) concat tail(half) }.map(scalarTag.show(_)).foldLeft(0)(maxf)
 
       def createRow(r: Int): String = ("%" + { if (vlen > 0) vlen else 1 } + "s\n").format(scalarTag.show(apply(r)))
       buf append util.buildStr(len, length, createRow, " ... \n" )

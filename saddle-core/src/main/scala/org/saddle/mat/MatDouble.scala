@@ -33,9 +33,7 @@ class MatDouble(r: Int, c: Int, values: Array[Double]) extends Mat[Double] {
 
   def scalarTag = ScalarTagDouble
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int, Double) => B): Mat[B] = MatImpl.map(this)(f)
-
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (Double) => B): Mat[B] = MatImpl.mapValues(this)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Double) => B): Mat[B] = MatImpl.map(this)(f)
 
   def toVec = scalarTag.makeVec(toArray)
 

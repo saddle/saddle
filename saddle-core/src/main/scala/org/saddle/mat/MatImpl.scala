@@ -24,8 +24,8 @@ import org.saddle._
  * Houses specialized method implementations for code reuse in Mat subclasses
  */
 private[saddle] object MatImpl {
-  def mapValues[@spec(Boolean, Int, Long, Double) A: ST,
-                @spec(Boolean, Int, Long, Double) B: ST](mat: Mat[A])(f: A => B): Mat[B] = {
+  def map[@spec(Boolean, Int, Long, Double) A: ST,
+          @spec(Boolean, Int, Long, Double) B: ST](mat: Mat[A])(f: A => B): Mat[B] = {
     val sca = implicitly[ST[A]]
     val scb = implicitly[ST[B]]
     val buf = Array.ofDim[B](mat.length)
@@ -37,29 +37,6 @@ private[saddle] object MatImpl {
       else
         buf(i) = f(v)
       i += 1
-    }
-    Mat[B](mat.numRows, mat.numCols, buf)
-  }
-
-  def map[@spec(Boolean, Int, Long, Double) A: ST,
-          @spec(Boolean, Int, Long, Double) B: ST](mat: Mat[A])(f: (Int, Int, A) => B): Mat[B] = {
-    val sca = implicitly[ST[A]]
-    val scb = implicitly[ST[B]]
-    val buf = Array.ofDim[B](mat.length)
-    var i = 0
-    var r = 0
-    while(r < mat.numRows) {
-      var c = 0
-      while (c < mat.numCols) {
-        val v = mat(r, c)
-        if (sca.isMissing(v))
-          buf(i) = scb.missing
-        else
-          buf(i) = f(r, c, v)
-        c += 1
-        i += 1
-      }
-      r += 1
     }
     Mat[B](mat.numRows, mat.numCols, buf)
   }

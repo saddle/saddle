@@ -62,9 +62,7 @@ class VecAny[T: ST](values: Array[T]) extends Vec[T] { self =>
   def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: Vec[T] => B): Vec[B] =
     VecImpl.rolling(this)(winSz, f)
 
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: T => B): Vec[B] = VecImpl.mapValues(this)(f)
-
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, T) => B): Vec[B] = VecImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: T => B): Vec[B] = VecImpl.map(this)(f)
 
   def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: T => Vec[B]): Vec[B] = VecImpl.flatMap(this)(f)
 

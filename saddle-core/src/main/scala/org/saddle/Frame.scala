@@ -750,14 +750,29 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   }
 
   /**
+   * Map over each triple (r, c, v) in the Frame, returning a new frame from the resulting
+   * triples.
+   */
+  def map[SX: ST: ORD, DX: ST: ORD, U: ST](f: ((RX, CX, T)) => (SX, DX, U)): Frame[SX, DX, U] = {
+    Series(toSeq.map(f).map { case (sx, dx, u) => ((sx, dx) -> u) } : _*).pivot
+  }
+
+  /**
+   * Map over each triple (r, c, v) in the Frame, flattening results, and returning a new frame from
+   * the resulting triples.
+   */
+  def flatMap[SX: ST: ORD, DX: ST: ORD, U: ST](f: ((RX, CX, T)) => Traversable[(SX, DX, U)]): Frame[SX, DX, U] = {
+    Series(toSeq.flatMap(f).map { case (sx, dx, u) => ((sx, dx) -> u) } : _*).pivot
+  }
+
+  /**
    * Map over the values of the Frame. Applies a function to each (non-na) value in the frame,
    * returning a new frame whose indices remain the same.
    *
    * @param f Function from T to U
    * @tparam U The type of the resulting values
    */
-
-  def mapValues[U: ST](f: T => U): Frame[RX, CX, U] = Frame(values.map(v => v.mapValues(f)), rowIx, colIx)
+  def mapValues[U: ST](f: T => U): Frame[RX, CX, U] = Frame(values.map(v => v.map(f)), rowIx, colIx)
 
   /**
    * Create a new Frame that, whenever the mask predicate function evaluates to
@@ -922,14 +937,14 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * column index
    * @param pred Predicate function from CX => Boolean
    */
-  def filterIx(pred: CX => Boolean) = where(colIx.toVec.mapValues(pred))
+  def filterIx(pred: CX => Boolean) = where(colIx.toVec.map(pred))
 
   /**
    * Return Frame whose columns satisfy a predicate function operating on the
    * column index offset
    * @param pred Predicate function from CX => Boolean
    */
-  def filterAt(pred: Int => Boolean) = where(vec.range(0, numCols).mapValues(pred))
+  def filterAt(pred: Int => Boolean) = where(vec.range(0, numCols).map(pred))
 
   /**
    * Return Frame excluding any of those columns which have an NA value
@@ -1279,12 +1294,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   /**
    * See filterIx; operates row-wise
    */
-  def rfilterIx(pred: RX => Boolean) = rwhere(rowIx.toVec.mapValues(pred))
+  def rfilterIx(pred: RX => Boolean) = rwhere(rowIx.toVec.map(pred))
 
   /**
    * See filterAt; operates row-wise
    */
-  def rfilterAt(pred: Int => Boolean) = rwhere(vec.range(0, numRows).mapValues(pred))
+  def rfilterAt(pred: Int => Boolean) = rwhere(vec.range(0, numRows).map(pred))
 
   /**
    * See joinS; operates row-wise

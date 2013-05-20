@@ -103,7 +103,7 @@ class IndexInt(keys: Vec[Int]) extends Index[Int] {
   }
 
   def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: Int => B): Index[B] =
-    Index(VecImpl.mapValues(keys)(f).toArray)
+    Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Int] = keys.toArray
 

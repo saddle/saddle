@@ -83,23 +83,6 @@ private[saddle] object VecImpl {
   }
 
   def map[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
-    vec: Vec[A])(f: (Int, A) => B): Vec[B] = {
-    val sca = implicitly[ST[A]]
-    val scb = implicitly[ST[B]]
-    val buf = Array.ofDim[B](vec.length)
-    var i = 0
-    while(i < vec.length) {
-      val v = vec(i)
-      if (sca.isMissing(v))
-        buf(i) = scb.missing
-      else
-        buf(i) = f(i, v)
-      i += 1
-    }
-    Vec(buf)
-  }
-
-  def mapValues[@spec(Boolean, Int, Long, Double) A: ST, @spec(Boolean, Int, Long, Double) B: ST](
     vec: Vec[A])(f: A => B): Vec[B] = {
     val sca = implicitly[ST[A]]
     val scb = implicitly[ST[B]]

@@ -176,12 +176,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   /**
    * Maps a function over each element in the matrix
    */
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
-
-  /**
-   * Maps a function over the tuple (row index, col index, element) in the matrix
-   */
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int, A) => B): Mat[B]
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
 
   /**
    * Changes the shape of matrix without changing the underlying data
@@ -378,7 +373,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def roundTo(sig: Int = 2)(implicit ev: NUM[A]): Mat[Double] = {
     val pwr = math.pow(10, sig)
     val rounder = (x: A) => math.round(scalarTag.toDouble(x) * pwr) / pwr
-    mapValues(rounder)
+    map(rounder)
   }
 
   /**
@@ -429,7 +424,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     implicit val st = scalarTag
 
     val maxStrLen = (a: Int, b: String) => a.max(b.length)
-    val maxColLen = (c: Vec[A]) => (c.head(halfr) concat c.tail(halfr)).mapValues(scalarTag.show(_)).foldLeft(0)(maxStrLen)
+    val maxColLen = (c: Vec[A]) => (c.head(halfr) concat c.tail(halfr)).map(scalarTag.show(_)).foldLeft(0)(maxStrLen)
     val colIdx = util.grab(Range(0, numCols), halfc)
     val lenSeq = colIdx.map { c => c -> maxColLen(col(c)) }
     val lenMap = lenSeq.toMap.withDefault(_ => 1)

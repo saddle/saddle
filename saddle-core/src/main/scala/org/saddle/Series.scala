@@ -421,19 +421,19 @@ class Series[X: ST: ORD, T: ST](
    * true on a key, is masked with NA
    * @param f Function from X to Boolean
    */
-  def maskIx(f: X => Boolean): Series[X, T] = mask(index.toVec.mapValues(f))
+  def maskIx(f: X => Boolean): Series[X, T] = mask(index.toVec.map(f))
 
   /**
    * Return Series whose values satisfy a predicate function
    * @param pred Predicate function from T => Boolean
    */
-  def filter(pred: T => Boolean): Series[X, T] = where(values.mapValues(pred))
+  def filter(pred: T => Boolean): Series[X, T] = where(values.map(pred))
 
   /**
    * Return Series whose index keys satisfy a predicate function
    * @param pred Predicate function from X => Boolean
    */
-  def filterIx(pred: X => Boolean): Series[X, T] = where(index.toVec.mapValues(pred))
+  def filterIx(pred: X => Boolean): Series[X, T] = where(index.toVec.map(pred))
 
   /**
    * Return Series whose offets satisfy a predicate function
@@ -538,7 +538,7 @@ class Series[X: ST: ORD, T: ST](
    * @param f Function from T to U
    * @tparam U The type of the resulting values
    */
-  def mapValues[U: ST](f: T => U): Series[X, U] = Series(values.mapValues(f), index)
+  def mapValues[U: ST](f: T => U): Series[X, U] = Series(values.map(f), index)
 
   /**
    * Left scan over the values of the Series, as in scala collections library, but
@@ -847,11 +847,11 @@ class Series[X: ST: ORD, T: ST](
       val isca = index.scalarTag
       val vidx = index.toVec
       val idxHf = { vidx.head(half) concat vidx.tail(half) }
-      val ilens = idxHf.mapValues(isca.strList(_)).foldLeft(isca.strList(vidx(0)).map(_.length))(maxf)
+      val ilens = idxHf.map(isca.strList(_)).foldLeft(isca.strList(vidx(0)).map(_.length))(maxf)
 
       val vsca = values.scalarTag
       val vlHf = { values.head(half) concat values.tail(half) }
-      val vlen = vlHf.mapValues(vsca.show(_)).foldLeft(0)((a, b) => math.max(a, b.length))
+      val vlen = vlHf.map(vsca.show(_)).foldLeft(0)((a, b) => math.max(a, b.length))
 
       def enumZip[A, B](a: List[A], b: List[B]): List[(Int, A, B)] =
         for ( v <- (a.zipWithIndex zip b) ) yield (v._1._2, v._1._1, v._2)

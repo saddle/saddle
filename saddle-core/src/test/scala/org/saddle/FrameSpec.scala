@@ -27,4 +27,14 @@ class FrameSpec extends Specification {
     val mergeShift = s1.join(s1.shift(1))
     mergeShift.row("b") must_== Frame(0 -> Series("b" -> 2), 1 -> Series("b" -> 1))
   }
+
+  "map works" in {
+    val f = Frame("a" -> Series("x" -> 1, "y" -> 2, "z" -> 3), "b" -> Series("x" -> 4, "y" -> 5, "z" -> 6))
+    f.map { case (r, c, v) => (r, c, v + 1) } must_== f + 1
+  }
+
+  "flatMap works" in {
+    val f = Frame("a" -> Series("x" -> 1, "y" -> 2, "z" -> 3), "b" -> Series("x" -> 4, "y" -> 5, "z" -> 6))
+    f.flatMap { case (r, c, v) => Some((r, c, v + 1)) } must_== f + 1
+  }
 }
