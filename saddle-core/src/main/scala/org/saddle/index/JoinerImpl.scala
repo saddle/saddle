@@ -615,56 +615,50 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
     val nright = right.length
 
     def passThru(callback: TripleArrayStore, l: Array[Int], r: Array[Int], res: Array[T]): Int = {
-      var rc = 0
       var lc = 0
+      var rc = 0
+      var rgrp = 0
       var done = false
       var count = 0
 
       if (nleft > 0) {
         while (!done) {
-          if (rc == nleft) {
+          if (lc == nleft) {
             done = true
           }
-          else if (lc == nright) {
+          else if (rc == nright) {
             if (callback == TNoOp)
-              count += nleft - rc
-            else while (rc < nleft) {
-              val v: T = left.raw(rc)
-              callback(l, r, res, rc, -1, v, count)
+              count += nleft - lc
+            else while (lc < nleft) {
+              val v: T = left.raw(lc)
+              callback(l, r, res, lc, -1, v, count)
               count += 1
-              rc += 1
+              lc += 1
             }
             done = true
           }
           else {
-            val lval: T = left.raw(rc)
-            val rval: T = right.raw(lc)
+            val lval: T = left.raw(lc)
+            val rval: T = right.raw(rc)
             if (lval == rval) {
-              callback(l, r, res, rc, lc, lval, count)
-              if (rc < nleft - 1) {
-                if (lc < nright - 1 && right.raw(lc + 1) == rval)
-                  lc += 1
-                else {
-                  rc += 1
-                  if (left.raw(rc) != rval)
-                    lc += 1
-                }
-              }
-              else if (lc < nright - 1) {
+              callback(l, r, res, lc, rc, lval, count)
+              rc += 1
+              if (rc < nright && right.raw(rc) == lval)
+                rgrp += 1
+              else {
                 lc += 1
-                if (lval != right.raw(lc))
-                  rc += 1
+                rc -= rgrp + 1
+                rgrp = 0
               }
-              else done = true
               count += 1
             }
             else if (scalar.lt(lval, rval)) {
-              callback(l, r, res, rc, -1, lval, count)
+              callback(l, r, res, lc, -1, lval, count)
               count += 1
-              rc += 1
+              lc += 1
             }
             else {
-              lc += 1
+              rc += 1
             }
           }
         }

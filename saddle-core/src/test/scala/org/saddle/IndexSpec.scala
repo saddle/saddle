@@ -125,6 +125,17 @@ class IndexSpec extends Specification {
       res2.rTake.get must_== Array(1, 2)
     }
 
+    "Non-unique sorted left join [case 3]" in {
+      val ix1 = Index(0, 1, 1, 2, 2)
+      val ix2 = Index(1, 2, 2, 3)
+
+      val res = ix1.join(ix2, how=index.LeftJoin)
+
+      res.index must_== Index(0, 1, 1, 2, 2, 2, 2)
+      res.lTake.get must_== Array(0, 1, 2, 3, 3, 4, 4)
+      res.rTake.get must_== Array(-1, 0, 0, 1, 2, 1, 2)
+    }
+
     "Non-unique sorted right join" in {
       val ix1 = Index(0, 1, 1, 2)
       val ix2 = Index(1, 2, 2, 3)
@@ -202,6 +213,17 @@ class IndexSpec extends Specification {
       res.index must_== Index(1, 1, 2, 2, 0)
       res.lTake.get must_== Array(0, 1, 2, 2, 3)
       res.rTake.get must_== Array(0, 0, 2, 3, -1)
+    }
+
+    "Non-unique unsorted left join [case 2]" in {
+      val ix1 = Index(1, 1, 2, 2, 0)
+      val ix2 = Index(1, 3, 2, 2)
+
+      val res = ix1.join(ix2, how=index.LeftJoin)
+
+      res.index must_== Index(1, 1, 2, 2, 2, 2, 0)
+      res.lTake.get must_== Array(0, 1, 2, 2, 3, 3, 4)
+      res.rTake.get must_== Array(0, 0, 2, 3, 2, 3, -1)
     }
 
     "Non-unique unsorted right join" in {
