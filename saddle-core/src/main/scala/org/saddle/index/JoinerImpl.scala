@@ -263,31 +263,23 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
     def passThru(callback: TripleArrayStore, l: Array[Int], r: Array[Int], res: Array[T]): Int = {
       var lc = 0
       var rc = 0
-      var done = false
+      var rgrp = 0
       var count = 0
       if (nleft > 0 && nright > 0) {
-        while (lc < nleft && rc < nright && !done) {
+        while (lc < nleft && rc < nright) {
           val lval: T = left.raw(lc)
           val rval: T = right.raw(rc)
           if (lval == rval) {
-            callback(l, r, res, lc, rc, rval, count)
+            callback(l, r, res, lc, rc, lval, count)
+            rc += 1
+            if (rc < nright && right.raw(rc) == lval)
+              rgrp += 1
+            else {
+              lc += 1
+              rc -= rgrp + 1
+              rgrp = 0
+            }
             count += 1
-            if (lc < nleft - 1) {
-              if (rc < (nright - 1) && right.raw(rc + 1) == rval)
-                rc += 1
-              else {
-                lc += 1
-                if (left.raw(lc) != rval)
-                  rc += 1
-              }
-            }
-            else if (rc < nright - 1) {
-              rc += 1
-              val v: T = right.raw(rc)
-              if (lval != v)
-                lc += 1
-            }
-            else done = true
           }
           else if (scalar.lt(lval, rval))
             lc += 1
