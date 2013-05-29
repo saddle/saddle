@@ -56,6 +56,13 @@ package object vec {
    */
   def rand(sz: Int): Vec[Double] = array.randDouble(sz)
 
+
+  /**
+     * Generate a uniform random Vec[Float] of a certain number of elements
+     * @param sz Number of elements of random vector
+     */
+    def randf(sz: Int): Vec[Float] = array.randFloatPos(sz)
+
   /**
    * Generate a uniform random positive Vec[Double] of a certain number of
    * elements

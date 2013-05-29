@@ -23,7 +23,7 @@ import scala.{ specialized => spec }
  * Appending an element takes amortized constant time, and the buffer instance can
  * be converted to an array either implicitly or explicitly via `toArray`.
  */
-trait Buffer[@spec(Boolean, Int, Long, Double) T] {
+trait Buffer[@spec(Boolean, Int, Long, Float, Double) T] {
   /**
    * Access an element of the buffer
    * @param loc Offset to access

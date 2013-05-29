@@ -84,7 +84,7 @@ object PctMethod {
 /**
  * Statistical methods made available on numeric Vec objects via enrichment.
  */
-trait VecStats[@spec(Int, Long, Double) A] {
+trait VecStats[@spec(Int, Long, Float, Double) A] {
   /**
    * Sum of the elements of the Vec, ignoring NA values
    */
@@ -249,9 +249,9 @@ trait VecStats[@spec(Int, Long, Double) A] {
     val ar = Array.ofDim[Double](r.length)
     var i = 0
     while( i < r.length ) {
-      val v = r(i)
+      val v: A = r(i)
       if (sa.notMissing(v))
-        ar(i) = subOp(r(i), mn)
+        ar(i) = subOp(v, mn)
       else
         ar(i) = sd.missing
       i += 1
@@ -413,6 +413,48 @@ trait VecStats[@spec(Int, Long, Double) A] {
       }
     }
   }
+}
+
+class FloatStats(r: Vec[Float]) extends VecStats[Float] {
+  val sf = ScalarTagFloat
+
+  def sum: Float = r.filterFoldLeft(sf.notMissing)(0f)(_ + _)
+  def count: Int = r.filterFoldLeft(sf.notMissing)(0)((a, b) => a + 1)
+
+  def min: Option[Float] =
+    if (count == 0)
+      None
+    else
+  {
+      val res = r.filterFoldLeft(sf.notMissing)(sf.inf)((x: Float, y: Float) => if (x < y) x else y)
+      Some(res)
+    }
+
+  def max: Option[Float] =
+    if (count == 0)
+      None
+   else
+  {
+      val res: Float = r.filterFoldLeft(sf.notMissing)(sf.negInf)((x: Float, y: Float) => if (x > y) x else y)
+      Some(res)
+    }
+
+  def prod: Float = r.filterFoldLeft(sf.notMissing)(1f)(_ * _)
+  def countif(test: Float => Boolean): Int = r.filterFoldLeft(t => sf.notMissing(t) && test(t))(0)((a,b) => a + 1)
+  def logsum: Double = r.filterFoldLeft(sf.notMissing)(0d)((x, y) => x + math.log(y.asInstanceOf[Double]))
+  def mean: Double = sum.asInstanceOf[Double] / count
+  def median: Double = _median(r)
+  def geomean: Double = math.exp(logsum / count)
+  def variance: Double = _variance(r, _ - _)
+  def skew: Double = _skew(r, _ - _)
+  def kurt: Double = _kurt(r, _ - _)
+  def percentile(tile: Double, method: PctMethod = PctMethod.NIST): Double = _percentile(r.toDoubleArray, tile, method)
+
+  def demeaned: Vec[Double] = _demeaned(r, _ - _)
+  def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true): Vec[Double] = _rank(r.toDoubleArray, tie, ascending)
+
+  def argmin: Int = array.argmin(r.toArray)
+  def argmax: Int = array.argmax(r.toArray)
 }
 
 class DoubleStats(r: Vec[Double]) extends VecStats[Double] {

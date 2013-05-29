@@ -11,7 +11,9 @@ trait VecStatsImplicits {
 
   implicit def vecToIntStats(s: Vec[Int]): VecStats[Int] = new IntStats(s)
   implicit def vecToLongStats(s: Vec[Long]): VecStats[Long] = new LongStats(s)
+  implicit def vecToFloatStats(s: Vec[Float]): VecStats[Float] = new FloatStats(s)
   implicit def vecToDoubleStats(s: Vec[Double]): VecStats[Double] = new DoubleStats(s)
+
 
   implicit def vecToIntExpStats(s: Vec[Int]): VecExpandingStats[Int] = new IntExpandingStats(s)
   implicit def vecToLongExpStats(s: Vec[Long]): VecExpandingStats[Long] = new LongExpandingStats(s)

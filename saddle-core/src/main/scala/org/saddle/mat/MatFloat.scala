@@ -16,27 +16,27 @@
 
 package org.saddle.mat
 
-import scala.{specialized => spec}
 import org.saddle._
 import org.saddle.scalar._
+import scala.{specialized => spec}
 
 /**
- * A Mat instance containing elements of type Int
+ * A Mat instance containing elements of type Float
  */
-class MatInt(r: Int, c: Int, values: Array[Int]) extends Mat[Int] {
+class MatFloat(r: Int, c: Int, values: Array[Float]) extends Mat[Float] {
   def repr = this
 
   def numRows = r
 
   def numCols = c
 
-  def scalarTag = ScalarTagInt
+  def scalarTag = ScalarTagFloat
 
   def toVec = scalarTag.makeVec(toArray)
 
-  def mapValues[@spec(Boolean, Int, Long,  Float, Double) B: ST](f: (Int) => B): Mat[B] = MatImpl.mapValues(this)(f)
+  def mapValues[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Float) => B): Mat[B] = MatImpl.mapValues(this)(f)
 
-  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, Int, Int) => B): Mat[B] = MatImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long,Float, Double) B: ST](f: (Int, Int, Float) => B): Mat[B] = MatImpl.map(this)(f)
 
   // Cache the transpose: it's much faster to transpose and slice a continuous
   // bound than to take large strides, especially on large matrices where it
@@ -49,16 +49,16 @@ class MatInt(r: Int, c: Int, values: Array[Int]) extends Mat[Int] {
     else
       MatMath.blockTranspose(numRows, numCols, this.toArray, arrT)
 
-    new MatInt(numCols, numRows, arrT)
+    new MatFloat(numCols, numRows, arrT)
   }
 
   def transpose = cachedT
 
-  def takeRows(locs: Array[Int]): Mat[Int] = MatImpl.takeRows(this, locs)
+  def takeRows(locs: Array[Int]): Mat[Float] = MatImpl.takeRows(this, locs)
 
-  def withoutRows(locs: Array[Int]): Mat[Int] = MatImpl.withoutRows(this, locs)
+  def withoutRows(locs: Array[Int]): Mat[Float] = MatImpl.withoutRows(this, locs)
 
-  def reshape(r: Int, c: Int): Mat[Int] = new MatInt(r, c, values)
+  def reshape(r: Int, c: Int): Mat[Float] = new MatFloat(r, c, values)
 
   // access like vector in row-major order
   private[saddle] def apply(i: Int) = values(i)
@@ -69,10 +69,10 @@ class MatInt(r: Int, c: Int, values: Array[Int]) extends Mat[Int] {
   // use with caution, may not return copy
   private[saddle] def toArray = values
 
-  private[saddle] def toDoubleArray(implicit ev: NUM[Int]): Array[Double] = arrCopyToDblArr(values)
+  private[saddle] def toDoubleArray(implicit ev: NUM[Float]): Array[Double] = arrCopyToDblArr(values)
 
-  private[saddle] def arrCopyToDblArr(r: Array[Int]): Array[Double] = {
-    val sa = ScalarTagInt
+  private[saddle] def arrCopyToDblArr(r: Array[Float]): Array[Double] = {
+    val sa = ScalarTagFloat
     val arr = Array.ofDim[Double](r.length)
     var i = 0
     while(i < r.length) {

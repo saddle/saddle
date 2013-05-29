@@ -127,6 +127,19 @@ package object array {
   }
 
   /**
+   * Generate an array of random floats on
+   */
+  def randFloatPos(sz: Int): Array[Float] = {
+    val arr = Array.ofDim[Float](sz)
+    var i = 0
+    while(i < sz) {
+      arr(i) = random.nextNonNegFloat
+      i += 1
+    }
+    arr
+  }
+
+  /**
    * Generate an array of random positive integers excluding 0
    */
   def randIntPos(sz: Int): Array[Int] = {

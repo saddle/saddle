@@ -61,7 +61,7 @@ import org.saddle.index.{IndexIntRange, Slice}
  *
  * @tparam A Type of elements within the Mat
  */
-trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
+trait Mat[@spec(Boolean, Int, Long,Float, Double) A] extends NumericOps[Mat[A]] {
   def scalarTag: ScalarTag[A]
 
   /**
@@ -176,12 +176,12 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   /**
    * Maps a function over each element in the matrix
    */
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
+  def mapValues[@spec(Boolean, Int, Long, Float, Double) B: ST](f: A => B): Mat[B]
 
   /**
    * Maps a function over the tuple (row index, col index, element) in the matrix
    */
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, Int, A) => B): Mat[B]
+  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, Int, A) => B): Mat[B]
 
   /**
    * Changes the shape of matrix without changing the underlying data

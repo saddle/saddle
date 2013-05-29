@@ -47,28 +47,28 @@ class VecAny[T: ST](values: Array[T]) extends Vec[T] { self =>
   def concat[B, C](v: Vec[B])(implicit wd: Promoter[T, B, C], mc: ST[C]): Vec[C] =
     Vec(util.Concat.append[T, B, C](toArray, v.toArray))
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B): B =
+  def foldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, T) => B): B =
     VecImpl.foldLeft(this)(init)(f)
 
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B)(cond: (B, T) => Boolean): B =
+  def foldLeftWhile[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, T) => B)(cond: (B, T) => Boolean): B =
     VecImpl.foldLeftWhile(this)(init)(f)(cond)
 
-  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: T => Boolean)(init: B)(f: (B, T) => B): B =
+  def filterFoldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: T => Boolean)(init: B)(f: (B, T) => B): B =
     VecImpl.filterFoldLeft(this)(pred)(init)(f)
 
-  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (T) => Boolean)(init: B)(f: (B, T) => B): Vec[B] =
+  def filterScanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: (T) => Boolean)(init: B)(f: (B, T) => B): Vec[B] =
     VecImpl.filterScanLeft(this)(pred)(init)(f)
 
-  def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: Vec[T] => B): Vec[B] =
+  def rolling[@spec(Boolean, Int, Long, Float, Double) B: ST](winSz: Int, f: Vec[T] => B): Vec[B] =
     VecImpl.rolling(this)(winSz, f)
 
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: T => B): Vec[B] = VecImpl.mapValues(this)(f)
+  def mapValues[@spec(Boolean, Int, Long, Float, Double) B: ST](f: T => B): Vec[B] = VecImpl.mapValues(this)(f)
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, T) => B): Vec[B] = VecImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, T) => B): Vec[B] = VecImpl.map(this)(f)
 
-  def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
+  def scanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, T) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 
-  def zipMap[@spec(Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](other: Vec[B])(f: (T, B) => C): Vec[C] =
+  def zipMap[@spec(Int, Long, Float, Double) B: ST, @spec(Boolean, Int, Long, Float, Double) C: ST](other: Vec[B])(f: (T, B) => C): Vec[C] =
     VecImpl.zipMap(this, other)(f)
 
   def slice(from: Int, until: Int, stride: Int = 1) = {

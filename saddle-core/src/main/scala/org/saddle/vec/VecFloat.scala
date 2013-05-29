@@ -16,68 +16,68 @@
 
 package org.saddle.vec
 
-import scala.{specialized => spec}
 import org.saddle._
+import org.saddle.scalar._
 import org.saddle.util
 import org.saddle.util.Concat.Promoter
-import org.saddle.scalar._
+import scala.{specialized => spec}
 
-class VecLong(values: Array[Long]) extends Vec[Long] { self =>
+class VecFloat(values: Array[Float]) extends Vec[Float] { self =>
   def length = values.length
 
-  def scalarTag = ScalarTagLong
+  def scalarTag = ScalarTagFloat
 
-  def apply(i: Int): Long = values(i)
+  def apply(i: Int): Float = values(i)
 
-  def copy: Vec[Long] = Vec(toArray.clone())
+  def copy: Vec[Float] = Vec(toArray.clone())
 
-  def take(locs: Array[Int]): Vec[Long] = array.take(toArray, locs, scalarTag.missing)
+  def take(locs: Array[Int]): Vec[Float] = array.take(toArray, locs, scalarTag.missing)
 
-  def without(locs: Array[Int]): Vec[Long] = array.remove(toArray, locs)
+  def without(locs: Array[Int]): Vec[Float] = array.remove(toArray, locs)
 
-  def dropNA: Vec[Long] = filter(_ => true)
+  def dropNA: Vec[Float] = filter(_ => true)
 
   def hasNA: Boolean = VecImpl.findOneNA(this)
 
-  def unary_-(): Vec[Long] = mapValues(-_)
+  def unary_-(): Vec[Float] = mapValues(-_)
 
-  def concat[B, C](v: Vec[B])(implicit wd: Promoter[Long, B, C], mc: ST[C]): Vec[C] =
-    Vec(util.Concat.append[Long, B, C](toArray, v.toArray))
+  def concat[B, C](v: Vec[B])(implicit wd: Promoter[Float, B, C], mc: ST[C]): Vec[C] =
+    Vec(util.Concat.append[Float, B, C](toArray, v.toArray))
 
-  def foldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, Long) => B): B =
+  def foldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, Float) => B): B =
     VecImpl.foldLeft(this)(init)(f)
 
-  def foldLeftWhile[@spec(Boolean, Int, Long,  Float, Double) B: ST](init: B)(f: (B, Long) => B)(cond: (B, Long) => Boolean): B =
+  def foldLeftWhile[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, Float) => B)(cond: (B, Float) => Boolean): B =
     VecImpl.foldLeftWhile(this)(init)(f)(cond)
 
-  def filterFoldLeft[@spec(Boolean, Int, Long,  Float, Double) B: ST](pred: Long => Boolean)(init: B)(f: (B, Long) => B): B =
+  def filterFoldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: (Float) => Boolean)(init: B)(f: (B, Float) => B): B =
     VecImpl.filterFoldLeft(this)(pred)(init)(f)
 
-  def filterScanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: (Long) => Boolean)(init: B)(f: (B, Long) => B): Vec[B] =
-    VecImpl.filterScanLeft(this)(pred)(init)(f)
-
-  def rolling[@spec(Boolean, Int, Long, Float, Double) B: ST](winSz: Int, f: Vec[Long] => B): Vec[B] =
+  def rolling[@spec(Boolean, Int, Long, Float, Double) B: ST](winSz: Int, f: Vec[Float] => B): Vec[B] =
     VecImpl.rolling(this)(winSz, f)
 
-  def mapValues[@spec(Boolean, Int, Long,  Float, Double) B: ST](f: Long => B): Vec[B] = VecImpl.mapValues(this)(f)
+  def mapValues[@spec(Boolean, Int, Long, Float, Double) B: ST](f: Float => B): Vec[B] = VecImpl.mapValues[Float, B](this)(f)
 
-  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, Long) => B): Vec[B] = VecImpl.map(this)(f)
+  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, Float) => B): Vec[B] = VecImpl.map(this)(f)
 
-  def scanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, Long) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
+  def scanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, Float) => B): Vec[B] = VecImpl.scanLeft(this)(init)(f)
 
-  def zipMap[@spec(Int, Long, Float, Double) B: ST, @spec(Boolean, Int, Long, Float, Double) C: ST](other: Vec[B])(f: (Long, B) => C): Vec[C] =
+  def filterScanLeft[@spec(Boolean, Int, Long,Float, Double) B: ST](pred: (Float) => Boolean)(init: B)(f: (B, Float) => B): Vec[B] =
+    VecImpl.filterScanLeft(this)(pred)(init)(f)
+
+  def zipMap[@spec(Int, Long, Float, Double) B: ST, @spec(Boolean, Int, Long, Float,Double) C: ST](other: Vec[B])(f: (Float, B) => C): Vec[C] =
     VecImpl.zipMap(this, other)(f)
 
-  def slice(from: Int, until: Int, stride: Int = 1) = {
+  def slice(from: Int, until: Int, stride: Int = 1): Vec[Float] = {
     val b = math.max(from, 0)
     val e = math.min(until, self.length)
 
-    if (e <= b) Vec.empty else new VecLong(values) {
+    if (e <= b) Vec.empty[Float] else new VecFloat(values) {
       private val ub = math.min(self.length, e)
 
       override def length = math.ceil((ub - b) / stride.toDouble).toInt
 
-      override def apply(i: Int): Long = {
+      override def apply(i: Int): Float = {
         val loc = b + i * stride
         if (loc >= ub)
           throw new ArrayIndexOutOfBoundsException("Cannot access location %d >= length %d".format(loc, ub))
@@ -95,10 +95,10 @@ class VecLong(values: Array[Long]) extends Vec[Long] { self =>
     val b = -m
     val e = self.length - m
 
-    new VecLong(values) {
+    new VecFloat(values) {
       override def length = self.length
 
-      override def apply(i: Int): Long = {
+      override def apply(i: Int): Float = {
         val loc = b + i
         if (loc >= e || loc < b)
           throw new ArrayIndexOutOfBoundsException("Cannot access location %d (vec length %d)".format(i, self.length))
@@ -112,12 +112,14 @@ class VecLong(values: Array[Long]) extends Vec[Long] { self =>
     }
   }
 
-  private[saddle] def toArray: Array[Long] = {
+  private[saddle] def toFloatArray(implicit na: NUM[Float]): Array[Float] = toArray
+
+  private[saddle] override def toArray: Array[Float] = {
     // need to check if we're a view on an array
     if (!needsCopy)
       values
     else {
-      val buf = new Array[Long](length)
+      val buf = new Array[Float](length)
       var i = 0
       while( i < length ) {
         buf(i) = apply(i)
@@ -129,7 +131,7 @@ class VecLong(values: Array[Long]) extends Vec[Long] { self =>
 
   /** Default equality does an iterative, element-wise equality check of all values. */
   override def equals(o: Any): Boolean = o match {
-    case rv: VecLong => (this eq rv) || (this.length == rv.length) && {
+    case rv: VecFloat => (this eq rv) || (this.length == rv.length) && {
       var i = 0
       var eq = true
       while(eq && i < this.length) {

@@ -69,9 +69,9 @@ import java.io.OutputStream
  *
  * @tparam T Type of elements within the Vec
  */
-trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
+trait Vec[@spec(Boolean, Int, Long, Float, Double) T] extends NumericOps[Vec[T]] {
   /**
-   * The number of elements in the container                                                  F
+   * The number of elements in the container
    */
   def length: Int
 
@@ -250,32 +250,32 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   /**
    * Map a function over the elements of the Vec, as in scala collections library
    */
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: T => B): Vec[B]
+  def mapValues[@spec(Boolean, Int, Long, Float, Double) B: ST](f: T => B): Vec[B]
 
   /**
    * Map a function over the elements of the Vec and its index
    */
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, T) => B): Vec[B]
+  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, T) => B): Vec[B]
 
   /**
    * Left fold over the elements of the Vec, as in scala collections library
    */
-  def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B): B
+  def foldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, T) => B): B
 
   /**
    * Left scan over the elements of the Vec, as in scala collections library
    */
-  def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B): Vec[B]
+  def scanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, T) => B): Vec[B]
 
   /**
    * Filtered left fold over the elements of the Vec, as in scala collections library
    */
-  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: T => Boolean)(init: B)(f: (B, T) => B): B
+  def filterFoldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: T => Boolean)(init: B)(f: (B, T) => B): B
 
   /**
    * Filtered left scan over elements of the Vec, as in scala collections library
    */
-  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: T => Boolean)(init: B)(f: (B, T) => B): Vec[B]
+  def filterScanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: T => Boolean)(init: B)(f: (B, T) => B): Vec[B]
 
   /**
    * Left fold that folds only while the test condition holds true. As soon as the condition function yields
@@ -283,7 +283,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param cond Function whose signature is the same as the fold function, except that it evaluates to Boolean
    */
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, T) => B)(cond: (B, T) => Boolean): B
+  def foldLeftWhile[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, T) => B)(cond: (B, T) => Boolean): B
 
   /**
    * Zips Vec with another Vec and applies a function to the paired elements. If either of the pair is NA, the
@@ -293,8 +293,8 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * @tparam B Parameter of other Vec
    * @tparam C Result of function
    */
-  def zipMap[@spec(Int, Long, Double) B: ST,
-             @spec(Boolean, Int, Long, Double) C: ST](other: Vec[B])(f: (T, B) => C): Vec[C]
+  def zipMap[@spec(Int, Long, Float, Double) B: ST,
+             @spec(Boolean, Int, Long, Float, Double) C: ST](other: Vec[B])(f: (T, B) => C): Vec[C]
 
   /**
    * Drop the elements of the Vec which are NA
@@ -363,7 +363,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * @param f Function Vec[A] => B to operate on sliding window
    * @tparam B Result type of function
    */
-  def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: Vec[T] => B): Vec[B]
+  def rolling[@spec(Boolean, Int, Long, Float, Double) B: ST](winSz: Int, f: Vec[T] => B): Vec[B]
 
   /**
    * Yield a Vec whose elements have been sorted (in ascending order)

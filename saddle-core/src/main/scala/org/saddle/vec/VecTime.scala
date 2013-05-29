@@ -62,35 +62,35 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 
   def unary_-() = sys.error("Cannot negate VecTime")
 
-  def mapValues[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
+  def mapValues[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (DateTime) => B) =
     times.mapValues(v => f(l2t(v)))
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (Int, DateTime) => B): Vec[B] =
+  def map[@spec(Boolean, Int, Long, Float, Double) B: ST](f: (Int, DateTime) => B): Vec[B] =
     times.map { case (i, v) => f(i, l2t(v)) }
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
+  def foldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.foldLeft(init)((a,b) => f(a, l2t(b)))
 
-  def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
+  def scanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.scanLeft(init)((a,b) => f(a, l2t(b)))
 
-  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
+  def filterFoldLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
     times.filterFoldLeft(l2t _ andThen pred)(init)((a, b) => f(a, l2t(b)))
 
-  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
+  def filterScanLeft[@spec(Boolean, Int, Long, Float, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
     times.filterScanLeft(l2t _ andThen pred)(init)((a, b) => f(a, l2t(b)))
 
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B)(
+  def foldLeftWhile[@spec(Boolean, Int, Long, Float, Double) B: ST](init: B)(f: (B, DateTime) => B)(
     cond: (B, DateTime) => Boolean) = times.foldLeftWhile(init)((a, b) => f(a, l2t(b)))((a, b) => cond(a, l2t(b)))
 
-  def zipMap[@spec(Boolean, Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](
+  def zipMap[@spec(Boolean, Int, Long, Float, Double) B: ST, @spec(Boolean, Int, Long, Float, Double) C: ST](
     other: Vec[B])(f: (DateTime, B) => C) = times.zipMap(other)((a, b) => f(l2t(a), b))
 
   def dropNA = vl2vt(times.dropNA)
 
   def hasNA = times.hasNA
 
-  def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: (Vec[DateTime]) => B) =
+  def rolling[@spec(Boolean, Int, Long, Float, Double) B: ST](winSz: Int, f: (Vec[DateTime]) => B) =
     times.rolling(winSz, vl2vt _ andThen f)
 
   def slice(from: Int, until: Int, stride: Int) =

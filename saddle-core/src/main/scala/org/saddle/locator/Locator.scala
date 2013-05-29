@@ -41,7 +41,7 @@ import scala.{ specialized => spec }
  * }}}
  * where s(t) = min(i) for any i such that f(i) = t.
  */
-trait Locator[@spec(Boolean, Int, Long, Double) T] {
+trait Locator[@spec(Boolean, Int, Long, Float, Double) T] {
   /**
    * Whether the instance contains the key
    * @param key The key to query
