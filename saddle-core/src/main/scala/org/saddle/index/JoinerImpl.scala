@@ -72,7 +72,7 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
     else {
       outerJoinUnique(left, right)
     }
- }
+  }
 
   // Intersects two indices if both have set semantics
   private def intersect(left: Index[T], right: Index[T]): ReIndexer[T] = {
