@@ -22,7 +22,7 @@ Documentation
 =============
 
  - [Guide](http://saddle.github.io/doc/)
- - [scaladoc](http://saddle.github.io/saddle/target/scala-2.9.2/api/#org.saddle.package)
+ - [scaladoc](http://saddle.github.io/saddle/saddle-core/target/scala-2.9.2/api/#org.package)
 
 License
 =======
