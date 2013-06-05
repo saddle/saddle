@@ -37,4 +37,13 @@ class FrameSpec extends Specification {
     val f = Frame("a" -> Series("x" -> 1, "y" -> 2, "z" -> 3), "b" -> Series("x" -> 4, "y" -> 5, "z" -> 6))
     f.flatMap { case (r, c, v) => Some((r, c, v + 1)) } must_== f + 1
   }
+
+  "colType works within rfilter" in {
+    val strVec = Vec("string", "another string", "unrelated")
+    val intVec = vec.randi(3)
+    val df = Panel(strVec, intVec)
+    val df2 = df.rfilter(x => x.get(0).map(_.toString).getOrElse("").contains("string"))
+    df2.colType[Int] must_!= Frame.empty[Int, Int, Int]
+    df2.colType[String] must_!= Frame.empty[Int, Int, String]
+  }
 }

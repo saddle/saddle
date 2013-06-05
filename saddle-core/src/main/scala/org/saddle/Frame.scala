@@ -1279,7 +1279,10 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   /**
    * See where; operates row-wise
    */
-  def rwhere(pred: Series[_, Boolean]): Frame[RX, CX, T] = T.where(pred).T
+  def rwhere(pred: Series[_, Boolean]): Frame[RX, CX, T] = {
+    val predv = pred.values
+    new Frame(new MatCols(values.map(v => v.where(predv))), Index(rowIx.toVec.where(predv)), colIx)
+  }
 
   /**
    * See shift; operates col-wise
