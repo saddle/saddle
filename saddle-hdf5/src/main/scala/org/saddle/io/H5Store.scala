@@ -39,6 +39,12 @@ import scala.util.control.Exception._
  */
 object H5Store {
   private val monitor = new ReentrantLock()
+  private def withMonitor[A](block: ⇒ A): A = {
+    monitor.lock()
+    try { block } catch {
+      case e: HDF5LibraryException ⇒ throw wrapHdf5Exception(e)
+    } finally { monitor.unlock() }
+  }
 
   // *** Public API
 
@@ -51,17 +57,8 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeries[X: ST: ORD, T: ST](path: String, name: String): Series[X, T] = {
-    monitor.lock()
-    try {
-      readPandasSeries[X, T](path, name)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def readSeries[X: ST: ORD, T: ST](path: String, name: String): Series[X, T] = withMonitor {
+    readPandasSeries[X, T](path, name)
   }
 
   /**
@@ -77,18 +74,9 @@ object H5Store {
    * @tparam T Series values type
    */
   def readSeriesSlice[X: ST: ORD, T: ST](path: String, name: String,
-                                         from: X, to: X, inclusive: Boolean): Series[X, T] = {
-    monitor.lock()
-    try {
-      val series = readPandasSeries[X, T](path, name)
-      series.sliceBy(from, to, inclusive)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+                                         from: X, to: X, inclusive: Boolean): Series[X, T] = withMonitor {
+    val series = readPandasSeries[X, T](path, name)
+    series.sliceBy(from, to, inclusive)
   }
 
   /**
@@ -99,17 +87,8 @@ object H5Store {
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String): Frame[RX, CX, T] = {
-    monitor.lock()
-    try {
-      readPandasFrame[RX, CX, T](path, name)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String): Frame[RX, CX, T] = withMonitor {
+    readPandasFrame[RX, CX, T](path, name)
   }
 
   /**
@@ -130,18 +109,9 @@ object H5Store {
    */
   def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String,
                                                       rowFrom: RX, rowTo: RX, colFrom: CX, colTo: CX,
-                                                      rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = {
-    monitor.lock()
-    try {
-      val fr = readPandasFrame[RX, CX, T](path, name)
-      fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+                                                      rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = withMonitor {
+    val fr = readPandasFrame[RX, CX, T](path, name)
+    fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
   }
 
   /**
@@ -151,17 +121,8 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeries[X: ST: ORD, T: ST](fileid: Int, name: String): Series[X, T] = {
-    monitor.lock()
-    try {
-      readPandasSeries[X, T](fileid, name)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def readSeries[X: ST: ORD, T: ST](fileid: Int, name: String): Series[X, T] = withMonitor {
+    readPandasSeries[X, T](fileid, name)
   }
 
   /**
@@ -177,18 +138,9 @@ object H5Store {
    * @tparam T Series values type
    */
   def readSeriesSlice[X: ST: ORD, T: ST](fileid: Int, name: String,
-                                         from: X, to: X, inclusive: Boolean): Series[X, T] = {
-    monitor.lock()
-    try {
-      val series = readPandasSeries[X, T](fileid, name)
-      series.sliceBy(from, to, inclusive)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+                                         from: X, to: X, inclusive: Boolean): Series[X, T] = withMonitor {
+    val series = readPandasSeries[X, T](fileid, name)
+    series.sliceBy(from, to, inclusive)
   }
 
   /**
@@ -199,17 +151,8 @@ object H5Store {
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String): Frame[RX, CX, T] = {
-    monitor.lock()
-    try {
-      readPandasFrame[RX, CX, T](fileid, name)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String): Frame[RX, CX, T] = withMonitor {
+    readPandasFrame[RX, CX, T](fileid, name)
   }
 
   /**
@@ -230,18 +173,9 @@ object H5Store {
    */
   def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String,
                                                       rowFrom: RX, rowTo: RX, colFrom: CX, colTo: CX,
-                                                      rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = {
-    monitor.lock()
-    try {
-      val fr = readPandasFrame[RX, CX, T](fileid, name)
-      fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+                                                      rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = withMonitor {
+    val fr = readPandasFrame[RX, CX, T](fileid, name)
+    fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
   }
 
   // ** writing
@@ -253,17 +187,8 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def writeSeries[X: ST: ORD, T: ST](path: String, name: String, s: Series[X, T]) {
-    monitor.lock()
-    try {
-      writePandasSeries(path, name, s.index, s.values)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def writeSeries[X: ST: ORD, T: ST](path: String, name: String, s: Series[X, T]): Unit = withMonitor {
+    writePandasSeries(path, name, s.index, s.values)
   }
 
   /**
@@ -274,17 +199,8 @@ object H5Store {
    * @tparam C Frame col index type
    * @tparam T Framevalues type
    */
-  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, name: String, df: Frame[R, C, T]) {
-    monitor.lock()
-    try {
-      writePandasFrame(path, name, df.rowIx, df.colIx, df.toMat)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, name: String, df: Frame[R, C, T]): Unit = withMonitor {
+    writePandasFrame(path, name, df.rowIx, df.colIx, df.toMat)
   }
 
   /**
@@ -294,17 +210,8 @@ object H5Store {
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def writeSeries[X: ST: ORD, T: ST](fileid: Int, name: String, s: Series[X, T]) {
-    monitor.lock()
-    try {
-      writePandasSeries(fileid, name, s.index, s.values)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def writeSeries[X: ST: ORD, T: ST](fileid: Int, name: String, s: Series[X, T]): Unit = withMonitor {
+    writePandasSeries(fileid, name, s.index, s.values)
   }
 
   /**
@@ -315,17 +222,8 @@ object H5Store {
    * @tparam C Frame col index type
    * @tparam T Framevalues type
    */
-  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, name: String, df: Frame[R, C, T]) {
-    monitor.lock()
-    try {
-      writePandasFrame(fileid, name, df.rowIx, df.colIx, df.toMat)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, name: String, df: Frame[R, C, T]): Unit = withMonitor {
+    writePandasFrame(fileid, name, df.rowIx, df.colIx, df.toMat)
   }
 
   /**
@@ -333,36 +231,26 @@ object H5Store {
    * @param path Path of file
    * @param root Level (group) of the hierarchy
    */
-  def readGroupNames(path: String, root: String = "/"): List[String] = {
-    monitor.lock()
+  def readGroupNames(path: String, root: String = "/"): List[String] = withMonitor {
+    val fileid = openFile(path)
+    assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
+    H5Reg.save(fileid, H5F)
 
-    try {
-      val fileid = openFile(path)
-      assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
-      H5Reg.save(fileid, H5F)
+    val gcount = H5.H5Gn_members(fileid, root)
+    assertException(gcount >= 0, "Failed to get iterator at " + root)
 
-      val gcount = H5.H5Gn_members(fileid, root)
-      assertException(gcount >= 0, "Failed to get iterator at " + root)
+    val ab = List.newBuilder[String]
+    ab.sizeHint(gcount)
 
-      val ab = List.newBuilder[String]
-      ab.sizeHint(gcount)
-
-      val oName = Array.fill[String](1)("")
-      val oType = Array.fill[Int](1)(0)
-      for (i <- Range(0, gcount)) {
-        H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-        ab += oName(0)
-      }
-
-      H5Reg.close(fileid, H5F)
-      ab.result()
+    val oName = Array.fill[String](1)("")
+    val oType = Array.fill[Int](1)(0)
+    for (i <- Range(0, gcount)) {
+      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
+      ab += oName(0)
     }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+
+    H5Reg.close(fileid, H5F)
+    ab.result()
   }
 
   /**
@@ -370,31 +258,21 @@ object H5Store {
    * @param fileid File handle from `openFile`
    * @param root Level (group) of the hierarchy
    */
-  def readGroupNamesFid(fileid: Int, root: String = "/"): List[String] = {
-    monitor.lock()
+  def readGroupNamesFid(fileid: Int, root: String = "/"): List[String] = withMonitor {
+    val gcount = H5.H5Gn_members(fileid, root)
+    assertException(gcount >= 0, "Failed to get iterator at " + root)
 
-    try {
-      val gcount = H5.H5Gn_members(fileid, root)
-      assertException(gcount >= 0, "Failed to get iterator at " + root)
+    val ab = List.newBuilder[String]
+    ab.sizeHint(gcount)
 
-      val ab = List.newBuilder[String]
-      ab.sizeHint(gcount)
-
-      val oName = Array.fill[String](1)("")
-      val oType = Array.fill[Int](1)(0)
-      for (i <- Range(0, gcount)) {
-        H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-        ab += oName(0)
-      }
-
-      ab.result()
+    val oName = Array.fill[String](1)("")
+    val oType = Array.fill[Int](1)(0)
+    for (i <- Range(0, gcount)) {
+      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
+      ab += oName(0)
     }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+
+    ab.result()
   }
 
   // ** open / close files
@@ -403,85 +281,47 @@ object H5Store {
    * Open an HDF5 file and return an integer handle.
    * @param path Path of file
    */
-  def openFile(path: String, readOnly: Boolean = true): Int = {
-    monitor.lock()
-
+  def openFile(path: String, readOnly: Boolean = true): Int = withMonitor {
     val rwParam = if (readOnly) HDF5Constants.H5F_ACC_RDONLY else HDF5Constants.H5F_ACC_RDWR
-
-    try {
-      val fid = H5.H5Fopen(path, rwParam, HDF5Constants.H5P_DEFAULT)
-      assertException(fid >= 0, "Could not open file " + path)
-      // H5Reg.save(fid, H5F) <-- don't want fid automatically released on error
-      fid
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+    val fid = H5.H5Fopen(path, rwParam, HDF5Constants.H5P_DEFAULT)
+    assertException(fid >= 0, "Could not open file " + path)
+    // H5Reg.save(fid, H5F) <-- don't want fid automatically released on error
+    fid
   }
 
   /**
    * Create an HDF5 file and return an integer handle.
    * @param path Path of file
    */
-  def createFile(path: String): Int = {
-    monitor.lock()
-
-    try {
-      val fid = H5.H5Fcreate(path, HDF5Constants.H5F_ACC_EXCL, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT)
-      assertException(fid >= 0, "Could not create file " + path)
-      // H5Reg.save(fid, H5F) <-- don't want fid automatically released on error
-      fid
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def createFile(path: String): Int = withMonitor {
+    val fid = H5.H5Fcreate(path, HDF5Constants.H5F_ACC_EXCL, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT)
+    assertException(fid >= 0, "Could not create file " + path)
+    // H5Reg.save(fid, H5F) <-- don't want fid automatically released on error
+    fid
   }
 
   /**
    * Close an HDF5 file and return an integer handle.
    * @param fileid Integer handle of file
    */
-  def closeFile(fileid: Int) {
-    monitor.lock()
-
-    try {
-      assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
-      H5.H5Fclose(fileid)
-    }
-    catch {
-      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    }
-    finally {
-      monitor.unlock()
-    }
+  def closeFile(fileid: Int): Unit = withMonitor {
+    assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
+    H5.H5Fclose(fileid)
   }
 
   /**
    * Query for number of open resource handles held by HDF5 Library
    */
-  def openResourceCount: Int = {
-    monitor.lock()
-    try {
-      ncsa.hdf.hdf5lib.H5.getOpenIDCount
-    }
-    finally {
-      monitor.unlock()
-    }
+  def openResourceCount: Int = withMonitor {
+    ncsa.hdf.hdf5lib.H5.getOpenIDCount
   }
 
   // *** private helper functions
 
   // release resources / cleanup on JVM shutdown
   Runtime.getRuntime.addShutdownHook(new Thread() {
-    override def run() {
-      monitor.lock()
-      try { H5Reg.closeAll() } finally { monitor.unlock() }
+    override def run(): Unit = withMonitor {
+      H5Reg.closeAll()
     }
   })
 
@@ -1292,52 +1132,33 @@ object H5Store {
     /**
      * Registers an open resource if it hasn't been registered already
      */
-    def save(v: Int, t: H5Resource) {
-      monitor.lock()
-      try {
-        registry += (v -> t)
-      }
-      finally {
-        monitor.unlock()
-      }
+    def save(v: Int, t: H5Resource): Unit = withMonitor {
+      registry += (v -> t)
     }
 
     /**
      * Closes / de-registers a resource in a thread-safe manner
      */
-    def close(v: Int, t: H5Resource) {
-      monitor.lock()
-
-      try {
-        if (registry.contains(v -> t)) {
-          t match {
-            case H5T => allCatch { H5.H5Tclose(v) }
-            case H5A => allCatch { H5.H5Aclose(v) }
-            case H5D => allCatch { H5.H5Dclose(v) }
-            case H5S => allCatch { H5.H5Sclose(v) }
-            case H5P => allCatch { H5.H5Pclose(v) }
-            case H5G => allCatch { H5.H5Gclose(v) }
-            case H5F => allCatch { H5.H5Fclose(v) }
-          }
-          registry -= (v -> t)
+    def close(v: Int, t: H5Resource): Unit = withMonitor {
+      if (registry.contains(v -> t)) {
+        t match {
+          case H5T => allCatch { H5.H5Tclose(v) }
+          case H5A => allCatch { H5.H5Aclose(v) }
+          case H5D => allCatch { H5.H5Dclose(v) }
+          case H5S => allCatch { H5.H5Sclose(v) }
+          case H5P => allCatch { H5.H5Pclose(v) }
+          case H5G => allCatch { H5.H5Gclose(v) }
+          case H5F => allCatch { H5.H5Fclose(v) }
         }
-      }
-      finally {
-        monitor.unlock()
+        registry -= (v -> t)
       }
     }
 
     /**
      * Releases all (open) resources
      */
-    def closeAll() {
-      monitor.lock()
-      try {
-        registry.map { case (v, t) => close(v, t) }
-      }
-      finally {
-        monitor.unlock()
-      }
+    def closeAll(): Unit = withMonitor {
+      registry.map { case (v, t) => close(v, t) }
     }
   }
 }
