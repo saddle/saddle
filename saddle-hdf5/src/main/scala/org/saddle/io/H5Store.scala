@@ -39,10 +39,11 @@ import scala.util.control.Exception._
  */
 object H5Store {
   private val monitor = new ReentrantLock()
-  private def withMonitor[A](block: ⇒ A): A = {
+  
+  private def withMonitor[A](block: => A): A = {
     monitor.lock()
     try { block } catch {
-      case e: HDF5LibraryException ⇒ throw wrapHdf5Exception(e)
+      case e: HDF5LibraryException => throw wrapHdf5Exception(e)
     } finally { monitor.unlock() }
   }
 
@@ -476,6 +477,33 @@ object H5Store {
     H5Reg.close(spaceToUse, H5S)
   }
 
+  // write a bool attribute to a group
+  private def writeAttrBool(group_id: Int, attr: String, datum: Boolean) {
+    // open new scalar space for long constant
+    val spaceToUse = H5.H5Screate(HDF5Constants.H5S_SCALAR)
+    assertException(spaceToUse >= 0, "No space to write the attribute: " + attr)
+
+    H5Reg.save(spaceToUse, H5S)
+
+    val attribute_id = try {
+      H5.H5Acreate(group_id, attr, HDF5Constants.H5T_STD_B8LE,
+        spaceToUse, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT)
+    }
+    catch {
+      case e: HDF5LibraryException => H5.H5Aopen(group_id, attr, HDF5Constants.H5P_DEFAULT)
+    }
+    assertException(attribute_id >= 0, "Bad attribute id")
+
+    H5Reg.save(attribute_id, H5A)
+
+    val byte = if (datum) (0x01 : Byte) else (0x00 : Byte)
+
+    H5.H5Awrite(attribute_id, HDF5Constants.H5T_STD_B8LE, Array(byte))
+
+    H5Reg.close(attribute_id, H5A)
+    H5Reg.close(spaceToUse, H5S)
+  }
+
   // read a long attribute from a group
   private def readAttrLong(group_id: Int, attr: String): Long = {
     // ptr to attribute
@@ -486,8 +514,8 @@ object H5Store {
 
     // make sure it's a long attribute
     val datatype = H5.H5Aget_type(attrid)
-    assertException((datatype >= 0) && (H5.H5Tget_class(datatype) == HDF5Constants.H5T_INTEGER),
-      "Attribute is not a long attribute. ")
+    assertException(datatype >= 0 && H5.H5Tget_class(datatype) == HDF5Constants.H5T_INTEGER,
+                    "Attribute is not a long attribute. ")
 
     H5Reg.save(datatype, H5A)
 
@@ -538,7 +566,7 @@ object H5Store {
 
   // write a two-dimensional array (dataset) to a group
   private def write2DArray[T: ST](group_id: Int, name: String, dim1: Int, dim2: Int, data: Array[T],
-                                   withAttr: List[(String, String)] = Nil) {
+                                  withAttr: List[(String, String)] = Nil) {
     assertException(data.length == dim1 * dim2, "Data dimensions do not correspond to data length!")
 
     // create space for array
@@ -554,6 +582,8 @@ object H5Store {
     // write optional attributes to space
     for (attr <- withAttr)
       writeAttrText(dataset_id, attr._1, attr._2)
+
+    writeAttrBool(dataset_id, "transposed", true)
 
     // close space
     H5Reg.close(space_id, H5S)
@@ -704,7 +734,7 @@ object H5Store {
         HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL,
         HDF5Constants.H5P_DEFAULT, result)
     } catch {
-      case _: NullPointerException ⇒ // ignore exception when reading an empty string block
+      case _: NullPointerException => // ignore exception when reading an empty string block
     } finally {
       H5Reg.close(datatype, H5T)
       H5Reg.close(dspaceid, H5S)
@@ -838,7 +868,9 @@ object H5Store {
     writeAttrText(grpid, "axis0_variety", "regular")
     writeAttrText(grpid, "axis1_variety", "regular")
     writeAttrText(grpid, "block0_items_variety", "regular")
-    writeAttrLong(grpid, "nblocks", 1)
+    writeAttrText(grpid, "block1_items_variety", "regular")
+    writeAttrText(grpid, "block2_items_variety", "regular")
+    writeAttrLong(grpid, "nblocks", 3)
     writeAttrLong(grpid, "ndim", 2)
     writeAttrText(grpid, "pandas_type", "frame")
   }
@@ -989,10 +1021,12 @@ object H5Store {
     val dfDouble = frame.colType[Double] // block_0
     val dfInt    = frame.colType[Int]    // block_1
     val dfString = frame.colType[String] // block_2
+
     val valDouble = dfDouble.toMat
     val valInt    = dfInt.toMat
     val valString = dfString.toMat
-    val grpid     = createGroup(fileid, "/" + name)
+
+    val grpid = createGroup(fileid, "/" + name)
     writeFramePandasHeader(grpid)
 
     // axis 0 is column names
@@ -1001,18 +1035,16 @@ object H5Store {
     // axis 1 is row names
     write1DArray(grpid, "axis1", frame.rowIx.toVec.contents, getPandasIndexAttribs(frame.rowIx))
 
+    // the block manager in pandas has up to four blocks: Int64, Float64, Char (ie Int8), PyObject
     // TODO what to do with column contents that is not Double, Int or String?
     write1DArray(grpid, "block0_items", dfDouble.colIx.toVec.contents, getPandasIndexAttribs(dfDouble.colIx))
     write1DArray(grpid, "block1_items", dfInt.colIx.toVec.contents, getPandasIndexAttribs(dfInt.colIx))
     write1DArray(grpid, "block2_items", dfString.colIx.toVec.contents, getPandasIndexAttribs(dfString.colIx))
 
     // the data itself is stored in a transposed format (col-major order)
-    write2DArray(grpid, "block0_values", valDouble.numRows, valDouble.numCols,
-      valDouble.contents, getPandasSeriesAttribs)
-    write2DArray(grpid, "block1_values", valInt.numRows, valInt.numCols,
-      valInt.contents, getPandasSeriesAttribs)
-    write2DArray(grpid, "block2_values", valString.numRows, valString.numCols,
-      valString.contents, getPandasSeriesAttribs)
+    write2DArray(grpid, "block0_values", valDouble.numRows, valDouble.numCols, valDouble.contents, getPandasSeriesAttribs)
+    write2DArray(grpid, "block1_values", valInt.numRows, valInt.numCols, valInt.contents, getPandasSeriesAttribs)
+    write2DArray(grpid, "block2_values", valString.numRows, valString.numCols, valString.contents, getPandasSeriesAttribs)
 
     closeGroup(grpid)
     H5.H5Fflush(fileid, HDF5Constants.H5F_SCOPE_GLOBAL)
@@ -1099,11 +1131,11 @@ object H5Store {
     }
 
     val ix1 = cxtype.runtimeClass match {
-      case x if x == tc ⇒ {
+      case x if x == tc => {
         val data = Vec(readArray[Long](grpid, colidx))
         new IndexTime(new IndexLong(data  / 1000000)).asInstanceOf[Index[CX]]
       }
-      case _ ⇒ {
+      case _ => {
         val doubleData = readArray[CX](grpid, doubleColIdx).toList
         val intData = readArray[CX](grpid, intColIdx).toList
         val strData = readArray[CX](grpid, strColIdx).toList
