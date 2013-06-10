@@ -695,7 +695,7 @@ object H5Store {
       }
       case c if c == sc => {
         assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_STRING, "Not a valid String")
-        HDF5Constants.H5T_C_S1
+        datatype
       }
     }
 
@@ -704,7 +704,7 @@ object H5Store {
         HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL,
         HDF5Constants.H5P_DEFAULT, result)
     } catch {
-      case _:NullPointerException ⇒ // ignore
+      case _: NullPointerException ⇒ // ignore exception when reading an empty string block
     } finally {
       H5Reg.close(datatype, H5T)
       H5Reg.close(dspaceid, H5S)
@@ -1039,9 +1039,6 @@ object H5Store {
     val attr = readAttrText(grpid, "pandas_type")
     assertException(attr == "frame", "Attribute is not a Frame")
 
-    // the block manager in pandas has up to four blocks: Int64, Float64, Char (ie Int8), PyObject
-    // since we only store doubles in QuantS for now, we assume only one block that comprises all
-    // the columns.
     val arrDouble = read2DArray[Double](grpid, "block0_values")
     val arrInt    = read2DArray[Int](grpid,    "block1_values")
     val arrString = read2DArray[String](grpid, "block2_values")
@@ -1069,10 +1066,10 @@ object H5Store {
       case _@ t         => throw new IllegalArgumentException("Bad row index type found: %s".format(t))
     }
 
-    val colidx = H5.H5Dopen(grpid, "axis0", HDF5Constants.H5P_DEFAULT)
+    val colidx       = H5.H5Dopen(grpid, "axis0",        HDF5Constants.H5P_DEFAULT)
     val doubleColIdx = H5.H5Dopen(grpid, "block0_items", HDF5Constants.H5P_DEFAULT)
-    val intColIdx = H5.H5Dopen(grpid, "block1_items", HDF5Constants.H5P_DEFAULT)
-    val strColIdx = H5.H5Dopen(grpid, "block2_items", HDF5Constants.H5P_DEFAULT)
+    val intColIdx    = H5.H5Dopen(grpid, "block1_items", HDF5Constants.H5P_DEFAULT)
+    val strColIdx    = H5.H5Dopen(grpid, "block2_items", HDF5Constants.H5P_DEFAULT)
     assertException(colidx >= 0, "column index group is not valid")
 
     H5Reg.save(colidx, H5D)
@@ -1130,7 +1127,7 @@ object H5Store {
 
     closeGroup(grpid)
 
-    result
+    result.sortedCIx
   }
 
   def assertException(condition: Boolean, errorMessage: String) {

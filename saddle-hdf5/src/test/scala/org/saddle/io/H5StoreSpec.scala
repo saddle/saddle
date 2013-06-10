@@ -173,7 +173,7 @@ class H5StoreSpec extends Specification {
       H5Store.readFrame[Int, Int, Double](tmp, "df3")      must_== df3
       H5Store.readFrame[Long, Int, Double](tmp, "df4")     must_== df4
       H5Store.readFrame[Double, Int, Double](tmp, "df5")   must_== df5
-      //H5Store.readFrame[Int, Int, Any](tmp, "df6")         must_== df6
+      H5Store.readFrame[Int, Int, Any](tmp, "df6")         must_== df6
 
       Files.deleteIfExists(Paths.get(tmp))
 
@@ -197,7 +197,7 @@ class H5StoreSpec extends Specification {
       H5Store.readFrame[Int, Int, Double](fid, "df3")      must_== df3
       H5Store.readFrame[Long, Int, Double](fid, "df4")     must_== df4
       H5Store.readFrame[Double, Int, Double](fid, "df5")   must_== df5
-      //H5Store.readFrame[Int, Int, Any](tmp, "df6")         must_== df6
+      H5Store.readFrame[Int, Int, Any](tmp, "df6")         must_== df6
 
       // try slicing
       H5Store.readFrameSlice[DateTime, Int, Double](fid, "df1", d2, d3, 2, 3, true, true) must_== df1.colSliceBy(2, 3).rowSliceBy(d2, d3)
