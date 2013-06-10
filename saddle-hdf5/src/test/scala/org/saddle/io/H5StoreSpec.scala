@@ -159,18 +159,21 @@ class H5StoreSpec extends Specification {
       val df3 = Frame(mat.rand(3, 3), Index(1, 2, 3), Index(1, 2, 3))
       val df4 = Frame(mat.rand(3, 3), Index(1L, 2, 3), Index(1, 2, 3))
       val df5 = Frame(mat.rand(3, 3), Index(1d, 2, 3), Index(1, 2, 3))
+      val df6 = Panel(Vec("string", "anotherString", "unrelated"), vec.randi(3), vec.rand(3))
 
       H5Store.writeFrame(tmp, "df1", df1)
       H5Store.writeFrame(tmp, "df2", df2)
       H5Store.writeFrame(tmp, "df3", df3)
       H5Store.writeFrame(tmp, "df4", df4)
       H5Store.writeFrame(tmp, "df5", df5)
+      H5Store.writeFrame(tmp, "df6", df6)
 
       H5Store.readFrame[DateTime, Int, Double](tmp, "df1") must_== df1
-      H5Store.readFrame[String, Int, Double](tmp, "df2") must_== df2
-      H5Store.readFrame[Int, Int, Double](tmp, "df3") must_== df3
-      H5Store.readFrame[Long, Int, Double](tmp, "df4") must_== df4
-      H5Store.readFrame[Double, Int, Double](tmp, "df5") must_== df5
+      H5Store.readFrame[String, Int, Double](tmp, "df2")   must_== df2
+      H5Store.readFrame[Int, Int, Double](tmp, "df3")      must_== df3
+      H5Store.readFrame[Long, Int, Double](tmp, "df4")     must_== df4
+      H5Store.readFrame[Double, Int, Double](tmp, "df5")   must_== df5
+      //H5Store.readFrame[Int, Int, Any](tmp, "df6")         must_== df6
 
       Files.deleteIfExists(Paths.get(tmp))
 
@@ -183,16 +186,18 @@ class H5StoreSpec extends Specification {
       H5Store.writeFrame(fid, "df3", df3)
       H5Store.writeFrame(fid, "df4", df4)
       H5Store.writeFrame(fid, "df5", df5)
+      H5Store.writeFrame(fid, "df6", df6)
 
       H5Store.closeFile(fid)
 
       fid = H5Store.openFile(tmp)
 
       H5Store.readFrame[DateTime, Int, Double](fid, "df1") must_== df1
-      H5Store.readFrame[String, Int, Double](fid, "df2") must_== df2
-      H5Store.readFrame[Int, Int, Double](fid, "df3") must_== df3
-      H5Store.readFrame[Long, Int, Double](fid, "df4") must_== df4
-      H5Store.readFrame[Double, Int, Double](fid, "df5") must_== df5
+      H5Store.readFrame[String, Int, Double](fid, "df2")   must_== df2
+      H5Store.readFrame[Int, Int, Double](fid, "df3")      must_== df3
+      H5Store.readFrame[Long, Int, Double](fid, "df4")     must_== df4
+      H5Store.readFrame[Double, Int, Double](fid, "df5")   must_== df5
+      //H5Store.readFrame[Int, Int, Any](tmp, "df6")         must_== df6
 
       // try slicing
       H5Store.readFrameSlice[DateTime, Int, Double](fid, "df1", d2, d3, 2, 3, true, true) must_== df1.colSliceBy(2, 3).rowSliceBy(d2, d3)

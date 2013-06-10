@@ -200,7 +200,7 @@ object H5Store {
    * @tparam T Framevalues type
    */
   def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, name: String, df: Frame[R, C, T]): Unit = withMonitor {
-    writePandasFrame(path, name, df.rowIx, df.colIx, df)
+    writePandasFrame(path, name, df)
   }
 
   /**
@@ -223,7 +223,7 @@ object H5Store {
    * @tparam T Framevalues type
    */
   def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, name: String, df: Frame[R, C, T]): Unit = withMonitor {
-    writePandasFrame(fileid, name, df.rowIx, df.colIx, df)
+    writePandasFrame(fileid, name, df)
   }
 
   /**
@@ -693,15 +693,23 @@ object H5Store {
         assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_INTEGER, "Not a valid Long")
         HDF5Constants.H5T_NATIVE_INT64
       }
+      case c if c == sc => {
+        assertException(H5.H5Tget_class(datatype) == HDF5Constants.H5T_STRING, "Not a valid String")
+        HDF5Constants.H5T_C_S1
+      }
     }
 
-    H5.H5Dread(dsetid, read_type,
-      HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL,
-      HDF5Constants.H5P_DEFAULT, result)
-
-    H5Reg.close(datatype, H5T)
-    H5Reg.close(dspaceid, H5S)
-    H5Reg.close(dsetid, H5D)
+    try {
+      H5.H5Dread(dsetid, read_type,
+        HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL,
+        HDF5Constants.H5P_DEFAULT, result)
+    } catch {
+      case _:NullPointerException ⇒ // ignore
+    } finally {
+      H5Reg.close(datatype, H5T)
+      H5Reg.close(dspaceid, H5S)
+      H5Reg.close(dsetid, H5D)
+    }
 
     // it's transposed, ie col-major order
     Array2D(sz(1).toInt, sz(0).toInt, result)
@@ -951,7 +959,7 @@ object H5Store {
   }
 
   private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
-    file: String, name: String, rx: Index[R], cx: Index[C], frame: Frame[R, C, T]): Int = {
+    file: String, name: String, frame: Frame[R, C, T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {
       openFile(file, false) -> false
@@ -968,7 +976,7 @@ object H5Store {
         writePytablesHeader(grpid)
         closeGroup(grpid)
       }
-      writePandasFrame[R, C, T](fileid, name, rx, cx, frame)
+      writePandasFrame[R, C, T](fileid, name, frame)
     }
     finally {
       closeFile(fileid)
@@ -976,24 +984,27 @@ object H5Store {
   }
 
   private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
-    fileid: Int, name: String, rx: Index[R], cx: Index[C], frame: Frame[R, C, T]): Int = {
+    fileid: Int, name: String, frame: Frame[R, C, T]): Int = {
     // dissect frame into diffetent types, write to corresponding blocks.
-    val valDouble = frame.colType[Double].toMat // block_0
-    val valInt    = frame.colType[Int].toMat    // block_1
-    val valString = frame.colType[String].toMat // block_2
-    val grpid  = createGroup(fileid, "/" + name)
+    val dfDouble = frame.colType[Double] // block_0
+    val dfInt    = frame.colType[Int]    // block_1
+    val dfString = frame.colType[String] // block_2
+    val valDouble = dfDouble.toMat
+    val valInt    = dfInt.toMat
+    val valString = dfString.toMat
+    val grpid     = createGroup(fileid, "/" + name)
     writeFramePandasHeader(grpid)
 
     // axis 0 is column names
-    write1DArray(grpid, "axis0", cx.toVec.contents, getPandasIndexAttribs(cx))
+    write1DArray(grpid, "axis0", frame.colIx.toVec.contents, getPandasIndexAttribs(frame.colIx))
 
     // axis 1 is row names
-    write1DArray(grpid, "axis1", rx.toVec.contents, getPandasIndexAttribs(rx))
+    write1DArray(grpid, "axis1", frame.rowIx.toVec.contents, getPandasIndexAttribs(frame.rowIx))
 
     // TODO what to do with column contents that is not Double, Int or String?
-    write1DArray(grpid, "block0_items", cx.toVec.contents, getPandasIndexAttribs(cx))
-    write1DArray(grpid, "block1_items", cx.toVec.contents, getPandasIndexAttribs(cx))
-    write1DArray(grpid, "block2_items", cx.toVec.contents, getPandasIndexAttribs(cx))
+    write1DArray(grpid, "block0_items", dfDouble.colIx.toVec.contents, getPandasIndexAttribs(dfDouble.colIx))
+    write1DArray(grpid, "block1_items", dfInt.colIx.toVec.contents, getPandasIndexAttribs(dfInt.colIx))
+    write1DArray(grpid, "block2_items", dfString.colIx.toVec.contents, getPandasIndexAttribs(dfString.colIx))
 
     // the data itself is stored in a transposed format (col-major order)
     write2DArray(grpid, "block0_values", valDouble.numRows, valDouble.numCols,
@@ -1015,8 +1026,7 @@ object H5Store {
 
     try {
       readPandasFrame[RX, CX, T](fileid, name)
-    }
-    finally {
+    } finally {
       closeFile(fileid)
     }
   }
@@ -1032,10 +1042,14 @@ object H5Store {
     // the block manager in pandas has up to four blocks: Int64, Float64, Char (ie Int8), PyObject
     // since we only store doubles in QuantS for now, we assume only one block that comprises all
     // the columns.
-    val arr2d = read2DArray[T](grpid, "block0_values")
+    val arrDouble = read2DArray[Double](grpid, "block0_values")
+    val arrInt    = read2DArray[Int](grpid,    "block1_values")
+    val arrString = read2DArray[String](grpid, "block2_values")
 
     // data is stored transposed (ie, col-major order, so un-transpose it)
-    val mx = Mat(arr2d.cols, arr2d.rows, arr2d.data)
+    val mxDouble = Mat(arrDouble.cols, arrDouble.rows, arrDouble.data)
+    val mxInt    = Mat(arrInt.cols, arrInt.rows, arrInt.data)
+    val mxString = Mat(arrString.cols, arrString.rows, arrString.data)
 
     val rxtype = implicitly[ST[RX]]
     val cxtype = implicitly[ST[CX]]
@@ -1056,9 +1070,15 @@ object H5Store {
     }
 
     val colidx = H5.H5Dopen(grpid, "axis0", HDF5Constants.H5P_DEFAULT)
+    val doubleColIdx = H5.H5Dopen(grpid, "block0_items", HDF5Constants.H5P_DEFAULT)
+    val intColIdx = H5.H5Dopen(grpid, "block1_items", HDF5Constants.H5P_DEFAULT)
+    val strColIdx = H5.H5Dopen(grpid, "block2_items", HDF5Constants.H5P_DEFAULT)
     assertException(colidx >= 0, "column index group is not valid")
 
     H5Reg.save(colidx, H5D)
+    H5Reg.save(doubleColIdx, H5D)
+    H5Reg.save(intColIdx, H5D)
+    H5Reg.save(strColIdx, H5D)
 
     // type-check the indices
     readAttrText(colidx, "kind") match {
@@ -1082,19 +1102,30 @@ object H5Store {
     }
 
     val ix1 = cxtype.runtimeClass match {
-      case x if x == tc => {
+      case x if x == tc ⇒ {
         val data = Vec(readArray[Long](grpid, colidx))
         new IndexTime(new IndexLong(data  / 1000000)).asInstanceOf[Index[CX]]
       }
-      case _            => {
-        val data = Vec(readArray[CX](grpid, colidx))
-        Index(data)
+      case _ ⇒ {
+        val doubleData = readArray[CX](grpid, doubleColIdx).toList
+        val intData = readArray[CX](grpid, intColIdx).toList
+        val strData = readArray[CX](grpid, strColIdx).toList
+        val data = doubleData ++ intData ++ strData
+        Index(Vec(data.toArray))
       }
     }
 
     H5Reg.close(rowidx, H5D)
     H5Reg.close(colidx, H5D)
+    H5Reg.close(doubleColIdx, H5D)
+    H5Reg.close(intColIdx, H5D)
+    H5Reg.close(strColIdx, H5D)
 
+    // Warning: type coercion madness ahead. I would love a better approach here.
+    val doubleCols = mxDouble.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
+    val intCols    = mxInt.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
+    val strCols    = mxString.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
+    val mx = Mat((doubleCols ++ intCols ++ strCols).asInstanceOf[IndexedSeq[Vec[T]]]:_*)
     val result = Frame[RX, CX, T](mx, ix0, ix1)
 
     closeGroup(grpid)
