@@ -200,7 +200,7 @@ object H5Store {
    * @tparam T Framevalues type
    */
   def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, name: String, df: Frame[R, C, T]): Unit = withMonitor {
-    writePandasFrame(path, name, df.rowIx, df.colIx, df.toMat)
+    writePandasFrame(path, name, df.rowIx, df.colIx, df)
   }
 
   /**
@@ -223,7 +223,7 @@ object H5Store {
    * @tparam T Framevalues type
    */
   def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, name: String, df: Frame[R, C, T]): Unit = withMonitor {
-    writePandasFrame(fileid, name, df.rowIx, df.colIx, df.toMat)
+    writePandasFrame(fileid, name, df.rowIx, df.colIx, df)
   }
 
   /**
@@ -951,7 +951,7 @@ object H5Store {
   }
 
   private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
-    file: String, name: String, rx: Index[R], cx: Index[C], values: Mat[T]): Int = {
+    file: String, name: String, rx: Index[R], cx: Index[C], frame: Frame[R, C, T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {
       openFile(file, false) -> false
@@ -968,7 +968,7 @@ object H5Store {
         writePytablesHeader(grpid)
         closeGroup(grpid)
       }
-      writePandasFrame[R, C, T](fileid, name, rx, cx, values)
+      writePandasFrame[R, C, T](fileid, name, rx, cx, frame)
     }
     finally {
       closeFile(fileid)
@@ -976,9 +976,12 @@ object H5Store {
   }
 
   private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
-    fileid: Int, name: String, rx: Index[R], cx: Index[C], values: Mat[T]): Int = {
-
-    val grpid = createGroup(fileid, "/" + name)
+    fileid: Int, name: String, rx: Index[R], cx: Index[C], frame: Frame[R, C, T]): Int = {
+    // dissect frame into diffetent types, write to corresponding blocks.
+    val valDouble = frame.colType[Double].toMat // block_0
+    val valInt    = frame.colType[Int].toMat    // block_1
+    val valString = frame.colType[String].toMat // block_2
+    val grpid  = createGroup(fileid, "/" + name)
     writeFramePandasHeader(grpid)
 
     // axis 0 is column names
@@ -987,13 +990,18 @@ object H5Store {
     // axis 1 is row names
     write1DArray(grpid, "axis1", rx.toVec.contents, getPandasIndexAttribs(rx))
 
-    // the block manager in pandas has up to four blocks: Int64, Float64, Char (ie Int8), PyObject
-    // since we only store doublesfor now, we assume only one block that comprises all the columns.
+    // TODO what to do with column contents that is not Double, Int or String?
     write1DArray(grpid, "block0_items", cx.toVec.contents, getPandasIndexAttribs(cx))
+    write1DArray(grpid, "block1_items", cx.toVec.contents, getPandasIndexAttribs(cx))
+    write1DArray(grpid, "block2_items", cx.toVec.contents, getPandasIndexAttribs(cx))
 
     // the data itself is stored in a transposed format (col-major order)
-    write2DArray(grpid, "block0_values", values.numRows, values.numCols,
-      values.contents, getPandasSeriesAttribs)
+    write2DArray(grpid, "block0_values", valDouble.numRows, valDouble.numCols,
+      valDouble.contents, getPandasSeriesAttribs)
+    write2DArray(grpid, "block1_values", valInt.numRows, valInt.numCols,
+      valInt.contents, getPandasSeriesAttribs)
+    write2DArray(grpid, "block2_values", valString.numRows, valString.numCols,
+      valString.contents, getPandasSeriesAttribs)
 
     closeGroup(grpid)
     H5.H5Fflush(fileid, HDF5Constants.H5F_SCOPE_GLOBAL)
