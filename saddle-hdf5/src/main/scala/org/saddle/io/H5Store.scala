@@ -237,21 +237,9 @@ object H5Store {
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
     H5Reg.save(fileid, H5F)
 
-    val gcount = H5.H5Gn_members(fileid, root)
-    assertException(gcount >= 0, "Failed to get iterator at " + root)
-
-    val ab = List.newBuilder[String]
-    ab.sizeHint(gcount)
-
-    val oName = Array.fill[String](1)("")
-    val oType = Array.fill[Int](1)(0)
-    for (i <- Range(0, gcount)) {
-      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-      ab += oName(0)
-    }
-
+    val result = readGroupNamesFid(fileid, root)
     H5Reg.close(fileid, H5F)
-    ab.result()
+    result
   }
 
   /**
@@ -266,11 +254,10 @@ object H5Store {
     val ab = List.newBuilder[String]
     ab.sizeHint(gcount)
 
-    val oName = Array.fill[String](1)("")
-    val oType = Array.fill[Int](1)(0)
     for (i <- Range(0, gcount)) {
-      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-      ab += oName(0)
+      ab += H5.H5Lget_name_by_idx(fileid, root,
+        HDF5Constants.H5_INDEX_NAME, HDF5Constants.H5_ITER_INC,
+        i, HDF5Constants.H5P_DEFAULT)
     }
 
     ab.result()
@@ -566,7 +553,7 @@ object H5Store {
 
   // write a two-dimensional array (dataset) to a group
   private def write2DArray[T: ST](group_id: Int, name: String, dim1: Int, dim2: Int, data: Array[T],
-                                  withAttr: List[(String, String)] = Nil) {
+                                   withAttr: List[(String, String)] = Nil) {
     assertException(data.length == dim1 * dim2, "Data dimensions do not correspond to data length!")
 
     // create space for array
@@ -675,8 +662,7 @@ object H5Store {
   private case class Array2D[T](rows: Int, cols: Int, data: Array[T])
 
   // read a two-dimensional array (dataset) and return (rowcount, colcount, values)
-  private def read2DArray[T: ST](
-    group_id: Int, dsname: String): Array2D[T] = {
+  private def read2DArray[T: ST](group_id: Int, dsname: String): Array2D[T] = {
     // get dataset id
     val dsetid = H5.H5Dopen(group_id, dsname, HDF5Constants.H5P_DEFAULT)
     assertException(dsetid >= 0, "Dataset: " + dsname + " does not exist for this group")
@@ -1071,14 +1057,28 @@ object H5Store {
     val attr = readAttrText(grpid, "pandas_type")
     assertException(attr == "frame", "Attribute is not a Frame")
 
-    val arrDouble = read2DArray[Double](grpid, "block0_values")
-    val arrInt    = read2DArray[Int](grpid,    "block1_values")
-    val arrString = read2DArray[String](grpid, "block2_values")
-
-    // data is stored transposed (ie, col-major order, so un-transpose it)
-    val mxDouble = Mat(arrDouble.cols, arrDouble.rows, arrDouble.data)
-    val mxInt    = Mat(arrInt.cols, arrInt.rows, arrInt.data)
-    val mxString = Mat(arrString.cols, arrString.rows, arrString.data)
+    val dataFrames = readGroupNamesFid(fileid, name).sorted
+    val blockIx  = "block[0-9]_items"
+    val blockVal = "block[0-9]_values"
+    val frameMap = dataFrames.filter(_ matches blockIx) zip dataFrames.filter(_ matches blockVal)
+    val (indexes, values) = frameMap.map { case(ix, vl) ⇒
+      val dsetid   = H5.H5Dopen(grpid, vl, HDF5Constants.H5P_DEFAULT)
+      val datatype = H5.H5Dget_type(dsetid)
+      val cls = H5.H5Tget_class(datatype)
+      H5Reg.save(dsetid, H5D)
+      H5Reg.save(datatype, H5T)
+      val values: Array2D[T] = cls match {
+        case HDF5Constants.H5T_FLOAT   ⇒ read2DArray[Double](grpid, vl).asInstanceOf[Array2D[T]]
+        case HDF5Constants.H5T_INTEGER ⇒ read2DArray[Int](grpid, vl).asInstanceOf[Array2D[T]]
+        case HDF5Constants.H5T_STRING  ⇒ read2DArray[String](grpid, vl).asInstanceOf[Array2D[T]]
+      }
+      val indexArr = readArray[CX](grpid, ix)
+      // data is stored transposed (ie, col-major order, so un-transpose it)
+      val mat = Mat(values.cols, values.rows, values.data)
+      H5Reg.close(dsetid, H5D)
+      H5Reg.close(datatype, H5T)
+      indexArr → mat
+    }.unzip
 
     val rxtype = implicitly[ST[RX]]
     val cxtype = implicitly[ST[CX]]
@@ -1098,16 +1098,10 @@ object H5Store {
       case _@ t         => throw new IllegalArgumentException("Bad row index type found: %s".format(t))
     }
 
-    val colidx       = H5.H5Dopen(grpid, "axis0",        HDF5Constants.H5P_DEFAULT)
-    val doubleColIdx = H5.H5Dopen(grpid, "block0_items", HDF5Constants.H5P_DEFAULT)
-    val intColIdx    = H5.H5Dopen(grpid, "block1_items", HDF5Constants.H5P_DEFAULT)
-    val strColIdx    = H5.H5Dopen(grpid, "block2_items", HDF5Constants.H5P_DEFAULT)
+    val colidx = H5.H5Dopen(grpid, "axis0", HDF5Constants.H5P_DEFAULT)
     assertException(colidx >= 0, "column index group is not valid")
 
     H5Reg.save(colidx, H5D)
-    H5Reg.save(doubleColIdx, H5D)
-    H5Reg.save(intColIdx, H5D)
-    H5Reg.save(strColIdx, H5D)
 
     // type-check the indices
     readAttrText(colidx, "kind") match {
@@ -1135,26 +1129,15 @@ object H5Store {
         val data = Vec(readArray[Long](grpid, colidx))
         new IndexTime(new IndexLong(data  / 1000000)).asInstanceOf[Index[CX]]
       }
-      case _ => {
-        val doubleData = readArray[CX](grpid, doubleColIdx).toList
-        val intData = readArray[CX](grpid, intColIdx).toList
-        val strData = readArray[CX](grpid, strColIdx).toList
-        val data = doubleData ++ intData ++ strData
-        Index(Vec(data.toArray))
-      }
+      case _ => Index(Vec(indexes.flatten.toArray)).asInstanceOf[Index[CX]]
     }
 
     H5Reg.close(rowidx, H5D)
     H5Reg.close(colidx, H5D)
-    H5Reg.close(doubleColIdx, H5D)
-    H5Reg.close(intColIdx, H5D)
-    H5Reg.close(strColIdx, H5D)
 
     // Warning: type coercion madness ahead. I would love a better approach here.
-    val doubleCols = mxDouble.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
-    val intCols    = mxInt.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
-    val strCols    = mxString.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
-    val mx = Mat((doubleCols ++ intCols ++ strCols).asInstanceOf[IndexedSeq[Vec[T]]]:_*)
+    val m = values.map(_.cols.asInstanceOf[IndexedSeq[Vec[Any]]]).flatten
+    val mx = Mat(m.asInstanceOf[Seq[Vec[T]]]:_*)
     val result = Frame[RX, CX, T](mx, ix0, ix1)
 
     closeGroup(grpid)
