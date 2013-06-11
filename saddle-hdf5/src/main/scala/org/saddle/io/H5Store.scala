@@ -242,7 +242,6 @@ object H5Store {
     result
   }
 
-  // FIXME: leaks one resource at each call
   /**
    * Read names of the groups at some level of the file hierarchy, given an open file
    * @param fileid File handle from `openFile`
@@ -255,11 +254,10 @@ object H5Store {
     val ab = List.newBuilder[String]
     ab.sizeHint(gcount)
 
-    val oName = Array.fill[String](1)("")
-    val oType = Array.fill[Int](1)(0)
     for (i <- Range(0, gcount)) {
-      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-      ab += oName(0)
+      ab += H5.H5Lget_name_by_idx(fileid, root,
+        HDF5Constants.H5_INDEX_NAME, HDF5Constants.H5_ITER_INC,
+        i, HDF5Constants.H5P_DEFAULT)
     }
 
     ab.result()
