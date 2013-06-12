@@ -21,12 +21,13 @@ import ncsa.hdf.hdf5lib.{ H5, HDF5Constants }
 import ncsa.hdf.hdf5lib.exceptions.HDF5LibraryException
 
 import org.saddle._
-import org.saddle.index.{IndexTime, IndexLong}
+import org.saddle.index.{InnerJoin, IndexTime, IndexLong}
 import org.joda.time.DateTime
 
 import java.util.concurrent.locks.ReentrantLock
 
 import scala.util.control.Exception._
+import org.saddle.mat.MatCols
 
 /**
  * Implements (thread-safe) HDF5 I/O functionality for Series and Frames.
@@ -1098,14 +1099,14 @@ object H5Store {
       case _@ t         => throw new IllegalArgumentException("Bad row index type found: %s".format(t))
     }
 
-    val colidx       = H5.H5Dopen(grpid, "axis0",        HDF5Constants.H5P_DEFAULT)
-    val doubleColIdx = H5.H5Dopen(grpid, "block0_items", HDF5Constants.H5P_DEFAULT)
-    val intColIdx    = H5.H5Dopen(grpid, "block1_items", HDF5Constants.H5P_DEFAULT)
-    val strColIdx    = H5.H5Dopen(grpid, "block2_items", HDF5Constants.H5P_DEFAULT)
+    val colidx    = H5.H5Dopen(grpid, "axis0",        HDF5Constants.H5P_DEFAULT)
+    val dblColIdx = H5.H5Dopen(grpid, "block0_items", HDF5Constants.H5P_DEFAULT)
+    val intColIdx = H5.H5Dopen(grpid, "block1_items", HDF5Constants.H5P_DEFAULT)
+    val strColIdx = H5.H5Dopen(grpid, "block2_items", HDF5Constants.H5P_DEFAULT)
     assertException(colidx >= 0, "column index group is not valid")
 
     H5Reg.save(colidx, H5D)
-    H5Reg.save(doubleColIdx, H5D)
+    H5Reg.save(dblColIdx, H5D)
     H5Reg.save(intColIdx, H5D)
     H5Reg.save(strColIdx, H5D)
 
@@ -1136,30 +1137,31 @@ object H5Store {
         new IndexTime(new IndexLong(data  / 1000000)).asInstanceOf[Index[CX]]
       }
       case _ => {
-        val doubleData = readArray[CX](grpid, doubleColIdx).toList
-        val intData = readArray[CX](grpid, intColIdx).toList
-        val strData = readArray[CX](grpid, strColIdx).toList
-        val data = doubleData ++ intData ++ strData
-        Index(Vec(data.toArray))
+        val data = Vec(readArray[CX](grpid, colidx))
+        Index(data)
       }
     }
 
     H5Reg.close(rowidx, H5D)
     H5Reg.close(colidx, H5D)
-    H5Reg.close(doubleColIdx, H5D)
+
+    val didx = Vec(readArray[CX](grpid, dblColIdx))
+    val iidx = Vec(readArray[CX](grpid, intColIdx))
+    val sidx = Vec(readArray[CX](grpid, strColIdx))
+
+    H5Reg.close(dblColIdx, H5D)
     H5Reg.close(intColIdx, H5D)
     H5Reg.close(strColIdx, H5D)
 
-    // Warning: type coercion madness ahead. I would love a better approach here.
-    val doubleCols = mxDouble.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
-    val intCols    = mxInt.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
-    val strCols    = mxString.cols.asInstanceOf[IndexedSeq[Vec[Any]]]
-    val mx = Mat((doubleCols ++ intCols ++ strCols).asInstanceOf[IndexedSeq[Vec[T]]]:_*)
-    val result = Frame[RX, CX, T](mx, ix0, ix1)
+    def toGeneric(s: IndexedSeq[Vec[_]]) = s.asInstanceOf[IndexedSeq[Vec[Any]]]
+
+    val cx = didx concat iidx concat sidx
+    val cols = toGeneric(mxDouble.cols) ++ toGeneric(mxInt.cols) ++ toGeneric(mxString.cols)
+    val result = Frame(cols, ix0, cx)
 
     closeGroup(grpid)
 
-    result.sortedCIx
+    result.reindexCol(ix1).colType[T]
   }
 
   def assertException(condition: Boolean, errorMessage: String) {

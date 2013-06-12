@@ -40,10 +40,15 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
 
   def show(v: T): String
 
-  override def hashCode(): Int = runtimeClass.hashCode()
+  // Workaround: Scala types Any, AnyRef, AnyVal all have runtimeClass java.lang.Object; workaround continues
+  // via ScalarTag implicit resolution hierarchy below.
+  def isAny = false
+  def isAnyVal = false
+
+  override def hashCode(): Int = isAny.hashCode() + isAnyVal.hashCode() * 31 + runtimeClass.hashCode() * 31 * 31
 
   override def equals(o: Any): Boolean = o match {
-    case s: ScalarTag[_] => (this eq s) || (runtimeClass == s.runtimeClass)
+    case s: ScalarTag[_] => (this eq s) || runtimeClass == s.runtimeClass && isAny == s.isAny && isAnyVal == s.isAnyVal
     case _               => false
   }
 
@@ -67,12 +72,20 @@ object ScalarTag extends ScalarTagImplicits {
   implicit val stTime = ScalarTagTime
 }
 
-trait ScalarTagImplicits extends LowPriorityScalarTagImplicits {
+trait ScalarTagImplicits extends ScalarTagImplicitsL1 {
   implicit def stPrd[T <: Product : CLM] = new ScalarTagProduct[T]
 }
 
-trait LowPriorityScalarTagImplicits {
-  implicit def stAny[T : CLM] = new ScalarTagAny[T]
+trait ScalarTagImplicitsL1 extends ScalarTagImplicitsL2 {
+  implicit def stAnyVal[T <: AnyVal : CLM] = new ScalarTagAny[T] { override def isAnyVal = true }
+}
+
+trait ScalarTagImplicitsL2 extends ScalarTagImplicitsL3 {
+  implicit def stAnyRef[T <: AnyRef : CLM] = new ScalarTagAny[T]
+}
+
+trait ScalarTagImplicitsL3 {
+  implicit def stAny[T : CLM] = new ScalarTagAny[T] { override def isAny = true }
 }
 
 trait CouldBeOrdered[@spec(Boolean, Int, Long, Float, Double) T] {
