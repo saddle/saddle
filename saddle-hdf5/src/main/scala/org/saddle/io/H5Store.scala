@@ -730,17 +730,15 @@ object H5Store {
       }
     }
 
-    try {
+    if (result.length > 0) {
       H5.H5Dread(dsetid, read_type,
         HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL,
         HDF5Constants.H5P_DEFAULT, result)
-    } catch {
-      case _: NullPointerException => // ignore exception when reading an empty string block
-    } finally {
-      H5Reg.close(datatype, H5T)
-      H5Reg.close(dspaceid, H5S)
-      H5Reg.close(dsetid, H5D)
     }
+
+    H5Reg.close(datatype, H5T)
+    H5Reg.close(dspaceid, H5S)
+    H5Reg.close(dsetid, H5D)
 
     // it's transposed, ie col-major order
     Array2D(sz(1).toInt, sz(0).toInt, result)
