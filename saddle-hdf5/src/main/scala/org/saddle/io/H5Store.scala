@@ -238,21 +238,10 @@ object H5Store {
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
     H5Reg.save(fileid, H5F)
 
-    val gcount = H5.H5Gn_members(fileid, root)
-    assertException(gcount >= 0, "Failed to get iterator at " + root)
-
-    val ab = List.newBuilder[String]
-    ab.sizeHint(gcount)
-
-    val oName = Array.fill[String](1)("")
-    val oType = Array.fill[Int](1)(0)
-    for (i <- Range(0, gcount)) {
-      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-      ab += oName(0)
-    }
-
+    val result = readGroupNamesFid(fileid, root)
     H5Reg.close(fileid, H5F)
-    ab.result()
+
+    result
   }
 
   /**
@@ -267,11 +256,10 @@ object H5Store {
     val ab = List.newBuilder[String]
     ab.sizeHint(gcount)
 
-    val oName = Array.fill[String](1)("")
-    val oType = Array.fill[Int](1)(0)
     for (i <- Range(0, gcount)) {
-      H5.H5Gget_obj_info_idx(fileid, root, i, oName, oType)
-      ab += oName(0)
+      ab += H5.H5Lget_name_by_idx(fileid, root,
+        HDF5Constants.H5_INDEX_NAME, HDF5Constants.H5_ITER_INC,
+        i, HDF5Constants.H5P_DEFAULT)
     }
 
     ab.result()
