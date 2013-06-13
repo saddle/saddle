@@ -88,6 +88,19 @@ class H5StoreSpec extends Specification {
       Files.deleteIfExists(Paths.get(tmp))
     }
 
+    hdfTest("reading group names does not leak resources") {
+      val tmp = tmpFilePath(".h5")
+
+      val fid = H5Store.createFile(tmp)
+      val s = Series(vec.rand(3), Index("a", "b", "c"))
+      H5Store.writeSeries(tmp, "s", s)
+      H5Store.readGroupNamesFid(fid)
+      H5Store.closeFile(fid)
+
+      H5Store.readGroupNames(tmp)
+      Files.deleteIfExists(Paths.get(tmp))
+    }
+
     hdfTest("read, write series") {
       val tmp = tmpFilePath(".h5")
 
