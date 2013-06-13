@@ -94,10 +94,16 @@ class H5StoreSpec extends Specification {
       val fid = H5Store.createFile(tmp)
       val s = Series(vec.rand(3), Index("a", "b", "c"))
       H5Store.writeSeries(tmp, "s", s)
-      H5Store.readGroupNamesFid(fid)
+      H5Store.writeSeries(tmp, "t", s)
+      H5Store.writeSeries(tmp, "u", s)
+      val names1 = H5Store.readGroupNamesFid(fid)
       H5Store.closeFile(fid)
 
-      H5Store.readGroupNames(tmp)
+      val names2 = H5Store.readGroupNames(tmp)
+
+      names1 must_== List("s", "t", "u")
+      names2 must_== List("s", "t", "u")
+
       Files.deleteIfExists(Paths.get(tmp))
     }
 
