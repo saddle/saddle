@@ -158,6 +158,37 @@ class H5StoreSpec extends Specification {
       Files.deleteIfExists(Paths.get(tmp))
     }
 
+    hdfTest("write/read non-double Series") {
+      val tmp = tmpFilePath(".h5")
+
+      val s1 = Series(d1, d2, d3)
+      val s2 = Series("a", "b", "c")
+      val s3 = Series(1, 2, 3)
+      val s4 = Series(1L, 2, 3)
+      val s5 = Series(1f, 2f, 3f)
+
+      var fid = H5Store.createFile(tmp)
+
+      H5Store.writeSeries(fid, "s1", s1)
+      H5Store.writeSeries(fid, "s2", s2)
+      H5Store.writeSeries(fid, "s3", s3)
+      H5Store.writeSeries(fid, "s4", s4)
+      H5Store.writeSeries(fid, "s5", s5)
+      H5Store.closeFile(fid)
+
+      fid = H5Store.openFile(tmp)
+
+      H5Store.readSeries[Int, DateTime](fid, "s1") must_== s1
+      H5Store.readSeries[Int, String](fid, "s2") must_== s2
+      H5Store.readSeries[Int, Int](fid, "s3") must_== s3
+      H5Store.readSeries[Int, Long](fid, "s4") must_== s4
+      H5Store.readSeries[Int, Float](fid, "s5") must_== s5
+
+      H5Store.closeFile(fid)
+
+      Files.deleteIfExists(Paths.get(tmp))
+    }
+
     hdfTest("write/read empty Series") {
       val tmp = tmpFilePath(".h5")
 
@@ -269,6 +300,49 @@ class H5StoreSpec extends Specification {
       val res = H5Store.readFrame[DateTime, Int, Double](tmp, "f1")
 
       res must_== Frame.empty[DateTime, Int, Double]
+
+      Files.deleteIfExists(Paths.get(tmp))
+    }
+
+    hdfTest("write/read heterogenous Frame") {
+      val tmp = tmpFilePath(".h5")
+
+      val d1 = new DateTime(2005, 1, 1, 0, 0, 0, 0)
+      val d2 = new DateTime(2005, 1, 2, 0, 0, 0, 0)
+      val d3 = new DateTime(2005, 1, 3, 0, 0, 0, 0)
+
+      val ix = Index(d1, d2, d3)
+
+      val s1 = Series(Vec("apple", "pear", "banana"), ix)
+      val s2 = Series(Vec(1.5d, 2d, 3d), ix)
+      val s3 = Series(Vec(1, 2, 3), ix)
+      val s4 = Series(Vec(1L, 2L, 3L), ix)
+      val s5 = Series(Vec(1f, 2f, 3f), ix)
+      val s6 = Series(Vec(d1, d2, d3), ix)
+
+      val f1 = Panel(1 -> s1, 2 -> s2, 3 -> s3, 4 -> s4, 5 -> s5, 6 -> s6)
+
+      H5Store.writeFrame(tmp, "f1", f1)
+
+      H5Store.readFrame[DateTime, Int, Any](tmp, "f1") must_== f1
+
+      val res1 = H5Store.readFrame[DateTime, Int, Double](tmp, "f1")
+      res1 must_== Frame(2 -> s2)
+
+      val res2 = H5Store.readFrame[DateTime, Int, Int](tmp, "f1")
+      res2 must_== Frame(3 -> s3)
+
+      val res3 = H5Store.readFrame[DateTime, Int, String](tmp, "f1")
+      res3 must_== Frame(1 -> s1)
+
+      val res4 = H5Store.readFrame[DateTime, Int, Float](tmp, "f1")
+      res4 must_== Frame(5 -> s5)
+
+      val res5 = H5Store.readFrame[DateTime, Int, AnyVal](tmp, "f1")
+      res5 must_== Panel(2 -> s2, 3 -> s3, 4 -> s4, 5 -> s5)
+
+      val res6 = H5Store.readFrame[DateTime, Int, AnyRef](tmp, "f1")
+      res6 must_== Panel(1 -> s1, 6 -> s6)
 
       Files.deleteIfExists(Paths.get(tmp))
     }
