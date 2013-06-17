@@ -37,10 +37,10 @@ case class CsvSettings(separChar: Char = ',',
  * Provides implicit functionality for writing data to CSV file format. Usage:
  *
  * {{{
- *   import CsvWriterImplicits._
+ *   import CsvImplicits._
  *
  *   val f = Frame(...)
- *   f.writeCsv("tmp.csv")
+ *   f.writeCsvFile("tmp.csv")
  * }}}
  */
 object CsvImplicits {
