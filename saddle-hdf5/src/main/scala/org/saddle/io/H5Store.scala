@@ -290,6 +290,7 @@ object H5Store {
   def createFile(path: String): Int = withMonitor {
     val fid = H5.H5Fcreate(path, HDF5Constants.H5F_ACC_EXCL, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT)
     assertException(fid >= 0, "Could not create file " + path)
+    writePytablesHeader(fid)
     // H5Reg.save(fid, H5F) <-- don't want fid automatically released on error
     fid
   }

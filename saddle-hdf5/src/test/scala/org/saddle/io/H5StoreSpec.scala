@@ -313,6 +313,7 @@ class H5StoreSpec extends Specification {
       val s4 = Series(10, 11, 12)
 
       H5Store.writeSeries(tmp, "s1", s1)
+      H5Store.writeSeries(tmp, "s1/s2", s2)
       H5Store.writeSeries(tmp, "lev1/s2", s2)
       H5Store.writeSeries(tmp, "lev1/s3", s3)
       H5Store.writeSeries(tmp, "lev1/lev2/s4", s4)
@@ -321,6 +322,7 @@ class H5StoreSpec extends Specification {
       H5Store.readSeries[Int, Int](tmp, "lev1/s2") must_== s2
       H5Store.readSeries[Int, Int](tmp, "lev1/s3") must_== s3
       H5Store.readSeries[Int, Int](tmp, "lev1/lev2/s4") must_== s4
+      H5Store.readSeries[Int, Int](tmp, "s1/s2") must_== s2
 
       Files.deleteIfExists(Paths.get(tmp))
     }
