@@ -304,6 +304,27 @@ class H5StoreSpec extends Specification {
       Files.deleteIfExists(Paths.get(tmp))
     }
 
+    hdfTest("write/read to nested groups") {
+      val tmp = tmpFilePath(".h5")
+
+      val s1 = Series(1, 2, 3)
+      val s2 = Series(4, 5, 6)
+      val s3 = Series(7, 8, 9)
+      val s4 = Series(10, 11, 12)
+
+      H5Store.writeSeries(tmp, "s1", s1)
+      H5Store.writeSeries(tmp, "lev1/s2", s2)
+      H5Store.writeSeries(tmp, "lev1/s3", s3)
+      H5Store.writeSeries(tmp, "lev1/lev2/s4", s4)
+
+      H5Store.readSeries[Int, Int](tmp, "s1") must_== s1
+      H5Store.readSeries[Int, Int](tmp, "lev1/s2") must_== s2
+      H5Store.readSeries[Int, Int](tmp, "lev1/s3") must_== s3
+      H5Store.readSeries[Int, Int](tmp, "lev1/lev2/s4") must_== s4
+
+      Files.deleteIfExists(Paths.get(tmp))
+    }
+
     hdfTest("write/read heterogenous Frame") {
       val tmp = tmpFilePath(".h5")
 

@@ -16,7 +16,7 @@
 
 package org.saddle.io
 
-import java.nio.file.{Path, Files, Paths}
+import java.nio.file.{Files, Paths}
 import ncsa.hdf.hdf5lib.{ H5, HDF5Constants }
 import ncsa.hdf.hdf5lib.exceptions.HDF5LibraryException
 
@@ -39,13 +39,19 @@ import org.saddle.vec.VecTime
  *       synchronization to create a monitor to serialize access to the library."
  */
 object H5Store {
+  // todo: refactor innards of serialization to typeclass implementation for extensibility
+
   private val monitor = new ReentrantLock()
   
   private def withMonitor[A](block: => A): A = {
     monitor.lock()
-    try { block } catch {
+    try {
+      block
+    } catch {
       case e: HDF5LibraryException => throw wrapHdf5Exception(e)
-    } finally { monitor.unlock() }
+    } finally {
+      monitor.unlock()
+    }
   }
 
   // *** Public API
@@ -55,12 +61,12 @@ object H5Store {
   /**
    * Read a Series from an HDF5 file.
    * @param path Path to file to read
-   * @param name Name of hdf5 group holding series data
+   * @param group Name of hdf5 group holding series data
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeries[X: ST: ORD, T: ST](path: String, name: String, root: String = "/"): Series[X, T] = withMonitor {
-    readPandasSeries[X, T](path, name, root)
+  def readSeries[X: ST: ORD, T: ST](path: String, group: String): Series[X, T] = withMonitor {
+    readPandasSeries[X, T](path, group)
   }
 
   /**
@@ -68,30 +74,29 @@ object H5Store {
    * memory, so this is NOT meant to work with very large data chunks.
    *
    * @param path Path to file to read
-   * @param name Name of hdf5 group holding series data
+   * @param group Name of hdf5 group holding series data
    * @param from Starting index of slice
    * @param to Ending index of slice
    * @param inclusive Whether to include or exclude ending index label (default true)
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeriesSlice[X: ST: ORD, T: ST](path: String, name: String, from: X, to: X, inclusive: Boolean,
-                                         root: String = "/"): Series[X, T] = withMonitor {
-    val series = readPandasSeries[X, T](path, name, root)
+  def readSeriesSlice[X: ST: ORD, T: ST](path: String, group: String, from: X, to: X,
+                                         inclusive: Boolean): Series[X, T] = withMonitor {
+    val series = readPandasSeries[X, T](path, group)
     series.sliceBy(from, to, inclusive)
   }
 
   /**
    * Read a Frame from an HDF5 file.
    * @param path Path to file to read
-   * @param name Name of hdf5 group holding frame data
+   * @param group Name of hdf5 group holding frame data
    * @tparam RX Frame row index type
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String,
-                                                 root: String = "/"): Frame[RX, CX, T] = withMonitor {
-    readPandasFrame[RX, CX, T](path, name, root)
+  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, group: String): Frame[RX, CX, T] = withMonitor {
+    readPandasFrame[RX, CX, T](path, group)
   }
 
   /**
@@ -99,7 +104,7 @@ object H5Store {
    * so this isn't meant for working with huge data.
    *
    * @param path Path to file to read
-   * @param name Name of hdf5 group holding frame data
+   * @param group Name of hdf5 group holding frame data
    * @param rowFrom row to start slice
    * @param rowTo row to end slice
    * @param colFrom col to start slice
@@ -110,22 +115,22 @@ object H5Store {
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, name: String,
+  def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](path: String, group: String,
                                                       rowFrom: RX, rowTo: RX, colFrom: CX, colTo: CX,
                                                       rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = withMonitor {
-    val fr = readPandasFrame[RX, CX, T](path, name, "/")
+    val fr = readPandasFrame[RX, CX, T](path, group)
     fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
   }
 
   /**
    * Read a Series from an already-open HDF5 file.
    * @param fileid HDF5 file handle returned from `openFile`
-   * @param name Name of hdf5 group holding series data
+   * @param group Name of hdf5 group holding series data
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeries[X: ST: ORD, T: ST](fileid: Int, name: String): Series[X, T] = withMonitor {
-    readPandasSeries[X, T](fileid, name, "/")
+  def readSeries[X: ST: ORD, T: ST](fileid: Int, group: String): Series[X, T] = withMonitor {
+    readPandasSeries[X, T](fileid, group)
   }
 
   /**
@@ -133,28 +138,28 @@ object H5Store {
    * memory, so this is NOT meant to work with very large data chunks.
    *
    * @param fileid HDF5 file handle returned from `openFile`
-   * @param name Name of hdf5 group holding series data
+   * @param group Name of hdf5 group holding series data
    * @param from Starting index of slice
    * @param to Ending index of slice
    * @param inclusive Whether to include or exclude ending index label (default true)
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def readSeriesSlice[X: ST: ORD, T: ST](fileid: Int, name: String, from: X, to: X, inclusive: Boolean): Series[X, T] = withMonitor {
-    val series = readPandasSeries[X, T](fileid, name, "/")
+  def readSeriesSlice[X: ST: ORD, T: ST](fileid: Int, group: String, from: X, to: X, inclusive: Boolean): Series[X, T] = withMonitor {
+    val series = readPandasSeries[X, T](fileid, group)
     series.sliceBy(from, to, inclusive)
   }
 
   /**
    * Read a Frame from an HDF5 file.
    * @param fileid HDF5 file handle returned from `openFile`
-   * @param name Name of hdf5 group holding frame data
+   * @param group Name of hdf5 group holding frame data
    * @tparam RX Frame row index type
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String): Frame[RX, CX, T] = withMonitor {
-    readPandasFrame[RX, CX, T](fileid, name, "/")
+  def readFrame[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, group: String): Frame[RX, CX, T] = withMonitor {
+    readPandasFrame[RX, CX, T](fileid, group)
   }
 
   /**
@@ -162,7 +167,7 @@ object H5Store {
    * so this isn't meant for working with huge data.
    *
    * @param fileid HDF5 file handle returned from `openFile`
-   * @param name Name of hdf5 group holding frame data
+   * @param group Name of hdf5 group holding frame data
    * @param rowFrom row to start slice
    * @param rowTo row to end slice
    * @param colFrom col to start slice
@@ -173,10 +178,10 @@ object H5Store {
    * @tparam CX Frame col index type
    * @tparam T Frame values type
    */
-  def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String,
+  def readFrameSlice[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, group: String,
                                                       rowFrom: RX, rowTo: RX, colFrom: CX, colTo: CX,
                                                       rowInclusive: Boolean, colInclusive: Boolean): Frame[RX, CX, T] = withMonitor {
-    val fr = readPandasFrame[RX, CX, T](fileid, name, "/")
+    val fr = readPandasFrame[RX, CX, T](fileid, group)
     fr.colSliceBy(colFrom, colTo, colInclusive).rowSliceBy(rowFrom, rowTo, rowInclusive)
   }
 
@@ -185,73 +190,60 @@ object H5Store {
   /**
    * Write a Series to an HDF5 file.
    * @param path Path to file to read
-   * @param name Name of hdf5 group to hold series data
+   * @param group Name of hdf5 group to hold series data
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def writeSeries[X: ST: ORD, T: ST](path: String, name: String, s: Series[X, T]) { withMonitor {
-      writePandasSeries(path, name, s.index, s.values, "/")
+  def writeSeries[X: ST: ORD, T: ST](path: String, group: String, s: Series[X, T]) { withMonitor {
+      writePandasSeries(path, group, s.index, s.values)
   } }
-
-  /**
-   * Write a Series to an HDF5 file.
-   * @param path Path to file to read
-   * @param name Name of hdf5 group to hold series data
-   * @param node Node within hierarchical file to store the series
-   * @tparam X Series index type
-   * @tparam T Series values type
-   */
-  def writeSeriesToNode[X: ST: ORD, T: ST](path: String, node: String, name: String, s: Series[X, T]) { withMonitor {
-    writePandasSeries(path, name, s.index, s.values, node)
-  } }
-
 
   /**
    * Write a Frame to an HDF5 file.
    * @param path Path to file to read
-   * @param name Name of hdf5 group to hold frame data
+   * @param group Name of hdf5 group to hold frame data
    * @tparam R Frame row index type
    * @tparam C Frame col index type
    * @tparam T Framevalues type
    */
-  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, name: String, df: Frame[R, C, T]) { withMonitor {
-      writePandasFrame(path, name, df, "/")
+  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](path: String, group: String, df: Frame[R, C, T]) { withMonitor {
+      writePandasFrame(path, group, df)
   } }
 
   /**
    * Write a Series to an already-open HDF5 file.
    * @param fileid HDF5 file handle returned from `openFile`
-   * @param name Name of hdf5 group to hold series data
+   * @param group Name of hdf5 group to hold series data
    * @tparam X Series index type
    * @tparam T Series values type
    */
-  def writeSeries[X: ST: ORD, T: ST](fileid: Int, name: String, s: Series[X, T]) { withMonitor {
-    writePandasSeries(fileid, name, s.index, s.values, "/")
+  def writeSeries[X: ST: ORD, T: ST](fileid: Int, group: String, s: Series[X, T]) { withMonitor {
+    writePandasSeries(fileid, group, s.index, s.values)
   } }
 
   /**
    * Write a Frame to an HDF5 file.
    * @param fileid HDF5 file handle returned from `openFile`
-   * @param name Name of hdf5 group to hold frame data
+   * @param group Name of hdf5 group to hold frame data
    * @tparam R Frame row index type
    * @tparam C Frame col index type
    * @tparam T Framevalues type
    */
-  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, name: String, df: Frame[R, C, T]) { withMonitor {
-      writePandasFrame(fileid, name, df, "/")
+  def writeFrame[R: ST: ORD, C: ST: ORD, T: ST](fileid: Int, group: String, df: Frame[R, C, T]) { withMonitor {
+      writePandasFrame(fileid, group, df)
   } }
 
   /**
    * Read names of the groups at some level of the file hierarchy
    * @param path Path of file
-   * @param root Level (group) of the hierarchy
+   * @param node Node of the hierarchy tree
    */
-  def readGroupNames(path: String, root: String = "/"): List[String] = withMonitor {
+  def readGroupNames(path: String, node: String = "/"): List[String] = withMonitor {
     val fileid = openFile(path)
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
     H5Reg.save(fileid, H5F)
 
-    val result = readGroupNamesFid(fileid, root)
+    val result = readGroupNamesFid(fileid, node)
     H5Reg.close(fileid, H5F)
 
     result
@@ -260,19 +252,18 @@ object H5Store {
   /**
    * Read names of the groups at some level of the file hierarchy, given an open file
    * @param fileid File handle from `openFile`
-   * @param root Level (group) of the hierarchy
+   * @param node Node of the hierarchy tree
    */
-  def readGroupNamesFid(fileid: Int, root: String = "/"): List[String] = withMonitor {
-    val gcount = H5.H5Gn_members(fileid, root)
-    assertException(gcount >= 0, "Failed to get iterator at " + root)
+  def readGroupNamesFid(fileid: Int, node: String = "/"): List[String] = withMonitor {
+    val gcount = H5.H5Gn_members(fileid, node)
+    assertException(gcount >= 0, "Failed to get iterator at " + node)
 
     val ab = List.newBuilder[String]
     ab.sizeHint(gcount)
 
     for (i <- Range(0, gcount)) {
-      ab += H5.H5Lget_name_by_idx(fileid, root,
-        HDF5Constants.H5_INDEX_NAME, HDF5Constants.H5_ITER_INC,
-        i, HDF5Constants.H5P_DEFAULT)
+      ab += H5.H5Lget_name_by_idx(fileid, node, HDF5Constants.H5_INDEX_NAME,
+                                  HDF5Constants.H5_ITER_INC, i, HDF5Constants.H5P_DEFAULT)
     }
 
     ab.result()
@@ -344,18 +335,33 @@ object H5Store {
         |---------------------------------------""".stripMargin.format(e.getMessage, e.getStackTraceString))
   }
 
-  private def openNode(parent_id: Int, name: String, path: List[String] = List.empty) = {
+  private def openNode(parent_id: Int, path: String): Int = {
     assertException(parent_id >= 0, "File ID : " + parent_id + " does not belong to a valid file")
-    val gid = H5.H5Gopen(parent_id, name, HDF5Constants.H5P_DEFAULT)
+    val gid = H5.H5Gopen(parent_id, path, HDF5Constants.H5P_DEFAULT)
     H5Reg.save(gid, H5G)
     gid
   }
 
-  private def createNode(parent_id: Int, name: String, path: List[String] = List.empty) = {
+  private def createNode(parent_id: Int, path: String): Int = {
     assertException(parent_id >= 0, "File ID : " + parent_id + " does not belong to a valid file")
-    val gid = H5.H5Gcreate(parent_id, name, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT)
+
+    // link creation property list
+    val lcpl_id = H5.H5Pcreate(HDF5Constants.H5P_LINK_CREATE)
+    assertException(lcpl_id >= 0, "Could not create property list in createNode")
+
+    H5Reg.save(lcpl_id, H5P)
+
+    assertException(H5.H5Pset_create_intermediate_group(lcpl_id, true) >= 0,
+                    "Failed to set property for creating intermediate groups")
+
+    val gid = H5.H5Gcreate(parent_id, path, lcpl_id, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT)
+    assertException(gid >= 0, "Failed to great group %s" format path)
+
+    H5Reg.close(lcpl_id, H5P)
+
     H5Reg.save(gid, H5G)
     writeGroupHeader(gid)
+
     gid
   }
 
@@ -913,7 +919,7 @@ object H5Store {
   }
 
   private def writePandasSeries[X: ST, T: ST](
-    file: String, name: String, index: Index[X], values: Array[T], root: String): Int = {
+    file: String, name: String, index: Index[X], values: Array[T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {
       openFile(file, readOnly = false) -> false
@@ -925,12 +931,8 @@ object H5Store {
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
 
     try {
-      if (writeHeader) {
-        val grpid = openNode(fileid, "/")
-        writePytablesHeader(grpid)
-        closeNode(grpid)
-      }
-      writePandasSeries[X, T](fileid, name, index, values, root)
+      if (writeHeader) writePytablesHeader(fileid)
+      writePandasSeries[X, T](fileid, name, index, values)
     }
     finally {
       closeFile(fileid)
@@ -938,10 +940,10 @@ object H5Store {
   }
 
   private def writePandasSeries[X: ST, T: ST](
-    fileid: Int, name: String, index: Index[X], values: Array[T], root: String): Int = {
+    fileid: Int, group: String, index: Index[X], values: Array[T]): Int = {
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
 
-    val nodeid = createNode(fileid, name)
+    val nodeid = createNode(fileid, group)
     writeSeriesPandasHeader(nodeid)
 
     write1DArray(nodeid, "index", index.toVec.contents, getPandasIndexAttribs(index))
@@ -951,24 +953,22 @@ object H5Store {
     H5.H5Fflush(fileid, HDF5Constants.H5F_SCOPE_GLOBAL)
   }
 
-  private def readPandasSeries[X: ST: ORD, T: ST](
-    file: String, name: String, root: String): Series[X, T] = {
+  private def readPandasSeries[X: ST: ORD, T: ST](file: String, group: String): Series[X, T] = {
 
     val fileid = openFile(file)
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
 
     try {
-      readPandasSeries[X, T](fileid, name, root)
+      readPandasSeries[X, T](fileid, group)
     }
     finally {
       closeFile(fileid)
     }
   }
 
-  private def readPandasSeries[X: ST: ORD, T: ST](
-    fileid: Int, name: String, root: String): Series[X, T] = {
+  private def readPandasSeries[X: ST: ORD, T: ST](fileid: Int, name: String): Series[X, T] = {
     val nodeid = openNode(fileid, name)
-    assertException(nodeid >= 0, "Group : " + root + name + " is not a valid group")
+    assertException(nodeid >= 0, "Group : " + name + " is not a valid group")
 
     val attr = readAttrText(nodeid, "pandas_type")
     assertException(attr == "series", "Attribute is not a series")
@@ -1019,7 +1019,7 @@ object H5Store {
   }
 
   private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
-    file: String, name: String, frame: Frame[R, C, T], root: String): Int = {
+    file: String, name: String, frame: Frame[R, C, T]): Int = {
 
     val (fileid, writeHeader) = if (Files.exists(Paths.get(file))) {
       openFile(file, readOnly = false) -> false
@@ -1036,7 +1036,7 @@ object H5Store {
         writePytablesHeader(grpid)
         closeNode(grpid)
       }
-      writePandasFrame[R, C, T](fileid, name, frame, root)
+      writePandasFrame[R, C, T](fileid, name, frame)
     }
     finally {
       closeFile(fileid)
@@ -1044,7 +1044,7 @@ object H5Store {
   }
 
   private def writePandasFrame[R: ST: ORD, C: ST: ORD, T: ST](
-    fileid: Int, name: String, frame: Frame[R, C, T], root: String): Int = {
+    fileid: Int, name: String, frame: Frame[R, C, T]): Int = {
     // dissect frame into different types, write to corresponding blocks.
     val dfDouble = frame.colType[Double]    // block_0
     val dfInt    = frame.colType[Int]       // block_1
@@ -1088,21 +1088,19 @@ object H5Store {
     H5.H5Fflush(fileid, HDF5Constants.H5F_SCOPE_GLOBAL)
   }
 
-  private def readPandasFrame[RX: ST: ORD, CX: ST: ORD, T: ST](
-    file: String, name: String, root: String): Frame[RX, CX, T] = {
+  private def readPandasFrame[RX: ST: ORD, CX: ST: ORD, T: ST](file: String, name: String): Frame[RX, CX, T] = {
 
     val fileid = openFile(file)
     assertException(fileid >= 0, "File ID : " + fileid + " does not belong to a valid file")
 
     try {
-      readPandasFrame[RX, CX, T](fileid, name, root)
+      readPandasFrame[RX, CX, T](fileid, name)
     } finally {
       closeFile(fileid)
     }
   }
 
-  private def readPandasFrame[RX: ST: ORD, CX: ST: ORD, T: ST](
-    fileid: Int, name: String, root: String): Frame[RX, CX, T] = {
+  private def readPandasFrame[RX: ST: ORD, CX: ST: ORD, T: ST](fileid: Int, name: String): Frame[RX, CX, T] = {
     val nodeid = openNode(fileid, name)
     assertException(nodeid >= 0, "Group : " + name + " is not a valid group")
 
