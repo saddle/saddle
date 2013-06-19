@@ -22,6 +22,10 @@ import org.specs2.mutable.Specification
  * Specs for a Frame
  */
 class FrameSpec extends Specification {
+  "Frame.empty behaves as expected" in {
+    Frame("a" -> Vec.empty[Int], "b" -> Vec.empty[Int]).isEmpty must_== true
+  }
+
   "shift-merge must work" in {
     val s1 = org.saddle.Series(Vec(1,2,3), Index("a", "b", "c"))
     val mergeShift = s1.join(s1.shift(1))
