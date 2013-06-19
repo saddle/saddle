@@ -46,6 +46,24 @@ package object time {
     new DateTime(Y, M, D, h, t, s, ms, chrono)
   }
 
+  private val dfmt1 = "(\\d\\d\\d\\d)(\\d\\d)(\\d\\d)".r         // eg 20120205    => february 5th
+  private val dfmt2 = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)".r       // eg 2012-02-05  => february 5th
+  private val dfmt3 = "(\\d{1,2})/(\\d{1,2})/(\\d\\d\\d\\d)".r   // american format, eg 2/5/2012 => february 5th
+  private val dfmt4 = "e(\\d{1,2})/(\\d{1,2})/(\\d\\d\\d\\d)".r  // european format, eg 2/5/2012 => may 2nd
+
+  /**
+   * Convenience factory for constructing a DateTime instance from a string
+   */
+  def datetime(f: String): Option[DateTime] = {
+    f match {
+      case dfmt1(y, m, d) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case dfmt2(y, m, d) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case dfmt3(m, d, y) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case dfmt4(d, m, y) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case _              => None
+    }
+  }
+
   /**
    * Mixin class providing time accessor methods for Vec and Index containing DateTimes
    */
