@@ -144,7 +144,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   /**
    * Returns true if there are no values in the Frame
    */
-  def isEmpty: Boolean = (values.length == 0)
+  def isEmpty: Boolean = (values.numRows == 0)
 
   /**
    * The transpose of the frame (swapping the axes)
