@@ -48,6 +48,7 @@ object SaddleBuild extends sbt.Build {
               libraryDependencies <++= scalaVersion (v => Seq(
                 "joda-time" % "joda-time" % "2.1",
                 "org.joda" % "joda-convert" % "1.2",
+                "org.scala-saddle" % "google-rfc-2445" % "20110304",
                 "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.19",
                 "org.apache.commons" % "commons-math" % "2.2",
                 "it.unimi.dsi" % "fastutil" % "6.5.4",
