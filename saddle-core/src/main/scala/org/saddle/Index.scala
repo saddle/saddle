@@ -23,6 +23,8 @@ import locator.Locator
 import util.Concat.Promoter
 import vec.VecImpl
 import java.io.OutputStream
+import org.joda.time.DateTime
+import org.saddle.time.RRule
 
 /**
  * Index provides a constant-time look-up of a value within array-backed storage,
@@ -568,6 +570,25 @@ object Index {
    * @tparam O The type of the elements of the result index
    */
   def make[I, O](values: I)(implicit ev: IndexMaker[I, O]): Index[O] = ev(values)
+
+  /**
+   * Factory method to create an Index from a recurrence rule between two
+   * dates.
+   *
+   * For instance:
+   *
+   * {{{
+   *   Index.make(RRules.bizEoms, datetime(2005,1,1), datetime(2005,12,31))
+   * }}}
+   *
+   * @param rrule Recurrence rule to use
+   * @param start The earliest datetime on or after which to being the recurrence
+   * @param end   The latest datetime on or before which to end the recurrence
+   */
+  def make(rrule: RRule, start: DateTime, end: DateTime): Index[DateTime] = {
+    import time._
+    Index((rrule withUntil end from start).toSeq : _*)
+  }
 
   /**
    * Factor method to create an empty Index

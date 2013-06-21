@@ -16,10 +16,11 @@
 
 package org.saddle
 
-import org.joda.time.{DateTimeField, DateTimeFieldType, Chronology, DateTime}
+import org.joda.time._
 import org.joda.time.chrono.ISOChronology
 import org.saddle.vec.VecTime
 import org.saddle.index.IndexTime
+import scala.Some
 
 /**
  * Functionality to assist in TimeSeries related operations
@@ -35,37 +36,39 @@ package object time {
    * Convenience factory for constructing a DateTime instance
    */
   def datetime(y: Int = 0, m: Int = 0, d: Int = 0, h: Int = 0, t: Int = 0, s: Int = 0, ms: Int = 0,
-               chrono: Chronology = ISO_CHRONO): DateTime = {
+               zone: DateTimeZone = TZ_LOCAL): DateTime = {
 
-    val dt = new DateTime(chrono)
+    val dt = new DateTime(zone)
 
     val Y = if (y == 0) dt.getYear else y
     val M = if (m == 0) dt.getMonthOfYear else m
     val D = if (d == 0) dt.getDayOfMonth else d
 
-    new DateTime(Y, M, D, h, t, s, ms, chrono)
+    new DateTime(Y, M, D, h, t, s, ms, zone)
   }
 
-  private val dfmt1 = "(\\d\\d\\d\\d)(\\d\\d)(\\d\\d)".r         // eg 20120205    => february 5th
-  private val dfmt2 = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)".r       // eg 2012-02-05  => february 5th
-  private val dfmt3 = "(\\d{1,2})/(\\d{1,2})/(\\d\\d\\d\\d)".r   // american format, eg 2/5/2012 => february 5th
-  private val dfmt4 = "e(\\d{1,2})/(\\d{1,2})/(\\d\\d\\d\\d)".r  // european format, eg 2/5/2012 => may 2nd
+  private val dfmt1 = "(\\d\\d\\d\\d)(\\d\\d)(\\d\\d)".r         // eg 20120205
+  private val dfmt2 = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)".r       // eg 2012-02-05
+  private val dfmt3 = "(\\d{1,2})/(\\d{1,2})/(\\d\\d\\d\\d)".r   // eg 2/5/2012
 
   /**
-   * Convenience factory for constructing a DateTime instance from a string
+   * Convenience method for constructing a DateTime instance from a date string
+   *
+   * @param s    String representing the date
+   * @param euro Whether to use the european format, eg 2/5/2012 => 2nd of May, 2012
    */
-  def datetime(f: String): Option[DateTime] = {
-    f match {
-      case dfmt1(y, m, d) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
-      case dfmt2(y, m, d) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
-      case dfmt3(m, d, y) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
-      case dfmt4(d, m, y) => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
-      case _              => None
+  def parsedate(s: String, euro: Boolean = false): Option[DateTime] = {
+    s match {
+      case dfmt1(y, m, d)          => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case dfmt2(y, m, d)          => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case dfmt3(m, d, y) if !euro => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case dfmt3(d, m, y) if euro  => Some(new DateTime(y.toInt, m.toInt, d.toInt, 0, 0, 0, 0))
+      case _                       => None
     }
   }
 
   /**
-   * Mixin class providing time accessor methods for Vec and Index containing DateTimes
+   * Class providing time accessor methods for Vec and Index containing DateTimes
    */
   protected[saddle] class TimeAccessors[T](times: Vec[Long], chrono: Chronology, cast: Vec[Int] => T) {
     def millisOfSecond     = cast(extractor(1L, 1000L))
@@ -147,4 +150,24 @@ package object time {
 
     new TimeAccessors(times, chrono, Index(_))
   }
+
+  // Establish isomorphism between joda DateTime and RichDT
+
+  implicit def dt2rd(dt: DateTime): RichDT = new RichDT(dt)
+  implicit def rd2dt(rd: RichDT): DateTime = rd.dt
+
+  /**
+   * Provides an implicit ordering for DateTime
+   */
+  implicit def dtOrdering = new Ordering[DateTime] {
+    def compare(x: DateTime, y: DateTime) = x.compareTo(y)
+  }
+
+  // Convenience methods for constructing ReadablePeriod instances
+
+  def years(i: Int)    = Years.years(i)
+  def quarters(i: Int) = Months.months(i * 3)
+  def months(i: Int)   = Months.months(i)
+  def weeks(i: Int)    = Weeks.weeks(i)
+  def days(i: Int)     = Days.days(i)
 }

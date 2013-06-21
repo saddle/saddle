@@ -184,13 +184,6 @@ package object saddle {
     override def toString = "na"
   }
 
-  /**
-   * Provides an implicit ordering for DateTime
-   */
-  implicit def dtOrdering = new Ordering[DateTime] {
-    def compare(x: DateTime, y: DateTime) = x.compareTo(y)
-  }
-
   // Augment Seq with a few conversion methods
   //
 
