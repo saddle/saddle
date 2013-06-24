@@ -128,62 +128,61 @@ case class RRule private (freq: Frequency = DAILY,
   def withUntil(d: DateTime) = copy(until = Some(d))
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, positive or negative. Each given integer
-   * will specify an occurrence number, corresponding to the nth occurrence of the rule inside the frequency period.
-   * For example, a bysetpos of -1 if combined with a MONTHLY frequency, and a byweekday of (MO, TU, WE, TH, FR),
-   * will result in the last work day of every month.
+   * The bySetPos specifies a value or list of values which correspond to the nth occurrence(s)
+   * within the set of events specified by the rule. Valid values are +/-1 to +/-366. It MUST be
+   * used in conjunction with another BYxxx rule, and is used to restrict the occurrences valid
+   * within the rule.
    */
   def bySetPos(i: Int*) = copy(bysetpos = i.toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the months to apply the recurrence to.
+   * If given, it must be either an integer, or a sequence of integers, meaning the months valid in the recurrence.
    */
   def byMonth(m: Int*) = copy(bymonth = m.toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the month days to apply the recurrence to.
+   * If given, it must be either an integer, or a sequence of integers, meaning the month days valid in the recurrence.
    */
   def byMonthDay(d: Int*) = copy(bymonthday = d.toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the year days to apply the recurrence to.
+   * If given, it must be either an integer, or a sequence of integers, meaning the year days valid in the recurrence.
    */
   def byYearDay(d: Int*) = copy(byyearday = d.toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the week numbers to apply the
-   * recurrence to. Week numbers have the meaning described in ISO8601, that is, the first week of the year is that
-   * containing at least four days of the new year.
+   * If given, it must be either an integer, or a sequence of integers, meaning the week numbers valid in the recurrence.
+   * Week numbers have the meaning described in ISO8601, that is, the first week of the year is that containing at least
+   * four days of the new year.
    */
   def byWeekNo(w: Int*) = copy(byweekno = w.toList)
 
   /**
    * If given, it must be either a Weekday (eg MO), a or a sequence of these constants. When given, these variables
-   * will define the weekdays where the recurrence will be applied. It's also possible to use an argument n for the
-   * weekday instances, which will mean the nth occurrence of this weekday in the period. For example, with MONTHLY,
-   * or with YEARLY and BYMONTH, using FR(+1) in byweekday will specify the first friday of the month where the
-   * recurrence happens. Notice that in the RFC documentation, this is specified as BYDAY, but was renamed to avoid
-   * the ambiguity of that keyword.
+   * will define the weekdays valid in the recurrence. It's also possible to use an argument n for the weekday instances,
+   * which will signify the nth occurrence of this weekday in the period. For example, with MONTHLY, or with YEARLY and
+   * BYMONTH, using FR(+1) in byweekday will specify the first friday of the month where the recurrence happens. Notice
+   * that in the RFC documentation, this is specified as BYDAY, but was renamed to avoid the ambiguity of that keyword.
    */
-  def byWeekDay(d: Weekday*) = copy(byday = d.map(WeekdayNum(0,_)).toList)
+  def byWeekDay[T](d: T*)(implicit conv: T => WeekdayNum) = copy(byday = d.map(conv).toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the hours to apply the recurrence to.
+   * If given, it must be either an integer, or a sequence of integers, meaning the hours valid in the recurrence.
    */
   def byHour(h: Int*) = copy(byhour = h.toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the minutes to apply the recurrence to.
+   * If given, it must be either an integer, or a sequence of integers, meaning the minutes valid in the recurrence.
    */
   def byMinute(m: Int*) = copy(byminute = m.toList)
 
   /**
-   * If given, it must be either an integer, or a sequence of integers, meaning the minutes to apply the recurrence to.
+   * If given, it must be either an integer, or a sequence of integers, meaning the minutes valid in the recurrence.
    */
   def bySecond(s: Int*) = copy(bysecond = s.toList)
 
   /**
-   * If given, it determines which time zone the recurrence datetimes will be generated in.
+   * If given, it determines which time zone the recurrence date/times will be generated in.
    */
   def inZone(tz: DateTimeZone) = copy(inzone = tz)
 
