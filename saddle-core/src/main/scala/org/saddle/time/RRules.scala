@@ -31,13 +31,6 @@ object RRules {
   val bizDays = RRule(DAILY) byWeekDay(MO, TU, WE, TH, FR)
 
   /**
-   * Rule representing weekly on a particular weekday
-   *
-   * Example: weeklyOn(FR) counting 3 from datetime(2013,1,1) ==> Jan 18, 2013
-   */
-  def weeklyOn(wd: Weekday) = RRule(WEEKLY) byWeekDay wd
-
-  /**
    * Rule representing business month ends
    *
    * Example: bizEoms counting 2 from datetime(2013,2,28) ==> Mar 29, 2013
@@ -57,7 +50,21 @@ object RRules {
    *
    * Example: eoms counting 2 from datetime(2013,2,28) ==> March 31, 2013
    */
-  val eoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
+  val eoms = RRule(MONTHLY) byMonthDay -1
+
+  /**
+   * Rule representing month beginnings
+   *
+   * Example: eoms counting 2 from datetime(2013,2,28) ==> April 1, 2013
+   */
+  val boms = RRule(MONTHLY) byMonthDay +1
+
+  /**
+   * Rule representing weekly on a particular weekday
+   *
+   * Example: weeklyOn(FR) counting 3 from datetime(2013,1,1) ==> Jan 18, 2013
+   */
+  def weeklyOn(wd: Weekday) = RRule(WEEKLY) byWeekDay wd
 
   /**
    * Conforms a datetime to a recurrence rule either forward or backward.
