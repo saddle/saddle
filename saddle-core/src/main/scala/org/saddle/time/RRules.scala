@@ -24,28 +24,36 @@ object RRules {
   /**
    * Rule representing Monday through Friday
    *
-   * Example: bizDays count 3 from datetime(2013,1,1) ==> Jan 3, 2013
+   * Example: bizDays occurrence 3 from datetime(2013,1,1) ==> Jan 3, 2013
    */
   val bizDays = RRule(DAILY) byWeekDay(MO, TU, WE, TH, FR)
 
   /**
    * Rule representing weekly on a particular weekday
    *
-   * Example: weeklyOn(FR) count 3 from datetime(2013,1,1) ==> Jan 18, 2013
+   * Example: weeklyOn(FR) occurrence 3 from datetime(2013,1,1) ==> Jan 18, 2013
    */
   def weeklyOn(wd: Weekday) = RRule(WEEKLY) byWeekDay wd
 
   /**
    * Rule representing business month ends
    *
-   * Example: bizEoms count 2 from datetime(2013,2,28) ==> Mar 29, 2013
+   * Example: bizEoms occurrence 2 from datetime(2013,2,28) ==> Mar 29, 2013
    */
   val bizEoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
+
+
+  /**
+   * Rule representing business month starts
+   *
+   * Example: bizBoms occurrence 5 from datetime(2013,2,1) ==> Jun 3, 2013
+   */
+  val bizBoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos 1
 
   /**
    * Rule representing month ends
    *
-   * Example: eoms count 2 from datetime(2013,2,28) ==> March 31, 2013
+   * Example: eoms occurrence 2 from datetime(2013,2,28) ==> March 31, 2013
    */
   val eoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
 }

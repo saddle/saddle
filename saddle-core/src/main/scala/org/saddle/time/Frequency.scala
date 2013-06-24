@@ -16,6 +16,8 @@
 
 package org.saddle.time
 
+import org.joda.time.{Period, Duration}
+
 /**
  * Enumeration of frequency base for utilizing with an RRule
  */
@@ -28,6 +30,16 @@ sealed trait Frequency { this: Frequency =>
     case WEEKLY   =>  com.google.ical.values.Frequency.WEEKLY
     case MONTHLY  =>  com.google.ical.values.Frequency.MONTHLY
     case YEARLY   =>  com.google.ical.values.Frequency.YEARLY
+  }
+
+  protected[time] def toDur: Period = this match {
+    case SECONDLY => Period.seconds(1)
+    case MINUTELY => Period.minutes(1)
+    case HOURLY   => Period.hours(1)
+    case DAILY    => Period.days(1)
+    case WEEKLY   => Period.weeks(1)
+    case MONTHLY  => Period.months(1)
+    case YEARLY   => Period.years(1)
   }
 }
 

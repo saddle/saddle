@@ -20,6 +20,7 @@ import org.joda.time.{DateTimeZone, DateTime}
 import scala.collection.JavaConversions._
 import com.google.ical.iter.{RecurrenceIterator, RecurrenceIteratorFactory}
 import com.google.ical.compat.jodatime.DateTimeIteratorFactory
+import org.saddle.Index
 
 /**
  * Wrapper of a RFC 2445 RRULE or EXRULE as implemented in the google
@@ -75,9 +76,10 @@ case class RRule private (freq: Frequency = DAILY,
                           excepts: List[(RRule, Option[DateTime])] = List.empty) {
 
 
-  private def dt2dtv(dt: DateTime): com.google.ical.values.DateTimeValueImpl =
+  private def dt2dtv(dt: DateTime): com.google.ical.values.DateTimeValueImpl = {
     new com.google.ical.values.DateTimeValueImpl(dt.getYear, dt.getMonthOfYear, dt.getDayOfMonth,
       dt.getHourOfDay, dt.getMinuteOfHour, dt.getSecondOfMinute)
+  }
 
   protected[time] def toICal: com.google.ical.values.RRule = {
     val rrule = new com.google.ical.values.RRule()
@@ -186,17 +188,37 @@ case class RRule private (freq: Frequency = DAILY,
   def inZone(tz: DateTimeZone) = copy(inzone = tz)
 
   /**
-   * Syntactic sugar to get the nth recurrence; allows user to write, e.g.
+   * Syntactic sugar to get the nth occurrence; allows user to write, e.g.
    *
-   *   val x = weeklyOn(FR) count 3 from datetime(2013, 1, 1)
+   *   val x = weeklyOn(FR) occurrence 3 from datetime(2013, 1, 1)
    *
-   * to get the third Friday in January 2013.
+   * to get the third Friday in January 2013. With a negative number, e.g.
+   *
+   *   val x = weeklyOn(FR) occurrence -3 from datetime(2013, 1, 1)
+   *
+   * you would get the third occurrence counting back from Jan 1, 2013.
+   *
+   * Note that in both cases, if the 'from' date conforms to the recurrence
+   * rule, it will be counted.
    */
-  def count(i: Int) = {
+  def occurrence(i: Int) = {
     val outer = this
     new {
-      def from(dt: DateTime): DateTime =
-        outer.from(dt).toStream.drop(i - 1).head
+      def from(dt: DateTime): DateTime = {
+        if (i == 0)
+          throw new IllegalArgumentException("argument to occurrence must not equal 0")
+        else if (i > 0)
+          // counting occurrences forward
+          outer.from(dt).toStream.drop(i - 1).head
+        else {
+          // counting occurrences backward
+          val iabs = i.abs
+          val lbound = dt.minus(freq.toDur.multipliedBy(interval + iabs))
+          val ubound = dt.plus(freq.toDur.multipliedBy(interval))
+          val idx = Index.make(outer, lbound, ubound)
+          idx.at(idx.rsearch(dt) - iabs).get
+        }
+      }
     }
   }
 
@@ -231,16 +253,7 @@ case class RRule private (freq: Frequency = DAILY,
       RecurrenceIteratorFactory.except(i1, tmpiter)
     }
 
-    if (inzone == TZ_UTC) {
-      DateTimeIteratorFactory.createDateTimeIterator(iterWithJoinsWithExcepts)
-    }
-    else {
-      // generally want local time, not UTC
-      DateTimeIteratorFactory.createDateTimeIterator(iterWithJoinsWithExcepts) map { dt =>
-        datetime(dt.getYear, dt.getMonthOfYear, dt.getDayOfMonth, dt.getHourOfDay,
-          dt.getMinuteOfHour, dt.getSecondOfMinute, dt.getMillisOfSecond, inzone)
-      }
-    }
+    DateTimeIteratorFactory.createDateTimeIterator(iterWithJoinsWithExcepts) map { dt => dt.withZone(inzone) }
   }
 
   override def toString = toICal.toIcal
