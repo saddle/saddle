@@ -17,6 +17,7 @@
 package org.saddle.io
 
 import org.saddle._
+import org.saddle.time._
 
 import org.joda.time.DateTime
 
