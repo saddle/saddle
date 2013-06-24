@@ -16,6 +16,8 @@
 
 package org.saddle.time
 
+import org.joda.time.DateTime
+
 /**
  * Helpful prepackaged recurrence rules
  */
@@ -24,21 +26,21 @@ object RRules {
   /**
    * Rule representing Monday through Friday
    *
-   * Example: bizDays occurrence 3 from datetime(2013,1,1) ==> Jan 3, 2013
+   * Example: bizDays counting 3 from datetime(2013,1,1) ==> Jan 3, 2013
    */
   val bizDays = RRule(DAILY) byWeekDay(MO, TU, WE, TH, FR)
 
   /**
    * Rule representing weekly on a particular weekday
    *
-   * Example: weeklyOn(FR) occurrence 3 from datetime(2013,1,1) ==> Jan 18, 2013
+   * Example: weeklyOn(FR) counting 3 from datetime(2013,1,1) ==> Jan 18, 2013
    */
   def weeklyOn(wd: Weekday) = RRule(WEEKLY) byWeekDay wd
 
   /**
    * Rule representing business month ends
    *
-   * Example: bizEoms occurrence 2 from datetime(2013,2,28) ==> Mar 29, 2013
+   * Example: bizEoms counting 2 from datetime(2013,2,28) ==> Mar 29, 2013
    */
   val bizEoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
 
@@ -46,14 +48,24 @@ object RRules {
   /**
    * Rule representing business month starts
    *
-   * Example: bizBoms occurrence 5 from datetime(2013,2,1) ==> Jun 3, 2013
+   * Example: bizBoms counting 5 from datetime(2013,2,1) ==> Jun 3, 2013
    */
   val bizBoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos 1
 
   /**
    * Rule representing month ends
    *
-   * Example: eoms occurrence 2 from datetime(2013,2,28) ==> March 31, 2013
+   * Example: eoms counting 2 from datetime(2013,2,28) ==> March 31, 2013
    */
   val eoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
+
+  /**
+   * Conforms a datetime to a recurrence rule either forward or backward.
+   */
+  def conform(rule: RRule, dt: DateTime, forward: Boolean = true): DateTime = {
+    forward match {
+      case true  => rule counting -1 from { rule counting +1 from dt }
+      case false => rule counting +1 from { rule counting -1 from dt }
+    }
+  }
 }

@@ -190,18 +190,18 @@ case class RRule private (freq: Frequency = DAILY,
   /**
    * Syntactic sugar to get the nth occurrence; allows user to write, e.g.
    *
-   *   val x = weeklyOn(FR) occurrence 3 from datetime(2013, 1, 1)
+   *   val x = weeklyOn(FR) counting 3 from datetime(2013, 1, 1)
    *
    * to get the third Friday in January 2013. With a negative number, e.g.
    *
-   *   val x = weeklyOn(FR) occurrence -3 from datetime(2013, 1, 1)
+   *   val x = weeklyOn(FR) counting -3 from datetime(2013, 1, 1)
    *
    * you would get the third occurrence counting back from Jan 1, 2013.
    *
    * Note that in both cases, if the 'from' date conforms to the recurrence
    * rule, it will be counted.
    */
-  def occurrence(i: Int) = {
+  def counting(i: Int) = {
     val outer = this
     new {
       def from(dt: DateTime): DateTime = {
