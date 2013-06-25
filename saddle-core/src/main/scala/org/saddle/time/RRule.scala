@@ -226,7 +226,7 @@ case class RRule private (freq: Frequency = DAILY,
 
           // create index and count backward from min conforming time >= dt
           val idx = Index.make(outer, lbound, ubound)
-          idx.at(idx.rsearch(dt) - iabs).get
+          idx.raw(idx.rsearch(dt) - iabs)
         }
       }
     }
