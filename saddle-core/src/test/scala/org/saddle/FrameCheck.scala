@@ -20,7 +20,6 @@ import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{ Gen, Arbitrary }
 import org.scalacheck.Prop._
-import org.specs2.matcher.MatchResult
 
 class FrameCheck extends Specification with ScalaCheck {
 

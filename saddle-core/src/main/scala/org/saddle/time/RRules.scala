@@ -37,13 +37,26 @@ object RRules {
    */
   val bizEoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
 
-
   /**
    * Rule representing business month starts
    *
    * Example: bizBoms counting 5 from datetime(2013,2,1) ==> Jun 3, 2013
    */
   val bizBoms = RRule(MONTHLY) byWeekDay(MO, TU, WE, TH, FR) bySetPos 1
+
+  /**
+   * Rule representing business quarter ends
+   *
+   * Example: bizEoqs counting 5 from datetime(2013,2,1) ==> Mar 31, 2014
+   */
+  val bizEoqs = RRule(MONTHLY) byMonth(3, 6, 9, 12) byWeekDay(MO, TU, WE, TH, FR) bySetPos -1
+
+  /**
+   * Rule representing business quarter starts
+   *
+   * Example: bizBoqs counting 5 from datetime(2013,2,1) ==> Mar 3, 2014
+   */
+  val bizBoqs = RRule(MONTHLY) byMonth(3, 6, 9, 12) byWeekDay(MO, TU, WE, TH, FR) bySetPos 1
 
   /**
    * Rule representing month ends
