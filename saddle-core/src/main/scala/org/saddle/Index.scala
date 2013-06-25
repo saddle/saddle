@@ -587,7 +587,7 @@ object Index {
    */
   def make(rrule: RRule, start: DateTime, end: DateTime): Index[DateTime] = {
     import time._
-    Index((rrule withUntil end from start).toSeq : _*)
+    Index((rrule.copy(count = None) withUntil end from start).toSeq : _*)
   }
 
   /**
