@@ -29,6 +29,7 @@ object SaddleBuild extends sbt.Build {
               /* so we can package up everything into deployable jar and invoke programs */
               jarName in assembly <<= version { v => "saddle-%s.jar" format (v) },
               assembleArtifact in packageScala := false,
+              publishArtifact := false,
               mergeStrategy in assembly := {
                 case "META-INF/MANIFEST.MF" | "META-INF/LICENSE" | "META-INF/BCKEY.DSA" => MergeStrategy.discard
                 case _ => MergeStrategy.first
