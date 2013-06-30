@@ -213,9 +213,9 @@ case class RRule private (freq: Frequency = DAILY,
           // counting occurrences backward
           val iabs = i.abs
 
-          // heuristic: take 10 observations, find the largest daycount between subsequent
+          // heuristic: take 24 observations, find the largest daycount between subsequent
           // occurrences, with a minimum of 1 day
-          val dseq = (outer from dt take 10).toSeq
+          val dseq = (outer from dt take 24).toSeq
           val maxI = { dseq.tail zip dseq }.foldLeft(1) { case (ival, (d1, d2)) =>
             ival max Days.daysBetween(d2, d1).getDays
           }

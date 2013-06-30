@@ -87,6 +87,10 @@ class RRulesCheck extends Specification with ScalaCheck {
       }
     }
 
+    "bizEoms 10/30/2007 test must pass" in {
+      bizEoms counting -1 from datetime(2007,10,30) must_== datetime(2007,9,28)
+    }
+
     "bizBoms must work as expected" in {
       forAll { (dt: DateTime) =>
         val result1 = conform(bizBoms, dt, forward = true)
@@ -120,6 +124,10 @@ class RRulesCheck extends Specification with ScalaCheck {
         result2.plusDays(3) must_!= result2.getMonthOfYear
         isNotWeekend(result2)
       }
+    }
+
+    "bizEoqs 9/29/2002 test must pass" in {
+      bizEoqs counting -1 from datetime(2002,9,29) must_== datetime(2002,6,28)
     }
 
     "bizBoqs must work as expected" in {
