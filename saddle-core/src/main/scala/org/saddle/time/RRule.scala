@@ -16,7 +16,7 @@
 
 package org.saddle.time
 
-import org.joda.time.{Days, DateTimeZone, DateTime}
+import org.joda.time.{Seconds, Days, DateTimeZone, DateTime}
 import scala.collection.JavaConversions._
 import com.google.ical.iter.{RecurrenceIterator, RecurrenceIteratorFactory}
 import com.google.ical.compat.jodatime.DateTimeIteratorFactory
@@ -213,16 +213,16 @@ case class RRule private (freq: Frequency = DAILY,
           // counting occurrences backward
           val iabs = i.abs
 
-          // heuristic: take 24 observations, find the largest daycount between subsequent
-          // occurrences, with a minimum of 1 day
-          val dseq = (outer from dt take 24).toSeq
-          val maxI = { dseq.tail zip dseq }.foldLeft(1) { case (ival, (d1, d2)) =>
-            ival max Days.daysBetween(d2, d1).getDays
+          // heuristic: take 4 observations, find the largest daycount between subsequent
+          // occurrences, with a day of padding, and with a minimum of 1 day
+          val dseq = { outer from dt take 4 }.toSeq
+          val ival = { dseq.tail zip dseq }.foldLeft(1) { case (days, (d1, d2)) =>
+            days max { Days.daysBetween(d2, d1).getDays + 1 }
           }
 
           // use this daycount to estimate lower bound from which to start generating dates
-          val lbound = dt.minusDays(maxI * iabs)
-          val ubound = dt.plusDays(maxI)
+          val lbound = dt.minusDays(ival * iabs)
+          val ubound = dt.plusDays(ival)
 
           // create index and count backward from min conforming time >= dt
           val idx = Index.make(outer, lbound, ubound)
