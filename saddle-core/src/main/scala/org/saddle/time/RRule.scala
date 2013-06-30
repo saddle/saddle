@@ -217,7 +217,7 @@ case class RRule private (freq: Frequency = DAILY,
           // occurrences, with a day of padding, and with a minimum of 1 day
           val dseq = { outer from dt take 4 }.toSeq
           val ival = { dseq.tail zip dseq }.foldLeft(1) { case (days, (d1, d2)) =>
-            days max { Days.daysBetween(d2, d1).getDays + 1 }
+            days max { Days.daysBetween(d2, d1).getDays + 2 }
           }
 
           // use this daycount to estimate lower bound from which to start generating dates

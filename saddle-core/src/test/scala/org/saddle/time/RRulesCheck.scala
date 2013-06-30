@@ -148,6 +148,10 @@ class RRulesCheck extends Specification with ScalaCheck {
       }
     }
 
+    "bizBoqs 6/2/19 test must pass" in {
+      bizBoqs counting -1 from datetime(2019,6,2) must_== datetime(2019,3,1)
+    }
+
     "eoms must work as expected" in {
       forAll { (dt: DateTime) =>
         val result1 = conform(eoms, dt, forward = true)
