@@ -18,6 +18,7 @@ import sbt._
 import sbt.Keys._
 import sbtassembly.Plugin._
 import sbtassembly.Plugin.AssemblyKeys._
+import sbtrelease.ReleasePlugin._
 
 object SaddleBuild extends sbt.Build {
 
@@ -76,7 +77,7 @@ object SaddleBuild extends sbt.Build {
   def project(id: String, base: File, settings: Seq[Project.Setting[_]] = Nil) =
     Project(id = id,
             base = base,
-            settings = assemblySettings ++ Project.defaultSettings ++ Shared.settings ++ settings)
+            settings = assemblySettings ++ Project.defaultSettings ++ Shared.settings ++ releaseSettings ++ settings)
 }
 
 object Shared {
@@ -129,7 +130,6 @@ object Shared {
         </developer>
       </developers>
     ),
-    version := "1.4.0-SNAPSHOT",
     scalaVersion := "2.9.2",
     crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.0"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
