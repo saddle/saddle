@@ -1008,6 +1008,16 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   }
 
   /**
+   * Same as `joinS`, but preserve the column index, adding the specified index value,
+   * `newColIx` as an index for the `other` Series.
+   */
+  def joinSPreserveColIx(other: Series[RX, T], how: JoinType = LeftJoin, newColIx: CX): Frame[RX, CX, T] = {
+    val resultingFrame = joinS(other, how)
+    val newColIndex = colIx.concat(Index(newColIx))
+    resultingFrame.setColIndex(newColIndex)
+  }
+
+  /**
    * Perform a join with another Frame[RX, CX, T] according to the row index. The `how`
    * argument dictates how the join is to be performed:
    *
@@ -1031,6 +1041,15 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   }
 
   /**
+   *  Same as `join`, but preserves column index
+   */
+  def joinPreserveColIx(other: Frame[RX, CX, T], how: JoinType = LeftJoin): Frame[RX, CX, T] = {
+    val resultingFrame = join(other, how)
+    val newColIndex = colIx.concat(other.colIx)
+    resultingFrame.setColIndex(newColIndex)
+  }
+
+  /**
    * Same as joinS, but the values of Series to join with may be of type Any, so that the
    * resulting Frame may be heterogeneous in its column types.
    */
@@ -1042,6 +1061,17 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   }
 
   /**
+   * Same as `joinAnyS`, but preserve the column index, adding the specified index value,
+   * `newColIx` as an index for the `other` Series.
+   */
+  def joinAnySPreserveColIx(other: Series[RX, _], how: JoinType = LeftJoin,
+    newColIx: CX): Frame[RX, CX, Any] = {
+    val resultingFrame = joinAnyS(other, how)
+    val newColIndex = colIx.concat(Index(newColIx))
+    resultingFrame.setColIndex(newColIndex)
+  }
+
+  /**
    * Same as join, but the values of Frame to join with may be of type Any, so that the
    * resulting Frame may be heterogeneous in its column types.
    */
@@ -1050,6 +1080,15 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     val lft = indexer.lTake.map { loc => values.map(_.take(loc))} getOrElse values
     val rgt = indexer.rTake.map { loc => other.values.map(_.take(loc))} getOrElse other.values
     Panel(lft ++ rgt, indexer.index, IndexIntRange(colIx.length + other.colIx.length))
+  }
+
+  /**
+   *  Same as `joinAny`, but preserves column index
+   */
+  def joinAnyPreserveColIx(other: Frame[RX, CX, _], how: JoinType = LeftJoin): Frame[RX, CX, Any] = {
+    val resultingFrame = joinAny(other, how)
+    val newColIndex = colIx.concat(other.colIx)
+    resultingFrame.setColIndex(newColIndex)
   }
 
   /**
