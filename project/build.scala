@@ -81,20 +81,11 @@ object SaddleBuild extends sbt.Build {
 }
 
 object Shared {
-  def testDeps(version: String) = {
-    val specs2 = if (version.startsWith("2.10"))
-      "org.specs2" %% "specs2" % "1.14" % "test"
-    else if (version.startsWith("2.9.3"))
-      "org.specs2" % "specs2_2.9.2" % "1.12.4" % "test"
-    else
-      "org.specs2" %% "specs2" % "1.12.4" % "test"
-
-    Seq(
-      specs2,
-      "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
-      "junit" % "junit" % "4.7" % "test"
-    )
-  }
+  def testDeps(version: String) = Seq(
+    "org.specs2" %% "specs2" % "1.14" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
+    "junit" % "junit" % "4.7" % "test"
+  )
 
   val settings = Seq(
     organization := "org.scala-saddle",
@@ -130,9 +121,9 @@ object Shared {
         </developer>
       </developers>
     ),
-    scalaVersion := "2.9.2",
-    crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.0", "2.10.2"),
-    scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
+    scalaVersion := "2.10.2",
+    crossScalaVersions := Seq("2.10.0", "2.10.2"),
+    scalacOptions := Seq("-deprecation", "-unchecked"),
     shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },
     resolvers ++= Seq(
       "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",
