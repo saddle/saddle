@@ -1349,9 +1349,19 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   def rjoinS(other: Series[CX, T], how: JoinType = LeftJoin): Frame[Int, CX, T] = T.joinS(other, how).T
 
   /**
+   * See joinSPreserveColIx; operates row-wise
+   */
+  def rjoinSPreserveRowIx(other: Series[CX, T], how: JoinType = LeftJoin, newRowIx: RX): Frame[RX, CX, T] = T.joinSPreserveColIx(other, how, newRowIx).T
+
+  /**
    * See join; operates row-wise
    */
   def rjoin(other: Frame[_, CX, T], how: JoinType = LeftJoin): Frame[Int, CX, T] = T.join(other.T, how).T
+
+  /**
+   * See joinPreserveColIx; operates row-wise
+   */
+  def rjoinPreserveRowIx(other: Frame[RX, CX, T], how: JoinType = LeftJoin): Frame[RX, CX, T] = T.joinPreserveColIx(other.T, how).T
 
   /**
    * See joinAnyS; operates row-wise
@@ -1359,9 +1369,19 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   def rjoinAnyS(other: Series[CX, _], how: JoinType = LeftJoin): Frame[Int, CX, Any] = T.joinAnyS(other, how).T
 
   /**
+   * See joinAnySPreserveColIx; operates row-wise
+   */
+  def rjoinAnySPreserveRowIx(other: Series[CX, _], how: JoinType = LeftJoin, newRowIx: RX): Frame[RX, CX, Any] = T.joinAnySPreserveColIx(other, how, newRowIx).T
+
+  /**
    * See joinAny; operates row-wise
    */
   def rjoinAny(other: Frame[_, CX, _], how: JoinType = LeftJoin): Frame[Int, CX, Any] = T.joinAny(other.T, how).T
+
+  /**
+   * See joinAnyPreserveColIx; operates row-wise
+   */
+  def rjoinAnyPreserveRowIx(other: Frame[RX, CX, _], how: JoinType = LeftJoin): Frame[RX, CX, Any] = T.joinAnyPreserveColIx(other.T, how).T
 
   /**
    * See dropNA; operates row-wise
