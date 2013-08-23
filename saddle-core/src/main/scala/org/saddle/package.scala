@@ -21,6 +21,7 @@ import org.saddle.index._
 
 // some typeclass interfaces we'll alias
 import org.saddle.scalar.ScalarTag
+import scala.reflect.ClassTag
 
 /**
  * == Saddle ==
@@ -66,7 +67,7 @@ package object saddle {
   /**
    * Shorthand for class manifest typeclass
    */
-  type CLM[C] = ClassManifest[C]
+  type CLM[C] = ClassTag[C]
 
   /**
    * Shorthand for scalar tag typeclass

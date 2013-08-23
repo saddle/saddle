@@ -20,6 +20,7 @@ import scala.{ specialized => spec }
 import org.saddle._
 import org.saddle.locator.Locator
 import org.saddle.array.Sorter
+import scala.reflect.ClassTag
 
 /**
  * Typeclass definition for scalar tags. A ScalarTag contains important meta-data regarding
@@ -27,7 +28,7 @@ import org.saddle.array.Sorter
  * as an array. Often implicitly required when dealing with objects in Saddle
  */
 trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
-  extends ClassManifest[T] with SpecializedFactory[T] with CouldBeOrdered[T] with CouldBeNumber[T] with ScalarHelperOps[T] {
+  extends ClassTag[T] with SpecializedFactory[T] with CouldBeOrdered[T] with CouldBeNumber[T] with ScalarHelperOps[T] {
   // representation of missing data
   def missing: T
   def isMissing(t: T): Boolean
@@ -53,11 +54,6 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
   }
 
   override def toString = "ScalarTag[%s]" format runtimeClass
-
-  override def erasure = runtimeClass
-
-  // forward 2.10 compatibility
-  def runtimeClass: Class[_]
 }
 
 object ScalarTag extends ScalarTagImplicits {
