@@ -209,10 +209,16 @@ object CsvParser {
       curEnd += 1                       // move forward a character
     }
 
-    // handle final field, may/not be terminated with separChar
+    // handle a final field which may/not be terminated with separChar
     if (locIdx < locs.length && curFld == locs(locIdx) && curBeg < slen) {
       inQoff = if (carr(curEnd - 1) == quote && stripQuote) 1 else 0
       callback(String.valueOf(carr, curBeg, curEnd - curBeg - inQoff), locIdx)
+      locIdx += 1
+    }
+
+    // handle a missing value following final separator
+    if (locIdx == locs.length - 1 && curBeg == slen) {
+      callback("", locIdx)
       locIdx += 1
     }
 
