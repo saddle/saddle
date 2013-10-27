@@ -1,0 +1,558 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.index</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a></p>
+        <h1>index</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">index</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.index.IndexAny" data-isabs="false">
+      <a id="IndexAny:IndexAny[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexAny.html"><span class="name">IndexAny</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends Index[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">An implementation of <a name="org.saddle.Index" class="extype" href="../Index.html">Index</a> generic in type T for which there is an Ordering[T]
+and a ST[T] available in the implicit context.</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexBool" data-isabs="false">
+      <a id="IndexBool:IndexBool"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexBool.html"><span class="name">IndexBool</span></a><span class="result"> extends Index[Boolean]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Index with integer keys
+</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexDouble" data-isabs="false">
+      <a id="IndexDouble:IndexDouble"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexDouble.html"><span class="name">IndexDouble</span></a><span class="result"> extends Index[Double]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Index with double keys
+</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexInt" data-isabs="false">
+      <a id="IndexInt:IndexInt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexInt.html"><span class="name">IndexInt</span></a><span class="result"> extends Index[Int]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Index with integer keys
+</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexIntRange" data-isabs="false">
+      <a id="IndexIntRange:IndexIntRange"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexIntRange.html"><span class="name">IndexIntRange</span></a><span class="result"> extends Index[Int]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">An implementation of an Index[Int] which implicitly represents a bound of integers,
+which lazily generates its elements as an array when needed.</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexLong" data-isabs="false">
+      <a id="IndexLong:IndexLong"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexLong.html"><span class="name">IndexLong</span></a><span class="result"> extends Index[Long]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Index with long keys
+</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexMaker" data-isabs="true">
+      <a id="IndexMaker:IndexMaker[I, O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexMaker.html"><span class="name">IndexMaker</span></a><span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">An IndexMaker takes some input of type I and returns an Index whose
+elements are of type O.</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexMakerLowPriority" data-isabs="true">
+      <a id="IndexMakerLowPriority:IndexMakerLowPriority"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexMakerLowPriority.html"><span class="name">IndexMakerLowPriority</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.IndexTime" data-isabs="false">
+      <a id="IndexTime:IndexTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexTime.html"><span class="name">IndexTime</span></a><span class="result"> extends Index[DateTime]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A compact native int representation of posix times at millisecond resolution which
+conforms to and extends the interface of Index[DateTime]
+</p>
+    </li><li visbl="pub" name="org.saddle.index.JoinType" data-isabs="true">
+      <a id="JoinType:JoinType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JoinType.html"><span class="name">JoinType</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">There are four basic joins which may be performed between
+two indexed Saddle objects such as <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>
+or <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>.</p>
+    </li><li visbl="pub" name="org.saddle.index.JoinerImpl" data-isabs="false">
+      <a id="JoinerImpl:JoinerImpl[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="JoinerImpl.html"><span class="name">JoinerImpl</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends Joiner[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Concrete implementation of Joiner instance which is specialized on basic
+types.</p>
+    </li><li visbl="pub" name="org.saddle.index.Melter" data-isabs="true">
+      <a id="Melter:Melter[A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Melter.html"><span class="name">Melter</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Melter operates on a Tuple<sub>N</sub> and a Tuple<sub>M</sub> and produces a Tuple<sub>N+M</sub> which is
+composed of the corresponding tuple elements.</p>
+    </li><li visbl="pub" name="org.saddle.index.MelterLowPriority" data-isabs="true">
+      <a id="MelterLowPriority:MelterLowPriority"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="MelterLowPriority.html"><span class="name">MelterLowPriority</span></a><span class="result"> extends MelterLowerPriority</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Next lowest priority melter implicit instances; takes one arbitrary types and a Tuple<sub>N</sub> and produces a Tuple<sub>N+1</sub>
+</p>
+    </li><li visbl="pub" name="org.saddle.index.MelterLowerPriority" data-isabs="true">
+      <a id="MelterLowerPriority:MelterLowerPriority"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="MelterLowerPriority.html"><span class="name">MelterLowerPriority</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Lowest priority melter implicit instance takes two arbitrary types and produces a Tuple2
+</p>
+    </li><li visbl="pub" name="org.saddle.index.ReIndexer" data-isabs="true">
+      <a id="ReIndexer:ReIndexer[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ReIndexer.html"><span class="name">ReIndexer</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">We often need to &quot;reindex&quot; one array/vec/series/frame so as to produce a new
+one.</p>
+    </li><li visbl="pub" name="org.saddle.index.Slice" data-isabs="true">
+      <a id="Slice:Slice[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Slice.html"><span class="name">Slice</span></a><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Slice provides a methodology so that when it is applied to an index,
+it produces an upper and lower integer offset at which to slice.</p>
+    </li><li visbl="pub" name="org.saddle.index.SliceAll" data-isabs="false">
+      <a id="SliceAll:SliceAll"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceAll.html"><span class="name">SliceAll</span></a><span class="result"> extends Slice[Nothing]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represent a slice over the entire index
+</p>
+    </li><li visbl="pub" name="org.saddle.index.SliceDefault" data-isabs="false">
+      <a id="SliceDefault:SliceDefault[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceDefault.html"><span class="name">SliceDefault</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends Slice[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represent a slice from one key to another, inclusive.</p>
+    </li><li visbl="pub" name="org.saddle.index.SliceFrom" data-isabs="false">
+      <a id="SliceFrom:SliceFrom[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceFrom.html"><span class="name">SliceFrom</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends Slice[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represent a slice from key to end of index</p>
+    </li><li visbl="pub" name="org.saddle.index.SliceTo" data-isabs="false">
+      <a id="SliceTo:SliceTo[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceTo.html"><span class="name">SliceTo</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends Slice[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represent a slice from zero to a key.</p>
+    </li><li visbl="pub" name="org.saddle.index.Splitter" data-isabs="true">
+      <a id="Splitter:Splitter[I, OL, OR]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Splitter.html"><span class="name">Splitter</span></a><span class="tparams">[<span name="I">I</span>, <span name="OL">OL</span>, <span name="OR">OR</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Splitter operates on an input index whose elements have arity N, and yields the following
+pair of output indexes: the left has elements whose arity is N-1, where each element has the
+first N-1 constituents of the original tuple; and the right is an index whose elements were
+those in the Nth position of the original tuple.</p>
+    </li><li visbl="pub" name="org.saddle.index.Stacker" data-isabs="true">
+      <a id="Stacker:Stacker[I, J, O]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Stacker.html"><span class="name">Stacker</span></a><span class="tparams">[<span name="I">I</span>, <span name="J">J</span>, <span name="O">O</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Stacker operates on two input Index instances and produces a new output Index
+whose entries are drawn from the Cartesian product of the elements of the original
+indexes, and whose ordering is likewise specified by the original orderings.</p>
+    </li><li visbl="pub" name="org.saddle.index.StackerLowPriority" data-isabs="true">
+      <a id="StackerLowPriority:StackerLowPriority"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="StackerLowPriority.html"><span class="name">StackerLowPriority</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Implicit instance of Stacker for two indexes of arbitrary type.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.saddle.index.IndexIntRange" data-isabs="false">
+      <a id="IndexIntRange:IndexIntRange"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexIntRange$.html"><span class="name">IndexIntRange</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.IndexMaker" data-isabs="false">
+      <a id="IndexMaker:IndexMaker"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexMaker$.html"><span class="name">IndexMaker</span></a><span class="result"> extends IndexMakerLowPriority</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object which houses implicit instances of IndexMaker
+</p>
+    </li><li visbl="pub" name="org.saddle.index.IndexTime" data-isabs="false">
+      <a id="IndexTime:IndexTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexTime$.html"><span class="name">IndexTime</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.InnerJoin" data-isabs="false">
+      <a id="InnerJoin:InnerJoin"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="InnerJoin$.html"><span class="name">InnerJoin</span></a><span class="result"> extends JoinType</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.LeftJoin" data-isabs="false">
+      <a id="LeftJoin:LeftJoin"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LeftJoin$.html"><span class="name">LeftJoin</span></a><span class="result"> extends JoinType</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.Melter" data-isabs="false">
+      <a id="Melter:Melter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Melter$.html"><span class="name">Melter</span></a><span class="result"> extends MelterLowPriority</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Normal priority melter implicit instances takes one a Tuple<sub>N</sub> and a Tuple<sub>M</sub> and produce a Tuple<sub>N+M</sub>
+</p>
+    </li><li visbl="pub" name="org.saddle.index.OuterJoin" data-isabs="false">
+      <a id="OuterJoin:OuterJoin"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="OuterJoin$.html"><span class="name">OuterJoin</span></a><span class="result"> extends JoinType</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.ReIndexer" data-isabs="false">
+      <a id="ReIndexer:ReIndexer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ReIndexer$.html"><span class="name">ReIndexer</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.RightJoin" data-isabs="false">
+      <a id="RightJoin:RightJoin"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RightJoin$.html"><span class="name">RightJoin</span></a><span class="result"> extends JoinType</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.Slice" data-isabs="false">
+      <a id="Slice:Slice"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Slice$.html"><span class="name">Slice</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.SliceAll" data-isabs="false">
+      <a id="SliceAll:SliceAll"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceAll$.html"><span class="name">SliceAll</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.SliceFrom" data-isabs="false">
+      <a id="SliceFrom:SliceFrom"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceFrom$.html"><span class="name">SliceFrom</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.SliceTo" data-isabs="false">
+      <a id="SliceTo:SliceTo"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SliceTo$.html"><span class="name">SliceTo</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index.Splitter" data-isabs="false">
+      <a id="Splitter:Splitter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Splitter$.html"><span class="name">Splitter</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object houses implicit instances of Splitter
+</p>
+    </li><li visbl="pub" name="org.saddle.index.Stacker" data-isabs="false">
+      <a id="Stacker:Stacker"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Stacker$.html"><span class="name">Stacker</span></a><span class="result"> extends StackerLowPriority</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object which houses implicit Stacker instances.</p>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>util - org.saddle.util</title>
+          <meta name="description" content="util - org.saddle.util" />
+          <meta name="keywords" content="util org.saddle.util" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.saddle.util.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.saddle">saddle</a></p>
+        <h1>util</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">util</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Additional utilities that need a home
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.saddle.util"><span>util</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.saddle.util.Random" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RandomextendsAnyRef"></a>
+      <a id="Random:Random"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Random.html"><span class="name">Random</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">The Random class provides methods to generate pseudo-random numbers via a plug-in
+PRNG, which is simply any function that generates a Long primitive.</p>
+    </li><li name="org.saddle.util.RandomStream" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RandomStreamextendsInputStreamwithProductwithSerializable"></a>
+      <a id="RandomStream:RandomStream"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomStream.html"><span class="name">RandomStream</span></a><span class="params">(<span name="rng">rng: () ⇒ <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <span class="extype" name="java.io.InputStream">InputStream</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Create a random InputStream of bytes from a PRNG.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.saddle.util.Concat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Concat"></a>
+      <a id="Concat:Concat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Concat$.html"><span class="name">Concat</span></a><span class="result"> extends <span class="extype" name="org.saddle.util.LowPriorityConcatImplicits">LowPriorityConcatImplicits</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides a way to append two arrays of possibly different types together by
+intelligently promoting primitive types where possible.</p>
+    </li><li name="org.saddle.util.LFib" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LFib"></a>
+      <a id="LFib:LFib"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LFib$.html"><span class="name">LFib</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt"> Version:               TestU01 1.</p>
+    </li><li name="org.saddle.util.LFib4" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LFib4"></a>
+      <a id="LFib4:LFib4"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LFib4$.html"><span class="name">LFib4</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Marsaglia Lagged Fibonacci PRNG</p>
+    </li><li name="org.saddle.util.Random" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Random"></a>
+      <a id="Random:Random"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Random$.html"><span class="name">Random</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.saddle.util.Xor64" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Xor64"></a>
+      <a id="Xor64:Xor64"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Xor64$.html"><span class="name">Xor64</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt"> Version:               TestU01 1.</p>
+    </li><li name="org.saddle.util.XorShift" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="XorShift"></a>
+      <a id="XorShift:XorShift"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="XorShift$.html"><span class="name">XorShift</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Marsaglia XorShift PRNG</p>
+    </li><li name="org.saddle.util.Ziff" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Ziff"></a>
+      <a id="Ziff:Ziff"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Ziff$.html"><span class="name">Ziff</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt"> Version:               TestU01 1.</p>
+    </li><li name="org.saddle.util.Ziff98" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Ziff98"></a>
+      <a id="Ziff98:Ziff98"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Ziff98$.html"><span class="name">Ziff98</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Ziff 4-tap shift-register-sequence</p>
+    </li><li name="org.saddle.util.package#buildStr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="buildStr(count:Int,total:Int,callback:Int=&gt;String,break:=&gt;String):String"></a>
+      <a id="buildStr(Int,Int,(Int)⇒String,⇒String):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">buildStr</span><span class="params">(<span name="count">count: <span class="extype" name="scala.Int">Int</span></span>, <span name="total">total: <span class="extype" name="scala.Int">Int</span></span>, <span name="callback">callback: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="break">break: ⇒ <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot; ... &quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a string out of <i>count</i> number of elements extracted from <i>total</i> elements
+between offsets [0 .</p><div class="fullcomment"><div class="comment cmt"><p>Creates a string out of <i>count</i> number of elements extracted from <i>total</i> elements
+between offsets [0 ... count / 2) and (total - count / 2 ... total), using a callback
+that generates a string at each offset, and inserting a break string if count &gt; total.</p></div><dl class="paramcmts block"><dt class="param">count</dt><dd class="cmt"><p>Number of elements to print</p></dd><dt class="param">total</dt><dd class="cmt"><p>Total number of elements in sequence</p></dd><dt class="param">callback</dt><dd class="cmt"><p>Generates a string at each offset</p></dd><dt class="param">break</dt><dd class="cmt"><p>Produces a string to insert as a break
+</p></dd></dl></div>
+    </li><li name="org.saddle.util.package#grab" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="grab[T](arr:Seq[T],n:Int):Seq[T]"></a>
+      <a id="grab[T](Seq[T],Int):Seq[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">grab</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.saddle.util.grab.T">T</span>]</span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.saddle.util.grab.T">T</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Takes n elements from the front and from the back of array</p><div class="fullcomment"><div class="comment cmt"><p>Takes n elements from the front and from the back of array</p></div><dl class="paramcmts block"><dt class="param">arr</dt><dd class="cmt"><p>Array</p></dd><dt class="param">n</dt><dd class="cmt"><p>Number of elements to take
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+    </body>
+      </html>
