@@ -5,3 +5,4 @@
 saddle.sublime-workspace
 project/target/
 target/
+!*api*
