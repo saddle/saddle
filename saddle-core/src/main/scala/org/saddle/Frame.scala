@@ -130,6 +130,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   require(values.numCols == colIx.length, "Col index length is incorrect")
 
   private var cachedMat: Option[Mat[T]] = None
+  private var cachedRows: Option[MatCols[T]] = None
 
   /**
    * Number of rows in the Frame
@@ -1431,7 +1432,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     this
   }
 
-  private def rows(): MatCols[T] = MatCols(toMat.T.cols() : _*)
+  private def rows(): MatCols[T] = {
+    if (cachedRows.isEmpty) {
+      cachedRows = Some(toMat.rows())
+    }
+    cachedRows.get
+  }
 
   // --------------------------------------
   // pretty-printing

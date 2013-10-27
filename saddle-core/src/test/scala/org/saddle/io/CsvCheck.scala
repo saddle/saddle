@@ -34,7 +34,6 @@ class CsvCheck extends Specification with ScalaCheck {
     val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
-      def reset() {}
       def readLine = buf.readLine()
     }
 
@@ -54,7 +53,6 @@ class CsvCheck extends Specification with ScalaCheck {
     val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
-      def reset() {}
       def readLine = buf.readLine()
     }
 
@@ -74,7 +72,6 @@ class CsvCheck extends Specification with ScalaCheck {
     val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
-      def reset() {}
       def readLine = buf.readLine()
     }
 
@@ -89,7 +86,6 @@ class CsvCheck extends Specification with ScalaCheck {
     val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
     val src = new CsvSource {
-      def reset() {}
       def readLine = buf.readLine()
     }
 

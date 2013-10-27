@@ -22,14 +22,14 @@ import it.unimi.dsi.io.ByteBufferInputStream
 import org.saddle.UTF8
 
 /**
- * CsvFile provides an implementation of a [[org.saddle.io.CsvSourcePar]] for
+ * CsvFile provides an implementation of a [[org.saddle.io.CsvSource]] for
  * parsing a CSV file.
  *
  * For example,
  *
  * {{{
  *   val fs = CsvFile("tmp.csv")
- *   val data = CsvParser.parsePar(CsvParser.parseInt)(fs)
+ *   val data = CsvParser.parse(CsvParser.parseInt)(fs)
  *   ...
  *   data.toFrame
  * }}}
@@ -37,67 +37,17 @@ import org.saddle.UTF8
  * @param path Path to file
  * @param encoding Encoding of text file
  */
-class CsvFile(path: String, encoding: String = UTF8) extends CsvSourcePar {
+class CsvFile(path: String, encoding: String = UTF8) extends CsvSource {
   private val file = new RandomAccessFile(path, "r")
   private val chan = file.getChannel
-  private val sz = chan.size()
 
-  // split a file into at most N chunks to be parsed
-  def getChunks(n: Int): IndexedSeq[CsvSource] = {
-    var start = 0L
-    var end = 0L
-    val chunk = sz / n
+  private val stream = ByteBufferInputStream.map(chan, FileChannel.MapMode.READ_ONLY)
+  private val reader = new BufferedReader(new InputStreamReader(stream, encoding))
 
-    val chunks = for { i <- 0 until n if end < sz } yield {
-      // align to a natural breakpoint
-      end = alignToLineBreak(start + chunk)
-
-      // create csv source over this chunk
-      val source = makeChunk(start, end)
-
-      // move forward a chunk
-      start = end
-      source
-    }
-
-    chunks
-  }
-
-  /**
-   * Creates a new CsvSource from a chunk of a file between two byte offsets
-   */
-  private def makeChunk(start: Long, end: Long) = new CsvSource {
-    val s = start   // start of chunk
-    val e = end     // end of chunk
-    var l = 0L      // location within chunk
-
-    val stream = ByteBufferInputStream.map(chan, FileChannel.MapMode.READ_ONLY)
-    val reader = new BufferedReader(new InputStreamReader(stream, encoding))
-
-    def reset() {
-      stream.position(s)
-      l = s
-    }
-
-    def readLine = if (l >= e) null else {
-      val str = reader.readLine()
-      if (str != null) l += str.getBytes.length + 1
-      str
-    }
-  }
-
-  /**
-   * Moves offset to byte just following a line break
-   */
-  private def alignToLineBreak(offset: Long): Long = {
-    val stream = ByteBufferInputStream.map(chan, FileChannel.MapMode.READ_ONLY)
-    val reader = new BufferedReader(new InputStreamReader(stream, encoding))
-
-    val byte = math.min(offset, chan.size())
-    stream.position(byte)
-
-    val readLn = reader.readLine()
-    if (readLn != null) offset + readLn.getBytes.length + 1 else byte
+  def readLine = {
+    val line = reader.readLine()
+    if (line == null) file.close()
+    line
   }
 
   override def toString = "CsvFile(%s, encoding: %s)".format(path, encoding)
@@ -105,6 +55,4 @@ class CsvFile(path: String, encoding: String = UTF8) extends CsvSourcePar {
 
 object CsvFile {
   def apply(path: String, encoding: String = UTF8) = new CsvFile(path, encoding)
-
-  implicit def convertToCsvSource(f: CsvFile): CsvSource = f.makeChunk(0, f.chan.size())
 }

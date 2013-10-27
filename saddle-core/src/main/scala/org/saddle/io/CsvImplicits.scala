@@ -152,7 +152,7 @@ object CsvImplicits {
             val seq = if (!withRowIx)
               row.values.toSeq.map(_.toString)
             else
-              (rsm.strList(ridx) ++: row.values.toSeq.map(_.toString))
+              rsm.strList(ridx) ++: row.values.toSeq.map(_.toString)
 
             quotify(seq).mkString(separ).getBytes(settings.encoding)
           }
