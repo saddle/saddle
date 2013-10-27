@@ -1,0 +1,844 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.ops.BinOpFrame</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
+      <div id="definition">
+        <img src="../../../lib/trait_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a>.<a name="org.saddle.ops" class="extype" href="package.html">ops</a></p>
+        <h1>BinOpFrame</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BinOpFrame</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Provides concrete implementations of binary operations for <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>; these
+instances provide implicit support for <a name="org.saddle.ops.NumericOps" class="extype" href="NumericOps.html">NumericOps</a> methods which are
+inherited by Frame.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div><div class="toggleContainer block">
+          <span class="toggle">Known Subclasses</span>
+          <div class="subClasses hiddenContent"><a name="org.saddle.Frame" class="extype" href="../Frame$.html">Frame</a></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.ops.BinOpFrame" class="in"><span>BinOpFrame</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.ops.BinOpFrame.FrFrEOp" data-isabs="false">
+      <a id="FrFrEOp:FrFrEOp[OP, X, Y, A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOpFrame$FrFrEOp.html"><span class="name">FrFrEOp</span></a><span class="tparams">[<span name="OP">OP &lt;: ScalarOp</span>, <span name="X">X</span>, <span name="Y">Y</span>, <span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends BinOp[OP, Frame[X, Y, A], Frame[X, Y, B], Frame[X, Y, C]]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame.FrScEOp" data-isabs="false">
+      <a id="FrScEOp:FrScEOp[OP, X, Y, A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOpFrame$FrScEOp.html"><span class="name">FrScEOp</span></a><span class="tparams">[<span name="OP">OP &lt;: ScalarOp</span>, <span name="X">X</span>, <span name="Y">Y</span>, <span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends BinOp[OP, Frame[X, Y, A], B, Frame[X, Y, C]]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpBBB" data-isabs="false">
+      <a id="FrFrEOpBBB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Boolean], Vec[Boolean], Vec[Boolean]]):FrFrEOp[Op, X, Y, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpBBB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpDDB" data-isabs="false">
+      <a id="FrFrEOpDDB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Vec[Double], Vec[Boolean]]):FrFrEOp[Op, X, Y, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpDDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpDDD" data-isabs="false">
+      <a id="FrFrEOpDDD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Vec[Double], Vec[Double]]):FrFrEOp[Op, X, Y, Double, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpDDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpDIB" data-isabs="false">
+      <a id="FrFrEOpDIB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Vec[Int], Vec[Boolean]]):FrFrEOp[Op, X, Y, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpDIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpDID" data-isabs="false">
+      <a id="FrFrEOpDID[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Vec[Int], Vec[Double]]):FrFrEOp[Op, X, Y, Double, Int, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpDID</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpDLB" data-isabs="false">
+      <a id="FrFrEOpDLB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Vec[Long], Vec[Boolean]]):FrFrEOp[Op, X, Y, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpDLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpDLD" data-isabs="false">
+      <a id="FrFrEOpDLD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Vec[Long], Vec[Double]]):FrFrEOp[Op, X, Y, Double, Long, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpDLD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpIDB" data-isabs="false">
+      <a id="FrFrEOpIDB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Vec[Double], Vec[Boolean]]):FrFrEOp[Op, X, Y, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpIDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpIDD" data-isabs="false">
+      <a id="FrFrEOpIDD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Vec[Double], Vec[Double]]):FrFrEOp[Op, X, Y, Int, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpIDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpIIB" data-isabs="false">
+      <a id="FrFrEOpIIB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Vec[Int], Vec[Boolean]]):FrFrEOp[Op, X, Y, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpIIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpIII" data-isabs="false">
+      <a id="FrFrEOpIII[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Vec[Int], Vec[Int]]):FrFrEOp[Op, X, Y, Int, Int, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpIII</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpILB" data-isabs="false">
+      <a id="FrFrEOpILB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Vec[Long], Vec[Boolean]]):FrFrEOp[Op, X, Y, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpILB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpILL" data-isabs="false">
+      <a id="FrFrEOpILL[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Vec[Long], Vec[Long]]):FrFrEOp[Op, X, Y, Int, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpILL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpLDB" data-isabs="false">
+      <a id="FrFrEOpLDB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Vec[Double], Vec[Boolean]]):FrFrEOp[Op, X, Y, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpLDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpLDD" data-isabs="false">
+      <a id="FrFrEOpLDD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Vec[Double], Vec[Double]]):FrFrEOp[Op, X, Y, Long, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpLDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpLIB" data-isabs="false">
+      <a id="FrFrEOpLIB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Vec[Int], Vec[Boolean]]):FrFrEOp[Op, X, Y, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpLIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpLIL" data-isabs="false">
+      <a id="FrFrEOpLIL[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Vec[Int], Vec[Long]]):FrFrEOp[Op, X, Y, Long, Int, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpLIL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpLLB" data-isabs="false">
+      <a id="FrFrEOpLLB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Vec[Long], Vec[Boolean]]):FrFrEOp[Op, X, Y, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpLLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrFrEOpLLL" data-isabs="false">
+      <a id="FrFrEOpLLL[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Vec[Long], Vec[Long]]):FrFrEOp[Op, X, Y, Long, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrFrEOpLLL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="my">my: ST[Y]</span>, <span name="cmpY">cmpY: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrFrEOp" class="extype" href="BinOpFrame$FrFrEOp.html">FrFrEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpBBB" data-isabs="false">
+      <a id="FrScEOpBBB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Boolean], Boolean, Vec[Boolean]]):FrScEOp[Op, X, Y, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpBBB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>], <span name="scala.Boolean" class="extype">Boolean</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpDDB" data-isabs="false">
+      <a id="FrScEOpDDB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Double, Vec[Boolean]]):FrScEOp[Op, X, Y, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpDDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <span name="scala.Double" class="extype">Double</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpDDD" data-isabs="false">
+      <a id="FrScEOpDDD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Double, Vec[Double]]):FrScEOp[Op, X, Y, Double, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpDDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <span name="scala.Double" class="extype">Double</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpDIB" data-isabs="false">
+      <a id="FrScEOpDIB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Int, Vec[Boolean]]):FrScEOp[Op, X, Y, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpDIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <span name="scala.Int" class="extype">Int</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpDID" data-isabs="false">
+      <a id="FrScEOpDID[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Int, Vec[Double]]):FrScEOp[Op, X, Y, Double, Int, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpDID</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <span name="scala.Int" class="extype">Int</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpDLB" data-isabs="false">
+      <a id="FrScEOpDLB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Long, Vec[Boolean]]):FrScEOp[Op, X, Y, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpDLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <span name="scala.Long" class="extype">Long</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpDLD" data-isabs="false">
+      <a id="FrScEOpDLD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Double], Long, Vec[Double]]):FrScEOp[Op, X, Y, Double, Long, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpDLD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>], <span name="scala.Long" class="extype">Long</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpIDB" data-isabs="false">
+      <a id="FrScEOpIDB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Double, Vec[Boolean]]):FrScEOp[Op, X, Y, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpIDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <span name="scala.Double" class="extype">Double</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpIDD" data-isabs="false">
+      <a id="FrScEOpIDD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Double, Vec[Double]]):FrScEOp[Op, X, Y, Int, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpIDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <span name="scala.Double" class="extype">Double</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpIIB" data-isabs="false">
+      <a id="FrScEOpIIB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Int, Vec[Boolean]]):FrScEOp[Op, X, Y, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpIIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <span name="scala.Int" class="extype">Int</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpIII" data-isabs="false">
+      <a id="FrScEOpIII[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Int, Vec[Int]]):FrScEOp[Op, X, Y, Int, Int, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpIII</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <span name="scala.Int" class="extype">Int</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpILB" data-isabs="false">
+      <a id="FrScEOpILB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Long, Vec[Boolean]]):FrScEOp[Op, X, Y, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpILB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <span name="scala.Long" class="extype">Long</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpILL" data-isabs="false">
+      <a id="FrScEOpILL[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Int], Long, Vec[Long]]):FrScEOp[Op, X, Y, Int, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpILL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>], <span name="scala.Long" class="extype">Long</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpLDB" data-isabs="false">
+      <a id="FrScEOpLDB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Double, Vec[Boolean]]):FrScEOp[Op, X, Y, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpLDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <span name="scala.Double" class="extype">Double</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpLDD" data-isabs="false">
+      <a id="FrScEOpLDD[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Double, Vec[Double]]):FrScEOp[Op, X, Y, Long, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpLDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <span name="scala.Double" class="extype">Double</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpLIB" data-isabs="false">
+      <a id="FrScEOpLIB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Int, Vec[Boolean]]):FrScEOp[Op, X, Y, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpLIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <span name="scala.Int" class="extype">Int</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpLIL" data-isabs="false">
+      <a id="FrScEOpLIL[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Int, Vec[Long]]):FrScEOp[Op, X, Y, Long, Int, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpLIL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <span name="scala.Int" class="extype">Int</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpLLB" data-isabs="false">
+      <a id="FrScEOpLLB[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Long, Vec[Boolean]]):FrScEOp[Op, X, Y, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpLLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <span name="scala.Long" class="extype">Long</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame#FrScEOpLLL" data-isabs="false">
+      <a id="FrScEOpLLL[Op&lt;:ScalarOp, X, Y](ST[X],ORD[X],ST[Y],ORD[Y],BinOp[Op, Vec[Long], Long, Vec[Long]]):FrScEOp[Op, X, Y, Long, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrScEOpLLL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ScalarOp.html">ScalarOp</a></span>, <span name="X">X</span>, <span name="Y">Y</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="cm">cm: ST[X]</span>, <span name="cmp">cmp: ORD[X]</span>, <span name="cmy">cmy: ST[Y]</span>, <span name="cmpy">cmpy: ORD[Y]</span>, <span name="opv">opv: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[Op, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>], <span name="scala.Long" class="extype">Long</span>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpFrame.FrScEOp" class="extype" href="BinOpFrame$FrScEOp.html">FrScEOp</a>[Op, X, Y, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

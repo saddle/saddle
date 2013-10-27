@@ -1,0 +1,510 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.array</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a></p>
+        <h1>array</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">array</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>This package contains utilities for working with arrays that
+are specialized for numeric types.
+</p></div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.array.Sorter" data-isabs="true">
+      <a id="Sorter:Sorter[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Sorter.html"><span class="name">Sorter</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Typeclass interface for sorting implementations</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.saddle.array.Sorter" data-isabs="false">
+      <a id="Sorter:Sorter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Sorter$.html"><span class="name">Sorter</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.array.package#argmax" data-isabs="false">
+      <a id="argmax[T](Array[T])(ST[T],ORD[T],NUM[T]):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">argmax</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>, <span name="arg1">arg1: ORD[T]</span>, <span name="arg2">arg2: NUM[T]</span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return the integer offset of the maximum element, or -1 for an empty array
+</p><div class="fullcomment"><div class="comment cmt"><p>Return the integer offset of the maximum element, or -1 for an empty array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#argmin" data-isabs="false">
+      <a id="argmin[T](Array[T])(ST[T],ORD[T],NUM[T]):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">argmin</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>, <span name="arg1">arg1: ORD[T]</span>, <span name="arg2">arg2: NUM[T]</span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return the integer offset of the minimum element, or -1 for an empty array
+</p><div class="fullcomment"><div class="comment cmt"><p>Return the integer offset of the minimum element, or -1 for an empty array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#argsort" data-isabs="false">
+      <a id="argsort[T](Array[T])(ST[T],ORD[T]):Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">argsort</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>, <span name="arg1">arg1: ORD[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Stable indirect sort resulting in permutation of numbers [0, n), whose application
+on an array results in a sorted array.</p><div class="fullcomment"><div class="comment cmt"><p>Stable indirect sort resulting in permutation of numbers [0, n), whose application
+on an array results in a sorted array.
+</p></div><dl class="paramcmts block"><dt class="param">arr</dt><dd class="cmt"><p>Array to sort
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#empty" data-isabs="false">
+      <a id="empty[T](Int)(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">empty</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="len">len: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new initialized empty array
+</p><div class="fullcomment"><div class="comment cmt"><p>Create a new initialized empty array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#fill" data-isabs="false">
+      <a id="fill[T](Array[T],T)(ST[T]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fill</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="v">v: T</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Fill array with value
+</p><div class="fullcomment"><div class="comment cmt"><p>Fill array with value
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#filter" data-isabs="false">
+      <a id="filter[T]((T) ⇒ Boolean)(Array[T])(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="f">f: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Filter an array based on a predicate function, wherever that predicate is true
+</p><div class="fullcomment"><div class="comment cmt"><p>Filter an array based on a predicate function, wherever that predicate is true
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#flatten" data-isabs="false">
+      <a id="flatten[T](Seq[Array[T]])(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">flatten</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arrs">arrs: Seq[<span name="scala.Array" class="extype">Array</span>[T]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Flatten a sequence of arrays into a single array
+</p><div class="fullcomment"><div class="comment cmt"><p>Flatten a sequence of arrays into a single array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#linspace" data-isabs="false">
+      <a id="linspace(Double,Double,Int,Boolean):Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">linspace</span><span class="params">(<span name="start">start: <span name="scala.Double" class="extype">Double</span></span>, <span name="stop">stop: <span name="scala.Double" class="extype">Double</span></span>, <span name="num">num: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">50</span></span>, <span name="endpoint">endpoint: <span name="scala.Boolean" class="extype">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Derived from numpy 1.</p><div class="fullcomment"><div class="comment cmt"><p>Derived from numpy 1.7</p><p>Return evenly spaced numbers over a specified interval.</p><p>Returns num evenly spaced samples, calculated over the
+interval [start, stop].</p><p>The endpoint of the interval can optionally be excluded.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#put" data-isabs="false">
+      <a id="put[T](Array[T],Array[Boolean],T):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">put</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="offsets">offsets: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Boolean" class="extype">Boolean</span>]</span>, <span name="value">value: T</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Put a value into array arr at particular offsets provided by a boolean array where its locations
+are true, so as to produce a new array.</p><div class="fullcomment"><div class="comment cmt"><p>Put a value into array arr at particular offsets provided by a boolean array where its locations
+are true, so as to produce a new array.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#put" data-isabs="false">
+      <a id="put[T](Array[T],Array[Int],T):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">put</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="offsets">offsets: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>, <span name="value">value: T</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Put a single value into array arr at particular offsets, so as to produce a new array.</p><div class="fullcomment"><div class="comment cmt"><p>Put a single value into array arr at particular offsets, so as to produce a new array.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#putn" data-isabs="false">
+      <a id="putn[T](Array[T],Array[Int],Array[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">putn</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="offsets">offsets: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>, <span name="values">values: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Put n values into array arr at particular offsets, where the values come from another array,
+so as to produce a new array.</p><div class="fullcomment"><div class="comment cmt"><p>Put n values into array arr at particular offsets, where the values come from another array,
+so as to produce a new array.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randDouble" data-isabs="false">
+      <a id="randDouble(Int):Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randDouble</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random doubles on [-1, 1] excluding 0
+</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random doubles on [-1, 1] excluding 0
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randDoublePos" data-isabs="false">
+      <a id="randDoublePos(Int):Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randDoublePos</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random positive doubles on (0, 1]
+</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random positive doubles on (0, 1]
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randInt" data-isabs="false">
+      <a id="randInt(Int):Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randInt</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random integers excluding 0
+</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random integers excluding 0
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randIntPos" data-isabs="false">
+      <a id="randIntPos(Int):Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randIntPos</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random positive integers excluding 0
+</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random positive integers excluding 0
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randLong" data-isabs="false">
+      <a id="randLong(Int):Array[Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randLong</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of a random long integers excluding 0
+</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of a random long integers excluding 0
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randLongPos" data-isabs="false">
+      <a id="randLongPos(Int):Array[Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randLongPos</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random long positive integers excluding 0
+</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random long positive integers excluding 0
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randNormal" data-isabs="false">
+      <a id="randNormal(Int):Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randNormal</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random doubles which is normally distributed
+with a mean of zero and stdev of one.</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random doubles which is normally distributed
+with a mean of zero and stdev of one.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#randNormal2" data-isabs="false">
+      <a id="randNormal2(Int,Double,Double):Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randNormal2</span><span class="params">(<span name="sz">sz: <span name="scala.Int" class="extype">Int</span></span>, <span name="mu">mu: <span name="scala.Double" class="extype">Double</span></span>, <span name="sigma">sigma: <span name="scala.Double" class="extype">Double</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Generate an array of random doubles which is normally distributed
+with a mean of mu and stdev of sigma.</p><div class="fullcomment"><div class="comment cmt"><p>Generate an array of random doubles which is normally distributed
+with a mean of mu and stdev of sigma.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#range" data-isabs="false">
+      <a id="range(Int,Int,Int):Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">range</span><span class="params">(<span name="from">from: <span name="scala.Int" class="extype">Int</span></span>, <span name="until">until: <span name="scala.Int" class="extype">Int</span></span>, <span name="step">step: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new array consisting of a range of numbers from a lower bound up to, but
+not including, an upper bound, at a particular increment (default 1)
+</p><div class="fullcomment"><div class="comment cmt"><p>Create a new array consisting of a range of numbers from a lower bound up to, but
+not including, an upper bound, at a particular increment (default 1)
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#remove" data-isabs="false">
+      <a id="remove[T](Array[T],Array[Int])(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">remove</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Remove values from array arr at particular offsets so as to
+produce a new array.</p><div class="fullcomment"><div class="comment cmt"><p>Remove values from array arr at particular offsets so as to
+produce a new array.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#reverse" data-isabs="false">
+      <a id="reverse[T](Array[T])(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reverse</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Reverse an array
+</p><div class="fullcomment"><div class="comment cmt"><p>Reverse an array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#send" data-isabs="false">
+      <a id="send[T](Array[T],Array[Int])(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">send</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="offsets">offsets: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sends values from an array to particular offsets so as to produce a new array.</p><div class="fullcomment"><div class="comment cmt"><p>Sends values from an array to particular offsets so as to produce a new array.
+This does the inverse of 'take'; ie, each integer I at offset O in <code>offsets</code>
+works to &quot;send&quot; input[O] to output[I]. Eg, Array(2,0,1) permutes locations as
+follows:</p><ul><li>0 to 2</li><li>1 to 0</li><li>2 to 1</li></ul><p>For example,</p><pre>
+  send(<span class="std">Array</span>(<span class="num">5</span>,<span class="num">6</span>,<span class="num">7</span>), <span class="std">Array</span>(<span class="num">2</span>,<span class="num">0</span>,<span class="num">1</span>)) == <span class="std">Array</span>(<span class="num">6</span>,<span class="num">7</span>,<span class="num">5</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#shuffle" data-isabs="false">
+      <a id="shuffle[T](Array[T])(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shuffle</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return a uniform random permutation of the array
+</p><div class="fullcomment"><div class="comment cmt"><p>Return a uniform random permutation of the array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#sort" data-isabs="false">
+      <a id="sort[T](Array[T])(ST[T],ORD[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sort</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>, <span name="arg1">arg1: ORD[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Stable sort of array argument (not destructive), using radix sort
+implementation wherever possible.</p><div class="fullcomment"><div class="comment cmt"><p>Stable sort of array argument (not destructive), using radix sort
+implementation wherever possible.
+</p></div><dl class="paramcmts block"><dt class="param">arr</dt><dd class="cmt"><p>Array to sort
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#sum" data-isabs="false">
+      <a id="sum[T](Array[T],Array[Int],⇒ T)(ST[T],NUM[T],AddOp[T]):T"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sum</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="offsets">offsets: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>, <span name="missing">missing: ⇒ T</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>, <span name="arg1">arg1: NUM[T]</span>, <span name="arg2">arg2: AddOp[T]</span>)</span><span class="result">: T</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Compute the sum of the array at particular offets.</p><div class="fullcomment"><div class="comment cmt"><p>Compute the sum of the array at particular offets. If any of the offets is -1,
+the pass-by-name value 'missing' is used instead.</p><p>For example,</p><pre>
+  sum(<span class="std">Array</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>), <span class="std">Array</span>(<span class="num">0</span>,<span class="num">2</span>,), <span class="num">0</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#take" data-isabs="false">
+      <a id="take[T](Array[T],Array[Int],⇒ T)(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">take</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="offsets">offsets: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>, <span name="missing">missing: ⇒ T</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Takes values from array arr at particular offsets so as to produce a new array.</p><div class="fullcomment"><div class="comment cmt"><p>Takes values from array arr at particular offsets so as to produce a new array.
+Offset -1 is mapped to by-name parameter <code>missing</code>.</p><p>Note that each integer I at offset O in <code>offsets</code> works to &quot;take&quot; input[I] to
+output[O]. Eg, Array(2,0,1) permutes locations as follows:</p><ul><li>2 to 0</li><li>0 to 1</li><li>1 to 2</li></ul><p>For example,</p><pre>
+  take(<span class="std">Array</span>(<span class="num">5</span>,<span class="num">6</span>,<span class="num">7</span>), <span class="std">Array</span>(<span class="num">2</span>,<span class="num">0</span>,<span class="num">1</span>), -<span class="num">1</span>) == <span class="std">Array</span>(<span class="num">7</span>,<span class="num">5</span>,<span class="num">6</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.array.package#tile" data-isabs="false">
+      <a id="tile[T](Array[T],Int)(ST[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tile</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>, <span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Repeat elements of the array some number of times
+</p><div class="fullcomment"><div class="comment cmt"><p>Repeat elements of the array some number of times
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.array.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
