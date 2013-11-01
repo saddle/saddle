@@ -1,0 +1,706 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.stats.FrameStats</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
+      <div id="definition">
+        <img src="../../../lib/class_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a>.<a name="org.saddle.stats" class="extype" href="package.html">stats</a></p>
+        <h1>FrameStats</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrameStats</span><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Statistical methods made available to operate on columns of a Frame via enrichment.
+</p></div><dl class="paramcmts block"><dt class="tparam">RX</dt><dd class="cmt"><p>Type of the row index elements</p></dd><dt class="tparam">CX</dt><dd class="cmt"><p>Type of the column index elements</p></dd><dt class="tparam">T</dt><dd class="cmt"><p>Type of the elements of the frame
+</p></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.stats.FrameStats" class="in"><span>FrameStats</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div class="members" id="constructors">
+              <h3>Instance Constructors</h3>
+              <ol><li visbl="pub" name="org.saddle.stats.FrameStats#this" data-isabs="false">
+      <a id="this:FrameStats[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">FrameStats</span><span class="params">(<span name="frame">frame: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">frame</dt><dd class="cmt"><p>The frame to enrich</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.stats.FrameStats#S2Stats" data-isabs="false">
+      <a id="S2Stats:(org.saddle.Series[_, T]) ⇒ VecStats[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">S2Stats</span><span class="result"> = (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#count" data-isabs="false">
+      <a id="count((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">count</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Count of the elements of each column, ignoring NA values
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#countif" data-isabs="false">
+      <a id="countif((T) ⇒ Boolean)((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">countif</span><span class="params">(<span name="test">test: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Conditional count of the elements of each column, ignoring NA values</p><div class="fullcomment"><div class="comment cmt"><p>Conditional count of the elements of each column, ignoring NA values</p></div><dl class="paramcmts block"><dt class="param">test</dt><dd class="cmt"><p>Function predicate to utilize in count, T =&gt; Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#cumCount" data-isabs="false">
+      <a id="cumCount((Vec[T]) ⇒ VecExpandingStats[T]):Frame[RX, CX, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cumCount</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecExpandingStats" class="extype" href="VecExpandingStats.html">VecExpandingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Cumulative count for each column; each successive element of the output is the cumulative
+count from the initial element, ignoring NAs.</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#cumMax" data-isabs="false">
+      <a id="cumMax((Vec[T]) ⇒ VecExpandingStats[T]):Frame[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cumMax</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecExpandingStats" class="extype" href="VecExpandingStats.html">VecExpandingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Cumulative max for each column; each successive element of the output is the cumulative
+max from the initial element, ignoring NAs.</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#cumMin" data-isabs="false">
+      <a id="cumMin((Vec[T]) ⇒ VecExpandingStats[T]):Frame[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cumMin</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecExpandingStats" class="extype" href="VecExpandingStats.html">VecExpandingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Cumulative min for each column; each successive element of the output is the cumulative
+min from the initial element, ignoring NAs.</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#cumProd" data-isabs="false">
+      <a id="cumProd((Vec[T]) ⇒ VecExpandingStats[T]):Frame[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cumProd</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecExpandingStats" class="extype" href="VecExpandingStats.html">VecExpandingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Cumulative product for each column; each successive element of the output is the cumulative
+product from the initial element, ignoring NAs.</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#cumSum" data-isabs="false">
+      <a id="cumSum((Vec[T]) ⇒ VecExpandingStats[T]):Frame[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cumSum</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecExpandingStats" class="extype" href="VecExpandingStats.html">VecExpandingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Cumulative sum for each column; each successive element of the output is the cumulative
+sum from the initial element, ignoring NAs.</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#demeaned" data-isabs="false">
+      <a id="demeaned((Vec[T]) ⇒ VecStats[T]):Frame[RX, CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">demeaned</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Demean each column in the frame
+</p>
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#geomean" data-isabs="false">
+      <a id="geomean((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">geomean</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Geometric mean of each column
+</p>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#kurt" data-isabs="false">
+      <a id="kurt((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">kurt</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sample kurtosis of each column
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#logsum" data-isabs="false">
+      <a id="logsum((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">logsum</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sum of the natural logs of the elements of each column, ignoring NA values.</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#max" data-isabs="false">
+      <a id="max((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">max</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Max of the elements of each column, ignoring NA values
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#mean" data-isabs="false">
+      <a id="mean((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mean</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sample mean of each column
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#median" data-isabs="false">
+      <a id="median((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">median</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Median of each column
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#min" data-isabs="false">
+      <a id="min((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">min</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Min of the elements of each column, ignoring NA values
+</p>
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#prod" data-isabs="false">
+      <a id="prod((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">prod</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Product of the elements of each column, ignoring NA values
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#rollingCount" data-isabs="false">
+      <a id="rollingCount(Int)((Vec[T]) ⇒ VecRollingStats[T]):Frame[RX, CX, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rollingCount</span><span class="params">(<span name="winSz">winSz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecRollingStats" class="extype" href="VecRollingStats.html">VecRollingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Rolling count; compute count of number of elements in columns of Frame over a sliding window, ignoring
+any NA values.</p><div class="fullcomment"><div class="comment cmt"><p>Rolling count; compute count of number of elements in columns of Frame over a sliding window, ignoring
+any NA values.</p></div><dl class="paramcmts block"><dt class="param">winSz</dt><dd class="cmt"><p>Size of the rolling window
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#rollingMean" data-isabs="false">
+      <a id="rollingMean(Int)((Vec[T]) ⇒ VecRollingStats[T]):Frame[RX, CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rollingMean</span><span class="params">(<span name="winSz">winSz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecRollingStats" class="extype" href="VecRollingStats.html">VecRollingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Rolling mean; compute mean of elements in columns of Frame over a sliding window, ignoring any NA
+values.</p><div class="fullcomment"><div class="comment cmt"><p>Rolling mean; compute mean of elements in columns of Frame over a sliding window, ignoring any NA
+values.</p></div><dl class="paramcmts block"><dt class="param">winSz</dt><dd class="cmt"><p>Size of the sliding window
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#rollingMedian" data-isabs="false">
+      <a id="rollingMedian(Int)((Vec[T]) ⇒ VecRollingStats[T]):Frame[RX, CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rollingMedian</span><span class="params">(<span name="winSz">winSz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecRollingStats" class="extype" href="VecRollingStats.html">VecRollingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Rolling median; compute median of elements in columns of Frame over a sliding window, ignoring any NA
+values.</p><div class="fullcomment"><div class="comment cmt"><p>Rolling median; compute median of elements in columns of Frame over a sliding window, ignoring any NA
+values.</p></div><dl class="paramcmts block"><dt class="param">winSz</dt><dd class="cmt"><p>Size of the sliding window
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#rollingSum" data-isabs="false">
+      <a id="rollingSum(Int)((Vec[T]) ⇒ VecRollingStats[T]):Frame[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rollingSum</span><span class="params">(<span name="winSz">winSz: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[T]) ⇒ <a name="org.saddle.stats.VecRollingStats" class="extype" href="VecRollingStats.html">VecRollingStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>[RX, CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Rolling sum; compute sum of elements in columns of Frame over a sliding window, ignoring any NA
+values.</p><div class="fullcomment"><div class="comment cmt"><p>Rolling sum; compute sum of elements in columns of Frame over a sliding window, ignoring any NA
+values.</p></div><dl class="paramcmts block"><dt class="param">winSz</dt><dd class="cmt"><p>Size of the sliding window
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#skew" data-isabs="false">
+      <a id="skew((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">skew</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sample skewness of each column
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#stdev" data-isabs="false">
+      <a id="stdev((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stdev</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sample standard deviation of each column
+</p>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#sum" data-isabs="false">
+      <a id="sum((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sum</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sum of the elements of each column, ignoring NA values
+</p>
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats.FrameStats#variance" data-isabs="false">
+      <a id="variance((org.saddle.Series[_, T]) ⇒ VecStats[T]):Series[CX, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">variance</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: (org.saddle.Series[_, T]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="VecStats.html">VecStats</a>[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>[CX, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sample variance of each column
+</p>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

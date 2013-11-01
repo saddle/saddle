@@ -1,0 +1,532 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.ops</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a></p>
+        <h1>ops</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ops</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Provides type aliases for a few basic operations
+</p></div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.ops.Add" data-isabs="true">
+      <a id="Add:Add"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Add.html"><span class="name">Add</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.package#AddOp" data-isabs="false">
+      <a id="AddOp:AddOp[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">AddOp</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>, T, T, T]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.AndOp" data-isabs="true">
+      <a id="AndOp:AndOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AndOp.html"><span class="name">AndOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp" data-isabs="true">
+      <a id="BinOp:BinOp[O, X, Y, Z]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOp.html"><span class="name">BinOp</span></a><span class="tparams">[<span name="O">O &lt;: OpType</span>, <span name="X">-X</span>, <span name="Y">-Y</span>, <span name="Z">+Z</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Concrete implementations of BinOp provide primitive-specialized support for performing
+binary operations on elements of the following objects, as well as the objects themselves:</p>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpFrame" data-isabs="true">
+      <a id="BinOpFrame:BinOpFrame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOpFrame.html"><span class="name">BinOpFrame</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides concrete implementations of binary operations for <a name="org.saddle.Frame" class="extype" href="../Frame.html">Frame</a>; these
+instances provide implicit support for <a name="org.saddle.ops.NumericOps" class="extype" href="NumericOps.html">NumericOps</a> methods which are
+inherited by Frame.</p>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpMat" data-isabs="true">
+      <a id="BinOpMat:BinOpMat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOpMat.html"><span class="name">BinOpMat</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides concrete implementations of binary operations for <a name="org.saddle.Mat" class="extype" href="../Mat.html">Mat</a>; these
+instances provide implicit support for <a name="org.saddle.ops.NumericOps" class="extype" href="NumericOps.html">NumericOps</a> methods which are
+inherited by Mat.</p>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpSeries" data-isabs="true">
+      <a id="BinOpSeries:BinOpSeries"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOpSeries.html"><span class="name">BinOpSeries</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides concrete implementations of binary operations for <a name="org.saddle.Series" class="extype" href="../Series.html">Series</a>; these
+instances provide implicit support for <a name="org.saddle.ops.NumericOps" class="extype" href="NumericOps.html">NumericOps</a> methods which are
+inherited by Series.</p>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec" data-isabs="true">
+      <a id="BinOpVec:BinOpVec"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOpVec.html"><span class="name">BinOpVec</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides concrete implementations of binary operations for <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>; these
+instances provide implicit support for <a name="org.saddle.ops.NumericOps" class="extype" href="NumericOps.html">NumericOps</a> methods which are
+inherited by Vec.</p>
+    </li><li visbl="pub" name="org.saddle.ops.BitAnd" data-isabs="true">
+      <a id="BitAnd:BitAnd"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BitAnd.html"><span class="name">BitAnd</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BitOr" data-isabs="true">
+      <a id="BitOr:BitOr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BitOr.html"><span class="name">BitOr</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BitShl" data-isabs="true">
+      <a id="BitShl:BitShl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BitShl.html"><span class="name">BitShl</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BitShr" data-isabs="true">
+      <a id="BitShr:BitShr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BitShr.html"><span class="name">BitShr</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BitUShr" data-isabs="true">
+      <a id="BitUShr:BitUShr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BitUShr.html"><span class="name">BitUShr</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BitXor" data-isabs="true">
+      <a id="BitXor:BitXor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BitXor.html"><span class="name">BitXor</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.package#DivOp" data-isabs="false">
+      <a id="DivOp:DivOp[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">DivOp</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>, T, T, T]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.Divide" data-isabs="true">
+      <a id="Divide:Divide"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Divide.html"><span class="name">Divide</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.EqOp" data-isabs="true">
+      <a id="EqOp:EqOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="EqOp.html"><span class="name">EqOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.GtOp" data-isabs="true">
+      <a id="GtOp:GtOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="GtOp.html"><span class="name">GtOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.GteOp" data-isabs="true">
+      <a id="GteOp:GteOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="GteOp.html"><span class="name">GteOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.InnerProd" data-isabs="true">
+      <a id="InnerProd:InnerProd"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="InnerProd.html"><span class="name">InnerProd</span></a><span class="result"> extends MatrixOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.LtOp" data-isabs="true">
+      <a id="LtOp:LtOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LtOp.html"><span class="name">LtOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.LteOp" data-isabs="true">
+      <a id="LteOp:LteOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LteOp.html"><span class="name">LteOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.MatrixOp" data-isabs="true">
+      <a id="MatrixOp:MatrixOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="MatrixOp.html"><span class="name">MatrixOp</span></a><span class="result"> extends OpType</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.Mod" data-isabs="true">
+      <a id="Mod:Mod"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Mod.html"><span class="name">Mod</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.package#MulOp" data-isabs="false">
+      <a id="MulOp:MulOp[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">MulOp</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>, T, T, T]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.Multiply" data-isabs="true">
+      <a id="Multiply:Multiply"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Multiply.html"><span class="name">Multiply</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.NeqOp" data-isabs="true">
+      <a id="NeqOp:NeqOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="NeqOp.html"><span class="name">NeqOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps" data-isabs="true">
+      <a id="NumericOps:NumericOps[This]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="NumericOps.html"><span class="name">NumericOps</span></a><span class="tparams">[<span name="This">+This</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">NumericOps provides a mix-in trait for mathematical objects, which in Saddle
+include:</p>
+    </li><li visbl="pub" name="org.saddle.ops.OpType" data-isabs="true">
+      <a id="OpType:OpType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="OpType.html"><span class="name">OpType</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">All operations on Saddle objects are defined via instances of subtypes
+of the trait OpType.</p>
+    </li><li visbl="pub" name="org.saddle.ops.OrOp" data-isabs="true">
+      <a id="OrOp:OrOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="OrOp.html"><span class="name">OrOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.OuterProd" data-isabs="true">
+      <a id="OuterProd:OuterProd"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="OuterProd.html"><span class="name">OuterProd</span></a><span class="result"> extends MatrixOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.Power" data-isabs="true">
+      <a id="Power:Power"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Power.html"><span class="name">Power</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.ScalarOp" data-isabs="true">
+      <a id="ScalarOp:ScalarOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarOp.html"><span class="name">ScalarOp</span></a><span class="result"> extends OpType</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.package#SubOp" data-isabs="false">
+      <a id="SubOp:SubOp[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">SubOp</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>, T, T, T]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.Subtract" data-isabs="true">
+      <a id="Subtract:Subtract"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Subtract.html"><span class="name">Subtract</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.XorOp" data-isabs="true">
+      <a id="XorOp:XorOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="XorOp.html"><span class="name">XorOp</span></a><span class="result"> extends ScalarOp</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.saddle.ops.BinOp" data-isabs="false">
+      <a id="BinOp:BinOp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BinOp$.html"><span class="name">BinOp</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Contains implementations of primitive binary ops that are NA-aware</p>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

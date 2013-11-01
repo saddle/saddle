@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.scalar</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a></p>
+        <h1>scalar</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scalar</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.scalar.CouldBeNumber" data-isabs="true">
+      <a id="CouldBeNumber:CouldBeNumber[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CouldBeNumber.html"><span class="name">CouldBeNumber</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.CouldBeOrdered" data-isabs="true">
+      <a id="CouldBeOrdered:CouldBeOrdered[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CouldBeOrdered.html"><span class="name">CouldBeOrdered</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.Scalar" data-isabs="true">
+      <a id="Scalar:Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Scalar.html"><span class="name">Scalar</span></a><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Scalar wrapper for a single element of a vector-like container.</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarHelperOps" data-isabs="true">
+      <a id="ScalarHelperOps:ScalarHelperOps[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarHelperOps.html"><span class="name">ScalarHelperOps</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTag" data-isabs="true">
+      <a id="ScalarTag:ScalarTag[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTag.html"><span class="name">ScalarTag</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends ClassManifest[T] with SpecializedFactory[T] with CouldBeOrdered[T] with CouldBeNumber[T] with ScalarHelperOps[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Typeclass definition for scalar tags.</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagAny" data-isabs="false">
+      <a id="ScalarTagAny:ScalarTagAny[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagAny.html"><span class="name">ScalarTagAny</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends ScalarTag[T]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagImplicits" data-isabs="true">
+      <a id="ScalarTagImplicits:ScalarTagImplicits"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagImplicits.html"><span class="name">ScalarTagImplicits</span></a><span class="result"> extends ScalarTagImplicitsL1</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagImplicitsL1" data-isabs="true">
+      <a id="ScalarTagImplicitsL1:ScalarTagImplicitsL1"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagImplicitsL1.html"><span class="name">ScalarTagImplicitsL1</span></a><span class="result"> extends ScalarTagImplicitsL2</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagImplicitsL2" data-isabs="true">
+      <a id="ScalarTagImplicitsL2:ScalarTagImplicitsL2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagImplicitsL2.html"><span class="name">ScalarTagImplicitsL2</span></a><span class="result"> extends ScalarTagImplicitsL3</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagImplicitsL3" data-isabs="true">
+      <a id="ScalarTagImplicitsL3:ScalarTagImplicitsL3"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagImplicitsL3.html"><span class="name">ScalarTagImplicitsL3</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagProduct" data-isabs="false">
+      <a id="ScalarTagProduct:ScalarTagProduct[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagProduct.html"><span class="name">ScalarTagProduct</span></a><span class="tparams">[<span name="T">T &lt;: Product</span>]</span><span class="result"> extends ScalarTagAny[T]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.SpecializedFactory" data-isabs="true">
+      <a id="SpecializedFactory:SpecializedFactory[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="SpecializedFactory.html"><span class="name">SpecializedFactory</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.Value" data-isabs="false">
+      <a id="Value:Value[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Value.html"><span class="name">Value</span></a><span class="tparams">[<span name="T">+T</span>]</span><span class="params">(<span name="el">el: T</span>, <span name="evidence$6">evidence$6: ST[T]</span>)</span><span class="result"> extends Scalar[T] with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.saddle.scalar.NA" data-isabs="false">
+      <a id="NA:NA"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NA$.html"><span class="name">NA</span></a><span class="result"> extends Scalar[Nothing] with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.Scalar" data-isabs="false">
+      <a id="Scalar:Scalar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Scalar$.html"><span class="name">Scalar</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTag" data-isabs="false">
+      <a id="ScalarTag:ScalarTag"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTag$.html"><span class="name">ScalarTag</span></a><span class="result"> extends ScalarTagImplicits with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagBool" data-isabs="false">
+      <a id="ScalarTagBool:ScalarTagBool"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagBool$.html"><span class="name">ScalarTagBool</span></a><span class="result"> extends ScalarTag[Boolean]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Boolean ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagByte" data-isabs="false">
+      <a id="ScalarTagByte:ScalarTagByte"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagByte$.html"><span class="name">ScalarTagByte</span></a><span class="result"> extends ScalarTagAny[Byte]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Byte ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagChar" data-isabs="false">
+      <a id="ScalarTagChar:ScalarTagChar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagChar$.html"><span class="name">ScalarTagChar</span></a><span class="result"> extends ScalarTagAny[Char]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Char ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagDouble" data-isabs="false">
+      <a id="ScalarTagDouble:ScalarTagDouble"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagDouble$.html"><span class="name">ScalarTagDouble</span></a><span class="result"> extends ScalarTag[Double]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Double ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagFloat" data-isabs="false">
+      <a id="ScalarTagFloat:ScalarTagFloat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagFloat$.html"><span class="name">ScalarTagFloat</span></a><span class="result"> extends ScalarTagAny[Float]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Float ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagInt" data-isabs="false">
+      <a id="ScalarTagInt:ScalarTagInt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagInt$.html"><span class="name">ScalarTagInt</span></a><span class="result"> extends ScalarTag[Int]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Int ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagLong" data-isabs="false">
+      <a id="ScalarTagLong:ScalarTagLong"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagLong$.html"><span class="name">ScalarTagLong</span></a><span class="result"> extends ScalarTag[Long]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Long ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagShort" data-isabs="false">
+      <a id="ScalarTagShort:ScalarTagShort"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagShort$.html"><span class="name">ScalarTagShort</span></a><span class="result"> extends ScalarTagAny[Short]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Short ScalarTag
+</p>
+    </li><li visbl="pub" name="org.saddle.scalar.ScalarTagTime" data-isabs="false">
+      <a id="ScalarTagTime:ScalarTagTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ScalarTagTime$.html"><span class="name">ScalarTagTime</span></a><span class="result"> extends ScalarTagAny[DateTime]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">DateTime ScalarTag
+</p>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

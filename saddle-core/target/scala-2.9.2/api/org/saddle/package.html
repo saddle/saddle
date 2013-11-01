@@ -1,0 +1,643 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../lib/template.css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <img src="../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../package.html">org</a></p>
+        <h1>saddle</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">saddle</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><h4> Saddle </h4><p>Saddle is a <b>S</b>cala <b>D</b>ata <b>L</b>ibrary.</p><p>Saddle provides array-backed, indexed one- and two-dimensional data structures.</p><p>These data structures are specialized on JVM primitives. With them one can often avoid
+the overhead of boxing and unboxing.</p><p>Basic operations also aim to be robust to missing values (NA's)</p><p>The building blocks are intended to be easily composed.</p><p>Additionally, there are some numerical utilities: eg, a fast suite of <a name="org.saddle.util.Random" class="extype" href="util/Random.html">Random</a>
+number generators).</p><p>The foundational building blocks are:</p><ul><li><a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a></li><li><a name="org.saddle.Mat" class="extype" href="Mat.html">Mat</a></li><li><a name="org.saddle.Index" class="extype" href="Index.html">Index</a></li><li><a name="org.saddle.Series" class="extype" href="Series.html">Series</a></li><li><a name="org.saddle.Frame" class="extype" href="Frame.html">Frame</a></li></ul><p>Inspiration for Saddle comes from many sources, including the R programming language, the
+pandas data analysis library for Python, and the Scala collections library.
+</p></div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.Buffer" data-isabs="true">
+      <a id="Buffer:Buffer[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Buffer.html"><span class="name">Buffer</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Buffer provides a mutable data structure specialized on several primitive types.</p>
+    </li><li visbl="pub" name="org.saddle.package#CLM" data-isabs="false">
+      <a id="CLM:CLM[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">CLM</span><span class="tparams">[<span name="C">C</span>]</span><span class="result"> = <span name="scala.reflect.ClassManifest" class="extype">ClassManifest</span>[C]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Shorthand for class manifest typeclass
+</p><div class="fullcomment"><div class="comment cmt"><p>Shorthand for class manifest typeclass
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Frame" data-isabs="false">
+      <a id="Frame:Frame[RX, CX, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Frame.html"><span class="name">Frame</span></a><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends NumericOps[Frame[RX, CX, T]]</span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>Frame</code> is an immutable container for 2D data which is indexed along both axes
+(rows, columns) by associated keys (i.</p>
+    </li><li visbl="pub" name="org.saddle.Index" data-isabs="true">
+      <a id="Index:Index[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Index.html"><span class="name">Index</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Index provides a constant-time look-up of a value within array-backed storage,
+as well as operations to support joining and slicing.</p>
+    </li><li visbl="pub" name="org.saddle.Mat" data-isabs="true">
+      <a id="Mat:Mat[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Mat.html"><span class="name">Mat</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends NumericOps[Mat[A]]</span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>Mat</code> is an immutable container for 2D homogeneous data (a &quot;matrix&quot;).</p>
+    </li><li visbl="pub" name="org.saddle.package#NUM" data-isabs="false">
+      <a id="NUM:NUM[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">NUM</span><span class="tparams">[<span name="C">C</span>]</span><span class="result"> = <span name="scala.math.Numeric" class="extype">Numeric</span>[C]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Shorthand for numeric typeclass
+</p><div class="fullcomment"><div class="comment cmt"><p>Shorthand for numeric typeclass
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#ORD" data-isabs="false">
+      <a id="ORD:ORD[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ORD</span><span class="tparams">[<span name="C">C</span>]</span><span class="result"> = <span name="scala.math.Ordering" class="extype">Ordering</span>[C]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Shorthand for ordering typeclass
+</p><div class="fullcomment"><div class="comment cmt"><p>Shorthand for ordering typeclass
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#ST" data-isabs="false">
+      <a id="ST:ST[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ST</span><span class="tparams">[<span name="C">C</span>]</span><span class="result"> = <a name="org.saddle.scalar.ScalarTag" class="extype" href="scalar/ScalarTag.html">ScalarTag</a>[C]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Shorthand for scalar tag typeclass
+</p><div class="fullcomment"><div class="comment cmt"><p>Shorthand for scalar tag typeclass
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series" data-isabs="false">
+      <a id="Series:Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Series.html"><span class="name">Series</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends NumericOps[Series[X, T]]</span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>Series</code> is an immutable container for 1D homogeneous data which is indexed by a
+an associated sequence of keys.</p>
+    </li><li visbl="pub" name="org.saddle.Vec" data-isabs="true">
+      <a id="Vec:Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Vec.html"><span class="name">Vec</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends NumericOps[Vec[T]]</span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>Vec</code> is an immutable container for 1D homogeneous data (a &quot;vector&quot;).</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.saddle.package#*" data-isabs="false">
+      <a id="*:SliceAll"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $times">*</span><span class="result">: <a name="org.saddle.index.SliceAll" class="extype" href="index/SliceAll.html">SliceAll</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Syntactic sugar, placeholder for 'slice-all'</p><div class="fullcomment"><div class="comment cmt"><p>Syntactic sugar, placeholder for 'slice-all'</p><pre>
+  <span class="kw">val</span> v = Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>, <span class="num">4</span>)
+  <span class="kw">val</span> u = v(*)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Buffer" data-isabs="false">
+      <a id="Buffer:Buffer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Buffer$.html"><span class="name">Buffer</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.Frame" data-isabs="false">
+      <a id="Frame:Frame"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Frame$.html"><span class="name">Frame</span></a><span class="result"> extends BinOpFrame</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.Index" data-isabs="false">
+      <a id="Index:Index"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Index$.html"><span class="name">Index</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.Mat" data-isabs="false">
+      <a id="Mat:Mat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Mat$.html"><span class="name">Mat</span></a><span class="result"> extends BinOpMat</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.Panel" data-isabs="false">
+      <a id="Panel:Panel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Panel$.html"><span class="name">Panel</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Convenience constructors for a Frame[RX, CX, Any] that accept arbitrarily-typed Vectors
+and Series as constructor parameters, leaving their internal representations unchanged.</p>
+    </li><li visbl="pub" name="org.saddle.Series" data-isabs="false">
+      <a id="Series:Series"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Series$.html"><span class="name">Series</span></a><span class="result"> extends BinOpSeries</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.package#UTF8" data-isabs="false">
+      <a id="UTF8:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">UTF8</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Constant used in string byte-level manipulation
+</p><div class="fullcomment"><div class="comment cmt"><p>Constant used in string byte-level manipulation
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec" data-isabs="false">
+      <a id="Vec:Vec"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Vec$.html"><span class="name">Vec</span></a><span class="result"> extends BinOpVec with VecStatsImplicits with VecBoolEnricher</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.array" data-isabs="false">
+      <a id="array:array"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="array/package.html"><span class="name">array</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">This package contains utilities for working with arrays that
+are specialized for numeric types.</p>
+    </li><li visbl="pub" name="org.saddle.buffer" data-isabs="false">
+      <a id="buffer:buffer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="buffer/package.html"><span class="name">buffer</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.package#clock" data-isabs="false">
+      <a id="clock[T](⇒ T):(Double, T)"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clock</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="op">op: ⇒ T</span>)</span><span class="result">: (<span name="scala.Double" class="extype">Double</span>, T)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Allow timing of an operation</p><div class="fullcomment"><div class="comment cmt"><p>Allow timing of an operation</p><pre>
+  clock { bigMat.T dot bigMat }
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.groupby" data-isabs="false">
+      <a id="groupby:groupby"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="groupby/package.html"><span class="name">groupby</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.index" data-isabs="false">
+      <a id="index:index"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="index/package.html"><span class="name">index</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.io" data-isabs="false">
+      <a id="io:io"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="io/package.html"><span class="name">io</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.locator" data-isabs="false">
+      <a id="locator:locator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="locator/package.html"><span class="name">locator</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.mat" data-isabs="false">
+      <a id="mat:mat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="mat/package.html"><span class="name">mat</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.package.na" data-isabs="false">
+      <a id="na:na"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="package$$na$.html"><span class="name">na</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>na</code> provides syntactic sugar for constructing primitives recognized as NA.</p>
+    </li><li visbl="pub" name="org.saddle.ops" data-isabs="false">
+      <a id="ops:ops"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="ops/package.html"><span class="name">ops</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides type aliases for a few basic operations
+</p>
+    </li><li visbl="pub" name="org.saddle.package#pair2Slice" data-isabs="false">
+      <a id="pair2Slice[T]((T, T)):SliceDefault[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair2Slice</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: (T, T)</span>)</span><span class="result">: <a name="org.saddle.index.SliceDefault" class="extype" href="index/SliceDefault.html">SliceDefault</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Syntactic sugar, allow '-&gt;' to generate an (inclusive) index slice</p><div class="fullcomment"><div class="comment cmt"><p>Syntactic sugar, allow '-&gt;' to generate an (inclusive) index slice</p><pre>
+  <span class="kw">val</span> v = Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>)
+  <span class="kw">val</span> u = v(<span class="num">0</span> -&gt; <span class="num">2</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#pair2SliceFrom" data-isabs="false">
+      <a id="pair2SliceFrom[T]((T, SliceAll)):SliceFrom[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair2SliceFrom</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: (T, <a name="org.saddle.index.SliceAll" class="extype" href="index/SliceAll.html">SliceAll</a>)</span>)</span><span class="result">: <a name="org.saddle.index.SliceFrom" class="extype" href="index/SliceFrom.html">SliceFrom</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Syntactic sugar, allow ' -&gt; *' to generate an (inclusive) index slice, open on right</p><div class="fullcomment"><div class="comment cmt"><p>Syntactic sugar, allow ' -&gt; *' to generate an (inclusive) index slice, open on right</p><pre>
+  <span class="kw">val</span> v = Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>)
+  <span class="kw">val</span> u = v(<span class="num">1</span> -&gt; *)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#pair2SliceSingle" data-isabs="false">
+      <a id="pair2SliceSingle[T](T):SliceDefault[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair2SliceSingle</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="k">k: T</span>)</span><span class="result">: <a name="org.saddle.index.SliceDefault" class="extype" href="index/SliceDefault.html">SliceDefault</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Provides for one-element slicing, e.</p><div class="fullcomment"><div class="comment cmt"><p>Provides for one-element slicing, e.g.</p><pre>
+  <span class="kw">val</span> v = Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>, <span class="num">4</span>)
+  <span class="kw">val</span> u = v(<span class="num">1</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#pair2SliceTo" data-isabs="false">
+      <a id="pair2SliceTo[T]((SliceAll, T)):SliceTo[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pair2SliceTo</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: (<a name="org.saddle.index.SliceAll" class="extype" href="index/SliceAll.html">SliceAll</a>, T)</span>)</span><span class="result">: <a name="org.saddle.index.SliceTo" class="extype" href="index/SliceTo.html">SliceTo</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Syntactic sugar, allow '* -&gt; ' to generate an (inclusive) index slice, open on left</p><div class="fullcomment"><div class="comment cmt"><p>Syntactic sugar, allow '* -&gt; ' to generate an (inclusive) index slice, open on left</p><pre>
+  <span class="kw">val</span> v = Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>)
+  <span class="kw">val</span> u = v(* -&gt; <span class="num">2</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.scalar" data-isabs="false">
+      <a id="scalar:scalar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="scalar/package.html"><span class="name">scalar</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.package#seqToFrame" data-isabs="false">
+      <a id="seqToFrame[RX, CX, T](Seq[(RX, CX, T)])(ST[RX],ORD[RX],ST[CX],ORD[CX],ST[T]):AnyRef { def toFrame: org.saddle.Frame[RX,CX,T] }"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">seqToFrame</span><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="params">(<span name="s">s: Seq[(RX, CX, T)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[RX]</span>, <span name="arg1">arg1: ORD[RX]</span>, <span name="arg2">arg2: ST[CX]</span>, <span name="arg3">arg3: ORD[CX]</span>, <span name="arg4">arg4: ST[T]</span>)</span><span class="result">: AnyRef { def toFrame: org.saddle.Frame[RX,CX,T] }</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Augments Seq with a toFrame method that returns a new Frame instance.</p><div class="fullcomment"><div class="comment cmt"><p>Augments Seq with a toFrame method that returns a new Frame instance.</p><p>For example,</p><pre>
+  <span class="kw">val</span> t = IndexedSeq((<span class="lit">"a"</span>, <span class="lit">"x"</span>, <span class="num">3</span>), (<span class="lit">"b"</span>, <span class="lit">"y"</span>, <span class="num">4</span>))
+  <span class="kw">val</span> f = t.toFrame
+
+  res0: org.saddle.Frame[java.lang.<span class="std">String</span>,java.lang.<span class="std">String</span>,<span class="std">Int</span>] =
+  [<span class="num">2</span> x <span class="num">2</span>]
+        x  y
+       -- --
+  a -&gt;  <span class="num">3</span> NA
+  b -&gt; NA  <span class="num">4</span>
+</pre></div><dl class="paramcmts block"><dt class="tparam">RX</dt><dd class="cmt"><p>Type of row index elements of Frame</p></dd><dt class="tparam">CX</dt><dd class="cmt"><p>Type of col index elements of Frame
+</p></dd><dt class="tparam">T</dt><dd class="cmt"><p>Type of data elements of Frame</p></dd><dt class="param">s</dt><dd class="cmt"><p>A value of type Seq[(RX, CX, T)]</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#seqToIndex" data-isabs="false">
+      <a id="seqToIndex[X](Seq[X])(ST[X],ORD[X]):AnyRef { def toIndex: org.saddle.Index[X] }"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">seqToIndex</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="ix">ix: Seq[X]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[X]</span>, <span name="arg1">arg1: ORD[X]</span>)</span><span class="result">: AnyRef { def toIndex: org.saddle.Index[X] }</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Augments Seq with a toIndex method that returns a new Index instance.</p><div class="fullcomment"><div class="comment cmt"><p>Augments Seq with a toIndex method that returns a new Index instance.</p><p>For example,</p><pre>
+  <span class="kw">val</span> i = IndexedSeq(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>)
+  <span class="kw">val</span> s = i.toIndex
+</pre></div><dl class="paramcmts block"><dt class="tparam">X</dt><dd class="cmt"><p>Type of index elements
+</p></dd><dt class="param">ix</dt><dd class="cmt"><p>A value of type Seq[X]</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#seqToSeries" data-isabs="false">
+      <a id="seqToSeries[T, X](Seq[(X, T)])(ST[T],ST[X],ORD[X]):AnyRef { def toSeries: org.saddle.Series[X,T] }"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">seqToSeries</span><span class="tparams">[<span name="T">T</span>, <span name="X">X</span>]</span><span class="params">(<span name="s">s: Seq[(X, T)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>, <span name="arg1">arg1: ST[X]</span>, <span name="arg2">arg2: ORD[X]</span>)</span><span class="result">: AnyRef { def toSeries: org.saddle.Series[X,T] }</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Augments Seq with a toSeries method that returns a new Series instance.</p><div class="fullcomment"><div class="comment cmt"><p>Augments Seq with a toSeries method that returns a new Series instance.</p><p>For example,</p><pre>
+  <span class="kw">val</span> p = IndexedSeq(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>) zip IndexedSeq(<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>)
+  <span class="kw">val</span> s = p.toSeries
+</pre></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Type of data elements of Series</p></dd><dt class="tparam">X</dt><dd class="cmt"><p>Type of index elements of Series
+</p></dd><dt class="param">s</dt><dd class="cmt"><p>A value of type Seq[(X, T)]</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.package#seqToVec" data-isabs="false">
+      <a id="seqToVec[T](Seq[T])(ST[T]):AnyRef { def toVec: org.saddle.Vec[T] }"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">seqToVec</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="s">s: Seq[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: AnyRef { def toVec: org.saddle.Vec[T] }</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Augments Seq with a toVec method that returns a new Vec instance.</p><div class="fullcomment"><div class="comment cmt"><p>Augments Seq with a toVec method that returns a new Vec instance.</p><p>For example,</p><pre>
+  <span class="kw">val</span> s = IndexedSeq(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>)
+  <span class="kw">val</span> v = s.toVec
+</pre></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Type of elements of Vec
+</p></dd><dt class="param">s</dt><dd class="cmt"><p>A value of type Seq[T]</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.stats" data-isabs="false">
+      <a id="stats:stats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="stats/package.html"><span class="name">stats</span></a>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.time" data-isabs="false">
+      <a id="time:time"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="time/package.html"><span class="name">time</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Functionality to assist in TimeSeries related operations
+</p>
+    </li><li visbl="pub" name="org.saddle.util" data-isabs="false">
+      <a id="util:util"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="util/package.html"><span class="name">util</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Additional utilities that need a home
+</p>
+    </li><li visbl="pub" name="org.saddle.vec" data-isabs="false">
+      <a id="vec:vec"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="vec/package.html"><span class="name">vec</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Factory methods to generate Vec instances
+</p>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

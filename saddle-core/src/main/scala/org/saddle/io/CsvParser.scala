@@ -18,7 +18,7 @@ package org.saddle.io
 
 import org.saddle._
 import collection.mutable.ArrayBuffer
-import java.util.concurrent.{Executors, Callable}
+import java.util.concurrent.Callable
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet
 
 /**
@@ -41,8 +41,6 @@ case class CsvParams(separChar: Char    = ',',
  * Csv parsing utilities
  */
 object CsvParser {
-  private val nProcs = java.lang.Runtime.getRuntime.availableProcessors()
-
   /**
    * Extract data from a CSV data source for populating a Frame.
    *
@@ -71,8 +69,6 @@ object CsvParser {
 
     require(params.separChar != params.quoteChar,
             "Separator character and quote character cannot be the same")
-
-    source.reset()
 
     // sorted, unique column locations to parse
     var locs = Set(cols : _*).toArray[Int].sorted
@@ -116,53 +112,6 @@ object CsvParser {
     val columns = bufdata map { b => Vec(b.toArray) }
 
     Frame(columns : _*).row(params.skipLines -> *)
-  }
-
-  /**
-   * Extract data from a CSV data source in parallel, producing data for creating a
-   * Frame.
-   *
-   * For example,
-   *
-   * {{{
-   *   val f = CsvFile("tmp.csv")
-   *   val data = CsvParser.parsePar(CsvParser.parseInt)(f)
-   *   ...
-   *   data.toFrame
-   * }}}
-   *
-   * @param cols The column offsets to parse (if empty, parse everything)
-   * @param params The CsvParams to utilize in parsing
-   */
-  def parsePar(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(src: CsvSourcePar): Frame[Int, Int, String] = {
-    val xserv = Executors.newFixedThreadPool(nProcs)           // create thread pool for N CPU bound threads
-
-    var results = IndexedSeq.empty[Vec[String]]
-
-    try {
-      // submit chunks to parse
-      val parseTasks = for ((chunk, i) <- src.getChunks(nProcs).zipWithIndex) yield {
-        xserv submit parseTask(chunk, cols, params.copy(hasHeader = i == 0 && params.hasHeader))
-      }
-
-      val chunks = parseTasks.map(_.get())                     // wait on, retrieve parse results
-
-      if (chunks(0).numCols > 0) {
-        val nRows = chunks.map(_.numRows).sum                  // total rows across all chunks
-
-        // submit chunks for combination
-        val combineTasks = for (i <- 0 until chunks(0).numCols) yield {
-          xserv submit combineTask(chunks, i, nRows)
-        }
-
-        results = combineTasks.map(_.get())                    // wait on, retrieve combine results
-      }
-    }
-    finally {
-      xserv.shutdown()
-    }
-
-    Frame(results : _*).row(params.skipLines -> *)
   }
 
   private def extractFields(line: String, callback: (String, Int) => Unit,
@@ -279,34 +228,6 @@ object CsvParser {
     }
 
     result.toArray
-  }
-
-  // a task that parses a chunk, returns some ParseData
-  private def parseTask(chunk: CsvSource, cols: Seq[Int], params: CsvParams) =
-    new Callable[Frame[Int, Int, String]] {
-      val csvpar = params.copy(skipLines = 0)
-      def call() = parse(cols, csvpar)(chunk)
-    }
-
-  // concatenates a single column within the ParseData chunks, returns joined Vec
-  private def combineTask(chunks: IndexedSeq[Frame[Int, Int, String]], col: Int, sz: Int) =
-    new Callable[Vec[String]] { def call() = concat(chunks.map { c => c.colAt(col).toVec }) }
-
-  // helper function to concatenate vecs of strings
-  private def concat(vecs: IndexedSeq[Vec[String]]): Vec[String] = {
-    val totL = vecs.foldLeft(0) { case (l, v) => l + v.length }
-    val arr = Array.ofDim[String](totL)
-    var i = 0
-    vecs.foreach { v =>
-      val len = v.length
-      var j = 0
-      while (j < len) {
-        arr(i) = v(j)
-        j += 1
-        i += 1
-      }
-    }
-    Vec(arr)
   }
 
   def parseInt(s: String) =

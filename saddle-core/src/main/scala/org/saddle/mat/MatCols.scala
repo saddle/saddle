@@ -24,7 +24,8 @@ import org.saddle.scalar._
  * 2D data for a Frame.
  */
 class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
-  require(cols.length < 2 || cols.forall(_.length == cols(0).length), "Vecs must all be the same length")
+  require(cols.length < 2 || cols.forall(_.length == cols(0).length),
+          "Vecs must all be the same length")
 
   def scalarTag = implicitly[ST[A]]
 

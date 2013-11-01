@@ -20,13 +20,5 @@ package org.saddle.io
  * Represents a csv data source to be parsed by [[org.saddle.io.CsvParser]]
  */
 trait CsvSource {
-  def reset()
   def readLine: String
-}
-
-/**
- * Represents a csv data source to be parsed in parallel by the [[org.saddle.io.CsvParser]]
- */
-trait CsvSourcePar {
-  def getChunks(n: Int): IndexedSeq[CsvSource]
 }

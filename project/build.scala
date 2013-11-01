@@ -27,8 +27,6 @@ object SaddleBuild extends sbt.Build {
             settings = Seq(
               /* 'console' in root acts as if in core. */
               console <<= (console in core in Compile) { identity },
-              /* so we can package up everything into deployable jar and invoke programs */
-              jarName in assembly <<= version.map { v => s"saddle-$v.jar" },
               assembleArtifact in packageScala := false,
               publishArtifact := false,
               mergeStrategy in assembly := {
@@ -108,7 +106,6 @@ object Shared {
 
   val settings = Seq(
     organization := "org.scala-saddle",
-    version := "1.3.3-SNAPSHOT",
     publishMavenStyle := true,
     publishArtifact in Test := false,
     pomIncludeRepository := { x => false },
@@ -142,6 +139,7 @@ object Shared {
       </developers>
     ),
     scalaVersion := "2.10.3",
+    version := "1.3.3-SNAPSHOT",
     crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.3"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
     shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },

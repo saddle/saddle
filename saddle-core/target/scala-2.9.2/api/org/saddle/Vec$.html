@@ -1,0 +1,1315 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.Vec</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../lib/template.css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <a title="Go to companion" href="Vec.html"><img src="../../lib/object_to_trait_big.png" /></a>
+        <p id="owner"><a name="org" class="extype" href="../package.html">org</a>.<a name="org.saddle" class="extype" href="package.html">saddle</a></p>
+        <h1><a title="Go to companion" href="Vec.html">Vec</a></h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Vec</span><span class="result"> extends <a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a> with <a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a> with <a name="org.saddle.vec.VecBoolEnricher" class="extype" href="vec/VecBoolEnricher.html">VecBoolEnricher</a></span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a name="org.saddle.vec.VecBoolEnricher" class="extype" href="vec/VecBoolEnricher.html">VecBoolEnricher</a>, <a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a>, <a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.Vec" class="in"><span>Vec</span></li><li name="org.saddle.vec.VecBoolEnricher" class="in"><span>VecBoolEnricher</span></li><li name="org.saddle.vec.VecStatsImplicits" class="in"><span>VecStatsImplicits</span></li><li name="org.saddle.ops.BinOpVec" class="in"><span>BinOpVec</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#Vec2Stats" data-isabs="false">
+      <a id="Vec2Stats:(Vec[A]) ⇒ VecStats[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Vec2Stats</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> = (<a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[A]) ⇒ <a name="org.saddle.stats.VecStats" class="extype" href="stats/VecStats.html">VecStats</a>[A]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec.VecSclrElemOp" data-isabs="false">
+      <a id="VecSclrElemOp:VecSclrElemOp[OP, A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ops/BinOpVec$VecSclrElemOp.html"><span class="name">VecSclrElemOp</span></a><span class="tparams">[<span name="OP">OP &lt;: ScalarOp</span>, <span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends BinOp[OP, Vec[A], B, Vec[C]]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec.VecVecDot" data-isabs="false">
+      <a id="VecVecDot:VecVecDot[A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ops/BinOpVec$VecVecDot.html"><span class="name">VecVecDot</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends BinOp[InnerProd, Vec[A], Vec[B], C]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec.VecVecElemOp" data-isabs="false">
+      <a id="VecVecElemOp:VecVecElemOp[OP, A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ops/BinOpVec$VecVecElemOp.html"><span class="name">VecVecElemOp</span></a><span class="tparams">[<span name="OP">OP &lt;: ScalarOp</span>, <span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends BinOp[OP, Vec[A], Vec[B], Vec[C]]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec.VecVecOuter" data-isabs="false">
+      <a id="VecVecOuter:VecVecOuter[A, B, C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ops/BinOpVec$VecVecOuter.html"><span class="name">VecVecOuter</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>, <span name="C">C</span>]</span><span class="result"> extends BinOp[OuterProd, Vec[A], Vec[B], Mat[C]]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpBBB" data-isabs="false">
+      <a id="VecSclrElmOpBBB[Op&lt;:ScalarOp](BinOp[Op, Boolean, Boolean, Boolean]):VecSclrElemOp[Op, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpBBB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpDDB" data-isabs="false">
+      <a id="VecSclrElmOpDDB[Op&lt;:ScalarOp](BinOp[Op, Double, Double, Boolean]):VecSclrElemOp[Op, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpDDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpDDD" data-isabs="false">
+      <a id="VecSclrElmOpDDD[Op&lt;:ScalarOp](BinOp[Op, Double, Double, Double]):VecSclrElemOp[Op, Double, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpDDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpDIB" data-isabs="false">
+      <a id="VecSclrElmOpDIB[Op&lt;:ScalarOp](BinOp[Op, Double, Int, Boolean]):VecSclrElemOp[Op, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpDIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpDID" data-isabs="false">
+      <a id="VecSclrElmOpDID[Op&lt;:ScalarOp](BinOp[Op, Double, Int, Double]):VecSclrElemOp[Op, Double, Int, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpDID</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpDLB" data-isabs="false">
+      <a id="VecSclrElmOpDLB[Op&lt;:ScalarOp](BinOp[Op, Double, Long, Boolean]):VecSclrElemOp[Op, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpDLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpDLD" data-isabs="false">
+      <a id="VecSclrElmOpDLD[Op&lt;:ScalarOp](BinOp[Op, Double, Long, Double]):VecSclrElemOp[Op, Double, Long, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpDLD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpIDB" data-isabs="false">
+      <a id="VecSclrElmOpIDB[Op&lt;:ScalarOp](BinOp[Op, Int, Double, Boolean]):VecSclrElemOp[Op, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpIDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpIDD" data-isabs="false">
+      <a id="VecSclrElmOpIDD[Op&lt;:ScalarOp](BinOp[Op, Int, Double, Double]):VecSclrElemOp[Op, Int, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpIDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpIIB" data-isabs="false">
+      <a id="VecSclrElmOpIIB[Op&lt;:ScalarOp](BinOp[Op, Int, Int, Boolean]):VecSclrElemOp[Op, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpIIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpIII" data-isabs="false">
+      <a id="VecSclrElmOpIII[Op&lt;:ScalarOp](BinOp[Op, Int, Int, Int]):VecSclrElemOp[Op, Int, Int, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpIII</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpILB" data-isabs="false">
+      <a id="VecSclrElmOpILB[Op&lt;:ScalarOp](BinOp[Op, Int, Long, Boolean]):VecSclrElemOp[Op, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpILB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpILL" data-isabs="false">
+      <a id="VecSclrElmOpILL[Op&lt;:ScalarOp](BinOp[Op, Int, Long, Long]):VecSclrElemOp[Op, Int, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpILL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpLDB" data-isabs="false">
+      <a id="VecSclrElmOpLDB[Op&lt;:ScalarOp](BinOp[Op, Long, Double, Boolean]):VecSclrElemOp[Op, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpLDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpLDD" data-isabs="false">
+      <a id="VecSclrElmOpLDD[Op&lt;:ScalarOp](BinOp[Op, Long, Double, Double]):VecSclrElemOp[Op, Long, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpLDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpLIB" data-isabs="false">
+      <a id="VecSclrElmOpLIB[Op&lt;:ScalarOp](BinOp[Op, Long, Int, Boolean]):VecSclrElemOp[Op, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpLIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpLIL" data-isabs="false">
+      <a id="VecSclrElmOpLIL[Op&lt;:ScalarOp](BinOp[Op, Long, Int, Long]):VecSclrElemOp[Op, Long, Int, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpLIL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpLLB" data-isabs="false">
+      <a id="VecSclrElmOpLLB[Op&lt;:ScalarOp](BinOp[Op, Long, Long, Boolean]):VecSclrElemOp[Op, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpLLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecSclrElmOpLLL" data-isabs="false">
+      <a id="VecSclrElmOpLLL[Op&lt;:ScalarOp](BinOp[Op, Long, Long, Long]):VecSclrElemOp[Op, Long, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecSclrElmOpLLL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecSclrElemOp" class="extype" href="ops/BinOpVec$VecSclrElemOp.html">VecSclrElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpDDD" data-isabs="false">
+      <a id="VecVecDotOpDDD(BinOp[Add, Double, Double, Double],BinOp[Multiply, Double, Double, Double]):VecVecDot[Double, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpDDD</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpDID" data-isabs="false">
+      <a id="VecVecDotOpDID(BinOp[Add, Double, Double, Double],BinOp[Multiply, Double, Int, Double]):VecVecDot[Double, Int, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpDID</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpDLD" data-isabs="false">
+      <a id="VecVecDotOpDLD(BinOp[Add, Double, Double, Double],BinOp[Multiply, Double, Long, Double]):VecVecDot[Double, Long, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpDLD</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpIDD" data-isabs="false">
+      <a id="VecVecDotOpIDD(BinOp[Add, Double, Double, Double],BinOp[Multiply, Int, Double, Double]):VecVecDot[Int, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpIDD</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpIII" data-isabs="false">
+      <a id="VecVecDotOpIII(BinOp[Add, Int, Int, Int],BinOp[Multiply, Int, Int, Int]):VecVecDot[Int, Int, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpIII</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpILL" data-isabs="false">
+      <a id="VecVecDotOpILL(BinOp[Add, Long, Long, Long],BinOp[Multiply, Int, Long, Long]):VecVecDot[Int, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpILL</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpLDD" data-isabs="false">
+      <a id="VecVecDotOpLDD(BinOp[Add, Double, Double, Double],BinOp[Multiply, Long, Double, Double]):VecVecDot[Long, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpLDD</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpLIL" data-isabs="false">
+      <a id="VecVecDotOpLIL(BinOp[Add, Long, Long, Long],BinOp[Multiply, Long, Int, Long]):VecVecDot[Long, Int, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpLIL</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecDotOpLLL" data-isabs="false">
+      <a id="VecVecDotOpLLL(BinOp[Add, Long, Long, Long],BinOp[Multiply, Long, Long, Long]):VecVecDot[Long, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecDotOpLLL</span><span class="params">(<span class="implicit">implicit </span><span name="opA">opA: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>, <span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecDot" class="extype" href="ops/BinOpVec$VecVecDot.html">VecVecDot</a>[<span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpBBB" data-isabs="false">
+      <a id="VecVecElemOpBBB[Op&lt;:ScalarOp](BinOp[Op, Boolean, Boolean, Boolean]):VecVecElemOp[Op, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpBBB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpDDB" data-isabs="false">
+      <a id="VecVecElemOpDDB[Op&lt;:ScalarOp](BinOp[Op, Double, Double, Boolean]):VecVecElemOp[Op, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpDDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpDIB" data-isabs="false">
+      <a id="VecVecElemOpDIB[Op&lt;:ScalarOp](BinOp[Op, Double, Int, Boolean]):VecVecElemOp[Op, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpDIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpDLB" data-isabs="false">
+      <a id="VecVecElemOpDLB[Op&lt;:ScalarOp](BinOp[Op, Double, Long, Boolean]):VecVecElemOp[Op, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpDLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpIDB" data-isabs="false">
+      <a id="VecVecElemOpIDB[Op&lt;:ScalarOp](BinOp[Op, Int, Double, Boolean]):VecVecElemOp[Op, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpIDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpIIB" data-isabs="false">
+      <a id="VecVecElemOpIIB[Op&lt;:ScalarOp](BinOp[Op, Int, Int, Boolean]):VecVecElemOp[Op, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpIIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpILB" data-isabs="false">
+      <a id="VecVecElemOpILB[Op&lt;:ScalarOp](BinOp[Op, Int, Long, Boolean]):VecVecElemOp[Op, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpILB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpLDB" data-isabs="false">
+      <a id="VecVecElemOpLDB[Op&lt;:ScalarOp](BinOp[Op, Long, Double, Boolean]):VecVecElemOp[Op, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpLDB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpLIB" data-isabs="false">
+      <a id="VecVecElemOpLIB[Op&lt;:ScalarOp](BinOp[Op, Long, Int, Boolean]):VecVecElemOp[Op, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpLIB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecElemOpLLB" data-isabs="false">
+      <a id="VecVecElemOpLLB[Op&lt;:ScalarOp](BinOp[Op, Long, Long, Boolean]):VecVecElemOp[Op, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecElemOpLLB</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpDDD" data-isabs="false">
+      <a id="VecVecOuterOpDDD(BinOp[Multiply, Double, Double, Double]):VecVecOuter[Double, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpDDD</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpDID" data-isabs="false">
+      <a id="VecVecOuterOpDID(BinOp[Multiply, Double, Int, Double]):VecVecOuter[Double, Int, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpDID</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpDLD" data-isabs="false">
+      <a id="VecVecOuterOpDLD(BinOp[Multiply, Double, Long, Double]):VecVecOuter[Double, Long, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpDLD</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpIDD" data-isabs="false">
+      <a id="VecVecOuterOpIDD(BinOp[Multiply, Int, Double, Double]):VecVecOuter[Int, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpIDD</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpIII" data-isabs="false">
+      <a id="VecVecOuterOpIII(BinOp[Multiply, Int, Int, Int]):VecVecOuter[Int, Int, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpIII</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpILL" data-isabs="false">
+      <a id="VecVecOuterOpILL(BinOp[Multiply, Int, Long, Long]):VecVecOuter[Int, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpILL</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpLDD" data-isabs="false">
+      <a id="VecVecOuterOpLDD(BinOp[Multiply, Long, Double, Double]):VecVecOuter[Long, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpLDD</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpLIL" data-isabs="false">
+      <a id="VecVecOuterOpLIL(BinOp[Multiply, Long, Int, Long]):VecVecOuter[Long, Int, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpLIL</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVecOuterOpLLL" data-isabs="false">
+      <a id="VecVecOuterOpLLL(BinOp[Multiply, Long, Long, Long]):VecVecOuter[Long, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVecOuterOpLLL</span><span class="params">(<span class="implicit">implicit </span><span name="opM">opM: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecOuter" class="extype" href="ops/BinOpVec$VecVecOuter.html">VecVecOuter</a>[<span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpDDD" data-isabs="false">
+      <a id="VecVelElemOpDDD[Op&lt;:ScalarOp](BinOp[Op, Double, Double, Double]):VecVecElemOp[Op, Double, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpDDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpDID" data-isabs="false">
+      <a id="VecVelElemOpDID[Op&lt;:ScalarOp](BinOp[Op, Double, Int, Double]):VecVecElemOp[Op, Double, Int, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpDID</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpDLD" data-isabs="false">
+      <a id="VecVelElemOpDLD[Op&lt;:ScalarOp](BinOp[Op, Double, Long, Double]):VecVecElemOp[Op, Double, Long, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpDLD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpIDD" data-isabs="false">
+      <a id="VecVelElemOpIDD[Op&lt;:ScalarOp](BinOp[Op, Int, Double, Double]):VecVecElemOp[Op, Int, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpIDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpIII" data-isabs="false">
+      <a id="VecVelElemOpIII[Op&lt;:ScalarOp](BinOp[Op, Int, Int, Int]):VecVecElemOp[Op, Int, Int, Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpIII</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpILL" data-isabs="false">
+      <a id="VecVelElemOpILL[Op&lt;:ScalarOp](BinOp[Op, Int, Long, Long]):VecVecElemOp[Op, Int, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpILL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpLDD" data-isabs="false">
+      <a id="VecVelElemOpLDD[Op&lt;:ScalarOp](BinOp[Op, Long, Double, Double]):VecVecElemOp[Op, Long, Double, Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpLDD</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpLIL" data-isabs="false">
+      <a id="VecVelElemOpLIL[Op&lt;:ScalarOp](BinOp[Op, Long, Int, Long]):VecVecElemOp[Op, Long, Int, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpLIL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOpVec#VecVelElemOpLLL" data-isabs="false">
+      <a id="VecVelElemOpLLL[Op&lt;:ScalarOp](BinOp[Op, Long, Long, Long]):VecVecElemOp[Op, Long, Long, Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecVelElemOpLLL</span><span class="tparams">[<span name="Op">Op &lt;: <a name="org.saddle.ops.ScalarOp" class="extype" href="ops/ScalarOp.html">ScalarOp</a></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.ops.BinOpVec.VecVecElemOp" class="extype" href="ops/BinOpVec$VecVecElemOp.html">VecVecElemOp</a>[Op, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#apply" data-isabs="false">
+      <a id="apply[T](T*)(ST[T]):Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="values">values: T*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Factory method to create a Vec from a sequence of elements.</p><div class="fullcomment"><div class="comment cmt"><p>Factory method to create a Vec from a sequence of elements. For example,</p><pre>
+  Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>)
+  Vec(<span class="std">Seq</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>) : _*)
+</pre></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Type of elements in Vec
+</p></dd><dt class="param">values</dt><dd class="cmt"><p>Sequence</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#apply" data-isabs="false">
+      <a id="apply[T](Array[T])(ST[T]):Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="st">st: ST[T]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Factory method to create a Vec from an array of elements
+</p><div class="fullcomment"><div class="comment cmt"><p>Factory method to create a Vec from an array of elements
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Type of elements in array
+</p></dd><dt class="param">arr</dt><dd class="cmt"><p>Array</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#arrayToVec" data-isabs="false">
+      <a id="arrayToVec[T](Array[T])(ST[T]):Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">arrayToVec</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span name="scala.Array" class="extype">Array</span>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">An array may be implicitly converted to a Vec.</p><div class="fullcomment"><div class="comment cmt"><p>An array may be implicitly converted to a Vec.</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Type parameter of Array
+</p></dd><dt class="param">arr</dt><dd class="cmt"><p>Array</p></dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#empty" data-isabs="false">
+      <a id="empty[T](ST[T]):Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">empty</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[T]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates an empty Vec of type T.</p><div class="fullcomment"><div class="comment cmt"><p>Creates an empty Vec of type T.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Vec type parameter
+</p></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#vecToArray" data-isabs="false">
+      <a id="vecToArray[T](Vec[T]):Array[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToArray</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>)</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A Vec may be implicitly converted to an array.</p><div class="fullcomment"><div class="comment cmt"><p>A Vec may be implicitly converted to an array. Use responsibly;
+please do not circumvent immutability of Vec class!</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>Type parameter of Vec
+</p></dd><dt class="param">s</dt><dd class="cmt"><p>Vec</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecBoolEnricher#vecToBoolLogic" data-isabs="false">
+      <a id="vecToBoolLogic(Vec[Boolean]):AnyRef { ... /* 5 definitions in type refinement */ }"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToBoolLogic</span><span class="params">(<span name="v">v: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: AnyRef { ... /* 5 definitions in type refinement */ }</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecBoolEnricher" class="extype" href="vec/VecBoolEnricher.html">VecBoolEnricher</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToDoubleExpStats" data-isabs="false">
+      <a id="vecToDoubleExpStats(Vec[Double]):VecExpandingStats[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToDoubleExpStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecExpandingStats" class="extype" href="stats/VecExpandingStats.html">VecExpandingStats</a>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToDoubleRollingStats" data-isabs="false">
+      <a id="vecToDoubleRollingStats(Vec[Double]):VecRollingStats[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToDoubleRollingStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecRollingStats" class="extype" href="stats/VecRollingStats.html">VecRollingStats</a>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToDoubleStats" data-isabs="false">
+      <a id="vecToDoubleStats(Vec[Double]):VecStats[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToDoubleStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Double" class="extype">Double</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecStats" class="extype" href="stats/VecStats.html">VecStats</a>[<span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToIntExpStats" data-isabs="false">
+      <a id="vecToIntExpStats(Vec[Int]):VecExpandingStats[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToIntExpStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecExpandingStats" class="extype" href="stats/VecExpandingStats.html">VecExpandingStats</a>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToIntRollingStats" data-isabs="false">
+      <a id="vecToIntRollingStats(Vec[Int]):VecRollingStats[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToIntRollingStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecRollingStats" class="extype" href="stats/VecRollingStats.html">VecRollingStats</a>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToIntStats" data-isabs="false">
+      <a id="vecToIntStats(Vec[Int]):VecStats[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToIntStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecStats" class="extype" href="stats/VecStats.html">VecStats</a>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToLongExpStats" data-isabs="false">
+      <a id="vecToLongExpStats(Vec[Long]):VecExpandingStats[Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToLongExpStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecExpandingStats" class="extype" href="stats/VecExpandingStats.html">VecExpandingStats</a>[<span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToLongRollingStats" data-isabs="false">
+      <a id="vecToLongRollingStats(Vec[Long]):VecRollingStats[Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToLongRollingStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecRollingStats" class="extype" href="stats/VecRollingStats.html">VecRollingStats</a>[<span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecStatsImplicits#vecToLongStats" data-isabs="false">
+      <a id="vecToLongStats(Vec[Long]):VecStats[Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToLongStats</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]</span>)</span><span class="result">: <a name="org.saddle.stats.VecStats" class="extype" href="stats/VecStats.html">VecStats</a>[<span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#vecToMat" data-isabs="false">
+      <a id="vecToMat[A](Vec[A])(ST[A]):Mat[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToMat</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[A]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[A]</span>)</span><span class="result">: <a name="org.saddle.Mat" class="extype" href="Mat.html">Mat</a>[A]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A Vec may be implicitly converted to a single column Mat
+</p>
+    </li><li visbl="pub" name="org.saddle.Vec#vecToSeries" data-isabs="false">
+      <a id="vecToSeries[A](Vec[A])(ST[A]):Series[Int, A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">vecToSeries</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="s">s: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[A]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[A]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="Series.html">Series</a>[<span name="scala.Int" class="extype">Int</span>, A]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A Vec may be implicitly <i>widened</i> to a Vec.</p><div class="fullcomment"><div class="comment cmt"><p>A Vec may be implicitly <i>widened</i> to a Vec.
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>Type of elements in Vec
+</p></dd><dt class="param">s</dt><dd class="cmt"><p>Vec to widen to Series</p></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="org.saddle.vec.VecBoolEnricher" class="parent">
+              <h3>Inherited from <a name="org.saddle.vec.VecBoolEnricher" class="extype" href="vec/VecBoolEnricher.html">VecBoolEnricher</a></h3>
+            </div><div name="org.saddle.vec.VecStatsImplicits" class="parent">
+              <h3>Inherited from <a name="org.saddle.vec.VecStatsImplicits" class="extype" href="vec/VecStatsImplicits.html">VecStatsImplicits</a></h3>
+            </div><div name="org.saddle.ops.BinOpVec" class="parent">
+              <h3>Inherited from <a name="org.saddle.ops.BinOpVec" class="extype" href="ops/BinOpVec.html">BinOpVec</a></h3>
+            </div><div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

@@ -1,0 +1,2124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.ops.BinOp</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <a title="Go to companion" href="BinOp.html"><img src="../../../lib/object_to_trait_big.png" /></a>
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a>.<a name="org.saddle.ops" class="extype" href="package.html">ops</a></p>
+        <h1><a title="Go to companion" href="BinOp.html">BinOp</a></h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BinOp</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Contains implementations of primitive binary ops that are NA-aware</p><p>Double primitive has NA bit pattern baked into its representation, but
+for others we must check for the appropriate sentinel value.</p><p>Note scala.Function2 is not specialized on Boolean inputs, only output
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.ops.BinOp" class="in"><span>BinOp</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.saddle.ops.BinOp#BDDD" data-isabs="false">
+      <a id="BDDD:BDDD[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BDDD</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BDID" data-isabs="false">
+      <a id="BDID:BDID[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BDID</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BDLD" data-isabs="false">
+      <a id="BDLD:BDLD[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BDLD</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BIDD" data-isabs="false">
+      <a id="BIDD:BIDD[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BIDD</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BIII" data-isabs="false">
+      <a id="BIII:BIII[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BIII</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BILL" data-isabs="false">
+      <a id="BILL:BILL[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BILL</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BLDD" data-isabs="false">
+      <a id="BLDD:BLDD[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BLDD</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BLIL" data-isabs="false">
+      <a id="BLIL:BLIL[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BLIL</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#BLLL" data-isabs="false">
+      <a id="BLLL:BLLL[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BLLL</span><span class="tparams">[<span name="T">T &lt;: <a name="org.saddle.ops.OpType" class="extype" href="OpType.html">OpType</a></span>]</span><span class="result"> = <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[T, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addDD" data-isabs="false">
+      <a id="addDD:BDDD[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addDD</span><span class="result">: BDDD[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addDI" data-isabs="false">
+      <a id="addDI:BIDD[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addDI</span><span class="result">: BIDD[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addDL" data-isabs="false">
+      <a id="addDL:BDLD[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addDL</span><span class="result">: BDLD[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addID" data-isabs="false">
+      <a id="addID:BDID[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addID</span><span class="result">: BDID[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addII" data-isabs="false">
+      <a id="addII:BIII[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addII</span><span class="result">: BIII[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addIL" data-isabs="false">
+      <a id="addIL:BILL[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addIL</span><span class="result">: BILL[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addLD" data-isabs="false">
+      <a id="addLD:BLDD[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addLD</span><span class="result">: BLDD[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addLI" data-isabs="false">
+      <a id="addLI:BLIL[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addLI</span><span class="result">: BLIL[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#addLL" data-isabs="false">
+      <a id="addLL:BLLL[Add]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addLL</span><span class="result">: BLLL[<a name="org.saddle.ops.Add" class="extype" href="Add.html">Add</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#andBB" data-isabs="false">
+      <a id="andBB:BinOp[AndOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.AndOp" class="extype" href="AndOp.html">AndOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#andII" data-isabs="false">
+      <a id="andII:BIII[BitAnd]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andII</span><span class="result">: BIII[<a name="org.saddle.ops.BitAnd" class="extype" href="BitAnd.html">BitAnd</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#andIL" data-isabs="false">
+      <a id="andIL:BILL[BitAnd]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andIL</span><span class="result">: BILL[<a name="org.saddle.ops.BitAnd" class="extype" href="BitAnd.html">BitAnd</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#andLI" data-isabs="false">
+      <a id="andLI:BLIL[BitAnd]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andLI</span><span class="result">: BLIL[<a name="org.saddle.ops.BitAnd" class="extype" href="BitAnd.html">BitAnd</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#andLL" data-isabs="false">
+      <a id="andLL:BLLL[BitAnd]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">andLL</span><span class="result">: BLLL[<a name="org.saddle.ops.BitAnd" class="extype" href="BitAnd.html">BitAnd</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divDD" data-isabs="false">
+      <a id="divDD:BDDD[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divDD</span><span class="result">: BDDD[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divDI" data-isabs="false">
+      <a id="divDI:BIDD[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divDI</span><span class="result">: BIDD[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divDL" data-isabs="false">
+      <a id="divDL:BDLD[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divDL</span><span class="result">: BDLD[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divID" data-isabs="false">
+      <a id="divID:BDID[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divID</span><span class="result">: BDID[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divII" data-isabs="false">
+      <a id="divII:BIII[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divII</span><span class="result">: BIII[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divIL" data-isabs="false">
+      <a id="divIL:BILL[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divIL</span><span class="result">: BILL[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divLD" data-isabs="false">
+      <a id="divLD:BLDD[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divLD</span><span class="result">: BLDD[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divLI" data-isabs="false">
+      <a id="divLI:BLIL[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divLI</span><span class="result">: BLIL[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#divLL" data-isabs="false">
+      <a id="divLL:BLLL[Divide]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">divLL</span><span class="result">: BLLL[<a name="org.saddle.ops.Divide" class="extype" href="Divide.html">Divide</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqBB" data-isabs="false">
+      <a id="eqBB:BinOp[EqOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqDD" data-isabs="false">
+      <a id="eqDD:BinOp[EqOp, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqDD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqDI" data-isabs="false">
+      <a id="eqDI:BinOp[EqOp, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqDI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqDL" data-isabs="false">
+      <a id="eqDL:BinOp[EqOp, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqDL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqID" data-isabs="false">
+      <a id="eqID:BinOp[EqOp, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqID</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqII" data-isabs="false">
+      <a id="eqII:BinOp[EqOp, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqII</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqIL" data-isabs="false">
+      <a id="eqIL:BinOp[EqOp, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqIL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqLD" data-isabs="false">
+      <a id="eqLD:BinOp[EqOp, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqLD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqLI" data-isabs="false">
+      <a id="eqLI:BinOp[EqOp, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqLI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#eqLL" data-isabs="false">
+      <a id="eqLL:BinOp[EqOp, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eqLL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="EqOp.html">EqOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtBB" data-isabs="false">
+      <a id="gtBB:BinOp[GtOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtDD" data-isabs="false">
+      <a id="gtDD:BinOp[GtOp, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtDD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtDI" data-isabs="false">
+      <a id="gtDI:BinOp[GtOp, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtDI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtDL" data-isabs="false">
+      <a id="gtDL:BinOp[GtOp, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtDL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtID" data-isabs="false">
+      <a id="gtID:BinOp[GtOp, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtID</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtII" data-isabs="false">
+      <a id="gtII:BinOp[GtOp, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtII</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtIL" data-isabs="false">
+      <a id="gtIL:BinOp[GtOp, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtIL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtLD" data-isabs="false">
+      <a id="gtLD:BinOp[GtOp, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtLD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtLI" data-isabs="false">
+      <a id="gtLI:BinOp[GtOp, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtLI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gtLL" data-isabs="false">
+      <a id="gtLL:BinOp[GtOp, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gtLL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="GtOp.html">GtOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteBB" data-isabs="false">
+      <a id="gteBB:BinOp[GteOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteDD" data-isabs="false">
+      <a id="gteDD:BinOp[GteOp, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteDD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteDI" data-isabs="false">
+      <a id="gteDI:BinOp[GteOp, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteDI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteDL" data-isabs="false">
+      <a id="gteDL:BinOp[GteOp, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteDL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteID" data-isabs="false">
+      <a id="gteID:BinOp[GteOp, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteID</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteII" data-isabs="false">
+      <a id="gteII:BinOp[GteOp, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteII</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteIL" data-isabs="false">
+      <a id="gteIL:BinOp[GteOp, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteIL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteLD" data-isabs="false">
+      <a id="gteLD:BinOp[GteOp, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteLD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteLI" data-isabs="false">
+      <a id="gteLI:BinOp[GteOp, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteLI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#gteLL" data-isabs="false">
+      <a id="gteLL:BinOp[GteOp, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gteLL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="GteOp.html">GteOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltBB" data-isabs="false">
+      <a id="ltBB:BinOp[LtOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltDD" data-isabs="false">
+      <a id="ltDD:BinOp[LtOp, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltDD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltDI" data-isabs="false">
+      <a id="ltDI:BinOp[LtOp, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltDI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltDL" data-isabs="false">
+      <a id="ltDL:BinOp[LtOp, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltDL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltID" data-isabs="false">
+      <a id="ltID:BinOp[LtOp, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltID</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltII" data-isabs="false">
+      <a id="ltII:BinOp[LtOp, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltII</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltIL" data-isabs="false">
+      <a id="ltIL:BinOp[LtOp, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltIL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltLD" data-isabs="false">
+      <a id="ltLD:BinOp[LtOp, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltLD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltLI" data-isabs="false">
+      <a id="ltLI:BinOp[LtOp, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltLI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ltLL" data-isabs="false">
+      <a id="ltLL:BinOp[LtOp, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ltLL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="LtOp.html">LtOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteBB" data-isabs="false">
+      <a id="lteBB:BinOp[LteOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteDD" data-isabs="false">
+      <a id="lteDD:BinOp[LteOp, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteDD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteDI" data-isabs="false">
+      <a id="lteDI:BinOp[LteOp, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteDI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteDL" data-isabs="false">
+      <a id="lteDL:BinOp[LteOp, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteDL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteID" data-isabs="false">
+      <a id="lteID:BinOp[LteOp, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteID</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteII" data-isabs="false">
+      <a id="lteII:BinOp[LteOp, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteII</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteIL" data-isabs="false">
+      <a id="lteIL:BinOp[LteOp, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteIL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteLD" data-isabs="false">
+      <a id="lteLD:BinOp[LteOp, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteLD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteLI" data-isabs="false">
+      <a id="lteLI:BinOp[LteOp, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteLI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#lteLL" data-isabs="false">
+      <a id="lteLL:BinOp[LteOp, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lteLL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="LteOp.html">LteOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modDD" data-isabs="false">
+      <a id="modDD:BDDD[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modDD</span><span class="result">: BDDD[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modDI" data-isabs="false">
+      <a id="modDI:BIDD[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modDI</span><span class="result">: BIDD[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modDL" data-isabs="false">
+      <a id="modDL:BDLD[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modDL</span><span class="result">: BDLD[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modID" data-isabs="false">
+      <a id="modID:BDID[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modID</span><span class="result">: BDID[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modII" data-isabs="false">
+      <a id="modII:BIII[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modII</span><span class="result">: BIII[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modIL" data-isabs="false">
+      <a id="modIL:BILL[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modIL</span><span class="result">: BILL[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modLD" data-isabs="false">
+      <a id="modLD:BLDD[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modLD</span><span class="result">: BLDD[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modLI" data-isabs="false">
+      <a id="modLI:BLIL[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modLI</span><span class="result">: BLIL[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#modLL" data-isabs="false">
+      <a id="modLL:BLLL[Mod]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">modLL</span><span class="result">: BLLL[<a name="org.saddle.ops.Mod" class="extype" href="Mod.html">Mod</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulDD" data-isabs="false">
+      <a id="mulDD:BDDD[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulDD</span><span class="result">: BDDD[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulDI" data-isabs="false">
+      <a id="mulDI:BIDD[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulDI</span><span class="result">: BIDD[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulDL" data-isabs="false">
+      <a id="mulDL:BDLD[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulDL</span><span class="result">: BDLD[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulID" data-isabs="false">
+      <a id="mulID:BDID[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulID</span><span class="result">: BDID[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulII" data-isabs="false">
+      <a id="mulII:BIII[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulII</span><span class="result">: BIII[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulIL" data-isabs="false">
+      <a id="mulIL:BILL[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulIL</span><span class="result">: BILL[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulLD" data-isabs="false">
+      <a id="mulLD:BLDD[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulLD</span><span class="result">: BLDD[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulLI" data-isabs="false">
+      <a id="mulLI:BLIL[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulLI</span><span class="result">: BLIL[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#mulLL" data-isabs="false">
+      <a id="mulLL:BLLL[Multiply]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mulLL</span><span class="result">: BLLL[<a name="org.saddle.ops.Multiply" class="extype" href="Multiply.html">Multiply</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqBB" data-isabs="false">
+      <a id="neqBB:BinOp[NeqOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqDD" data-isabs="false">
+      <a id="neqDD:BinOp[NeqOp, Double, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqDD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqDI" data-isabs="false">
+      <a id="neqDI:BinOp[NeqOp, Double, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqDI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqDL" data-isabs="false">
+      <a id="neqDL:BinOp[NeqOp, Double, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqDL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqID" data-isabs="false">
+      <a id="neqID:BinOp[NeqOp, Int, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqID</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqII" data-isabs="false">
+      <a id="neqII:BinOp[NeqOp, Int, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqII</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqIL" data-isabs="false">
+      <a id="neqIL:BinOp[NeqOp, Int, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqIL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqLD" data-isabs="false">
+      <a id="neqLD:BinOp[NeqOp, Long, Double, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqLD</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Double" class="extype">Double</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqLI" data-isabs="false">
+      <a id="neqLI:BinOp[NeqOp, Long, Int, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqLI</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#neqLL" data-isabs="false">
+      <a id="neqLL:BinOp[NeqOp, Long, Long, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neqLL</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="NeqOp.html">NeqOp</a>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Long" class="extype">Long</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#orBB" data-isabs="false">
+      <a id="orBB:BinOp[OrOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.OrOp" class="extype" href="OrOp.html">OrOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#orII" data-isabs="false">
+      <a id="orII:BIII[BitOr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orII</span><span class="result">: BIII[<a name="org.saddle.ops.BitOr" class="extype" href="BitOr.html">BitOr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#orIL" data-isabs="false">
+      <a id="orIL:BILL[BitOr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orIL</span><span class="result">: BILL[<a name="org.saddle.ops.BitOr" class="extype" href="BitOr.html">BitOr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#orLI" data-isabs="false">
+      <a id="orLI:BLIL[BitOr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orLI</span><span class="result">: BLIL[<a name="org.saddle.ops.BitOr" class="extype" href="BitOr.html">BitOr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#orLL" data-isabs="false">
+      <a id="orLL:BLLL[BitOr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">orLL</span><span class="result">: BLLL[<a name="org.saddle.ops.BitOr" class="extype" href="BitOr.html">BitOr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powDD" data-isabs="false">
+      <a id="powDD:BDDD[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powDD</span><span class="result">: BDDD[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powDI" data-isabs="false">
+      <a id="powDI:BIDD[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powDI</span><span class="result">: BIDD[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powDL" data-isabs="false">
+      <a id="powDL:BDLD[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powDL</span><span class="result">: BDLD[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powID" data-isabs="false">
+      <a id="powID:BDID[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powID</span><span class="result">: BDID[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powII" data-isabs="false">
+      <a id="powII:BIII[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powII</span><span class="result">: BIII[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powIL" data-isabs="false">
+      <a id="powIL:BILL[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powIL</span><span class="result">: BILL[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powLD" data-isabs="false">
+      <a id="powLD:BLDD[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powLD</span><span class="result">: BLDD[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powLI" data-isabs="false">
+      <a id="powLI:BLIL[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powLI</span><span class="result">: BLIL[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#powLL" data-isabs="false">
+      <a id="powLL:BLLL[Power]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">powLL</span><span class="result">: BLLL[<a name="org.saddle.ops.Power" class="extype" href="Power.html">Power</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#shlII" data-isabs="false">
+      <a id="shlII:BIII[BitShl]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shlII</span><span class="result">: BIII[<a name="org.saddle.ops.BitShl" class="extype" href="BitShl.html">BitShl</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#shlIL" data-isabs="false">
+      <a id="shlIL:BILL[BitShl]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shlIL</span><span class="result">: BILL[<a name="org.saddle.ops.BitShl" class="extype" href="BitShl.html">BitShl</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#shlLI" data-isabs="false">
+      <a id="shlLI:BLIL[BitShl]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shlLI</span><span class="result">: BLIL[<a name="org.saddle.ops.BitShl" class="extype" href="BitShl.html">BitShl</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#shrII" data-isabs="false">
+      <a id="shrII:BIII[BitShr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shrII</span><span class="result">: BIII[<a name="org.saddle.ops.BitShr" class="extype" href="BitShr.html">BitShr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#shrIL" data-isabs="false">
+      <a id="shrIL:BILL[BitShr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shrIL</span><span class="result">: BILL[<a name="org.saddle.ops.BitShr" class="extype" href="BitShr.html">BitShr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#shrLI" data-isabs="false">
+      <a id="shrLI:BLIL[BitShr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shrLI</span><span class="result">: BLIL[<a name="org.saddle.ops.BitShr" class="extype" href="BitShr.html">BitShr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subDD" data-isabs="false">
+      <a id="subDD:BDDD[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subDD</span><span class="result">: BDDD[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subDI" data-isabs="false">
+      <a id="subDI:BIDD[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subDI</span><span class="result">: BIDD[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subDL" data-isabs="false">
+      <a id="subDL:BDLD[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subDL</span><span class="result">: BDLD[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subID" data-isabs="false">
+      <a id="subID:BDID[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subID</span><span class="result">: BDID[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subII" data-isabs="false">
+      <a id="subII:BIII[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subII</span><span class="result">: BIII[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subIL" data-isabs="false">
+      <a id="subIL:BILL[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subIL</span><span class="result">: BILL[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subLD" data-isabs="false">
+      <a id="subLD:BLDD[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subLD</span><span class="result">: BLDD[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subLI" data-isabs="false">
+      <a id="subLI:BLIL[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subLI</span><span class="result">: BLIL[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#subLL" data-isabs="false">
+      <a id="subLL:BLLL[Subtract]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subLL</span><span class="result">: BLLL[<a name="org.saddle.ops.Subtract" class="extype" href="Subtract.html">Subtract</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ushII" data-isabs="false">
+      <a id="ushII:BIII[BitUShr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ushII</span><span class="result">: BIII[<a name="org.saddle.ops.BitUShr" class="extype" href="BitUShr.html">BitUShr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ushIL" data-isabs="false">
+      <a id="ushIL:BILL[BitUShr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ushIL</span><span class="result">: BILL[<a name="org.saddle.ops.BitUShr" class="extype" href="BitUShr.html">BitUShr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#ushLI" data-isabs="false">
+      <a id="ushLI:BLIL[BitUShr]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ushLI</span><span class="result">: BLIL[<a name="org.saddle.ops.BitUShr" class="extype" href="BitUShr.html">BitUShr</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#xorBB" data-isabs="false">
+      <a id="xorBB:BinOp[XorOp, Boolean, Boolean, Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xorBB</span><span class="result">: <a name="org.saddle.ops.BinOp" class="extype" href="BinOp.html">BinOp</a>[<a name="org.saddle.ops.XorOp" class="extype" href="XorOp.html">XorOp</a>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>, <span name="scala.Boolean" class="extype">Boolean</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#xorII" data-isabs="false">
+      <a id="xorII:BIII[BitXor]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xorII</span><span class="result">: BIII[<a name="org.saddle.ops.BitXor" class="extype" href="BitXor.html">BitXor</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#xorIL" data-isabs="false">
+      <a id="xorIL:BILL[BitXor]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xorIL</span><span class="result">: BILL[<a name="org.saddle.ops.BitXor" class="extype" href="BitXor.html">BitXor</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#xorLI" data-isabs="false">
+      <a id="xorLI:BLIL[BitXor]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xorLI</span><span class="result">: BLIL[<a name="org.saddle.ops.BitXor" class="extype" href="BitXor.html">BitXor</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.ops.BinOp#xorLL" data-isabs="false">
+      <a id="xorLL:BLLL[BitXor]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xorLL</span><span class="result">: BLLL[<a name="org.saddle.ops.BitXor" class="extype" href="BitXor.html">BitXor</a>]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

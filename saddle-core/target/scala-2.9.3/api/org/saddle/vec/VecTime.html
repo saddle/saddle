@@ -1,0 +1,1473 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.vec.VecTime</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
+      <div id="definition">
+        <a title="Go to companion" href="VecTime$.html"><img src="../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.saddle" class="extype" href="../package.html">saddle</a>.<a name="org.saddle.vec" class="extype" href="package.html">vec</a></p>
+        <h1><a title="Go to companion" href="VecTime$.html">VecTime</a></h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecTime</span><span class="result"> extends <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>A compact native int representation of posix times at millisecond resolution which
+conforms to and extends the interface of Vec[DateTime]
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], <a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.vec.VecTime" class="in"><span>VecTime</span></li><li name="org.saddle.Vec" class="in"><span>Vec</span></li><li name="org.saddle.ops.NumericOps" class="in"><span>NumericOps</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div class="members" id="constructors">
+              <h3>Instance Constructors</h3>
+              <ol><li visbl="pub" name="org.saddle.vec.VecTime#this" data-isabs="false">
+      <a id="this:VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">VecTime</span><span class="params">(<span name="times">times: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]</span>, <span name="tzone">tzone: <span name="org.joda.time.DateTimeZone" class="extype">DateTimeZone</span> = <span name="org.saddle.time.`package`.ISO_CHRONO.getZone()" class="defval">...</span></span>)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">times</dt><dd class="cmt"><p>A Vec[Long], where each element is a millisecond timestamp</p></dd><dt class="param">tzone</dt><dd class="cmt"><p>Optional time zone containing localization info
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#%" data-isabs="false">
+      <a id="%[B, That](B)(BinOp[Mod, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $percent">%</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Mod" class="extype" href="../ops/Mod.html">Mod</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Integer modulus of division</p><div class="fullcomment"><div class="comment cmt"><p>Integer modulus of division</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance (divisor)</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&amp;" data-isabs="false">
+      <a id="&amp;[B, That](B)(BinOp[BitAnd, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $amp">&amp;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitAnd" class="extype" href="../ops/BitAnd.html">BitAnd</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-wise AND</p><div class="fullcomment"><div class="comment cmt"><p>Bit-wise AND</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&amp;&amp;" data-isabs="false">
+      <a id="&amp;&amp;[B, That](B)(BinOp[AndOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $amp$amp">&amp;&amp;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.AndOp" class="extype" href="../ops/AndOp.html">AndOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Logical AND</p><div class="fullcomment"><div class="comment cmt"><p>Logical AND</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#*" data-isabs="false">
+      <a id="*[B, That](B)(BinOp[Multiply, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $times">*</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="../ops/Multiply.html">Multiply</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Multiplication</p><div class="fullcomment"><div class="comment cmt"><p>Multiplication</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#**" data-isabs="false">
+      <a id="**[B, That](B)(BinOp[Power, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $times$times">**</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Power" class="extype" href="../ops/Power.html">Power</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Exponentiation</p><div class="fullcomment"><div class="comment cmt"><p>Exponentiation</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance (exponent)</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#+" data-isabs="false">
+      <a id="+[B, That](B)(BinOp[Add, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $plus">+</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="../ops/Add.html">Add</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Addition</p><div class="fullcomment"><div class="comment cmt"><p>Addition</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#-" data-isabs="false">
+      <a id="-[B, That](B)(BinOp[Subtract, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $minus">-</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Subtract" class="extype" href="../ops/Subtract.html">Subtract</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Subtraction</p><div class="fullcomment"><div class="comment cmt"><p>Subtraction</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#/" data-isabs="false">
+      <a id="/[B, That](B)(BinOp[Divide, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $div">/</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Divide" class="extype" href="../ops/Divide.html">Divide</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Division</p><div class="fullcomment"><div class="comment cmt"><p>Division</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance (divisor)</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;" data-isabs="false">
+      <a id="&lt;[B, That](B)(BinOp[LtOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less">&lt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="../ops/LtOp.html">LtOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Less-than comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Less-than comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;&lt;" data-isabs="false">
+      <a id="&lt;&lt;[B, That](B)(BinOp[BitShl, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less$less">&lt;&lt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitShl" class="extype" href="../ops/BitShl.html">BitShl</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-shift left</p><div class="fullcomment"><div class="comment cmt"><p>Bit-shift left</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;=" data-isabs="false">
+      <a id="&lt;=[B, That](B)(BinOp[LteOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less$eq">&lt;=</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="../ops/LteOp.html">LteOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Less-than-or-equal-to comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Less-than-or-equal-to comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;&gt;" data-isabs="false">
+      <a id="&lt;&gt;[B, That](B)(BinOp[NeqOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less$greater">&lt;&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="../ops/NeqOp.html">NeqOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Element-wise inequality operator</p><div class="fullcomment"><div class="comment cmt"><p>Element-wise inequality operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#=?" data-isabs="false">
+      <a id="=?[B, That](B)(BinOp[EqOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$qmark">=?</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="../ops/EqOp.html">EqOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Element-wise equality operator</p><div class="fullcomment"><div class="comment cmt"><p>Element-wise equality operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;" data-isabs="false">
+      <a id="&gt;[B, That](B)(BinOp[GtOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater">&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="../ops/GtOp.html">GtOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Greater-than comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Greater-than comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;=" data-isabs="false">
+      <a id="&gt;=[B, That](B)(BinOp[GteOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater$eq">&gt;=</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="../ops/GteOp.html">GteOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Greater-than-or-equal-to comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Greater-than-or-equal-to comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;&gt;" data-isabs="false">
+      <a id="&gt;&gt;[B, That](B)(BinOp[BitShr, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater$greater">&gt;&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitShr" class="extype" href="../ops/BitShr.html">BitShr</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-shift right (arithmetic)</p><div class="fullcomment"><div class="comment cmt"><p>Bit-shift right (arithmetic)</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;&gt;&gt;" data-isabs="false">
+      <a id="&gt;&gt;&gt;[B, That](B)(BinOp[BitUShr, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater$greater$greater">&gt;&gt;&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitUShr" class="extype" href="../ops/BitUShr.html">BitUShr</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-shift right (logical)</p><div class="fullcomment"><div class="comment cmt"><p>Bit-shift right (logical)</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#^" data-isabs="false">
+      <a id="^[B, That](B)(BinOp[BitXor, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $up">^</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitXor" class="extype" href="../ops/BitXor.html">BitXor</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-wise EXCLUSIVE OR</p><div class="fullcomment"><div class="comment cmt"><p>Bit-wise EXCLUSIVE OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#apply" data-isabs="false">
+      <a id="apply(Slice[Int]):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="rng">rng: <a name="org.saddle.index.Slice" class="extype" href="../index/Slice.html">Slice</a>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Slice a Vec at a bound of locations, e.</p><div class="fullcomment"><div class="comment cmt"><p>Slice a Vec at a bound of locations, e.g.</p><p>val v = Vec(1,2,3,4,5)
+v(1-&gt;3) == Vec(2,3,4)
+</p></div><dl class="paramcmts block"><dt class="param">rng</dt><dd class="cmt"><p>evaluates to IRange
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#apply" data-isabs="false">
+      <a id="apply(Array[Int]):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Slice a Vec at a sequence of locations, e.</p><div class="fullcomment"><div class="comment cmt"><p>Slice a Vec at a sequence of locations, e.g.</p><p>val v = Vec(1,2,3,4,5)
+v(Array(1,3)) == Vec(2,4)
+</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>locations at which to slice
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#apply" data-isabs="false">
+      <a id="apply(Int*):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="locs">locs: <span name="scala.Int" class="extype">Int</span>*</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Slice a Vec at a sequence of locations, e.</p><div class="fullcomment"><div class="comment cmt"><p>Slice a Vec at a sequence of locations, e.g.</p><p>val v = Vec(1,2,3,4,5)
+v(1,3) == Vec(2,4)
+</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>locations at which to slice
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#at" data-isabs="false">
+      <a id="at(Int):Scalar[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">at</span><span class="params">(<span name="loc">loc: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="../scalar/Scalar.html">Scalar</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access a boxed element of a Vec[A] at a single location</p><div class="fullcomment"><div class="comment cmt"><p>Access a boxed element of a Vec[A] at a single location</p></div><dl class="paramcmts block"><dt class="param">loc</dt><dd class="cmt"><p>offset into Vec
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#chrono" data-isabs="false">
+      <a id="chrono:Chronology"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">chrono</span><span class="result">: <span name="org.joda.time.Chronology" class="extype">Chronology</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#concat" data-isabs="false">
+      <a id="concat[B, C](Vec[B])(Promoter[DateTime, B, C],ST[C]):Vec[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">concat</span><span class="tparams">[<span name="B">B</span>, <span name="C">C</span>]</span><span class="params">(<span name="v">v: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="wd">wd: <a name="org.saddle.util.Concat.Promoter" class="extype" href="../util/Concat$$Promoter.html">Promoter</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>, B, C]</span>, <span name="mc">mc: ST[C]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[C]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Concatenate two Vec instances together, where there exists some way to
+join the type of elements.</p><div class="fullcomment"><div class="comment cmt"><p>Concatenate two Vec instances together, where there exists some way to
+join the type of elements. For instance, Vec[Double] concat Vec[Int]
+will promote Int to Double as a result of the implicit existence of an
+instance of Promoter[Double, Int, Double]
+</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of other Vec elements</p></dd><dt class="tparam">C</dt><dd class="cmt"><p>type of resulting Vec elements
+</p></dd><dt class="param">v</dt><dd class="cmt"><p>Vec[B] to concat</p></dd><dt class="param">wd</dt><dd class="cmt"><p>Implicit evidence of Promoter[A, B, C]</p></dd><dt class="param">mc</dt><dd class="cmt"><p>Implicit evidence of ST[C]</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#concat" data-isabs="false">
+      <a id="concat(VecTime):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">concat</span><span class="params">(<span name="x">x: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.saddle.Vec#contents" data-isabs="false">
+      <a id="contents:Array[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contents</span><span class="result">: <span name="scala.Array" class="extype">Array</span>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return copy of backing array
+</p><div class="fullcomment"><div class="comment cmt"><p>Return copy of backing array
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="prt" name="org.saddle.vec.VecTime#copy" data-isabs="false">
+      <a id="copy:VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">copy</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns a Vec whose backing array has been copied
+</p><div class="fullcomment"><div class="comment cmt"><p>Returns a Vec whose backing array has been copied
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#dot" data-isabs="false">
+      <a id="dot[B, That](B)(BinOp[InnerProd, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dot</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.InnerProd" class="extype" href="../ops/InnerProd.html">InnerProd</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dot (inner) product</p><div class="fullcomment"><div class="comment cmt"><p>Dot (inner) product</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#dropNA" data-isabs="false">
+      <a id="dropNA:VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dropNA</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Drop the elements of the Vec which are NA
+</p><div class="fullcomment"><div class="comment cmt"><p>Drop the elements of the Vec which are NA
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="o">o: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Default equality does an iterative, element-wise equality check of all values.</p><div class="fullcomment"><div class="comment cmt"><p>Default equality does an iterative, element-wise equality check of all values.</p><p>NB: to avoid boxing, is overwritten in child classes
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a> → AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#exists" data-isabs="false">
+      <a id="exists((DateTime) ⇒ Boolean):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exists</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return true if there exists some element of the Vec which satisfies the predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return true if there exists some element of the Vec which satisfies the predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from A =&gt; Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#fillNA" data-isabs="false">
+      <a id="fillNA((Int) ⇒ DateTime):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fillNA</span><span class="params">(<span name="f">f: (<span name="scala.Int" class="extype">Int</span>) ⇒ <span name="org.joda.time.DateTime" class="extype">DateTime</span></span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Fills NA values in vector with result of a function which acts on the index of
+the particular NA value found
+</p><div class="fullcomment"><div class="comment cmt"><p>Fills NA values in vector with result of a function which acts on the index of
+the particular NA value found
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>A function from Int =&gt; A; yields value for NA value at ith position
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#filter" data-isabs="false">
+      <a id="filter((DateTime) ⇒ Boolean):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Vec whose elements satisfy a predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return Vec whose elements satisfy a predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from A =&gt; Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#filterAt" data-isabs="false">
+      <a id="filterAt((Int) ⇒ Boolean):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filterAt</span><span class="params">(<span name="pred">pred: (<span name="scala.Int" class="extype">Int</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return vec whose offets satisfy a predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return vec whose offets satisfy a predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from Int =&gt; Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#filterFoldLeft" data-isabs="false">
+      <a id="filterFoldLeft[B]((DateTime) ⇒ Boolean)(B)((B, DateTime) ⇒ B)(ST[B]):B"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filterFoldLeft</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="params">(<span name="init">init: B</span>)</span><span class="params">(<span name="f">f: (B, <span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: B</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Filtered left fold over the elements of the Vec, as in scala collections library
+</p><div class="fullcomment"><div class="comment cmt"><p>Filtered left fold over the elements of the Vec, as in scala collections library
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#filterScanLeft" data-isabs="false">
+      <a id="filterScanLeft[B]((DateTime) ⇒ Boolean)(B)((B, DateTime) ⇒ B)(ST[B]):Vec[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filterScanLeft</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="params">(<span name="init">init: B</span>)</span><span class="params">(<span name="f">f: (B, <span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Filtered left scan over elements of the Vec, as in scala collections library
+</p><div class="fullcomment"><div class="comment cmt"><p>Filtered left scan over elements of the Vec, as in scala collections library
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#find" data-isabs="false">
+      <a id="find((DateTime) ⇒ Boolean):Vec[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">find</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Vec of integer locations (offsets) which satisfy some predicate</p><div class="fullcomment"><div class="comment cmt"><p>Return Vec of integer locations (offsets) which satisfy some predicate</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from A =&gt; Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#findOne" data-isabs="false">
+      <a id="findOne((DateTime) ⇒ Boolean):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">findOne</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return first integer location which satisfies some predicate, or -1 if there is none</p><div class="fullcomment"><div class="comment cmt"><p>Return first integer location which satisfies some predicate, or -1 if there is none</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from A =&gt; Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#first" data-isabs="false">
+      <a id="first:Scalar[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">first</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="../scalar/Scalar.html">Scalar</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access the first element of a Vec[A], or NA if length is zero
+</p><div class="fullcomment"><div class="comment cmt"><p>Access the first element of a Vec[A], or NA if length is zero
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#flatMap" data-isabs="false">
+      <a id="flatMap[B]((DateTime) ⇒ Vec[B])(ST[B]):Vec[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">flatMap</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="f">f: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Maps a function over elements of the Vec and flattens the result.</p><div class="fullcomment"><div class="comment cmt"><p>Maps a function over elements of the Vec and flattens the result.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#foldLeft" data-isabs="false">
+      <a id="foldLeft[B](B)((B, DateTime) ⇒ B)(ST[B]):B"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foldLeft</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="init">init: B</span>)</span><span class="params">(<span name="f">f: (B, <span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: B</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Left fold over the elements of the Vec, as in scala collections library
+</p><div class="fullcomment"><div class="comment cmt"><p>Left fold over the elements of the Vec, as in scala collections library
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#foldLeftWhile" data-isabs="false">
+      <a id="foldLeftWhile[B](B)((B, DateTime) ⇒ B)((B, DateTime) ⇒ Boolean)(ST[B]):B"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foldLeftWhile</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="init">init: B</span>)</span><span class="params">(<span name="f">f: (B, <span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ B</span>)</span><span class="params">(<span name="cond">cond: (B, <span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: B</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Left fold that folds only while the test condition holds true.</p><div class="fullcomment"><div class="comment cmt"><p>Left fold that folds only while the test condition holds true. As soon as the condition function yields
+false, the fold returns.
+</p></div><dl class="paramcmts block"><dt class="param">cond</dt><dd class="cmt"><p>Function whose signature is the same as the fold function, except that it evaluates to Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#forall" data-isabs="false">
+      <a id="forall((DateTime) ⇒ Boolean)((DateTime) ⇒ Unit):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">forall</span><span class="params">(<span name="pred">pred: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="params">(<span name="op">op: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Execute a (side-effecting) operation on each (non-NA) element in vec which satisfies
+some predicate.</p><div class="fullcomment"><div class="comment cmt"><p>Execute a (side-effecting) operation on each (non-NA) element in vec which satisfies
+some predicate.</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Function A =&gt; Boolean</p></dd><dt class="param">op</dt><dd class="cmt"><p>Side-effecting function
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#foreach" data-isabs="false">
+      <a id="foreach((DateTime) ⇒ Unit):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foreach</span><span class="params">(<span name="op">op: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Execute a (side-effecting) operation on each (non-NA) element in the vec</p><div class="fullcomment"><div class="comment cmt"><p>Execute a (side-effecting) operation on each (non-NA) element in the vec</p></div><dl class="paramcmts block"><dt class="param">op</dt><dd class="cmt"><p>operation to execute
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#hasNA" data-isabs="false">
+      <a id="hasNA:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasNA</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return true if there is an NA value in the Vec
+</p><div class="fullcomment"><div class="comment cmt"><p>Return true if there is an NA value in the Vec
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values.</p><div class="fullcomment"><div class="comment cmt"><p>Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a> → AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#head" data-isabs="false">
+      <a id="head(Int):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">head</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return first n elements</p><div class="fullcomment"><div class="comment cmt"><p>Return first n elements</p></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>Number of elements to access
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#isEmpty" data-isabs="false">
+      <a id="isEmpty:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isEmpty</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">True if and only if number of elements is zero
+</p><div class="fullcomment"><div class="comment cmt"><p>True if and only if number of elements is zero
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#last" data-isabs="false">
+      <a id="last:Scalar[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">last</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="../scalar/Scalar.html">Scalar</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access the last element of a Vec[A], or NA if length is zero
+</p><div class="fullcomment"><div class="comment cmt"><p>Access the last element of a Vec[A], or NA if length is zero
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#length" data-isabs="false">
+      <a id="length:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">length</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The number of elements in the container                                                  F
+</p><div class="fullcomment"><div class="comment cmt"><p>The number of elements in the container                                                  F
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#map" data-isabs="false">
+      <a id="map[B]((DateTime) ⇒ B)(ST[B]):Vec[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">map</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="f">f: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Map a function over the elements of the Vec, as in scala collections library
+</p><div class="fullcomment"><div class="comment cmt"><p>Map a function over the elements of the Vec, as in scala collections library
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#mask" data-isabs="false">
+      <a id="mask((DateTime) ⇒ Boolean):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mask</span><span class="params">(<span name="f">f: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns Vec whose locations are NA where the result of the
+provided function evaluates to true
+</p><div class="fullcomment"><div class="comment cmt"><p>Returns Vec whose locations are NA where the result of the
+provided function evaluates to true
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>A function taking an element and returning a Boolean
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#mask" data-isabs="false">
+      <a id="mask(Vec[Boolean]):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mask</span><span class="params">(<span name="m">m: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns Vec whose locations corresponding to true entries in the
+boolean input mask vector are set to NA
+</p><div class="fullcomment"><div class="comment cmt"><p>Returns Vec whose locations corresponding to true entries in the
+boolean input mask vector are set to NA
+</p></div><dl class="paramcmts block"><dt class="param">m</dt><dd class="cmt"><p>Mask vector of Vec[Boolean]
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="prt" name="org.saddle.Vec#needsCopy" data-isabs="false">
+      <a id="needsCopy:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">needsCopy</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Set to true when the vec is shifted over the backing array
+</p><div class="fullcomment"><div class="comment cmt"><p>Set to true when the vec is shifted over the backing array
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#outer" data-isabs="false">
+      <a id="outer[B, That](B)(BinOp[OuterProd, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">outer</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.OuterProd" class="extype" href="../ops/OuterProd.html">OuterProd</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Outer product</p><div class="fullcomment"><div class="comment cmt"><p>Outer product</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#pad" data-isabs="false">
+      <a id="pad:VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pad</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Replaces all NA values for which there is a non-NA value at a lower offset
+with the corresponding highest-offset, non-NA value.</p><div class="fullcomment"><div class="comment cmt"><p>Replaces all NA values for which there is a non-NA value at a lower offset
+with the corresponding highest-offset, non-NA value. E.g,</p><pre>
+  Vec(<span class="num">1</span>, <span class="num">2</span>, NA, <span class="num">3</span>, NA).pad == Vec(<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">3</span>)
+  Vec(NA, <span class="num">1</span>, <span class="num">2</span>, NA).pad == Vec(NA, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#padAtMost" data-isabs="false">
+      <a id="padAtMost(Int):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">padAtMost</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Replaces all NA values for which there is a non-NA value at a lower offset
+with the corresponding highest-offset, non-NA value; but looking back only
+at most N positions.</p><div class="fullcomment"><div class="comment cmt"><p>Replaces all NA values for which there is a non-NA value at a lower offset
+with the corresponding highest-offset, non-NA value; but looking back only
+at most N positions.</p><pre>
+  Vec(<span class="num">1</span>, <span class="num">2</span>, NA, <span class="num">3</span>, NA).padAtMost(<span class="num">1</span>) == Vec(<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">3</span>)
+  Vec(NA, <span class="num">1</span>, <span class="num">2</span>, NA).padAtMost(<span class="num">1</span>) == Vec(NA, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>)
+  Vec(<span class="num">1</span>, NA, NA, <span class="num">3</span>, NA).padAtMost(<span class="num">1</span>) == Vec(<span class="num">1</span>, <span class="num">1</span>, NA, <span class="num">3</span>, <span class="num">3</span>)
+</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#print" data-isabs="false">
+      <a id="print(Int,OutputStream):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">print</span><span class="params">(<span name="len">len: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">10</span></span>, <span name="stream">stream: <span name="java.io.OutputStream" class="extype">OutputStream</span> = <span class="symbol"><span class="name"><a href="../../../java/lang/package.html">System.out</a></span></span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pretty-printer for Vec, which simply outputs the result of stringify.</p><div class="fullcomment"><div class="comment cmt"><p>Pretty-printer for Vec, which simply outputs the result of stringify.</p></div><dl class="paramcmts block"><dt class="param">len</dt><dd class="cmt"><p>Number of elements to display
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#raw" data-isabs="false">
+      <a id="raw(Int):DateTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">raw</span><span class="params">(<span name="loc">loc: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="org.joda.time.DateTime" class="extype">DateTime</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access an unboxed element of a Vec[A] at a single location</p><div class="fullcomment"><div class="comment cmt"><p>Access an unboxed element of a Vec[A] at a single location</p></div><dl class="paramcmts block"><dt class="param">loc</dt><dd class="cmt"><p>offset into Vec
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#reversed" data-isabs="false">
+      <a id="reversed:VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reversed</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Yield a Vec whose elements have been reversed from their original order
+</p><div class="fullcomment"><div class="comment cmt"><p>Yield a Vec whose elements have been reversed from their original order
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#rolling" data-isabs="false">
+      <a id="rolling[B](Int,(Vec[DateTime]) ⇒ B)(ST[B]):Vec[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rolling</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="winSz">winSz: <span name="scala.Int" class="extype">Int</span></span>, <span name="f">f: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Produce a Vec whose entries are the result of executing a function on a sliding window of the
+data.</p><div class="fullcomment"><div class="comment cmt"><p>Produce a Vec whose entries are the result of executing a function on a sliding window of the
+data.</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>Result type of function
+</p></dd><dt class="param">winSz</dt><dd class="cmt"><p>Window size</p></dd><dt class="param">f</dt><dd class="cmt"><p>Function Vec[A] =&gt; B to operate on sliding window</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#scalarTag" data-isabs="false">
+      <a id="scalarTag:org.saddle.scalar.ScalarTagTime.type"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scalarTag</span><span class="result">: org.saddle.scalar.ScalarTagTime.type</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A ScalarTag in the type of the elements of the Vec
+</p><div class="fullcomment"><div class="comment cmt"><p>A ScalarTag in the type of the elements of the Vec
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#scanLeft" data-isabs="false">
+      <a id="scanLeft[B](B)((B, DateTime) ⇒ B)(ST[B]):Vec[B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scanLeft</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="init">init: B</span>)</span><span class="params">(<span name="f">f: (B, <span name="org.joda.time.DateTime" class="extype">DateTime</span>) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Left scan over the elements of the Vec, as in scala collections library
+</p><div class="fullcomment"><div class="comment cmt"><p>Left scan over the elements of the Vec, as in scala collections library
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#shift" data-isabs="false">
+      <a id="shift(Int):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shift</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a view into original Vec, but shifted so that n
+values at the beginning or end of the Vec are NA's.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a view into original Vec, but shifted so that n
+values at the beginning or end of the Vec are NA's. Data
+is not copied.
+</p></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>Number of offsets to shift
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#slice" data-isabs="false">
+      <a id="slice(Int,Int,Int):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">slice</span><span class="params">(<span name="from">from: <span name="scala.Int" class="extype">Int</span></span>, <span name="until">until: <span name="scala.Int" class="extype">Int</span></span>, <span name="stride">stride: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a view into original vector from an offset up to, but excluding,
+another offset.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a view into original vector from an offset up to, but excluding,
+another offset. Data is not copied.
+</p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>Beginning offset</p></dd><dt class="param">until</dt><dd class="cmt"><p>One past ending offset</p></dd><dt class="param">stride</dt><dd class="cmt"><p>Increment within slice
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#sliceBy" data-isabs="false">
+      <a id="sliceBy(Int,Int,Int):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sliceBy</span><span class="params">(<span name="from">from: <span name="scala.Int" class="extype">Int</span></span>, <span name="to">to: <span name="scala.Int" class="extype">Int</span></span>, <span name="stride">stride: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a view into original vector from an offset up to, and including,
+another offset.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a view into original vector from an offset up to, and including,
+another offset. Data is not copied.
+</p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>Beginning offset</p></dd><dt class="param">to</dt><dd class="cmt"><p>Ending offset</p></dd><dt class="param">stride</dt><dd class="cmt"><p>Increment within slice
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#sorted" data-isabs="false">
+      <a id="sorted(ORD[DateTime],ST[DateTime]):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sorted</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: ORD[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>, <span name="st">st: ST[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Yield a Vec whose elements have been sorted (in ascending order)</p><div class="fullcomment"><div class="comment cmt"><p>Yield a Vec whose elements have been sorted (in ascending order)</p></div><dl class="paramcmts block"><dt class="param">ev</dt><dd class="cmt"><p>evidence of Ordering[A]
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#splitAt" data-isabs="false">
+      <a id="splitAt(Int):(Vec[DateTime], Vec[DateTime])"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">splitAt</span><span class="params">(<span name="i">i: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: (<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>])</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Split Vec into two Vecs at position i</p><div class="fullcomment"><div class="comment cmt"><p>Split Vec into two Vecs at position i</p></div><dl class="paramcmts block"><dt class="param">i</dt><dd class="cmt"><p>Position at which to split Vec
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#stringify" data-isabs="false">
+      <a id="stringify(Int):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stringify</span><span class="params">(<span name="len">len: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">10</span></span>)</span><span class="result">: String</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a string representation of Vec</p><div class="fullcomment"><div class="comment cmt"><p>Creates a string representation of Vec</p></div><dl class="paramcmts block"><dt class="param">len</dt><dd class="cmt"><p>Max number of elements to include
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#tail" data-isabs="false">
+      <a id="tail(Int):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tail</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return last n elements</p><div class="fullcomment"><div class="comment cmt"><p>Return last n elements</p></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>Number of elements to access
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#take" data-isabs="false">
+      <a id="take(Array[Int]):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">take</span><span class="params">(<span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Equivalent to slicing operation; e.</p><div class="fullcomment"><div class="comment cmt"><p>Equivalent to slicing operation; e.g.</p><pre>
+  <span class="kw">val</span> v = Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>)
+  v.take(<span class="num">0</span>,<span class="num">1</span>) == v(<span class="num">0</span>,<span class="num">1</span>)
+</pre></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>Location of elements to take
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#times" data-isabs="false">
+      <a id="times:Vec[Long]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">times</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Long" class="extype">Long</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A Vec[Long], where each element is a millisecond timestamp</p>
+    </li><li visbl="pub" name="org.saddle.Vec#toSeq" data-isabs="false">
+      <a id="toSeq:IndexedSeq[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toSeq</span><span class="result">: IndexedSeq[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Converts Vec to an indexed sequence (default implementation is immutable.</p><div class="fullcomment"><div class="comment cmt"><p>Converts Vec to an indexed sequence (default implementation is immutable.Vector)</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: String</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a> → AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#tzone" data-isabs="false">
+      <a id="tzone:DateTimeZone"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tzone</span><span class="result">: <span name="org.joda.time.DateTimeZone" class="extype">DateTimeZone</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Optional time zone containing localization info
+</p>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#unary_-" data-isabs="false">
+      <a id="unary_-():Nothing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: unary_$minus">unary_-</span><span class="params">()</span><span class="result">: <span name="scala.Nothing" class="extype">Nothing</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Additive inverse of Vec with numeric elements</p><div class="fullcomment"><div class="comment cmt"><p>Additive inverse of Vec with numeric elements</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Vec#where" data-isabs="false">
+      <a id="where(Vec[Boolean]):Vec[DateTime]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">where</span><span class="params">(<span name="pred">pred: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Vec whose elements are selected via a Vec of booleans (where that Vec holds the value true)</p><div class="fullcomment"><div class="comment cmt"><p>Return Vec whose elements are selected via a Vec of booleans (where that Vec holds the value true)</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate vector: Vec[Boolean]
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#without" data-isabs="false">
+      <a id="without(Array[Int]):VecTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">without</span><span class="params">(<span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The complement of the take operation; slice out
+elements NOT specified in list.</p><div class="fullcomment"><div class="comment cmt"><p>The complement of the take operation; slice out
+elements NOT specified in list.
+</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>Location of elements not to take
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#xor" data-isabs="false">
+      <a id="xor[B, That](B)(BinOp[XorOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xor</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.XorOp" class="extype" href="../ops/XorOp.html">XorOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Logical EXCLUSIVE OR</p><div class="fullcomment"><div class="comment cmt"><p>Logical EXCLUSIVE OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.vec.VecTime#zipMap" data-isabs="false">
+      <a id="zipMap[B, C](Vec[B])((DateTime, B) ⇒ C)(ST[B],ST[C]):Vec[C]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">zipMap</span><span class="tparams">[<span name="B">B</span>, <span name="C">C</span>]</span><span class="params">(<span name="other">other: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[B]</span>)</span><span class="params">(<span name="f">f: (<span name="org.joda.time.DateTime" class="extype">DateTime</span>, B) ⇒ C</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>, <span name="arg1">arg1: ST[C]</span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[C]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Zips Vec with another Vec and applies a function to the paired elements.</p><div class="fullcomment"><div class="comment cmt"><p>Zips Vec with another Vec and applies a function to the paired elements. If either of the pair is NA, the
+result is forced to NA.</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>Parameter of other Vec</p></dd><dt class="tparam">C</dt><dd class="cmt"><p>Result of function
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>Vec[B]</p></dd><dt class="param">f</dt><dd class="cmt"><p>Function (A, B) =&gt; C</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.vec.VecTime" class="extype" href="">VecTime</a> → <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#|" data-isabs="false">
+      <a id="|[B, That](B)(BinOp[BitOr, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bar">|</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitOr" class="extype" href="../ops/BitOr.html">BitOr</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-wise OR</p><div class="fullcomment"><div class="comment cmt"><p>Bit-wise OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#||" data-isabs="false">
+      <a id="||[B, That](B)(BinOp[OrOp, Vec[DateTime], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bar$bar">||</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="../ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.OrOp" class="extype" href="../ops/OrOp.html">OrOp</a>, <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Logical OR</p><div class="fullcomment"><div class="comment cmt"><p>Logical OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="org.saddle.Vec" class="parent">
+              <h3>Inherited from <a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</h3>
+            </div><div name="org.saddle.ops.NumericOps" class="parent">
+              <h3>Inherited from <a name="org.saddle.ops.NumericOps" class="extype" href="../ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Vec" class="extype" href="../Vec.html">Vec</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]]</h3>
+            </div><div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

@@ -1,0 +1,1854 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.saddle.Series</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../lib/template.css" />
+      <script type="text/javascript" src="../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
+      <div id="definition">
+        <a title="Go to companion" href="Series$.html"><img src="../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a name="org" class="extype" href="../package.html">org</a>.<a name="org.saddle" class="extype" href="package.html">saddle</a></p>
+        <h1><a title="Go to companion" href="Series$.html">Series</a></h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Series</span><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]]</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p><code>Series</code> is an immutable container for 1D homogeneous data which is indexed by a
+an associated sequence of keys.</p><p>Both the index and value data are backed by arrays.</p><p><code>Series</code> is effectively an associative map whose keys have an ordering provided by
+the natural (provided) order of the backing array.</p><p>Several element access methods are provided.</p><p>The <code>apply</code> method returns a slice of the original Series:</p><pre>
+  <span class="kw">val</span> s = Series(Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>), Index(<span class="lit">'a'</span>,<span class="lit">'b'</span>,<span class="lit">'b'</span>,<span class="lit">'c'</span>))
+  s(<span class="lit">'a'</span>) == Series(<span class="lit">'a'</span>-&gt;<span class="num">1</span>)
+  s(<span class="lit">'b'</span>) == Series(<span class="lit">'b'</span>-&gt;<span class="num">2</span>, <span class="lit">'b'</span>-&gt;<span class="num">3</span>)
+</pre><p>Other ways to slice a series involve implicitly constructing an <a name="org.saddle.index.Slice" class="extype" href="index/Slice.html">Slice</a>
+object and passing it to the Series apply method:</p><pre>
+  s(<span class="lit">'a'</span>-&gt;<span class="lit">'b'</span>) == Series(<span class="lit">'a'</span>-&gt;<span class="num">1</span>, <span class="lit">'b'</span>-&gt;<span class="num">2</span>, <span class="lit">'b'</span>-&gt;<span class="num">3</span>)
+  s(* -&gt; <span class="lit">'b'</span>) == Series(<span class="lit">'a'</span>-&gt;<span class="num">1</span>, <span class="lit">'b'</span>-&gt;<span class="num">2</span>, <span class="lit">'b'</span>-&gt;<span class="num">3</span>)
+  s(<span class="lit">'b'</span> -&gt; *) == Series(<span class="lit">'b'</span>-&gt;<span class="num">2</span>, <span class="lit">'b'</span>-&gt;<span class="num">3</span>, <span class="lit">'c'</span>-&gt;<span class="num">4</span>)
+  s(*) == s
+</pre><p>The <code>at</code> method returns an instance of a <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>, which behaves
+much like an <code>Option</code> in that it can be either an instance of org.saddle.scalar.NA
+or a <a name="org.saddle.scalar.Value" class="extype" href="scalar/Value.html">Value</a> case class:</p><pre>
+  s.at(<span class="num">0</span>) == Scalar(<span class="num">1</span>)
+</pre><p>The <code>slice</code> method allows slicing the Series for locations in [i, j) irrespective of
+the value of the keys at those locations.</p><pre>
+  s.slice(<span class="num">2</span>,<span class="num">4</span>) == Series(<span class="lit">'b'</span>-&gt;<span class="num">3</span>, <span class="lit">'c'</span>-&gt;<span class="num">4</span>)
+</pre><p>To slice explicitly by labels, use the <code>sliceBy</code> method, which is inclusive of the
+key boundaries:</p><pre>
+  s.sliceBy(<span class="lit">'b'</span>,<span class="lit">'c'</span>) == Series(<span class="lit">'b'</span>-&gt;<span class="num">3</span>, <span class="lit">'c'</span>-&gt;<span class="num">4</span>)
+</pre><p>The method <code>raw</code> accesses the value directly, which may reveal the underlying representation
+of a missing value (so be careful).</p><pre>
+  s.raw(<span class="num">0</span>) == <span class="num">1</span>
+</pre><p><code>Series</code> may be used in arithmetic expressions which operate on two <code>Series</code> or on a
+<code>Series</code> and a scalar value. In the former case, the two Series will automatically
+align along their indexes. A few examples:</p><pre>
+  s * <span class="num">2</span> == Series(<span class="lit">'a'</span>-&gt;<span class="num">2</span>, <span class="lit">'b'</span>-&gt;<span class="num">4</span>, ... )
+  s + s.shift(<span class="num">1</span>) == Series(<span class="lit">'a'</span>-&gt;NA, <span class="lit">'b'</span>-&gt;<span class="num">3</span>, <span class="lit">'b'</span>-&gt;<span class="num">5</span>, ...)
+</pre></div><dl class="paramcmts block"><dt class="tparam">X</dt><dd class="cmt"><p>Type of elements in the index, for which there must be an implicit Ordering and ST</p></dd><dt class="tparam">T</dt><dd class="cmt"><p>Type of elements in the values array, for which there must be an implicit ST
+</p></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.Series" class="in"><span>Series</span></li><li name="org.saddle.ops.NumericOps" class="in"><span>NumericOps</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div class="members" id="constructors">
+              <h3>Instance Constructors</h3>
+              <ol><li visbl="pub" name="org.saddle.Series#this" data-isabs="false">
+      <a id="this:Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Series</span><span class="params">(<span name="values">values: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>, <span name="index">index: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[X]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[X]</span>, <span name="arg1">arg1: ORD[X]</span>, <span name="arg2">arg2: ST[T]</span>)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">values</dt><dd class="cmt"><p>Vec backing the values in the Series</p></dd><dt class="param">index</dt><dd class="cmt"><p>Index backing the keys in the Series</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#%" data-isabs="false">
+      <a id="%[B, That](B)(BinOp[Mod, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $percent">%</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Mod" class="extype" href="ops/Mod.html">Mod</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Integer modulus of division</p><div class="fullcomment"><div class="comment cmt"><p>Integer modulus of division</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance (divisor)</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&amp;" data-isabs="false">
+      <a id="&amp;[B, That](B)(BinOp[BitAnd, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $amp">&amp;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitAnd" class="extype" href="ops/BitAnd.html">BitAnd</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-wise AND</p><div class="fullcomment"><div class="comment cmt"><p>Bit-wise AND</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&amp;&amp;" data-isabs="false">
+      <a id="&amp;&amp;[B, That](B)(BinOp[AndOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $amp$amp">&amp;&amp;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.AndOp" class="extype" href="ops/AndOp.html">AndOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Logical AND</p><div class="fullcomment"><div class="comment cmt"><p>Logical AND</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#*" data-isabs="false">
+      <a id="*[B, That](B)(BinOp[Multiply, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $times">*</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Multiply" class="extype" href="ops/Multiply.html">Multiply</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Multiplication</p><div class="fullcomment"><div class="comment cmt"><p>Multiplication</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#**" data-isabs="false">
+      <a id="**[B, That](B)(BinOp[Power, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $times$times">**</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Power" class="extype" href="ops/Power.html">Power</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Exponentiation</p><div class="fullcomment"><div class="comment cmt"><p>Exponentiation</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance (exponent)</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#+" data-isabs="false">
+      <a id="+[B, That](B)(BinOp[Add, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $plus">+</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Add" class="extype" href="ops/Add.html">Add</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Addition</p><div class="fullcomment"><div class="comment cmt"><p>Addition</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#-" data-isabs="false">
+      <a id="-[B, That](B)(BinOp[Subtract, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $minus">-</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Subtract" class="extype" href="ops/Subtract.html">Subtract</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Subtraction</p><div class="fullcomment"><div class="comment cmt"><p>Subtraction</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#/" data-isabs="false">
+      <a id="/[B, That](B)(BinOp[Divide, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $div">/</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.Divide" class="extype" href="ops/Divide.html">Divide</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Division</p><div class="fullcomment"><div class="comment cmt"><p>Division</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance (divisor)</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;" data-isabs="false">
+      <a id="&lt;[B, That](B)(BinOp[LtOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less">&lt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.LtOp" class="extype" href="ops/LtOp.html">LtOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Less-than comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Less-than comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;&lt;" data-isabs="false">
+      <a id="&lt;&lt;[B, That](B)(BinOp[BitShl, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less$less">&lt;&lt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitShl" class="extype" href="ops/BitShl.html">BitShl</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-shift left</p><div class="fullcomment"><div class="comment cmt"><p>Bit-shift left</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;=" data-isabs="false">
+      <a id="&lt;=[B, That](B)(BinOp[LteOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less$eq">&lt;=</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.LteOp" class="extype" href="ops/LteOp.html">LteOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Less-than-or-equal-to comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Less-than-or-equal-to comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&lt;&gt;" data-isabs="false">
+      <a id="&lt;&gt;[B, That](B)(BinOp[NeqOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $less$greater">&lt;&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.NeqOp" class="extype" href="ops/NeqOp.html">NeqOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Element-wise inequality operator</p><div class="fullcomment"><div class="comment cmt"><p>Element-wise inequality operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#=?" data-isabs="false">
+      <a id="=?[B, That](B)(BinOp[EqOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$qmark">=?</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.EqOp" class="extype" href="ops/EqOp.html">EqOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Element-wise equality operator</p><div class="fullcomment"><div class="comment cmt"><p>Element-wise equality operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;" data-isabs="false">
+      <a id="&gt;[B, That](B)(BinOp[GtOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater">&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.GtOp" class="extype" href="ops/GtOp.html">GtOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Greater-than comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Greater-than comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;=" data-isabs="false">
+      <a id="&gt;=[B, That](B)(BinOp[GteOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater$eq">&gt;=</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.GteOp" class="extype" href="ops/GteOp.html">GteOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Greater-than-or-equal-to comparison operator</p><div class="fullcomment"><div class="comment cmt"><p>Greater-than-or-equal-to comparison operator</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;&gt;" data-isabs="false">
+      <a id="&gt;&gt;[B, That](B)(BinOp[BitShr, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater$greater">&gt;&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitShr" class="extype" href="ops/BitShr.html">BitShr</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-shift right (arithmetic)</p><div class="fullcomment"><div class="comment cmt"><p>Bit-shift right (arithmetic)</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#&gt;&gt;&gt;" data-isabs="false">
+      <a id="&gt;&gt;&gt;[B, That](B)(BinOp[BitUShr, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $greater$greater$greater">&gt;&gt;&gt;</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitUShr" class="extype" href="ops/BitUShr.html">BitUShr</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-shift right (logical)</p><div class="fullcomment"><div class="comment cmt"><p>Bit-shift right (logical)</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#^" data-isabs="false">
+      <a id="^[B, That](B)(BinOp[BitXor, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $up">^</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitXor" class="extype" href="ops/BitXor.html">BitXor</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-wise EXCLUSIVE OR</p><div class="fullcomment"><div class="comment cmt"><p>Bit-wise EXCLUSIVE OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#align" data-isabs="false">
+      <a id="align[U](Series[X, U],JoinType)(ST[U]):(Series[X, T], Series[X, U])"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">align</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="other">other: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, U]</span>, <span name="how">how: <a name="org.saddle.index.JoinType" class="extype" href="index/JoinType.html">JoinType</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[U]</span>)</span><span class="result">: (<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], <a name="org.saddle.Series" class="extype" href="">Series</a>[X, U])</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Aligns this series with another series, returning the two series aligned
+to each others indexes according to the the provided parameter
+</p><div class="fullcomment"><div class="comment cmt"><p>Aligns this series with another series, returning the two series aligned
+to each others indexes according to the the provided parameter
+</p></div><dl class="paramcmts block"><dt class="param">other</dt><dd class="cmt"><p>Other series to align with</p></dd><dt class="param">how</dt><dd class="cmt"><p>How to perform the join on the indexes
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#apply" data-isabs="false">
+      <a id="apply(Slice[X]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="slice">slice: <a name="org.saddle.index.Slice" class="extype" href="index/Slice.html">Slice</a>[X]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Extract a Series whose keys respect the Slice provided.</p><div class="fullcomment"><div class="comment cmt"><p>Extract a Series whose keys respect the Slice provided. Returns a new Series
+whose key-value pairs maintain the original ordering.</p></div><dl class="paramcmts block"><dt class="param">slice</dt><dd class="cmt"><p>Slice
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#apply" data-isabs="false">
+      <a id="apply(X*):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="keys">keys: X*</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Extract a Series corresponding to those keys provided.</p><div class="fullcomment"><div class="comment cmt"><p>Extract a Series corresponding to those keys provided. Returns a new Series
+whose key-value pairs maintain the original ordering.</p></div><dl class="paramcmts block"><dt class="param">keys</dt><dd class="cmt"><p>Sequence of keys
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#apply" data-isabs="false">
+      <a id="apply(Array[X]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="keys">keys: <span name="scala.Array" class="extype">Array</span>[X]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Extract a Series corresponding to those keys provided.</p><div class="fullcomment"><div class="comment cmt"><p>Extract a Series corresponding to those keys provided. Returns a new Series
+whose key-value pairs maintain the original ordering.</p></div><dl class="paramcmts block"><dt class="param">keys</dt><dd class="cmt"><p>Array of keys
+</p></dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#at" data-isabs="false">
+      <a id="at(Int*):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">at</span><span class="params">(<span name="locs">locs: <span name="scala.Int" class="extype">Int</span>*</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access multiple locations of a Series, returning a new Series comprising those locations</p><div class="fullcomment"><div class="comment cmt"><p>Access multiple locations of a Series, returning a new Series comprising those locations</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>Sequence of Int
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#at" data-isabs="false">
+      <a id="at(Array[Int]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">at</span><span class="params">(<span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access multiple locations of a Series, returning a new Series comprising those locations</p><div class="fullcomment"><div class="comment cmt"><p>Access multiple locations of a Series, returning a new Series comprising those locations</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>Array of int offsets into Series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#at" data-isabs="false">
+      <a id="at(Int):Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">at</span><span class="params">(<span name="loc">loc: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access a boxed element of a Series at a single location</p><div class="fullcomment"><div class="comment cmt"><p>Access a boxed element of a Series at a single location</p></div><dl class="paramcmts block"><dt class="param">loc</dt><dd class="cmt"><p>offset into Series
+</p></dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#concat" data-isabs="false">
+      <a id="concat[U, V](Series[X, U])(Promoter[T, U, V],ST[V]):Series[X, V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">concat</span><span class="tparams">[<span name="U">U</span>, <span name="V">V</span>]</span><span class="params">(<span name="other">other: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, U]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="pro">pro: <a name="org.saddle.util.Concat.Promoter" class="extype" href="util/Concat$$Promoter.html">Promoter</a>[T, U, V]</span>, <span name="md">md: ST[V]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, V]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Concatenate two Series instances together whose indexes share the same type of
+element, and where there exists some way to join the values of the Series.</p><div class="fullcomment"><div class="comment cmt"><p>Concatenate two Series instances together whose indexes share the same type of
+element, and where there exists some way to join the values of the Series. For
+instance, Series[X, Double] <code>concat</code> Series[X, Int] will promote Int to Double as
+a result of the implicit existence of a Promoter[Double, Int, Double] instance.
+The result Index will simply be the concatenation of the two input Indexes.
+</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>type of other Series Values</p></dd><dt class="tparam">V</dt><dd class="cmt"><p>type of resulting Series values
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>Series[X, B] to concat</p></dd><dt class="param">pro</dt><dd class="cmt"><p>Implicit evidence of Promoter[A, B, C]</p></dd><dt class="param">md</dt><dd class="cmt"><p>Implicit evidence of ST[C]</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#contains" data-isabs="false">
+      <a id="contains(X):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contains</span><span class="params">(<span name="key">key: X</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns true if the index of the Series contains the key</p><div class="fullcomment"><div class="comment cmt"><p>Returns true if the index of the Series contains the key</p></div><dl class="paramcmts block"><dt class="param">key</dt><dd class="cmt"><p>The key to check
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#dot" data-isabs="false">
+      <a id="dot[B, That](B)(BinOp[InnerProd, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dot</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.InnerProd" class="extype" href="ops/InnerProd.html">InnerProd</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dot (inner) product</p><div class="fullcomment"><div class="comment cmt"><p>Dot (inner) product</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#dropNA" data-isabs="false">
+      <a id="dropNA:Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dropNA</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a Series having the same values but excluding all key/value pairs in
+which the value is NA.</p>
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="other">other: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Series" class="extype" href="">Series</a> → AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#exists" data-isabs="false">
+      <a id="exists((T) ⇒ Boolean):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exists</span><span class="params">(<span name="pred">pred: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return true if there exists some element of the Series which satisfies the predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return true if there exists some element of the Series which satisfies the predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from T =&gt; Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#fillNA" data-isabs="false">
+      <a id="fillNA((X) ⇒ T):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fillNA</span><span class="params">(<span name="f">f: (X) ⇒ T</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Fills NA values in series with result of a function which acts on the index of
+the particular NA value found
+</p><div class="fullcomment"><div class="comment cmt"><p>Fills NA values in series with result of a function which acts on the index of
+the particular NA value found
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>A function X =&gt; A to be applied at NA location
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#filter" data-isabs="false">
+      <a id="filter((T) ⇒ Boolean):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="params">(<span name="pred">pred: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Series whose values satisfy a predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return Series whose values satisfy a predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from T =&gt; Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#filterAt" data-isabs="false">
+      <a id="filterAt((Int) ⇒ Boolean):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filterAt</span><span class="params">(<span name="pred">pred: (<span name="scala.Int" class="extype">Int</span>) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Series whose offets satisfy a predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return Series whose offets satisfy a predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from Int =&gt; Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#filterIx" data-isabs="false">
+      <a id="filterIx((X) ⇒ Boolean):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filterIx</span><span class="params">(<span name="pred">pred: (X) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Series whose index keys satisfy a predicate function</p><div class="fullcomment"><div class="comment cmt"><p>Return Series whose index keys satisfy a predicate function</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Predicate function from X =&gt; Boolean
+</p></dd></dl></div>
+    </li><li visbl="prt" name="scala.AnyRef#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="java.lang" class="extype" href="../../java/lang/package.html">lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#find" data-isabs="false">
+      <a id="find((T) ⇒ Boolean):Vec[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">find</span><span class="params">(<span name="pred">pred: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Int" class="extype">Int</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Search for the int offsets where the values of the Series satisfy a predicate
+function.</p><div class="fullcomment"><div class="comment cmt"><p>Search for the int offsets where the values of the Series satisfy a predicate
+function.</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Function from T to Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#findKey" data-isabs="false">
+      <a id="findKey((T) ⇒ Boolean):Index[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">findKey</span><span class="params">(<span name="pred">pred: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Search for the keys of the Series index whose corresponding values satisfy a
+predicate function.</p><div class="fullcomment"><div class="comment cmt"><p>Search for the keys of the Series index whose corresponding values satisfy a
+predicate function.</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Function from T to Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#findOne" data-isabs="false">
+      <a id="findOne((T) ⇒ Boolean):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">findOne</span><span class="params">(<span name="pred">pred: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Find the first int offset (or -1 if none) where a value of the Series satisfies
+a predicate function.</p><div class="fullcomment"><div class="comment cmt"><p>Find the first int offset (or -1 if none) where a value of the Series satisfies
+a predicate function.</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Function from T to Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#findOneKey" data-isabs="false">
+      <a id="findOneKey((T) ⇒ Boolean):Scalar[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">findOneKey</span><span class="params">(<span name="pred">pred: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Find the first key (or NA if none) where a value of the Series satisfies
+a predicate function.</p><div class="fullcomment"><div class="comment cmt"><p>Find the first key (or NA if none) where a value of the Series satisfies
+a predicate function.</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Function from T to Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#first" data-isabs="false">
+      <a id="first(X):Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">first</span><span class="params">(<span name="key">key: X</span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the first value of the Series whose key matches that provided</p><div class="fullcomment"><div class="comment cmt"><p>Get the first value of the Series whose key matches that provided</p></div><dl class="paramcmts block"><dt class="param">key</dt><dd class="cmt"><p>Key on which to match
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#first" data-isabs="false">
+      <a id="first:Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">first</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the first value of the Series
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#firstKey" data-isabs="false">
+      <a id="firstKey:Scalar[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">firstKey</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the first key of the Series
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#flatMap" data-isabs="false">
+      <a id="flatMap[Y, U](((X, T)) ⇒ Traversable[(Y, U)])(ST[Y],ORD[Y],ST[U]):Series[Y, U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">flatMap</span><span class="tparams">[<span name="Y">Y</span>, <span name="U">U</span>]</span><span class="params">(<span name="f">f: ((X, T)) ⇒ Traversable[(Y, U)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[Y]</span>, <span name="arg1">arg1: ORD[Y]</span>, <span name="arg2">arg2: ST[U]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[Y, U]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Map and then flatten over the key-value pairs of the Series, resulting in a new Series.</p>
+    </li><li visbl="pub" name="org.saddle.Series#get" data-isabs="false">
+      <a id="get(X):Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">get</span><span class="params">(<span name="key">key: X</span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Alias for <code>first</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Alias for <code>first</code>. If a key exists, get the value associated with the first
+occurence of that key.
+@return
+</p></div></div>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#groupBy" data-isabs="false">
+      <a id="groupBy[Y](Index[Y])(ST[Y],ORD[Y]):SeriesGrouper[Y, X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">groupBy</span><span class="tparams">[<span name="Y">Y</span>]</span><span class="params">(<span name="ix">ix: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[Y]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[Y]</span>, <span name="arg1">arg1: ORD[Y]</span>)</span><span class="result">: <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a>[Y, X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Construct a <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a> with which further computations, such
+as combine or transform, may be performed.</p><div class="fullcomment"><div class="comment cmt"><p>Construct a <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a> with which further computations, such
+as combine or transform, may be performed. The groups are constructed from the keys of
+the provided index, with each unique key corresponding to a group.</p></div><dl class="paramcmts block"><dt class="tparam">Y</dt><dd class="cmt"><p>Type of elements of ix
+</p></dd><dt class="param">ix</dt><dd class="cmt"><p>Index with which to perform grouping</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#groupBy" data-isabs="false">
+      <a id="groupBy[Y]((X) ⇒ Y)(ST[Y],ORD[Y]):SeriesGrouper[Y, X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">groupBy</span><span class="tparams">[<span name="Y">Y</span>]</span><span class="params">(<span name="fn">fn: (X) ⇒ Y</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[Y]</span>, <span name="arg1">arg1: ORD[Y]</span>)</span><span class="result">: <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a>[Y, X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Construct a <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a> with which further computations, such
+as combine or transform, may be performed.</p><div class="fullcomment"><div class="comment cmt"><p>Construct a <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a> with which further computations, such
+as combine or transform, may be performed. The groups are constructed from the result
+of the function applied to the keys of the Index; each unique result of calling the
+function on elements of the Index corresponds to a group.</p></div><dl class="paramcmts block"><dt class="tparam">Y</dt><dd class="cmt"><p>Type of function codomain
+</p></dd><dt class="param">fn</dt><dd class="cmt"><p>Function from X =&gt; Y</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#groupBy" data-isabs="false">
+      <a id="groupBy:SeriesGrouper[X, X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">groupBy</span><span class="result">: <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a>[X, X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Construct a <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a> with which further computations, such
+as combine or transform, may be performed.</p><div class="fullcomment"><div class="comment cmt"><p>Construct a <a name="org.saddle.groupby.SeriesGrouper" class="extype" href="groupby/SeriesGrouper.html">SeriesGrouper</a> with which further computations, such
+as combine or transform, may be performed. The groups are constructed from the keys of
+the index, with each unique key corresponding to a group.
+</p></div></div>
+    </li><li visbl="pub" name="org.saddle.Series#hasNA" data-isabs="false">
+      <a id="hasNA:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasNA</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return true if there is at least one NA value in the Series
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Series" class="extype" href="">Series</a> → AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#head" data-isabs="false">
+      <a id="head(Int):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">head</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Extract at most the first n elements of the Series</p><div class="fullcomment"><div class="comment cmt"><p>Extract at most the first n elements of the Series</p></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>Number of elements to extract
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#hjoin" data-isabs="false">
+      <a id="hjoin(org.saddle.Series[X, _],JoinType):Frame[X, Int, Any]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hjoin</span><span class="params">(<span name="other">other: org.saddle.Series[X, _]</span>, <span name="how">how: <a name="org.saddle.index.JoinType" class="extype" href="index/JoinType.html">JoinType</a> = <span class="symbol"><span class="name"><a href="index/package.html">LeftJoin</a></span></span></span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="Frame.html">Frame</a>[X, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Any" class="extype">Any</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Perform a (heterogeneous) join with another Series[X, _] according to its index.</p><div class="fullcomment"><div class="comment cmt"><p>Perform a (heterogeneous) join with another Series[X, _] according to its index.
+The values of the other Series do not need to have the same type. The result is
+a Frame whose index is the result of the join, and whose column index is {0, 1},
+and whose values are sourced from the original Series.
+</p></div><dl class="paramcmts block"><dt class="param">other</dt><dd class="cmt"><p>Series to join with</p></dd><dt class="param">how</dt><dd class="cmt"><p>How to perform the join
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#hjoinF" data-isabs="false">
+      <a id="hjoinF(org.saddle.Frame[X, _, _],JoinType):Frame[X, Int, Any]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hjoinF</span><span class="params">(<span name="other">other: org.saddle.Frame[X, _, _]</span>, <span name="how">how: <a name="org.saddle.index.JoinType" class="extype" href="index/JoinType.html">JoinType</a> = <span class="symbol"><span class="name"><a href="index/package.html">LeftJoin</a></span></span></span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="Frame.html">Frame</a>[X, <span name="scala.Int" class="extype">Int</span>, <span name="scala.Any" class="extype">Any</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Perform a (heterogeneous) join with a Frame[X, _, _] according to its row index.</p><div class="fullcomment"><div class="comment cmt"><p>Perform a (heterogeneous) join with a Frame[X, _, _] according to its row index.
+The values of the other Frame do not need to have the same type. The result is
+a Frame whose row index is the result of the join, and whose column index is
+[0, N), corresponding to the number of columns of the frame plus 1, and whose
+values are sourced from the original Series and Frame.
+</p></div><dl class="paramcmts block"><dt class="param">other</dt><dd class="cmt"><p>Frame[X, Any, Any]</p></dd><dt class="param">how</dt><dd class="cmt"><p>How to perform the join
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#index" data-isabs="false">
+      <a id="index:Index[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">index</span><span class="result">: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Index backing the keys in the Series</p>
+    </li><li visbl="pub" name="org.saddle.Series#isEmpty" data-isabs="false">
+      <a id="isEmpty:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isEmpty</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">True if and only if number of elements is zero
+</p>
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#join" data-isabs="false">
+      <a id="join(Series[X, T],JoinType):Frame[X, Int, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">join</span><span class="params">(<span name="other">other: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>, <span name="how">how: <a name="org.saddle.index.JoinType" class="extype" href="index/JoinType.html">JoinType</a> = <span class="symbol"><span class="name"><a href="index/package.html">LeftJoin</a></span></span></span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="Frame.html">Frame</a>[X, <span name="scala.Int" class="extype">Int</span>, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Perform a join with another Series[X, T] according to its index.</p><div class="fullcomment"><div class="comment cmt"><p>Perform a join with another Series[X, T] according to its index. The <code>how</code>
+argument dictates how the join is to be performed:</p><ul><li>Left org.saddle.index.LeftJoin</li><li>Right org.saddle.index.RightJoin</li><li>Inner org.saddle.index.InnerJoin</li><li>Outer org.saddle.index.OuterJoin</li></ul><p>The result is a Frame whose index is the result of the join, and whose column
+index is {0, 1}, and whose values are sourced from the original Series.
+</p></div><dl class="paramcmts block"><dt class="param">other</dt><dd class="cmt"><p>Series to join with</p></dd><dt class="param">how</dt><dd class="cmt"><p>How to perform the join
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#joinF" data-isabs="false">
+      <a id="joinF(org.saddle.Frame[X, _, T],JoinType):Frame[X, Int, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">joinF</span><span class="params">(<span name="other">other: org.saddle.Frame[X, _, T]</span>, <span name="how">how: <a name="org.saddle.index.JoinType" class="extype" href="index/JoinType.html">JoinType</a> = <span class="symbol"><span class="name"><a href="index/package.html">LeftJoin</a></span></span></span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="Frame.html">Frame</a>[X, <span name="scala.Int" class="extype">Int</span>, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Perform a join with a Frame[X, _, T] according to its row index.</p><div class="fullcomment"><div class="comment cmt"><p>Perform a join with a Frame[X, _, T] according to its row index. The values of
+the other Frame must have the same type as the Series. The result is a Frame
+whose row index is the result of the join, and whose column index is [0, N),
+corresponding to the number of columns of the frame plus 1, and whose values
+are sourced from the original Series and Frame.
+</p></div><dl class="paramcmts block"><dt class="param">other</dt><dd class="cmt"><p>Frame[X, Any, T]</p></dd><dt class="param">how</dt><dd class="cmt"><p>How to perform the join
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#joinMap" data-isabs="false">
+      <a id="joinMap[U, V](Series[X, U],JoinType)((T, U) ⇒ V)(ST[U],ST[V]):Series[X, V]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">joinMap</span><span class="tparams">[<span name="U">U</span>, <span name="V">V</span>]</span><span class="params">(<span name="other">other: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, U]</span>, <span name="how">how: <a name="org.saddle.index.JoinType" class="extype" href="index/JoinType.html">JoinType</a></span>)</span><span class="params">(<span name="f">f: (T, U) ⇒ V</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[U]</span>, <span name="arg1">arg1: ST[V]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, V]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Join two series on their index and apply a function to each paired value; when either
+value is NA, the result of the function is forced to be NA.</p><div class="fullcomment"><div class="comment cmt"><p>Join two series on their index and apply a function to each paired value; when either
+value is NA, the result of the function is forced to be NA.</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>Type of other series values</p></dd><dt class="tparam">V</dt><dd class="cmt"><p>The result type of the function
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>Other series</p></dd><dt class="param">how</dt><dd class="cmt"><p>The type of join to effect</p></dd><dt class="param">f</dt><dd class="cmt"><p>The function to apply</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#keyAt" data-isabs="false">
+      <a id="keyAt(Int*):Index[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">keyAt</span><span class="params">(<span name="locs">locs: <span name="scala.Int" class="extype">Int</span>*</span>)</span><span class="result">: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access a multiple locations of a Series index, returning a new Index</p><div class="fullcomment"><div class="comment cmt"><p>Access a multiple locations of a Series index, returning a new Index</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>Sequence of int offsets into Index
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#keyAt" data-isabs="false">
+      <a id="keyAt(Array[Int]):Index[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">keyAt</span><span class="params">(<span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access a multiple locations of a Series index, returning a new Index</p><div class="fullcomment"><div class="comment cmt"><p>Access a multiple locations of a Series index, returning a new Index</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>array of int offset into Index
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#keyAt" data-isabs="false">
+      <a id="keyAt(Int):Scalar[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">keyAt</span><span class="params">(<span name="loc">loc: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access a boxed element of a Series index at a single location</p><div class="fullcomment"><div class="comment cmt"><p>Access a boxed element of a Series index at a single location</p></div><dl class="paramcmts block"><dt class="param">loc</dt><dd class="cmt"><p>offset into Series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#last" data-isabs="false">
+      <a id="last(X):Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">last</span><span class="params">(<span name="key">key: X</span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the last value of the Series whose key matches that provided</p><div class="fullcomment"><div class="comment cmt"><p>Get the last value of the Series whose key matches that provided</p></div><dl class="paramcmts block"><dt class="param">key</dt><dd class="cmt"><p>Key on which to match
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#last" data-isabs="false">
+      <a id="last:Scalar[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">last</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the last value of the Series
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#lastKey" data-isabs="false">
+      <a id="lastKey:Scalar[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lastKey</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the last key of the Series
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#length" data-isabs="false">
+      <a id="length:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">length</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The length shared by both the index and the values array
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#map" data-isabs="false">
+      <a id="map[Y, U](((X, T)) ⇒ (Y, U))(ST[Y],ORD[Y],ST[U]):Series[Y, U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">map</span><span class="tparams">[<span name="Y">Y</span>, <span name="U">U</span>]</span><span class="params">(<span name="f">f: ((X, T)) ⇒ (Y, U)</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[Y]</span>, <span name="arg1">arg1: ORD[Y]</span>, <span name="arg2">arg2: ST[U]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[Y, U]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Map over the key-value pairs of the Series, resulting in a new Series.</p><div class="fullcomment"><div class="comment cmt"><p>Map over the key-value pairs of the Series, resulting in a new Series. Applies a
+function to each pair of values in the series.
+</p></div><dl class="paramcmts block"><dt class="tparam">Y</dt><dd class="cmt"><p>The type of the resulting index</p></dd><dt class="tparam">U</dt><dd class="cmt"><p>The type of the resulting values
+</p></dd><dt class="param">f</dt><dd class="cmt"><p>Function from (X,T) to (Y,U)</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#mapIndex" data-isabs="false">
+      <a id="mapIndex[Y]((X) ⇒ Y)(ST[Y],ORD[Y]):Series[Y, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mapIndex</span><span class="tparams">[<span name="Y">Y</span>]</span><span class="params">(<span name="fn">fn: (X) ⇒ Y</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[Y]</span>, <span name="arg1">arg1: ORD[Y]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[Y, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Map a function over the index, resulting in a new Series
+</p><div class="fullcomment"><div class="comment cmt"><p>Map a function over the index, resulting in a new Series
+</p></div><dl class="paramcmts block"><dt class="tparam">Y</dt><dd class="cmt"><p>Result type of index, ie Index[Y]
+</p></dd><dt class="param">fn</dt><dd class="cmt"><p>The function X =&gt; Y with which to map</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#mapValues" data-isabs="false">
+      <a id="mapValues[U]((T) ⇒ U)(ST[U]):Series[X, U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mapValues</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (T) ⇒ U</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[U]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, U]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Map over the values of the Series, resulting in a new Series.</p><div class="fullcomment"><div class="comment cmt"><p>Map over the values of the Series, resulting in a new Series. Applies a function
+to each (non-na) value in the series, returning a new series whose index remains
+the same.
+</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>The type of the resulting values
+</p></dd><dt class="param">f</dt><dd class="cmt"><p>Function from T to U</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#mask" data-isabs="false">
+      <a id="mask((T) ⇒ Boolean):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mask</span><span class="params">(<span name="f">f: (T) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series that, whenever the mask predicate function evaluates to
+true on a value, is masked with NA</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series that, whenever the mask predicate function evaluates to
+true on a value, is masked with NA</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>Function from T to Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#mask" data-isabs="false">
+      <a id="mask(Vec[Boolean]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mask</span><span class="params">(<span name="m">m: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[<span name="scala.Boolean" class="extype">Boolean</span>]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series that, wherever the mask Vec is true, is masked with NA</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series that, wherever the mask Vec is true, is masked with NA</p></div><dl class="paramcmts block"><dt class="param">m</dt><dd class="cmt"><p>Mask Vec[Boolean]
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#maskIx" data-isabs="false">
+      <a id="maskIx((X) ⇒ Boolean):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">maskIx</span><span class="params">(<span name="f">f: (X) ⇒ <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series that, whenever the mask predicate function evaluates to
+true on a key, is masked with NA</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series that, whenever the mask predicate function evaluates to
+true on a key, is masked with NA</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>Function from X to Boolean
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#maxKey" data-isabs="false">
+      <a id="maxKey(NUM[T],ORD[T]):Scalar[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">maxKey</span><span class="params">(<span class="implicit">implicit </span><span name="num">num: NUM[T]</span>, <span name="ord">ord: ORD[T]</span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return key corresponding to maximum value in series
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#minKey" data-isabs="false">
+      <a id="minKey(NUM[T],ORD[T]):Scalar[X]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minKey</span><span class="params">(<span class="implicit">implicit </span><span name="num">num: NUM[T]</span>, <span name="ord">ord: ORD[T]</span>)</span><span class="result">: <a name="org.saddle.scalar.Scalar" class="extype" href="scalar/Scalar.html">Scalar</a>[X]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return key corresponding to minimum value in series
+</p>
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#outer" data-isabs="false">
+      <a id="outer[B, That](B)(BinOp[OuterProd, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">outer</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.OuterProd" class="extype" href="ops/OuterProd.html">OuterProd</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Outer product</p><div class="fullcomment"><div class="comment cmt"><p>Outer product</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#pad" data-isabs="false">
+      <a id="pad:Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pad</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Replaces all NA values for which there is a non-NA value at a prior offset
+with the corresponding most-recent, non-NA value.</p><div class="fullcomment"><div class="comment cmt"><p>Replaces all NA values for which there is a non-NA value at a prior offset
+with the corresponding most-recent, non-NA value. E.g,</p><pre>
+  Series(<span class="num">1</span>, <span class="num">2</span>, NA, <span class="num">3</span>, NA).pad == Series(<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">3</span>)
+  Series(NA, <span class="num">1</span>, <span class="num">2</span>, NA).pad == Series(NA, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>)
+</pre></div></div>
+    </li><li visbl="pub" name="org.saddle.Series#padAtMost" data-isabs="false">
+      <a id="padAtMost(Int):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">padAtMost</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Same as above, but limits the amount of padding to N observations.</p><div class="fullcomment"><div class="comment cmt"><p>Same as above, but limits the amount of padding to N observations.</p><pre>
+  Series(<span class="num">1</span>, <span class="num">2</span>, NA, NA, <span class="num">3</span>).padAtMost(<span class="num">1</span>) == Series(<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, NA, <span class="num">3</span>)
+</pre></div></div>
+    </li><li visbl="pub" name="org.saddle.Series#pivot" data-isabs="false">
+      <a id="pivot[O1, O2](Splitter[X, O1, O2],ORD[O1],ORD[O2],ST[O1],ST[O2]):Frame[O1, O2, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pivot</span><span class="tparams">[<span name="O1">O1</span>, <span name="O2">O2</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="split">split: <a name="org.saddle.index.Splitter" class="extype" href="index/Splitter.html">Splitter</a>[X, O1, O2]</span>, <span name="ord1">ord1: ORD[O1]</span>, <span name="ord2">ord2: ORD[O2]</span>, <span name="m1">m1: ST[O1]</span>, <span name="m2">m2: ST[O2]</span>)</span><span class="result">: <a name="org.saddle.Frame" class="extype" href="Frame.html">Frame</a>[O1, O2, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pivot splits an index of tuple keys of arity N into a row index having arity N-1 and a
+column index, producing a 2D Frame whose values are from the original Series as indexed
+by the corresponding keys.</p><div class="fullcomment"><div class="comment cmt"><p>Pivot splits an index of tuple keys of arity N into a row index having arity N-1 and a
+column index, producing a 2D Frame whose values are from the original Series as indexed
+by the corresponding keys.</p><p>To recover the original Series, the melt method of Frame may be used.</p><p>For example, given:</p><pre>
+  Series(Vec(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>), Index((<span class="lit">'a'</span>,<span class="num">1</span>),(<span class="lit">'a'</span>,<span class="num">2</span>),(<span class="lit">'b'</span>,<span class="num">1</span>),(<span class="lit">'b'</span>,<span class="num">2</span>)))
+  res0: org.saddle.Series[(<span class="std">Char</span>, <span class="std">Int</span>),<span class="std">Int</span>] =
+  [<span class="num">4</span> x <span class="num">1</span>]
+   a <span class="num">1</span> <span class="kw">=&gt;</span> <span class="num">1</span>
+     <span class="num">2</span> <span class="kw">=&gt;</span> <span class="num">2</span>
+   b <span class="num">1</span> <span class="kw">=&gt;</span> <span class="num">3</span>
+     <span class="num">2</span> <span class="kw">=&gt;</span> <span class="num">4</span>
+</pre><p>the pivot command does the following:</p><pre>
+  res0.pivot
+  res1: org.saddle.Frame[<span class="std">Char</span>,<span class="std">Int</span>,<span class="std">Int</span>] =
+  [<span class="num">2</span> x <span class="num">2</span>]
+         <span class="num">1</span>  <span class="num">2</span>
+        -- --
+   a <span class="kw">=&gt;</span>  <span class="num">1</span>  <span class="num">2</span>
+   b <span class="kw">=&gt;</span>  <span class="num">3</span>  <span class="num">4</span>
+</pre></div><dl class="paramcmts block"><dt class="tparam">O1</dt><dd class="cmt"><p>Output row index</p></dd><dt class="tparam">O2</dt><dd class="cmt"><p>Output col index
+</p></dd><dt class="param">split</dt><dd class="cmt"><p>Implicit evidence of a Splitter for the index</p></dd><dt class="param">ord1</dt><dd class="cmt"><p>Implicit evidence of an ordering for O1</p></dd><dt class="param">ord2</dt><dd class="cmt"><p>Implicit evidence of an ordering for O2</p></dd><dt class="param">m1</dt><dd class="cmt"><p>Implicit evidence of a ST for O1</p></dd><dt class="param">m2</dt><dd class="cmt"><p>Implicit evidence of a ST for O2</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#print" data-isabs="false">
+      <a id="print(Int,OutputStream):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">print</span><span class="params">(<span name="len">len: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">10</span></span>, <span name="stream">stream: <span name="java.io.OutputStream" class="extype">OutputStream</span> = <span class="symbol"><span class="name"><a href="../../java/lang/package.html">System.out</a></span></span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pretty-printer for Series, which simply outputs the result of stringify.</p><div class="fullcomment"><div class="comment cmt"><p>Pretty-printer for Series, which simply outputs the result of stringify.</p></div><dl class="paramcmts block"><dt class="param">len</dt><dd class="cmt"><p>Number of elements to display
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#proxyWith" data-isabs="false">
+      <a id="proxyWith(Series[X, T])((org.saddle.scalar.NA.type) ⇒ T):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">proxyWith</span><span class="params">(<span name="proxy">proxy: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="fn">fn: (org.saddle.scalar.NA.type) ⇒ T</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Fill series NA's with values using a secondary series
+</p><div class="fullcomment"><div class="comment cmt"><p>Fill series NA's with values using a secondary series
+</p></div><dl class="paramcmts block"><dt class="param">proxy</dt><dd class="cmt"><p>The series containing the values to use
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#raw" data-isabs="false">
+      <a id="raw(Int):T"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">raw</span><span class="params">(<span name="loc">loc: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: T</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Access an unboxed element of a Series at a single location</p><div class="fullcomment"><div class="comment cmt"><p>Access an unboxed element of a Series at a single location</p></div><dl class="paramcmts block"><dt class="param">loc</dt><dd class="cmt"><p>offset into Series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#reindex" data-isabs="false">
+      <a id="reindex(X*):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reindex</span><span class="params">(<span name="keys">keys: X*</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series whose index formed of the provided argument, and whose values
+are derived from the original Series.</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series whose index formed of the provided argument, and whose values
+are derived from the original Series.</p></div><dl class="paramcmts block"><dt class="param">keys</dt><dd class="cmt"><p>Sequence of keys to be the index of the result series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#reindex" data-isabs="false">
+      <a id="reindex(Index[X]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reindex</span><span class="params">(<span name="newIx">newIx: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[X]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series whose index is the provided argument, and whose values
+are derived from the original Series.</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series whose index is the provided argument, and whose values
+are derived from the original Series.</p></div><dl class="paramcmts block"><dt class="param">newIx</dt><dd class="cmt"><p>Index of the result series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#resetIndex" data-isabs="false">
+      <a id="resetIndex:Series[Int, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">resetIndex</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[<span name="scala.Int" class="extype">Int</span>, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series whose values are the same, but whose Index has been changed
+to the bound [0, length - 1), as in an array.</p>
+    </li><li visbl="pub" name="org.saddle.Series#reversed" data-isabs="false">
+      <a id="reversed:Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reversed</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series whose values and index keys are both in reversed order
+</p>
+    </li><li visbl="pub" name="org.saddle.Series#rolling" data-isabs="false">
+      <a id="rolling[B](Int,(Series[X, T]) ⇒ B)(ST[B]):Series[X, B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rolling</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="winSz">winSz: <span name="scala.Int" class="extype">Int</span></span>, <span name="f">f: (<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]) ⇒ B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[B]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, B]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Produce a Series whose values are the result of executing a function on a sliding window of
+the data.</p><div class="fullcomment"><div class="comment cmt"><p>Produce a Series whose values are the result of executing a function on a sliding window of
+the data.</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>Result type of function
+</p></dd><dt class="param">winSz</dt><dd class="cmt"><p>Window size</p></dd><dt class="param">f</dt><dd class="cmt"><p>Function Series[X, T] =&gt; B to operate on sliding window</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#scanLeft" data-isabs="false">
+      <a id="scanLeft[U](U)((U, T) ⇒ U)(ST[U]):Series[X, U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scanLeft</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="init">init: U</span>)</span><span class="params">(<span name="f">f: (U, T) ⇒ U</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[U]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, U]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Left scan over the values of the Series, as in scala collections library, but
+with the resulting series having the same index.</p><div class="fullcomment"><div class="comment cmt"><p>Left scan over the values of the Series, as in scala collections library, but
+with the resulting series having the same index. Note, differs from standard left
+scan because initial value is not retained in result.
+</p></div><dl class="paramcmts block"><dt class="tparam">U</dt><dd class="cmt"><p>Result type of function
+</p></dd><dt class="param">init</dt><dd class="cmt"><p>Initial value of scan</p></dd><dt class="param">f</dt><dd class="cmt"><p>Function taking (U, T) to U</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#setIndex" data-isabs="false">
+      <a id="setIndex[Y](Index[Y])(ST[Y],ORD[Y]):Series[Y, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setIndex</span><span class="tparams">[<span name="Y">Y</span>]</span><span class="params">(<span name="newIx">newIx: <a name="org.saddle.Index" class="extype" href="Index.html">Index</a>[Y]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: ST[Y]</span>, <span name="arg1">arg1: ORD[Y]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[Y, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series using the current values but with the new index.</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series using the current values but with the new index. Positions
+of the values do not change.</p></div><dl class="paramcmts block"><dt class="tparam">Y</dt><dd class="cmt"><p>Type of elements of new Index
+</p></dd><dt class="param">newIx</dt><dd class="cmt"><p>A new Index</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#shift" data-isabs="false">
+      <a id="shift(Int):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shift</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Shift the sequence of values relative to the index by some offset,
+dropping those values which no longer associate with a key, and having
+those keys which no longer associate to a value instead map to NA.</p><div class="fullcomment"><div class="comment cmt"><p>Shift the sequence of values relative to the index by some offset,
+dropping those values which no longer associate with a key, and having
+those keys which no longer associate to a value instead map to NA.</p></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>Number to shift
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#slice" data-isabs="false">
+      <a id="slice(Int,Int,Int):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">slice</span><span class="params">(<span name="from">from: <span name="scala.Int" class="extype">Int</span></span>, <span name="until">until: <span name="scala.Int" class="extype">Int</span></span>, <span name="stride">stride: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a view into original Series from one int offset until (exclusive)
+another offset.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a view into original Series from one int offset until (exclusive)
+another offset. Data is not copied.</p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>Beginning offset</p></dd><dt class="param">until</dt><dd class="cmt"><p>Ending offset
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#sliceBy" data-isabs="false">
+      <a id="sliceBy(Slice[X]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sliceBy</span><span class="params">(<span name="rng">rng: <a name="org.saddle.index.Slice" class="extype" href="index/Slice.html">Slice</a>[X]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a view into original Series from one key through another key as
+specified in the bound argument.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a view into original Series from one key through another key as
+specified in the bound argument. Data is not copied. Series index must be
+sorted.</p></div><dl class="paramcmts block"><dt class="param">rng</dt><dd class="cmt"><p>An IRange which computes the bound locations
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#sliceBy" data-isabs="false">
+      <a id="sliceBy(X,X,Boolean):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sliceBy</span><span class="params">(<span name="from">from: X</span>, <span name="to">to: X</span>, <span name="inclusive">inclusive: <span name="scala.Boolean" class="extype">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a view into original Series from one key up to (inclusive by default)
+another key.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a view into original Series from one key up to (inclusive by default)
+another key. Data is not copied. Series index must be sorted.</p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>Beginning offset key</p></dd><dt class="param">to</dt><dd class="cmt"><p>Ending offset key
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#sorted" data-isabs="false">
+      <a id="sorted(ORD[T]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sorted</span><span class="params">(<span class="implicit">implicit </span><span name="ev">ev: ORD[T]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series whose key/value entries are sorted according to the values of the Series.</p><div class="fullcomment"><div class="comment cmt"><p>Create a new Series whose key/value entries are sorted according to the values of the Series.</p></div><dl class="paramcmts block"><dt class="param">ev</dt><dd class="cmt"><p>Implicit evidence of ordering for T
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#sortedIx" data-isabs="false">
+      <a id="sortedIx:Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sortedIx</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new Series whose key/value entries are sorted according to the keys (index values).</p>
+    </li><li visbl="pub" name="org.saddle.Series#splitAt" data-isabs="false">
+      <a id="splitAt(Int):(Series[X, T], Series[X, T])"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">splitAt</span><span class="params">(<span name="i">i: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: (<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T])</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Split Series into two series at position i</p><div class="fullcomment"><div class="comment cmt"><p>Split Series into two series at position i</p></div><dl class="paramcmts block"><dt class="param">i</dt><dd class="cmt"><p>Position at which to split Series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#splitBy" data-isabs="false">
+      <a id="splitBy(X):(Series[X, T], Series[X, T])"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">splitBy</span><span class="params">(<span name="k">k: X</span>)</span><span class="result">: (<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T])</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Split Series into two series at key x</p><div class="fullcomment"><div class="comment cmt"><p>Split Series into two series at key x</p></div><dl class="paramcmts block"><dt class="param">k</dt><dd class="cmt"><p>Key at which to split Series
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#stringify" data-isabs="false">
+      <a id="stringify(Int):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stringify</span><span class="params">(<span name="len">len: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">10</span></span>)</span><span class="result">: String</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#tail" data-isabs="false">
+      <a id="tail(Int):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tail</span><span class="params">(<span name="n">n: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Extract at most the last n elements of the Series</p><div class="fullcomment"><div class="comment cmt"><p>Extract at most the last n elements of the Series</p></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>number to extract
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#take" data-isabs="false">
+      <a id="take(Array[Int]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">take</span><span class="params">(<span name="locs">locs: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Given int offets to take, form a new series from the keys and values found
+at those offsets.</p><div class="fullcomment"><div class="comment cmt"><p>Given int offets to take, form a new series from the keys and values found
+at those offsets.</p></div><dl class="paramcmts block"><dt class="param">locs</dt><dd class="cmt"><p>Array of int offsets
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#toSeq" data-isabs="false">
+      <a id="toSeq:IndexedSeq[(X, T)]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toSeq</span><span class="result">: IndexedSeq[(X, T)]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Convert Series to an indexed sequence of (key, value) pairs.</p>
+    </li><li visbl="pub" name="org.saddle.Series#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: String</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.Series" class="extype" href="">Series</a> → AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#toVec" data-isabs="false">
+      <a id="toVec:Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toVec</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Convert Series to a Vec, by dropping the index.</p>
+    </li><li visbl="pub" name="org.saddle.Series#unary_-" data-isabs="false">
+      <a id="unary_-():Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: unary_$minus">unary_-</span><span class="params">()</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Additive inverse of Series with numeric elements</p>
+    </li><li visbl="pub" name="org.saddle.Series#values" data-isabs="false">
+      <a id="values:Vec[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">values</span><span class="result">: <a name="org.saddle.Vec" class="extype" href="Vec.html">Vec</a>[T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Vec backing the values in the Series</p>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.Series#where" data-isabs="false">
+      <a id="where(org.saddle.Series[_, Boolean]):Series[X, T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">where</span><span class="params">(<span name="pred">pred: org.saddle.Series[_, Boolean]</span>)</span><span class="result">: <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Return Series whose keys and values are chosen via a Vec[Boolean] or a
+Series[_, Boolean] where the latter contains a true value.</p><div class="fullcomment"><div class="comment cmt"><p>Return Series whose keys and values are chosen via a Vec[Boolean] or a
+Series[_, Boolean] where the latter contains a true value.</p></div><dl class="paramcmts block"><dt class="param">pred</dt><dd class="cmt"><p>Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)
+</p></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#xor" data-isabs="false">
+      <a id="xor[B, That](B)(BinOp[XorOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xor</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.XorOp" class="extype" href="ops/XorOp.html">XorOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Logical EXCLUSIVE OR</p><div class="fullcomment"><div class="comment cmt"><p>Logical EXCLUSIVE OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#|" data-isabs="false">
+      <a id="|[B, That](B)(BinOp[BitOr, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bar">|</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.BitOr" class="extype" href="ops/BitOr.html">BitOr</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Bit-wise OR</p><div class="fullcomment"><div class="comment cmt"><p>Bit-wise OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li><li visbl="pub" name="org.saddle.ops.NumericOps#||" data-isabs="false">
+      <a id="||[B, That](B)(BinOp[OrOp, Series[X, T], B, That]):That"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bar$bar">||</span><span class="tparams">[<span name="B">B</span>, <span name="That">That</span>]</span><span class="params">(<span name="other">other: B</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="op">op: <a name="org.saddle.ops.BinOp" class="extype" href="ops/BinOp.html">BinOp</a>[<a name="org.saddle.ops.OrOp" class="extype" href="ops/OrOp.html">OrOp</a>, <a name="org.saddle.Series" class="extype" href="">Series</a>[X, T], B, That]</span>)</span><span class="result">: That</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Logical OR</p><div class="fullcomment"><div class="comment cmt"><p>Logical OR</p></div><dl class="paramcmts block"><dt class="tparam">B</dt><dd class="cmt"><p>type of the other operand</p></dd><dt class="tparam">That</dt><dd class="cmt"><p>result type of operation
+</p></dd><dt class="param">other</dt><dd class="cmt"><p>other operand instance</p></dd><dt class="param">op</dt><dd class="cmt"><p>implicit evidence for operation between this and other</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="org.saddle.ops.NumericOps" class="parent">
+              <h3>Inherited from <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]]</h3>
+            </div><div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

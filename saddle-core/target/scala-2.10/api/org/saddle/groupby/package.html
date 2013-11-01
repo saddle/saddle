@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>groupby - org.saddle.groupby</title>
+          <meta name="description" content="groupby - org.saddle.groupby" />
+          <meta name="keywords" content="groupby org.saddle.groupby" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.saddle.groupby.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.saddle">saddle</a></p>
+        <h1>groupby</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">groupby</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.saddle.groupby.FrameGrouper" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FrameGrouper[Z,X,Y,T]extendsAnyRef"></a>
+      <a id="FrameGrouper[Z,X,Y,T]:FrameGrouper[Z,X,Y,T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="FrameGrouper.html"><span class="name">FrameGrouper</span></a><span class="tparams">[<span name="Z">Z</span>, <span name="X">X</span>, <span name="Y">Y</span>, <span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Helper class to do combine or transform after a groupBy
+</p>
+    </li><li name="org.saddle.groupby.IndexGrouper" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IndexGrouper[Y]extendsAnyRef"></a>
+      <a id="IndexGrouper[Y]:IndexGrouper[Y]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexGrouper.html"><span class="name">IndexGrouper</span></a><span class="tparams">[<span name="Y">Y</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Creates groups for each unique key in an index
+</p>
+    </li><li name="org.saddle.groupby.SeriesGrouper" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeriesGrouper[Y,X,T]extendsIndexGrouper[Y]"></a>
+      <a id="SeriesGrouper[Y,X,T]:SeriesGrouper[Y,X,T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SeriesGrouper.html"><span class="name">SeriesGrouper</span></a><span class="tparams">[<span name="Y">Y</span>, <span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="IndexGrouper.html" class="extype" name="org.saddle.groupby.IndexGrouper">IndexGrouper</a>[<span class="extype" name="org.saddle.groupby.SeriesGrouper.Y">Y</span>]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Helper class to do combine or transform after a groupBy
+</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.saddle.groupby.FrameGrouper" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FrameGrouper"></a>
+      <a id="FrameGrouper:FrameGrouper"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="FrameGrouper$.html"><span class="name">FrameGrouper</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.saddle.groupby.IndexGrouper" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IndexGrouper"></a>
+      <a id="IndexGrouper:IndexGrouper"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IndexGrouper$.html"><span class="name">IndexGrouper</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.saddle.groupby.SeriesGrouper" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeriesGrouper"></a>
+      <a id="SeriesGrouper:SeriesGrouper"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SeriesGrouper$.html"><span class="name">SeriesGrouper</span></a>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+    </body>
+      </html>
