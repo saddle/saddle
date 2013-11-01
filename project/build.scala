@@ -28,7 +28,7 @@ object SaddleBuild extends sbt.Build {
               /* 'console' in root acts as if in core. */
               console <<= (console in core in Compile) { identity },
               /* so we can package up everything into deployable jar and invoke programs */
-              jarName in assembly <<= version { v => "saddle-%s.jar" format (v) },
+              jarName in assembly <<= version.map { v => s"saddle-$v.jar" },
               assembleArtifact in packageScala := false,
               publishArtifact := false,
               mergeStrategy in assembly := {
@@ -36,7 +36,7 @@ object SaddleBuild extends sbt.Build {
                 case _ => MergeStrategy.first
               }
             ),
-            base = file(".")) aggregate(core, hdf5)
+            base = file(".")) aggregate(core, hdf5, test_framework)
 
   lazy val core =
     project(id = "saddle-core",
@@ -47,6 +47,7 @@ object SaddleBuild extends sbt.Build {
                 |import org.saddle._
                 |import org.saddle.time._
                 |import org.saddle.io._""".stripMargin('|'),
+              unmanagedClasspath in(LocalProject("saddle-core"), Test) <++= (fullClasspath in(LocalProject("saddle-test-framework"), Test)),
               libraryDependencies <++= scalaVersion (v => Seq(
                 "joda-time" % "joda-time" % "2.1",
                 "org.joda" % "joda-convert" % "1.2",
@@ -74,6 +75,15 @@ object SaddleBuild extends sbt.Build {
               testOptions in Test += Tests.Argument("console", "junitxml")
             )) dependsOn(core)
 
+  lazy val test_framework =
+    project(
+      id = "saddle-test-framework",
+      base = file("saddle-test-framework"),
+      settings = Seq(
+        libraryDependencies <++= scalaVersion(v => Shared.testDeps(v, "compile"))
+      )
+    ) dependsOn (core)
+
   def project(id: String, base: File, settings: Seq[Project.Setting[_]] = Nil) =
     Project(id = id,
             base = base,
@@ -81,23 +91,24 @@ object SaddleBuild extends sbt.Build {
 }
 
 object Shared {
-  def testDeps(version: String) = {
+  def testDeps(version: String, conf: String = "test") = {
     val specs2 = if (version.startsWith("2.10"))
-      "org.specs2" %% "specs2" % "1.14" % "test"
+      "org.specs2" %% "specs2" % "2.3.1" % conf
     else if (version.startsWith("2.9.3"))
-      "org.specs2" % "specs2_2.9.2" % "1.12.4" % "test"
+      "org.specs2" % "specs2_2.9.2" % "1.12.4" % conf
     else
-      "org.specs2" %% "specs2" % "1.12.4" % "test"
+      "org.specs2" %% "specs2" % "1.12.4" % conf
 
     Seq(
       specs2,
-      "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
-      "junit" % "junit" % "4.7" % "test"
+      "org.scalacheck" %% "scalacheck" % "1.10.1" % conf,
+      "junit" % "junit" % "4.11" % conf
     )
   }
 
   val settings = Seq(
     organization := "org.scala-saddle",
+    version := "1.3.3-SNAPSHOT",
     publishMavenStyle := true,
     publishArtifact in Test := false,
     pomIncludeRepository := { x => false },
@@ -130,8 +141,8 @@ object Shared {
         </developer>
       </developers>
     ),
-    scalaVersion := "2.9.2",
-    crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.0", "2.10.2"),
+    scalaVersion := "2.10.3",
+    crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.3"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
     shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },
     resolvers ++= Seq(
@@ -145,6 +156,7 @@ object Shared {
       else
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
-    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
+    compile <<= (compile in Compile) dependsOn (compile in Test)
   )
 }
