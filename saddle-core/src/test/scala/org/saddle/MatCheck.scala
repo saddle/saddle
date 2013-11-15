@@ -23,7 +23,7 @@ import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
 import org.saddle._
 import org.saddle.array._
-import vec.BeCloseToVec
+import org.saddle.framework._
 
 /**
   * Test Mat
