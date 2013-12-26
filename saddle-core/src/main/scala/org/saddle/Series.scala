@@ -851,7 +851,7 @@ class Series[X: ST: ORD, T: ST](
 
       val vsca = values.scalarTag
       val vlHf = { values.head(half) concat values.tail(half) }
-      val vlen = vlHf.map(vsca.show(_)).foldLeft(0)((a, b) => math.max(a, b.length))
+      val vlen = vlHf.map(vsca.show(_)).foldLeft(2)((a, b) => math.max(a, b.length))
 
       def enumZip[A, B](a: List[A], b: List[B]): List[(Int, A, B)] =
         for ( v <- (a.zipWithIndex zip b) ) yield (v._1._2, v._1._1, v._2)
