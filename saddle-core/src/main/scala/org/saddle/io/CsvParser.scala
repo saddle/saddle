@@ -28,13 +28,11 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet
  * @param quoteChar Within matching quotes, treat separChar as normal char;
  *                  default is double-quote
  * @param withQuote If true, do not strip quote character from quoted fields
- * @param hasHeader Whether the CSV file has a header row, default true
  * @param skipLines Whether to skip some integer number of lines, default 0
  */
 case class CsvParams(separChar: Char    = ',',
                      quoteChar: Char    = '"',
                      withQuote: Boolean = false,
-                     hasHeader: Boolean = true,
                      skipLines: Int     = 0)
 
 /**
