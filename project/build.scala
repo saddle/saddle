@@ -89,20 +89,12 @@ object SaddleBuild extends sbt.Build {
 }
 
 object Shared {
-  def testDeps(version: String, conf: String = "test") = {
-    val specs2 = if (version.startsWith("2.10"))
-      "org.specs2" %% "specs2" % "2.3.1" % conf
-    else if (version.startsWith("2.9.3"))
-      "org.specs2" % "specs2_2.9.2" % "1.12.4" % conf
-    else
-      "org.specs2" %% "specs2" % "1.12.4" % conf
-
+  def testDeps(version: String, conf: String = "test") =
     Seq(
-      specs2,
-      "org.scalacheck" %% "scalacheck" % "1.10.1" % conf,
+      "org.specs2" %% "specs2" % "2.3.7" % conf,
+      "org.scalacheck" %% "scalacheck" % "1.11.3" % conf,
       "junit" % "junit" % "4.11" % conf
     )
-  }
 
   val settings = Seq(
     organization := "org.scala-saddle",
@@ -140,7 +132,7 @@ object Shared {
     ),
     scalaVersion := "2.10.3",
     version := "1.3.3-SNAPSHOT",
-    crossScalaVersions := Seq("2.9.2", "2.9.3", "2.10.3"),
+    crossScalaVersions := Seq("2.10.3", "2.11.0-M8"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
     shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },
     resolvers ++= Seq(
