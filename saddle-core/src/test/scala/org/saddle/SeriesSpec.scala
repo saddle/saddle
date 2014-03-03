@@ -41,4 +41,18 @@ class SeriesSpec extends Specification {
     val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
     s.flatMap { case (k, v) => Some((k, v+1)) } must_== s + 1
   }
+  
+  "rolling works" in {
+    val s = Series(Vec(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0))
+    
+    s.rolling(2, _.mean) must_== Series(Vec(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5), s.index.tail(s.length -1))
+  }
+  
+  "rolling without dropping NA works" in {
+    val s = Series(Vec(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0))
+    
+    s.rolling(2, _.mean, dropNA=false) must_== Series(Vec(Double.NaN, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5))
+    s.rolling(8, _.mean, dropNA=false) must_== Series(Vec(Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, 4.5))
+    s.rolling(9, _.mean, dropNA=false) must_== Series(Vec(Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN))
+  }
 }

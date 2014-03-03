@@ -957,11 +957,17 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * on a sliding window of each column series.
    * @param winSz Window size
    * @param f Function Series[X, T] => B to operate on sliding window
+   * @param dropNA flag indicating if the produced Frame should have the NA rows dropped
    * @tparam B Result type of function
    */
-  def rolling[B: ST](winSz: Int, f: Series[RX, T] => B): Frame[RX, CX, B] = {
-    val tmp = values.map { v => Series(v, rowIx).rolling(winSz, f).values }
-    Frame(tmp, rowIx.slice(winSz - 1, values.numRows), colIx)
+  def rolling[B: ST](winSz: Int, f: Series[RX, T] => B, dropNA: Boolean = true): Frame[RX, CX, B] = {
+    val tmp = values.map { v => Series(v, rowIx).rolling(winSz, f, dropNA).values }
+    val tmpIx = if (dropNA) {
+      rowIx.slice(winSz - 1, values.numRows)
+    } else {
+      rowIx
+    }
+    Frame(tmp, tmpIx, colIx)
   }
 
   /**

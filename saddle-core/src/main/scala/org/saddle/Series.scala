@@ -614,21 +614,39 @@ class Series[X: ST: ORD, T: ST](
    * the data.
    * @param winSz Window size
    * @param f Function Series[X, T] => B to operate on sliding window
+   * @param dropNA flag indicating if the produced Series should have the NA values dropped
    * @tparam B Result type of function
    */
-  def rolling[B: ST](winSz: Int, f: Series[X, T] => B): Series[X, B] = {
-    if (winSz <= 0)
-      Series.empty[X, B]
-    else {
+  def rolling[B: ST](winSz: Int, f: Series[X, T] => B, dropNA: Boolean = true): Series[X, B] = {
+    require(winSz > 0, "Window length must be > 0!")
+    if (dropNA) {
+      if (winSz <= 0)
+        Series.empty[X, B]
+      else {
+          val len = values.length
+          val win = if (winSz > len) len else winSz
+          val buf = new Array[B](len - win + 1)
+          var i = win
+          while (i <= len) {
+            buf(i - win) = f(slice(i - win, i))
+            i += 1
+          }
+          Series(Vec(buf), index.slice(win - 1, len))
+      }
+    } else {
+      val fNA = implicitly[ST[B]].missing
       val len = values.length
-      val win = if (winSz > len) len else winSz
-      val buf = new Array[B](len - win + 1)
-      var i = win
-      while (i <= len) {
-        buf(i - win) = f(slice(i - win, i))
+      val buf = new Array[B](len)
+      var i = 0
+      while (i < (winSz - 1)) {
+        buf(i) = fNA
         i += 1
       }
-      Series(Vec(buf), index.slice(win - 1, len))
+      while (i < len) {
+        buf(i) = f(slice(i - winSz + 1, i + 1))
+        i += 1
+      }
+      Series(Vec(buf), index)
     }
   }
 

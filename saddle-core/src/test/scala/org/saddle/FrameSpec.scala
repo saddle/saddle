@@ -50,4 +50,20 @@ class FrameSpec extends Specification {
     df2.colType[Int] must_!= Frame.empty[Int, Int, Int]
     df2.colType[String] must_!= Frame.empty[Int, Int, String]
   }
+  
+  "rolling works" in {
+    val s = Series(Vec(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0))
+    val f = Frame(0 -> s)
+    
+    f.rolling(2, _.mean) must_== Frame(0 -> s.rolling(2, _.mean))
+  }
+  
+  "rolling without dropping NA works" in {
+    val s = Series(Vec(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0))
+    val f = Frame(0 -> s)
+    
+    f.rolling(2, _.mean, dropNA=false) must_== Frame(0 -> s.rolling(2, _.mean, dropNA=false))
+    f.rolling(8, _.mean, dropNA=false) must_== Frame(0 -> s.rolling(8, _.mean, dropNA=false))
+    f.rolling(9, _.mean, dropNA=false) must_== Frame(0 -> s.rolling(9, _.mean, dropNA=false))
+  }
 }

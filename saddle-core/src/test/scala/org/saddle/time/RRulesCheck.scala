@@ -19,7 +19,7 @@ package org.saddle.time
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
-import org.joda.time.{Days, Months, DateTimeConstants, DateTime}
+import org.joda.time.{Days, Months, DateTimeConstants, DateTime, DateTimeZone}
 import org.scalacheck.Prop._
 
 class RRulesCheck extends Specification with ScalaCheck {
@@ -67,6 +67,14 @@ class RRulesCheck extends Specification with ScalaCheck {
         Days.daysBetween(dt, result2).getDays must be_<=(2)
         isNotWeekend(result2)
       }
+    }
+    
+    "bizDays 11/8/2002 test must pass (corner case with DST)" in {
+      val zone = DateTimeZone.forID("America/Sao_Paulo")
+      
+      val dt = new DateTime(2002, 11, 8, 0, 0, 0, 0, zone)
+      
+      bizDays counting -1 from dt must_== dt
     }
 
     "bizEoms must work as expected" in {
