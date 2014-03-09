@@ -16,7 +16,7 @@
 
 package org.saddle.time
 
-import org.joda.time.{Seconds, Days, DateTimeZone, DateTime, Duration}
+import org.joda.time.{Seconds, Days, DateTimeZone, DateTime}
 import scala.collection.JavaConversions._
 import com.google.ical.iter.{RecurrenceIterator, RecurrenceIteratorFactory}
 import com.google.ical.compat.jodatime.DateTimeIteratorFactory
@@ -221,21 +221,7 @@ case class RRule private (freq: Frequency = DAILY,
           }
 
           // use this daycount to estimate lower bound from which to start generating dates
-          // if it lands on a DST start date, set it to one day earlier
-          // to avoid the generated dates to have a different hour
-          val lbound = {
-            val days = Days.days(ival * iabs)
-            val daysStandardDuration = days.toStandardDuration
-            
-            val possibleLbound = dt.minus(days)
-            val possibleLboundDuration = new Duration(possibleLbound, dt)
-            
-            if (possibleLboundDuration == daysStandardDuration) {
-              possibleLbound
-            } else {
-              dt.minus(days.plus(1))
-            }
-          }
+          val lbound = dt.minusDays(ival * iabs)
           val ubound = dt.plusDays(ival)
 
           // create index and count backward from min conforming time >= dt

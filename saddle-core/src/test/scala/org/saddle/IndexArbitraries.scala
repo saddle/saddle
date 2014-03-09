@@ -34,13 +34,11 @@ object IndexArbitraries {
     lst <- Gen.listOfN(l, Gen.chooseNum(0, l))
   } yield lst.toSet[Int].toSeq.toIndex
 
-  val zone = DateTimeZone.forID("America/New_York")
-  
   def getDate: Gen[DateTime] = for {
     m <- Gen.choose(1,12)
     d <- Gen.choose(1,28)
     y <- Gen.choose(2012, 2013)
-  } yield new DateTime(y, m, d, 0, 0, 0, 0, zone)
+  } yield new DateTime(y, m, d, 0, 0, 0, 0)
 
   def indexTimeWithDups: Gen[Index[DateTime]] = for {
     l <- Gen.choose(0, 100)
