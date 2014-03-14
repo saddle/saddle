@@ -43,10 +43,10 @@ object IndexArbitraries {
   def indexTimeWithDups: Gen[Index[DateTime]] = for {
     l <- Gen.choose(0, 100)
     lst <- Gen.listOfN(l, getDate)
-  } yield Index(lst.toSet[DateTime].toSeq : _*)
+  } yield lst.toIndex
 
   def indexTimeNoDups: Gen[Index[DateTime]] = for {
     l <- Gen.choose(0, 100)
     lst <- Gen.listOfN(l, getDate)
-  } yield Index(lst.toSet[DateTime].toSeq : _*)
+  } yield lst.toSet[DateTime].toSeq.toIndex
 }
