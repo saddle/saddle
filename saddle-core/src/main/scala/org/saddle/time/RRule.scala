@@ -297,7 +297,7 @@ object RRule {
         case "COUNT" => rule.withCount(value.toInt)
         case "UNTIL" => rule.withUntil(parsedt(value))
         case "BYSETPOS" => rule.bySetPos(ints(value): _*)
-        case "BYMONTH" => rule.byMonth(value.toInt)
+        case "BYMONTH" => rule.byMonth(ints(value): _*)
         case "BYMONTHDAY" => rule.byMonthDay(ints(value): _*)
         case "BYYEARDAY" => rule.byYearDay(ints(value): _*)
         case "BYWEEKNO" => rule.byWeekNo(ints(value): _*)
