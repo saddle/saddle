@@ -30,7 +30,7 @@ import org.saddle.time.RRule
  * Index provides a constant-time look-up of a value within array-backed storage,
  * as well as operations to support joining and slicing.
  */
-trait Index[@spec(Boolean, Int, Long, Double) T] {
+trait Index[@spec(Boolean, Int, Long, Double) T] extends Serializable{
   protected def locator: Locator[T]
 
   /**

@@ -20,8 +20,9 @@ import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
-import org.saddle._
-import scalar.{Scalar, Value}
+import org.saddle.scalar.Value
+import Serde.serializedCopy
+
 
 /**
  * Test on properties of Vec
@@ -365,5 +366,15 @@ class VecCheck extends Specification with ScalaCheck {
         (v.length > 0 && v.at(0).isNA) || (v.pad.hasNA must beFalse)
       }
     }
+
+    "serialization works" in  {
+      forAll { v:Vec[Double] =>
+        v must_== serializedCopy(v)
+      }
+    }
+
   }
+
+
+
 }

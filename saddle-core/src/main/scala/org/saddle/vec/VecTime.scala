@@ -35,11 +35,11 @@ import org.saddle.buffer.BufferInt
  */
 class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Vec[DateTime] {
 
-  val scalarTag = ScalarTagTime
+  @transient lazy val scalarTag = ScalarTagTime
 
-  val chrono = ISO_CHRONO.withZone(tzone)
+  @transient lazy val chrono = ISO_CHRONO.withZone(tzone)
 
-  private val lmf = scalar.ScalarTagLong
+  @transient lazy private val lmf = scalar.ScalarTagLong
 
   private def l2t(l: Long) = if (lmf.isMissing(l)) scalarTag.missing else new DateTime(l, chrono)
   private def t2l(t: DateTime) = if (scalarTag.isMissing(t)) lmf.missing else t.getMillis
@@ -112,8 +112,8 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 }
 
 object VecTime {
-  private val sm = ScalarTagTime
-  private val sl = ScalarTagLong
+  @transient lazy private val sm = ScalarTagTime
+  @transient lazy private val sl = ScalarTagLong
 
   /**
    * Create a new VecTime from an array of times
