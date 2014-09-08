@@ -32,10 +32,10 @@ import locator.Locator
 class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
   require( length >= 0, "Length must be non-negative!" )
 
-  val scalarTag = ScalarTagInt
+  @transient lazy val scalarTag = ScalarTagInt
 
-  private lazy val asArr  = array.range(from, from + length)
-  private lazy val genIdx = Index(asArr)
+  @transient private lazy val asArr  = array.range(from, from + length)
+  @transient private lazy val genIdx = Index(asArr)
 
   /**
    * Custom implementation of a Locator to serve as the backing map in a

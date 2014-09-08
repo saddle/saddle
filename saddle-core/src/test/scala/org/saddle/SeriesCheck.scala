@@ -16,6 +16,7 @@
 
 package org.saddle
 
+import org.saddle.Serde._
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
@@ -258,6 +259,13 @@ class SeriesCheck extends Specification with ScalaCheck {
         f.melt.pivot must_== f
       }
     }
+
+    "serialization works" in  {
+        forAll { s1: Series[Int, Double] =>
+          s1 must_== serializedCopy(s1)
+      }
+    }
+
   }
 
   "Series[DateTime, Double] Tests" in {
@@ -347,5 +355,15 @@ class SeriesCheck extends Specification with ScalaCheck {
         s1.reindex(s2.index).index must_== s2.index
       }
     }
+
+    "serialization works" in  {
+
+      implicit val ser = Arbitrary(SeriesArbitraries.seriesDateTimeDoubleNoDup)
+
+      forAll { s: Series[DateTime, Double] =>
+        s must_== serializedCopy(s)
+      }
+    }
+
   }
 }

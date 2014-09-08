@@ -124,7 +124,7 @@ import org.saddle.mat.MatCols
  */
 class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   private[saddle] val values: MatCols[T], val rowIx: Index[RX], val colIx: Index[CX])
-  extends NumericOps[Frame[RX, CX, T]] {
+  extends NumericOps[Frame[RX, CX, T]] with Serializable{
 
   require(values.numRows == rowIx.length, "Row index length is incorrect")
   require(values.numCols == colIx.length, "Col index length is incorrect")

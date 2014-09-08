@@ -38,17 +38,17 @@ import org.saddle.util.Concat.Promoter
 class IndexTime(val times: Index[Long],
                 val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Index[DateTime] {
 
-  val scalarTag = ScalarTagTime
+  @transient lazy val scalarTag = ScalarTagTime
 
-  val chrono = ISO_CHRONO.withZone(tzone)
+  @transient lazy val chrono = ISO_CHRONO.withZone(tzone)
 
-  private val lmf = ScalarTagLong
+  @transient lazy private val lmf = ScalarTagLong
 
   private def l2t(l: Long) = if (lmf.isMissing(l)) scalarTag.missing else new DateTime(l, chrono)
   private def t2l(t: DateTime) = if (scalarTag.isMissing(t)) lmf.missing else t.getMillis
   private def il2it(l: Index[Long]) = new IndexTime(l, tzone)
 
-  private val _locator = new Locator[DateTime] {
+  @transient lazy private val _locator = new Locator[DateTime] {
     lazy val _keys = times.uniques.map(l2t)
 
     def contains(key: DateTime) = times.contains(t2l(key))
@@ -160,8 +160,8 @@ class IndexTime(val times: Index[Long],
 }
 
 object IndexTime {
-  private val st = ScalarTagTime
-  private val sl = ScalarTagLong
+  @transient lazy private val st = ScalarTagTime
+  @transient lazy private val sl = ScalarTagLong
 
   /**
    * Create a new IndexTime from a sequence of times

@@ -51,7 +51,7 @@ object ScalarTagTime extends ScalarTagAny[DateTime] {
   override def makeSorter(implicit ord: ORD[DateTime]): Sorter[DateTime] =
     Sorter.timeSorter
 
-  private val fmtZ = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSSZZ")
+  @transient lazy private val fmtZ = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSSZZ")
 
   override def show(v: DateTime) = Option(v) map { fmtZ.print(_) } getOrElse("NA")
 
