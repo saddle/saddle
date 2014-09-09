@@ -91,7 +91,7 @@ object SaddleBuild extends sbt.Build {
 object Shared {
   def testDeps(version: String, conf: String = "test") = {
     val specs2 = if (version.startsWith("2.1"))
-      "org.specs2" %% "specs2" % "2.4.2"
+      "org.specs2" %% "specs2" % "2.4.1"
     else if (version.startsWith("2.9.3"))
       "org.specs2" %% "specs2" % "1.12.4.1"
     else
