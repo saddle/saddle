@@ -91,16 +91,16 @@ object SaddleBuild extends sbt.Build {
 object Shared {
   def testDeps(version: String, conf: String = "test") = {
     val specs2 = if (version.startsWith("2.1"))
-      "org.specs2" %% "specs2" % "2.4.1"
+      "org.specs2" %% "specs2" % "2.4.2"
     else if (version.startsWith("2.9.3"))
-      "org.specs2" % "specs2_2.9.2" % "1.12.4"
+      "org.specs2" %% "specs2" % "1.12.4.1"
     else
       "org.specs2" %% "specs2" % "1.12.4"
 
     val scalacheck = if (version.startsWith("2.9"))
       "org.scalacheck" %% "scalacheck" % "1.10.1"
     else
-      "org.scalacheck" %% "scalacheck" % "1.11.3"
+      "org.scalacheck" %% "scalacheck" % "1.11.5"
 
     Seq(
       specs2 % conf,
