@@ -35,7 +35,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Frame</span><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]]</span>
+        <span class="name">Frame</span><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]] with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -60,7 +60,7 @@ representation of a missing value (so be careful).</p><pre>f.raw(<span class="nu
 align along their indexes:</p><pre>f + f.shift(<span class="num">1</span>) == Frame(<span class="lit">'a'</span>-&gt;Vec(NA,<span class="num">3</span>,<span class="num">5</span>), <span class="lit">'b'</span>-&gt;Vec(NA,<span class="num">9</span>,<span class="num">11</span>))</pre></div><dl class="paramcmts block"><dt class="tparam">RX</dt><dd class="cmt"><p>The type of row keys</p></dd><dt class="tparam">CX</dt><dd class="cmt"><p>The type of column keys</p></dd><dt class="tparam">T</dt><dd class="cmt"><p>The type of entries in the frame
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -78,7 +78,7 @@ align along their indexes:</p><pre>f + f.shift(<span class="num">1</span>) == Fr
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.saddle.Frame"><span>Frame</span></li><li class="in" name="org.saddle.ops.NumericOps"><span>NumericOps</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.saddle.Frame"><span>Frame</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="org.saddle.ops.NumericOps"><span>NumericOps</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -2749,7 +2749,11 @@ data body.</p>
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.saddle.ops.NumericOps">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="org.saddle.ops.NumericOps">
               <h3>Inherited from <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>

@@ -25,13 +25,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">CsvParams</span><span class="params">(<span name="separChar">separChar: <span name="scala.Char" class="extype">Char</span></span>, <span name="quoteChar">quoteChar: <span name="scala.Char" class="extype">Char</span></span>, <span name="withQuote">withQuote: <span name="scala.Boolean" class="extype">Boolean</span></span>, <span name="hasHeader">hasHeader: <span name="scala.Boolean" class="extype">Boolean</span></span>, <span name="skipLines">skipLines: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result"> extends <span name="scala.Product" class="extype">Product</span> with <span name="scala.Serializable" class="extype">Serializable</span></span>
+        <span class="name">CsvParams</span><span class="params">(<span name="separChar">separChar: <span name="scala.Char" class="extype">Char</span></span>, <span name="quoteChar">quoteChar: <span name="scala.Char" class="extype">Char</span></span>, <span name="withQuote">withQuote: <span name="scala.Boolean" class="extype">Boolean</span></span>, <span name="skipLines">skipLines: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result"> extends <span name="scala.Product" class="extype">Product</span> with <span name="scala.Serializable" class="extype">Serializable</span></span>
       </span>
       </h4>
       
       <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Holds parameters to customize CSV parsing
 </p></div><dl class="paramcmts block"><dt class="param">separChar</dt><dd class="cmt"><p>The separator; default is comma</p></dd><dt class="param">quoteChar</dt><dd class="cmt"><p>Within matching quotes, treat separChar as normal char;
-                 default is double-quote</p></dd><dt class="param">withQuote</dt><dd class="cmt"><p>If true, do not strip quote character from quoted fields</p></dd><dt class="param">hasHeader</dt><dd class="cmt"><p>Whether the CSV file has a header row, default true</p></dd><dt class="param">skipLines</dt><dd class="cmt"><p>Whether to skip some integer number of lines, default 0
+                 default is double-quote</p></dd><dt class="param">withQuote</dt><dd class="cmt"><p>If true, do not strip quote character from quoted fields</p></dd><dt class="param">skipLines</dt><dd class="cmt"><p>Whether to skip some integer number of lines, default 0
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span name="scala.Serializable" class="extype">Serializable</span>, <span name="java.io.Serializable" class="extype">Serializable</span>, <span name="scala.Product" class="extype">Product</span>, <span name="scala.Equals" class="extype">Equals</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
@@ -68,11 +68,11 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">CsvParams</span><span class="params">(<span name="separChar">separChar: <span name="scala.Char" class="extype">Char</span> = <span class="symbol">\',\'</span></span>, <span name="quoteChar">quoteChar: <span name="scala.Char" class="extype">Char</span> = <span class="symbol">\'\\\&quot;\'</span></span>, <span name="withQuote">withQuote: <span name="scala.Boolean" class="extype">Boolean</span> = <span class="symbol">false</span></span>, <span name="hasHeader">hasHeader: <span name="scala.Boolean" class="extype">Boolean</span> = <span class="symbol">true</span></span>, <span name="skipLines">skipLines: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">0</span></span>)</span>
+        <span class="name">CsvParams</span><span class="params">(<span name="separChar">separChar: <span name="scala.Char" class="extype">Char</span> = <span class="symbol">\',\'</span></span>, <span name="quoteChar">quoteChar: <span name="scala.Char" class="extype">Char</span> = <span class="symbol">\'\\\&quot;\'</span></span>, <span name="withQuote">withQuote: <span name="scala.Boolean" class="extype">Boolean</span> = <span class="symbol">false</span></span>, <span name="skipLines">skipLines: <span name="scala.Int" class="extype">Int</span> = <span class="symbol">0</span></span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">separChar</dt><dd class="cmt"><p>The separator; default is comma</p></dd><dt class="param">quoteChar</dt><dd class="cmt"><p>Within matching quotes, treat separChar as normal char;
-                 default is double-quote</p></dd><dt class="param">withQuote</dt><dd class="cmt"><p>If true, do not strip quote character from quoted fields</p></dd><dt class="param">hasHeader</dt><dd class="cmt"><p>Whether the CSV file has a header row, default true</p></dd><dt class="param">skipLines</dt><dd class="cmt"><p>Whether to skip some integer number of lines, default 0
+                 default is double-quote</p></dd><dt class="param">withQuote</dt><dd class="cmt"><p>If true, do not strip quote character from quoted fields</p></dd><dt class="param">skipLines</dt><dd class="cmt"><p>Whether to skip some integer number of lines, default 0
 </p></dd></dl></div>
     </li></ol>
             </div>
@@ -233,18 +233,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li visbl="pub" name="org.saddle.io.CsvParams#hasHeader" data-isabs="false">
-      <a id="hasHeader:Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">hasHeader</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Whether the CSV file has a header row, default true</p>
     </li><li visbl="pub" name="org.saddle.io.CsvParams#hashCode" data-isabs="false">
       <a id="hashCode():Int"></a>
       <h4 class="signature">

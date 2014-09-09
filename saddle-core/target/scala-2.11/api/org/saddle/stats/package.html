@@ -1,0 +1,513 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>stats - org.saddle.stats</title>
+          <meta name="description" content="stats - org.saddle.stats" />
+          <meta name="keywords" content="stats org.saddle.stats" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.saddle.stats.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.saddle">saddle</a></p>
+        <h1>stats</h1> <span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stats</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.saddle.stats.DoubleExpandingStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DoubleExpandingStatsextendsVecExpandingStats[Double]"></a>
+      <a id="DoubleExpandingStats:DoubleExpandingStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DoubleExpandingStats.html"><span class="name">DoubleExpandingStats</span></a><span class="result"> extends <a href="VecExpandingStats.html" class="extype" name="org.saddle.stats.VecExpandingStats">VecExpandingStats</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@DoubleExpandingStatsextendsVecExpandingStats[Double]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.DoubleStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DoubleStatsextendsVecStats[Double]"></a>
+      <a id="DoubleStats:DoubleStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DoubleStats.html"><span class="name">DoubleStats</span></a><span class="result"> extends <a href="VecStats.html" class="extype" name="org.saddle.stats.VecStats">VecStats</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@DoubleStatsextendsVecStats[Double]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.FrameStats" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FrameStats[RX,CX,T]extendsAnyRef"></a>
+      <a id="FrameStats[RX,CX,T]:FrameStats[RX,CX,T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="FrameStats.html"><span class="name">FrameStats</span></a><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@FrameStats[RX,CX,T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Statistical methods made available to operate on columns of a Frame via enrichment.</p><div class="fullcomment"><div class="comment cmt"><p>Statistical methods made available to operate on columns of a Frame via enrichment.
+</p></div><dl class="paramcmts block"><dt class="tparam">RX</dt><dd class="cmt"><p>Type of the row index elements</p></dd><dt class="tparam">CX</dt><dd class="cmt"><p>Type of the column index elements</p></dd><dt class="tparam">T</dt><dd class="cmt"><p>Type of the elements of the frame
+</p></dd></dl></div>
+    </li><li name="org.saddle.stats.IntExpandingStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IntExpandingStatsextendsVecExpandingStats[Int]"></a>
+      <a id="IntExpandingStats:IntExpandingStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IntExpandingStats.html"><span class="name">IntExpandingStats</span></a><span class="result"> extends <a href="VecExpandingStats.html" class="extype" name="org.saddle.stats.VecExpandingStats">VecExpandingStats</a>[<span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@IntExpandingStatsextendsVecExpandingStats[Int]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.IntStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IntStatsextendsVecStats[Int]"></a>
+      <a id="IntStats:IntStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="IntStats.html"><span class="name">IntStats</span></a><span class="result"> extends <a href="VecStats.html" class="extype" name="org.saddle.stats.VecStats">VecStats</a>[<span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@IntStatsextendsVecStats[Int]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.LongExpandingStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LongExpandingStatsextendsVecExpandingStats[Long]"></a>
+      <a id="LongExpandingStats:LongExpandingStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="LongExpandingStats.html"><span class="name">LongExpandingStats</span></a><span class="result"> extends <a href="VecExpandingStats.html" class="extype" name="org.saddle.stats.VecExpandingStats">VecExpandingStats</a>[<span class="extype" name="scala.Long">Long</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@LongExpandingStatsextendsVecExpandingStats[Long]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.LongStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LongStatsextendsVecStats[Long]"></a>
+      <a id="LongStats:LongStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="LongStats.html"><span class="name">LongStats</span></a><span class="result"> extends <a href="VecStats.html" class="extype" name="org.saddle.stats.VecStats">VecStats</a>[<span class="extype" name="scala.Long">Long</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@LongStatsextendsVecStats[Long]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.Mediator" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MediatorextendsAnyRef"></a>
+      <a id="Mediator:Mediator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Mediator.html"><span class="name">Mediator</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@MediatorextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Mediator is an auxiliary class for O(N log k) rolling median.</p><div class="fullcomment"><div class="comment cmt"><p>Mediator is an auxiliary class for O(N log k) rolling median. It is inspired by
+AShelly's C99 implementation, which is (c) 2011 ashelly.myopenid.com and licensed
+under the MIT license: http://www.opensource.org/licenses/mit-license</p><p>Reference:
+  http://stackoverflow.com/questions/5527437/rolling-median-in-c-turlach-implementation
+</p></div></div>
+    </li><li name="org.saddle.stats.PctMethod" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PctMethodextendsAnyRef"></a>
+      <a id="PctMethod:PctMethod"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="PctMethod.html"><span class="name">PctMethod</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@PctMethodextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait which specifies what percentile method to use
+</p>
+    </li><li name="org.saddle.stats.RankTie" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="RankTieextendsAnyRef"></a>
+      <a id="RankTie:RankTie"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RankTie.html"><span class="name">RankTie</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@RankTieextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait which specifies how to break a rank tie
+</p>
+    </li><li name="org.saddle.stats.RollingCount" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RollingCount[A]extendsorg.saddle.Vec[A]=&gt;Int"></a>
+      <a id="RollingCount[A]:RollingCount[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RollingCount.html"><span class="name">RollingCount</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<a href="../Vec.html" class="extype" name="org.saddle.Vec">Vec</a>[<span class="extype" name="org.saddle.stats.RollingCount.A">A</span>]) ⇒ <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@RollingCount[A]extendsorg.saddle.Vec[A]=&gt;Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.RollingMean" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RollingMean[A]extendsorg.saddle.Vec[A]=&gt;Double"></a>
+      <a id="RollingMean[A]:RollingMean[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RollingMean.html"><span class="name">RollingMean</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<a href="../Vec.html" class="extype" name="org.saddle.Vec">Vec</a>[<span class="extype" name="org.saddle.stats.RollingMean.A">A</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@RollingMean[A]extendsorg.saddle.Vec[A]=&gt;Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.RollingMedian" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RollingMedian[A]extendsAnyRef"></a>
+      <a id="RollingMedian[A]:RollingMedian[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RollingMedian.html"><span class="name">RollingMedian</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@RollingMedian[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.RollingSum" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RollingSum[A]extendsorg.saddle.Vec[A]=&gt;A"></a>
+      <a id="RollingSum[A]:RollingSum[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RollingSum.html"><span class="name">RollingSum</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<a href="../Vec.html" class="extype" name="org.saddle.Vec">Vec</a>[<span class="extype" name="org.saddle.stats.RollingSum.A">A</span>]) ⇒ <span class="extype" name="org.saddle.stats.RollingSum.A">A</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@RollingSum[A]extendsorg.saddle.Vec[A]=&gt;A" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.SeriesExpandingStats" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SeriesExpandingStats[X,T]extendsAnyRef"></a>
+      <a id="SeriesExpandingStats[X,T]:SeriesExpandingStats[X,T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SeriesExpandingStats.html"><span class="name">SeriesExpandingStats</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@SeriesExpandingStats[X,T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Expanding statistical methods made available on numeric Series objects via enrichment.</p><div class="fullcomment"><div class="comment cmt"><p>Expanding statistical methods made available on numeric Series objects via enrichment.
+These methods scan over the Series and compute values over a specified historical
+window.
+</p></div></div>
+    </li><li name="org.saddle.stats.SeriesRollingStats" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SeriesRollingStats[X,T]extendsAnyRef"></a>
+      <a id="SeriesRollingStats[X,T]:SeriesRollingStats[X,T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SeriesRollingStats.html"><span class="name">SeriesRollingStats</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@SeriesRollingStats[X,T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Rolling statistical methods made available on numeric Series objects via enrichment.</p><div class="fullcomment"><div class="comment cmt"><p>Rolling statistical methods made available on numeric Series objects via enrichment.
+These methods scan over the Series and compute cumulative values.
+</p></div></div>
+    </li><li name="org.saddle.stats.VecExpandingStats" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="VecExpandingStats[A]extendsAnyRef"></a>
+      <a id="VecExpandingStats[A]:VecExpandingStats[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="VecExpandingStats.html"><span class="name">VecExpandingStats</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@VecExpandingStats[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Expanding statistical methods made available on numeric Vec objects via enrichment.</p><div class="fullcomment"><div class="comment cmt"><p>Expanding statistical methods made available on numeric Vec objects via enrichment.
+These methods scan over the Vec and compute cumulative values.
+</p></div></div>
+    </li><li name="org.saddle.stats.VecRollingStats" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="VecRollingStats[A]extendsAnyRef"></a>
+      <a id="VecRollingStats[A]:VecRollingStats[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="VecRollingStats.html"><span class="name">VecRollingStats</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@VecRollingStats[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Rolling statistical methods made available on numeric Vec objects via enrichment.</p><div class="fullcomment"><div class="comment cmt"><p>Rolling statistical methods made available on numeric Vec objects via enrichment.
+These methods scan over the Vec and compute values over a specified historical
+window.
+</p></div></div>
+    </li><li name="org.saddle.stats.VecStats" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VecStats[A]extendsAnyRef"></a>
+      <a id="VecStats[A]:VecStats[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="VecStats.html"><span class="name">VecStats</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@VecStats[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Statistical methods made available on numeric Vec objects via enrichment.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.saddle.stats.PctMethod" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PctMethod"></a>
+      <a id="PctMethod:PctMethod"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PctMethod$.html"><span class="name">PctMethod</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@PctMethod" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.RankTie" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RankTie"></a>
+      <a id="RankTie:RankTie"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RankTie$.html"><span class="name">RankTie</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@RankTie" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.SeriesExpandingStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeriesExpandingStats"></a>
+      <a id="SeriesExpandingStats:SeriesExpandingStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SeriesExpandingStats$.html"><span class="name">SeriesExpandingStats</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@SeriesExpandingStats" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.stats.SeriesRollingStats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SeriesRollingStats"></a>
+      <a id="SeriesRollingStats:SeriesRollingStats"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SeriesRollingStats$.html"><span class="name">SeriesRollingStats</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.stats.package@SeriesRollingStats" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

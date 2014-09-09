@@ -45,7 +45,7 @@ is the default when creating a Saddle object such as <a href="../Series.html" cl
 requires and index and one is not supplied.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../Index.html" class="extype" name="org.saddle.Index">Index</a>[<span class="extype" name="scala.Int">Int</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../Index.html" class="extype" name="org.saddle.Index">Index</a>[<span class="extype" name="scala.Int">Int</span>], <span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -63,7 +63,7 @@ requires and index and one is not supplied.
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.saddle.index.IndexIntRange"><span>IndexIntRange</span></li><li class="in" name="org.saddle.Index"><span>Index</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.saddle.index.IndexIntRange"><span>IndexIntRange</span></li><li class="in" name="org.saddle.Index"><span>Index</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -895,16 +895,13 @@ must already be sorted.</p></div><dl class="paramcmts block"><dt class="param">t
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
         <span class="name">scalarTag</span><span class="result">: <a href="../scalar/ScalarTagInt$.html" class="extype" name="org.saddle.scalar.ScalarTagInt">ScalarTagInt</a>.type</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">A <a href="../scalar/ScalarTag.html" class="extype" name="org.saddle.scalar.ScalarTag">org.saddle.scalar.ScalarTag</a> representing the kind of Scalar
-found in this index.</p><div class="fullcomment"><div class="comment cmt"><p>A <a href="../scalar/ScalarTag.html" class="extype" name="org.saddle.scalar.ScalarTag">org.saddle.scalar.ScalarTag</a> representing the kind of Scalar
-found in this index.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.saddle.index.IndexIntRange">IndexIntRange</a> → <a href="../Index.html" class="extype" name="org.saddle.Index">Index</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.saddle.index.IndexIntRange">IndexIntRange</a> → <a href="../Index.html" class="extype" name="org.saddle.Index">Index</a></dd></dl></div>
     </li><li name="org.saddle.index.IndexIntRange#slice" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="slice(from:Int,until:Int,stride:Int):org.saddle.Index[Int]"></a>
       <a id="slice(Int,Int,Int):Index[Int]"></a>
@@ -1220,6 +1217,10 @@ which do not occur at the specified locations.
         <div id="inheritedMembers">
         <div class="parent" name="org.saddle.Index">
               <h3>Inherited from <a href="../Index.html" class="extype" name="org.saddle.Index">Index</a>[<span class="extype" name="scala.Int">Int</span>]</h3>
+            </div><div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

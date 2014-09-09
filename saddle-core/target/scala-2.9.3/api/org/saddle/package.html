@@ -86,7 +86,7 @@ pandas data analysis library for Python, and the Scala collections library.
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Frame.html"><span class="name">Frame</span></a><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends NumericOps[Frame[RX, CX, T]]</span>
+        <a href="Frame.html"><span class="name">Frame</span></a><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends NumericOps[Frame[RX, CX, T]] with Serializable</span>
       </span>
       </h4>
       <p class="comment cmt"><code>Frame</code> is an immutable container for 2D data which is indexed along both axes
@@ -99,7 +99,7 @@ pandas data analysis library for Python, and the Scala collections library.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Index.html"><span class="name">Index</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends AnyRef</span>
+        <a href="Index.html"><span class="name">Index</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends Serializable</span>
       </span>
       </h4>
       <p class="comment cmt">Index provides a constant-time look-up of a value within array-backed storage,
@@ -112,7 +112,7 @@ as well as operations to support joining and slicing.</p>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Mat.html"><span class="name">Mat</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends NumericOps[Mat[A]]</span>
+        <a href="Mat.html"><span class="name">Mat</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends NumericOps[Mat[A]] with Serializable</span>
       </span>
       </h4>
       <p class="comment cmt"><code>Mat</code> is an immutable container for 2D homogeneous data (a &quot;matrix&quot;).</p>
@@ -166,7 +166,7 @@ as well as operations to support joining and slicing.</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Series.html"><span class="name">Series</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends NumericOps[Series[X, T]]</span>
+        <a href="Series.html"><span class="name">Series</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends NumericOps[Series[X, T]] with Serializable</span>
       </span>
       </h4>
       <p class="comment cmt"><code>Series</code> is an immutable container for 1D homogeneous data which is indexed by a
@@ -179,7 +179,7 @@ an associated sequence of keys.</p>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Vec.html"><span class="name">Vec</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends NumericOps[Vec[T]]</span>
+        <a href="Vec.html"><span class="name">Vec</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends NumericOps[Vec[T]] with Serializable</span>
       </span>
       </h4>
       <p class="comment cmt"><code>Vec</code> is an immutable container for 1D homogeneous data (a &quot;vector&quot;).</p>
@@ -225,7 +225,7 @@ an associated sequence of keys.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Frame$.html"><span class="name">Frame</span></a><span class="result"> extends BinOpFrame</span>
+        <a href="Frame$.html"><span class="name">Frame</span></a><span class="result"> extends BinOpFrame with Serializable</span>
       </span>
       </h4>
       
@@ -237,7 +237,7 @@ an associated sequence of keys.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Index$.html"><span class="name">Index</span></a><span class="result"> extends AnyRef</span>
+        <a href="Index$.html"><span class="name">Index</span></a><span class="result"> extends Serializable</span>
       </span>
       </h4>
       
@@ -249,7 +249,7 @@ an associated sequence of keys.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Mat$.html"><span class="name">Mat</span></a><span class="result"> extends BinOpMat</span>
+        <a href="Mat$.html"><span class="name">Mat</span></a><span class="result"> extends BinOpMat with Serializable</span>
       </span>
       </h4>
       
@@ -274,7 +274,7 @@ and Series as constructor parameters, leaving their internal representations unc
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Series$.html"><span class="name">Series</span></a><span class="result"> extends BinOpSeries</span>
+        <a href="Series$.html"><span class="name">Series</span></a><span class="result"> extends BinOpSeries with Serializable</span>
       </span>
       </h4>
       
@@ -300,7 +300,7 @@ and Series as constructor parameters, leaving their internal representations unc
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Vec$.html"><span class="name">Vec</span></a><span class="result"> extends BinOpVec with VecStatsImplicits with VecBoolEnricher</span>
+        <a href="Vec$.html"><span class="name">Vec</span></a><span class="result"> extends BinOpVec with VecStatsImplicits with VecBoolEnricher with Serializable</span>
       </span>
       </h4>
       

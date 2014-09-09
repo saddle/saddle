@@ -25,7 +25,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Mat</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Mat" class="extype" href="">Mat</a>[A]]</span>
+        <span class="name">Mat</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Mat" class="extype" href="">Mat</a>[A]] with <span name="scala.Serializable" class="extype">Serializable</span></span>
       </span>
       </h4>
       
@@ -50,7 +50,7 @@ mutable data structure.
 </p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>Type of elements within the Mat
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Mat" class="extype" href="">Mat</a>[A]], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><span name="scala.Serializable" class="extype">Serializable</span>, <span name="java.io.Serializable" class="extype">Serializable</span>, <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Mat" class="extype" href="">Mat</a>[A]], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
           <div class="subClasses hiddenContent"><a name="org.saddle.mat.MatAny" class="extype" href="mat/MatAny.html">MatAny</a>, <a name="org.saddle.mat.MatBool" class="extype" href="mat/MatBool.html">MatBool</a>, <a name="org.saddle.mat.MatDouble" class="extype" href="mat/MatDouble.html">MatDouble</a>, <a name="org.saddle.mat.MatInt" class="extype" href="mat/MatInt.html">MatInt</a>, <a name="org.saddle.mat.MatLong" class="extype" href="mat/MatLong.html">MatLong</a></div>
@@ -67,7 +67,7 @@ mutable data structure.
               <span class="filtertype">Inherited</span>
               <ol><li class="hideall out"><span>Hide All</span></li>
               <li class="showall in"><span>Show all</span></li></ol>
-              <ol id="linearization"><li name="org.saddle.Mat" class="in"><span>Mat</span></li><li name="org.saddle.ops.NumericOps" class="in"><span>NumericOps</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.Mat" class="in"><span>Mat</span></li><li name="scala.Serializable" class="in"><span>Serializable</span></li><li name="java.io.Serializable" class="in"><span>Serializable</span></li><li name="org.saddle.ops.NumericOps" class="in"><span>NumericOps</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
             </div>
         <div id="visbl">
             <span class="filtertype">Visibility</span>
@@ -1302,7 +1302,11 @@ a significance level
         </div>
 
         <div id="inheritedMembers">
-        <div name="org.saddle.ops.NumericOps" class="parent">
+        <div name="scala.Serializable" class="parent">
+              <h3>Inherited from <span name="scala.Serializable" class="extype">Serializable</span></h3>
+            </div><div name="java.io.Serializable" class="parent">
+              <h3>Inherited from <span name="java.io.Serializable" class="extype">Serializable</span></h3>
+            </div><div name="org.saddle.ops.NumericOps" class="parent">
               <h3>Inherited from <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Mat" class="extype" href="">Mat</a>[A]]</h3>
             </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>

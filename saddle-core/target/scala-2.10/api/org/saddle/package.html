@@ -113,7 +113,7 @@ pandas data analysis library for Python, and the Scala collections library.
       <p class="shortcomment cmt">Shorthand for class manifest typeclass
 </p>
     </li><li name="org.saddle.Frame" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Frame[RX,CX,T]extendsNumericOps[org.saddle.Frame[RX,CX,T]]"></a>
+      <a id="Frame[RX,CX,T]extendsNumericOps[org.saddle.Frame[RX,CX,T]]withSerializable"></a>
       <a id="Frame[RX,CX,T]:Frame[RX,CX,T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -121,13 +121,13 @@ pandas data analysis library for Python, and the Scala collections library.
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Frame.html"><span class="name">Frame</span></a><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Frame.html" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]]</span>
+        <a href="Frame.html"><span class="name">Frame</span></a><span class="tparams">[<span name="RX">RX</span>, <span name="CX">CX</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Frame.html" class="extype" name="org.saddle.Frame">Frame</a>[<span class="extype" name="org.saddle.Frame.RX">RX</span>, <span class="extype" name="org.saddle.Frame.CX">CX</span>, <span class="extype" name="org.saddle.Frame.T">T</span>]] with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt"><code>Frame</code> is an immutable container for 2D data which is indexed along both axes
 (rows, columns) by associated keys (i.</p>
     </li><li name="org.saddle.Index" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Index[T]extendsAnyRef"></a>
+      <a id="Index[T]extendsSerializable"></a>
       <a id="Index[T]:Index[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -135,13 +135,13 @@ pandas data analysis library for Python, and the Scala collections library.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Index.html"><span class="name">Index</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="Index.html"><span class="name">Index</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt">Index provides a constant-time look-up of a value within array-backed storage,
 as well as operations to support joining and slicing.</p>
     </li><li name="org.saddle.Mat" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Mat[A]extendsNumericOps[org.saddle.Mat[A]]"></a>
+      <a id="Mat[A]extendsNumericOps[org.saddle.Mat[A]]withSerializable"></a>
       <a id="Mat[A]:Mat[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -149,7 +149,7 @@ as well as operations to support joining and slicing.</p>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Mat.html"><span class="name">Mat</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Mat.html" class="extype" name="org.saddle.Mat">Mat</a>[<span class="extype" name="org.saddle.Mat.A">A</span>]]</span>
+        <a href="Mat.html"><span class="name">Mat</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Mat.html" class="extype" name="org.saddle.Mat">Mat</a>[<span class="extype" name="org.saddle.Mat.A">A</span>]] with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt"><code>Mat</code> is an immutable container for 2D homogeneous data (a &quot;matrix&quot;).</p>
@@ -196,7 +196,7 @@ as well as operations to support joining and slicing.</p>
       <p class="shortcomment cmt">Shorthand for scalar tag typeclass
 </p>
     </li><li name="org.saddle.Series" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Series[X,T]extendsNumericOps[org.saddle.Series[X,T]]"></a>
+      <a id="Series[X,T]extendsNumericOps[org.saddle.Series[X,T]]withSerializable"></a>
       <a id="Series[X,T]:Series[X,T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -204,13 +204,13 @@ as well as operations to support joining and slicing.</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Series.html"><span class="name">Series</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Series.html" class="extype" name="org.saddle.Series">Series</a>[<span class="extype" name="org.saddle.Series.X">X</span>, <span class="extype" name="org.saddle.Series.T">T</span>]]</span>
+        <a href="Series.html"><span class="name">Series</span></a><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Series.html" class="extype" name="org.saddle.Series">Series</a>[<span class="extype" name="org.saddle.Series.X">X</span>, <span class="extype" name="org.saddle.Series.T">T</span>]] with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt"><code>Series</code> is an immutable container for 1D homogeneous data which is indexed by a
 an associated sequence of keys.</p>
     </li><li name="org.saddle.Vec" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Vec[T]extendsNumericOps[org.saddle.Vec[T]]"></a>
+      <a id="Vec[T]extendsNumericOps[org.saddle.Vec[T]]withSerializable"></a>
       <a id="Vec[T]:Vec[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -218,7 +218,7 @@ an associated sequence of keys.</p>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Vec.html"><span class="name">Vec</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Vec.html" class="extype" name="org.saddle.Vec">Vec</a>[<span class="extype" name="org.saddle.Vec.T">T</span>]]</span>
+        <a href="Vec.html"><span class="name">Vec</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="ops/NumericOps.html" class="extype" name="org.saddle.ops.NumericOps">NumericOps</a>[<a href="Vec.html" class="extype" name="org.saddle.Vec">Vec</a>[<span class="extype" name="org.saddle.Vec.T">T</span>]] with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt"><code>Vec</code> is an immutable container for 1D homogeneous data (a &quot;vector&quot;).</p>
@@ -265,7 +265,7 @@ an associated sequence of keys.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Frame$.html"><span class="name">Frame</span></a><span class="result"> extends <a href="ops/BinOpFrame.html" class="extype" name="org.saddle.ops.BinOpFrame">BinOpFrame</a></span>
+        <a href="Frame$.html"><span class="name">Frame</span></a><span class="result"> extends <a href="ops/BinOpFrame.html" class="extype" name="org.saddle.ops.BinOpFrame">BinOpFrame</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -278,7 +278,7 @@ an associated sequence of keys.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Index$.html"><span class="name">Index</span></a>
+        <a href="Index$.html"><span class="name">Index</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -291,7 +291,7 @@ an associated sequence of keys.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Mat$.html"><span class="name">Mat</span></a><span class="result"> extends <a href="ops/BinOpMat.html" class="extype" name="org.saddle.ops.BinOpMat">BinOpMat</a></span>
+        <a href="Mat$.html"><span class="name">Mat</span></a><span class="result"> extends <a href="ops/BinOpMat.html" class="extype" name="org.saddle.ops.BinOpMat">BinOpMat</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -318,7 +318,7 @@ and Series as constructor parameters, leaving their internal representations unc
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Series$.html"><span class="name">Series</span></a><span class="result"> extends <a href="ops/BinOpSeries.html" class="extype" name="org.saddle.ops.BinOpSeries">BinOpSeries</a></span>
+        <a href="Series$.html"><span class="name">Series</span></a><span class="result"> extends <a href="ops/BinOpSeries.html" class="extype" name="org.saddle.ops.BinOpSeries">BinOpSeries</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -345,7 +345,7 @@ and Series as constructor parameters, leaving their internal representations unc
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Vec$.html"><span class="name">Vec</span></a><span class="result"> extends <a href="ops/BinOpVec.html" class="extype" name="org.saddle.ops.BinOpVec">BinOpVec</a> with <a href="vec/VecStatsImplicits.html" class="extype" name="org.saddle.vec.VecStatsImplicits">VecStatsImplicits</a> with <a href="vec/VecBoolEnricher.html" class="extype" name="org.saddle.vec.VecBoolEnricher">VecBoolEnricher</a></span>
+        <a href="Vec$.html"><span class="name">Vec</span></a><span class="result"> extends <a href="ops/BinOpVec.html" class="extype" name="org.saddle.ops.BinOpVec">BinOpVec</a> with <a href="vec/VecStatsImplicits.html" class="extype" name="org.saddle.vec.VecStatsImplicits">VecStatsImplicits</a> with <a href="vec/VecBoolEnricher.html" class="extype" name="org.saddle.vec.VecBoolEnricher">VecBoolEnricher</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       

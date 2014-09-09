@@ -25,7 +25,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Series</span><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]]</span>
+        <span class="name">Series</span><span class="tparams">[<span name="X">X</span>, <span name="T">T</span>]</span><span class="result"> extends <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]] with <span name="scala.Serializable" class="extype">Serializable</span></span>
       </span>
       </h4>
       
@@ -62,7 +62,7 @@ align along their indexes. A few examples:</p><pre>
 </pre></div><dl class="paramcmts block"><dt class="tparam">X</dt><dd class="cmt"><p>Type of elements in the index, for which there must be an implicit Ordering and ST</p></dd><dt class="tparam">T</dt><dd class="cmt"><p>Type of elements in the values array, for which there must be an implicit ST
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><span name="scala.Serializable" class="extype">Serializable</span>, <span name="java.io.Serializable" class="extype">Serializable</span>, <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
     
 
@@ -76,7 +76,7 @@ align along their indexes. A few examples:</p><pre>
               <span class="filtertype">Inherited</span>
               <ol><li class="hideall out"><span>Hide All</span></li>
               <li class="showall in"><span>Show all</span></li></ol>
-              <ol id="linearization"><li name="org.saddle.Series" class="in"><span>Series</span></li><li name="org.saddle.ops.NumericOps" class="in"><span>NumericOps</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.Series" class="in"><span>Series</span></li><li name="scala.Serializable" class="in"><span>Serializable</span></li><li name="java.io.Serializable" class="in"><span>Serializable</span></li><li name="org.saddle.ops.NumericOps" class="in"><span>NumericOps</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
             </div>
         <div id="visbl">
             <span class="filtertype">Visibility</span>
@@ -1834,7 +1834,11 @@ Series[_, Boolean] where the latter contains a true value.</p></div><dl class="p
         </div>
 
         <div id="inheritedMembers">
-        <div name="org.saddle.ops.NumericOps" class="parent">
+        <div name="scala.Serializable" class="parent">
+              <h3>Inherited from <span name="scala.Serializable" class="extype">Serializable</span></h3>
+            </div><div name="java.io.Serializable" class="parent">
+              <h3>Inherited from <span name="java.io.Serializable" class="extype">Serializable</span></h3>
+            </div><div name="org.saddle.ops.NumericOps" class="parent">
               <h3>Inherited from <a name="org.saddle.ops.NumericOps" class="extype" href="ops/NumericOps.html">NumericOps</a>[<a name="org.saddle.Series" class="extype" href="">Series</a>[X, T]]</h3>
             </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>

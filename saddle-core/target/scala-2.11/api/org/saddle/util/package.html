@@ -1,0 +1,480 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>util - org.saddle.util</title>
+          <meta name="description" content="util - org.saddle.util" />
+          <meta name="keywords" content="util org.saddle.util" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.saddle.util.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.saddle">saddle</a></p>
+        <h1>util</h1> <span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">util</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Additional utilities that need a home
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.saddle.util"><span>util</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.saddle.util.Random" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RandomextendsAnyRef"></a>
+      <a id="Random:Random"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Random.html"><span class="name">Random</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@RandomextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The Random class provides methods to generate pseudo-random numbers via a plug-in
+PRNG, which is simply any function that generates a Long primitive.</p>
+    </li><li name="org.saddle.util.RandomStream" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RandomStreamextendsInputStreamwithProductwithSerializable"></a>
+      <a id="RandomStream:RandomStream"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RandomStream.html"><span class="name">RandomStream</span></a><span class="params">(<span name="rng">rng: () ⇒ <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <span class="extype" name="java.io.InputStream">InputStream</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@RandomStreamextendsInputStreamwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create a random InputStream of bytes from a PRNG.</p><div class="fullcomment"><div class="comment cmt"><p>Create a random InputStream of bytes from a PRNG. Useful for testing, e.g.,
+for feeding into dieharder battery of tests via stdin.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.saddle.util.Concat" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Concat"></a>
+      <a id="Concat:Concat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Concat$.html"><span class="name">Concat</span></a><span class="result"> extends <span class="extype" name="org.saddle.util.LowPriorityConcatImplicits">LowPriorityConcatImplicits</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@Concat" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides a way to append two arrays of possibly different types together by
+intelligently promoting primitive types where possible.</p><div class="fullcomment"><div class="comment cmt"><p>Provides a way to append two arrays of possibly different types together by
+intelligently promoting primitive types where possible.</p><p>Key method is Concat.append(array1, array2)
+</p></div></div>
+    </li><li name="org.saddle.util.LFib" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LFib"></a>
+      <a id="LFib:LFib"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LFib$.html"><span class="name">LFib</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@LFib" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Version:               TestU01 1.2.3
+ Generator:             STDIN
+ Number of statistics:  15
+ Total CPU time:        00:00:19.03
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><div class="fullcomment"><div class="comment cmt"><h6> Summary results of SmallCrush </h6><p> Version:               TestU01 1.2.3
+ Generator:             STDIN
+ Number of statistics:  15
+ Total CPU time:        00:00:19.03
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><p>       Test                          p-value
+ ----------------------------------------------
+ 10  RandomWalk1 J                   0.9997
+ ----------------------------------------------
+ All other tests were passed</p><h6> Summary results of Crush </h6><p> Version:          TestU01 1.2.3
+ Generator:        STDIN
+ Number of statistics:  144
+ Total CPU time:   01:00:08.48</p><p> All tests were passed</p><h6> Summary results of BigCrush </h6><p> Version:          TestU01 1.2.3
+ Generator:        STDIN
+ Number of statistics:  160
+ Total CPU time:   08:38:24.56</p><p> All tests were passed
+</p></div></div>
+    </li><li name="org.saddle.util.LFib4" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LFib4"></a>
+      <a id="LFib4:LFib4"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LFib4$.html"><span class="name">LFib4</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@LFib4" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Marsaglia Lagged Fibonacci PRNG</p><div class="fullcomment"><div class="comment cmt"><p>Marsaglia Lagged Fibonacci PRNG</p><p>See <a href="https://groups.google.com/forum/?fromgroups=#!msg/sci.crypt/yoaCpGWKEk0/UXCxgufdTesJ" target="_blank">https://groups.google.com/forum/?fromgroups=#!msg/sci.crypt/yoaCpGWKEk0/UXCxgufdTesJ</a>
+</p></div></div>
+    </li><li name="org.saddle.util.Random" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Random"></a>
+      <a id="Random:Random"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Random$.html"><span class="name">Random</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@Random" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.util.Xor64" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Xor64"></a>
+      <a id="Xor64:Xor64"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Xor64$.html"><span class="name">Xor64</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@Xor64" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Version:               TestU01 1.2.3
+ Generator:             STDIN
+ Number of statistics:  15
+ Total CPU time:        00:00:19.71
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><div class="fullcomment"><div class="comment cmt"><h6> Summary results of SmallCrush </h6><p> Version:               TestU01 1.2.3
+ Generator:             STDIN
+ Number of statistics:  15
+ Total CPU time:        00:00:19.71
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><p>       Test                          p-value
+ ----------------------------------------------
+  8  MatrixRank                       eps
+ ----------------------------------------------
+ All other tests were passed</p><h6> Summary results of Crush </h6><p> Version:          TestU01 1.2.3
+ Generator:        STDIN
+ Number of statistics:  144
+ Total CPU time:   00:57:39.11
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><p>       Test                          p-value
+ ----------------------------------------------
+  3  CollisionOver, t = 2           1.4e-10
+  6  CollisionOver, t = 4             eps
+ 10  CollisionOver, t = 20          1.3e-62
+ 11  BirthdaySpacings, t = 2         5.2e-5
+ 16  BirthdaySpacings, t = 8        1.7e-12
+ 17  BirthdaySpacings, t = 8        3.3e-73
+ 34  Gap, r = 22                      eps
+ 56  MatrixRank, 60 x 60              eps
+ 57  MatrixRank, 60 x 60              eps
+ 58  MatrixRank, 300 x 300            eps
+ 59  MatrixRank, 300 x 300            eps
+ 60  MatrixRank, 1200 x 1200          eps
+ 61  MatrixRank, 1200 x 1200          eps
+ 65  RandomWalk1 H (L = 90)           eps
+ 65  RandomWalk1 M (L = 90)           eps
+ 66  RandomWalk1 H (L = 90)           eps
+ 66  RandomWalk1 M (L = 90)           eps
+ 66  RandomWalk1 J (L = 90)           eps
+ 67  RandomWalk1 H (L = 1000)         eps
+ 67  RandomWalk1 M (L = 1000)        2.0e-9
+ 67  RandomWalk1 C (L = 1000)        1.0e-4
+ 68  RandomWalk1 H (L = 1000)       2.0e-12
+ 68  RandomWalk1 M (L = 1000)         eps
+ 68  RandomWalk1 J (L = 1000)         eps
+ 69  RandomWalk1 C (L = 10000)       9.7e-4
+ 71  LinearComp, r = 0              1 - eps1
+ 72  LinearComp, r = 29             1 - eps1
+ 85  HammingIndep, L = 30             eps
+ 86  HammingIndep, L = 30             eps
+ 87  HammingIndep, L = 300            eps
+ 88  HammingIndep, L = 300            eps
+ ----------------------------------------------
+ All other tests were passed</p><h6> Summary results of BigCrush </h6><p> Version:          TestU01 1.2.3
+ Generator:        STDIN
+ Number of statistics:  160
+ Total CPU time:   08:31:19.41
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><p>       Test                          p-value
+ ----------------------------------------------
+  2  SerialOver, r = 22               eps
+  3  CollisionOver, t = 2           6.8e-22
+  6  CollisionOver, t = 3             eps
+ 12  CollisionOver, t = 21            eps
+ 13  BirthdaySpacings, t = 2        1.7e-18
+ 15  BirthdaySpacings, t = 4          eps
+ 18  BirthdaySpacings, t = 8       7.2e-289
+ 19  BirthdaySpacings, t = 8          eps
+ 21  BirthdaySpacings, t = 16       3.8e-66
+ 37  Gap, r = 20                      eps
+ 68  MatrixRank, L=1000, r=0          eps
+ 69  MatrixRank, L=1000, r=26         eps
+ 70  MatrixRank, L=5000               eps
+ 71  MatrixRank, L=5000               eps
+ 77  RandomWalk1 H (L=1000, r=20)     eps
+ 77  RandomWalk1 M (L=1000, r=20)     eps
+ 77  RandomWalk1 J (L=1000, r=20)     eps
+ 80  LinearComp, r = 0              1 - eps1
+ 81  LinearComp, r = 29             1 - eps1
+ ----------------------------------------------
+ All other tests were passed
+</p></div></div>
+    </li><li name="org.saddle.util.XorShift" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XorShift"></a>
+      <a id="XorShift:XorShift"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="XorShift$.html"><span class="name">XorShift</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@XorShift" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Marsaglia XorShift PRNG</p><div class="fullcomment"><div class="comment cmt"><p>Marsaglia XorShift PRNG</p><p>See <a href="http://www.jstatsoft.org/v08/i14/" target="_blank">Marsaglia</a>
+</p></div></div>
+    </li><li name="org.saddle.util.Ziff" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Ziff"></a>
+      <a id="Ziff:Ziff"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Ziff$.html"><span class="name">Ziff</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@Ziff" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Version:               TestU01 1.2.3
+ Generator:             STDIN
+ Number of statistics:  15
+ Total CPU time:        00:00:18.85</p><div class="fullcomment"><div class="comment cmt"><h6> Summary results of SmallCrush </h6><p> Version:               TestU01 1.2.3
+ Generator:             STDIN
+ Number of statistics:  15
+ Total CPU time:        00:00:18.85</p><p> All tests were passed</p><h6> Summary results of Crush </h6><p> Version:          TestU01 1.2.3
+ Generator:        STDIN
+ Number of statistics:  144
+ Total CPU time:   01:00:08.48</p><p> All tests were passed</p><h6> Summary results of BigCrush </h6><p> Version:          TestU01 1.2.3
+ Generator:        STDIN
+ Number of statistics:  160
+ Total CPU time:   08:57:21.49
+ The following tests gave p-values outside [0.001, 0.9990]:
+ (eps  means a value &lt; 1.0e-300):
+ (eps1 means a value &lt; 1.0e-15):</p><p>       Test                          p-value
+ ----------------------------------------------
+ 80  LinearComp, r = 0              1 - eps1
+ 81  LinearComp, r = 29             1 - eps1
+ ----------------------------------------------
+ All other tests were passed
+</p></div></div>
+    </li><li name="org.saddle.util.Ziff98" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Ziff98"></a>
+      <a id="Ziff98:Ziff98"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Ziff98$.html"><span class="name">Ziff98</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@Ziff98" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Ziff 4-tap shift-register-sequence</p><div class="fullcomment"><div class="comment cmt"><p>Ziff 4-tap shift-register-sequence</p><p>http://arxiv.org/pdf/cond-mat/9710104v1.pdf
+http://www.aip.org/cip/pdf/vol_12/iss_4/385_1.pdf
+</p></div></div>
+    </li><li name="org.saddle.util#buildStr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="buildStr(count:Int,total:Int,callback:Int=&gt;String,break:=&gt;String):String"></a>
+      <a id="buildStr(Int,Int,(Int)⇒String,⇒String):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">buildStr</span><span class="params">(<span name="count">count: <span class="extype" name="scala.Int">Int</span></span>, <span name="total">total: <span class="extype" name="scala.Int">Int</span></span>, <span name="callback">callback: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>, <span name="break">break: ⇒ <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot; ... &quot;</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@buildStr(count:Int,total:Int,callback:Int=&gt;String,break:=&gt;String):String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Creates a string out of <i>count</i> number of elements extracted from <i>total</i> elements
+between offsets [0 ...</p><div class="fullcomment"><div class="comment cmt"><p>Creates a string out of <i>count</i> number of elements extracted from <i>total</i> elements
+between offsets [0 ... count / 2) and (total - count / 2 ... total), using a callback
+that generates a string at each offset, and inserting a break string if count &gt; total.</p></div><dl class="paramcmts block"><dt class="param">count</dt><dd class="cmt"><p>Number of elements to print</p></dd><dt class="param">total</dt><dd class="cmt"><p>Total number of elements in sequence</p></dd><dt class="param">callback</dt><dd class="cmt"><p>Generates a string at each offset</p></dd><dt class="param">break</dt><dd class="cmt"><p>Produces a string to insert as a break
+</p></dd></dl></div>
+    </li><li name="org.saddle.util#grab" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="grab[T](arr:Seq[T],n:Int):Seq[T]"></a>
+      <a id="grab[T](Seq[T],Int):Seq[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">grab</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="arr">arr: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.saddle.util.grab.T">T</span>]</span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.saddle.util.grab.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.util.package@grab[T](arr:Seq[T],n:Int):Seq[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Takes n elements from the front and from the back of array</p><div class="fullcomment"><div class="comment cmt"><p>Takes n elements from the front and from the back of array</p></div><dl class="paramcmts block"><dt class="param">arr</dt><dd class="cmt"><p>Array</p></dd><dt class="param">n</dt><dd class="cmt"><p>Number of elements to take
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

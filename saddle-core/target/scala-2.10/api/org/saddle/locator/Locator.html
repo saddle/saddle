@@ -35,7 +35,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Locator</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Locator</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -46,7 +46,7 @@ of category theory, this mapping is a <i>section</i>:</p><p>Given an array x of 
 {T} <span class="kw">=&gt;</span> {i}</pre><p>where s(t) = min(i) for any i such that f(i) = t.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
           <div class="subClasses hiddenContent"><a href="LocatorAny.html" class="extype" name="org.saddle.locator.LocatorAny">LocatorAny</a>, <a href="LocatorBool.html" class="extype" name="org.saddle.locator.LocatorBool">LocatorBool</a>, <a href="LocatorDouble.html" class="extype" name="org.saddle.locator.LocatorDouble">LocatorDouble</a>, <a href="LocatorInt.html" class="extype" name="org.saddle.locator.LocatorInt">LocatorInt</a>, <a href="LocatorLong.html" class="extype" name="org.saddle.locator.LocatorLong">LocatorLong</a></div>
@@ -67,7 +67,7 @@ of category theory, this mapping is a <i>section</i>:</p><p>Given an array x of 
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.saddle.locator.Locator"><span>Locator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.saddle.locator.Locator"><span>Locator</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -524,7 +524,11 @@ value.</p></div><dl class="paramcmts block"><dt class="param">key</dt><dd class=
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

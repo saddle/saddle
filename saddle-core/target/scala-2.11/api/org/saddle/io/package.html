@@ -1,0 +1,240 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>io - org.saddle.io</title>
+          <meta name="description" content="io - org.saddle.io" />
+          <meta name="keywords" content="io org.saddle.io" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.saddle.io.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.saddle">saddle</a></p>
+        <h1>io</h1> <span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">io</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.saddle.io.CsvFile" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CsvFileextendsCsvSource"></a>
+      <a id="CsvFile:CsvFile"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvFile.html"><span class="name">CsvFile</span></a><span class="result"> extends <a href="CsvSource.html" class="extype" name="org.saddle.io.CsvSource">CsvSource</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvFileextendsCsvSource" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">CsvFile provides an implementation of a <a href="CsvSource.html" class="extype" name="org.saddle.io.CsvSource">org.saddle.io.CsvSource</a> for
+parsing a CSV file.</p><div class="fullcomment"><div class="comment cmt"><p>CsvFile provides an implementation of a <a href="CsvSource.html" class="extype" name="org.saddle.io.CsvSource">org.saddle.io.CsvSource</a> for
+parsing a CSV file.</p><p>For example,</p><pre><span class="kw">val</span> fs = CsvFile(<span class="lit">"tmp.csv"</span>)
+<span class="kw">val</span> data = CsvParser.parse(CsvParser.parseInt)(fs)
+...
+data.toFrame</pre></div></div>
+    </li><li name="org.saddle.io.CsvParams" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CsvParamsextendsProductwithSerializable"></a>
+      <a id="CsvParams:CsvParams"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvParams.html"><span class="name">CsvParams</span></a><span class="params">(<span name="separChar">separChar: <span class="extype" name="scala.Char">Char</span> = <span class="symbol">','</span></span>, <span name="quoteChar">quoteChar: <span class="extype" name="scala.Char">Char</span> = <span class="symbol">'&quot;'</span></span>, <span name="withQuote">withQuote: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>, <span name="skipLines">skipLines: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvParamsextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Holds parameters to customize CSV parsing
+</p><div class="fullcomment"><div class="comment cmt"><p>Holds parameters to customize CSV parsing
+</p></div><dl class="paramcmts block"><dt class="param">separChar</dt><dd class="cmt"><p>The separator; default is comma</p></dd><dt class="param">quoteChar</dt><dd class="cmt"><p>Within matching quotes, treat separChar as normal char;
+                 default is double-quote</p></dd><dt class="param">withQuote</dt><dd class="cmt"><p>If true, do not strip quote character from quoted fields</p></dd><dt class="param">skipLines</dt><dd class="cmt"><p>Whether to skip some integer number of lines, default 0
+</p></dd></dl></div>
+    </li><li name="org.saddle.io.CsvSettings" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CsvSettingsextendsProductwithSerializable"></a>
+      <a id="CsvSettings:CsvSettings"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvSettings.html"><span class="name">CsvSettings</span></a><span class="params">(<span name="separChar">separChar: <span class="extype" name="scala.Char">Char</span> = <span class="symbol">','</span></span>, <span name="quoteChar">quoteChar: <span class="extype" name="scala.Char">Char</span> = <span class="symbol">'&quot;'</span></span>, <span name="useQuote">useQuote: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>, <span name="encoding">encoding: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol"><span class="name"><a href="../../package.html">UTF8</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvSettingsextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Settings for writing a CsvFile
+</p><div class="fullcomment"><div class="comment cmt"><p>Settings for writing a CsvFile
+</p></div><dl class="paramcmts block"><dt class="param">separChar</dt><dd class="cmt"><p>Separator; default is comma</p></dd><dt class="param">quoteChar</dt><dd class="cmt"><p>Quote character; default double-quote
+</p></dd><dt class="param">useQuote</dt><dd class="cmt"><p>If true, fields containing separChar will be wrapped in quotes</p></dd></dl></div>
+    </li><li name="org.saddle.io.CsvSource" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CsvSourceextendsAnyRef"></a>
+      <a id="CsvSource:CsvSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvSource.html"><span class="name">CsvSource</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvSourceextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a csv data source to be parsed by <a href="CsvParser$.html" class="extype" name="org.saddle.io.CsvParser">org.saddle.io.CsvParser</a>
+</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.saddle.io.CsvFile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CsvFile"></a>
+      <a id="CsvFile:CsvFile"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvFile$.html"><span class="name">CsvFile</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvFile" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.saddle.io.CsvImplicits" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CsvImplicits"></a>
+      <a id="CsvImplicits:CsvImplicits"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvImplicits$.html"><span class="name">CsvImplicits</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvImplicits" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides implicit functionality for writing data to CSV file format.</p><div class="fullcomment"><div class="comment cmt"><p>Provides implicit functionality for writing data to CSV file format. Usage:</p><pre><span class="kw">import</span> CsvImplicits._
+
+<span class="kw">val</span> f = Frame(...)
+f.writeCsvFile(<span class="lit">"tmp.csv"</span>)</pre></div></div>
+    </li><li name="org.saddle.io.CsvParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CsvParser"></a>
+      <a id="CsvParser:CsvParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CsvParser$.html"><span class="name">CsvParser</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.saddle.io.package@CsvParser" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Csv parsing utilities
+</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

@@ -33,7 +33,7 @@
 conforms to and extends the interface of Index[DateTime]
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a name="org.saddle.Index" class="extype" href="../Index.html">Index</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+          <div class="superTypes hiddenContent"><a name="org.saddle.Index" class="extype" href="../Index.html">Index</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>], <span name="scala.Serializable" class="extype">Serializable</span>, <span name="java.io.Serializable" class="extype">Serializable</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div></div>
     
 
@@ -47,7 +47,7 @@ conforms to and extends the interface of Index[DateTime]
               <span class="filtertype">Inherited</span>
               <ol><li class="hideall out"><span>Hide All</span></li>
               <li class="showall in"><span>Show all</span></li></ol>
-              <ol id="linearization"><li name="org.saddle.index.IndexTime" class="in"><span>IndexTime</span></li><li name="org.saddle.Index" class="in"><span>Index</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+              <ol id="linearization"><li name="org.saddle.index.IndexTime" class="in"><span>IndexTime</span></li><li name="org.saddle.Index" class="in"><span>Index</span></li><li name="scala.Serializable" class="in"><span>Serializable</span></li><li name="java.io.Serializable" class="in"><span>Serializable</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
             </div>
         <div id="visbl">
             <span class="filtertype">Visibility</span>
@@ -243,7 +243,7 @@ exist.</p></div><dl class="paramcmts block"><dt class="param">keys</dt><dd class
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
         <span class="name">chrono</span><span class="result">: <span name="org.joda.time.Chronology" class="extype">Chronology</span></span>
@@ -806,16 +806,13 @@ must already be sorted.</p></div><dl class="paramcmts block"><dt class="param">t
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
         <span class="name">scalarTag</span><span class="result">: org.saddle.scalar.ScalarTagTime.type</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">A <a name="org.saddle.scalar.ScalarTag" class="extype" href="../scalar/ScalarTag.html">ScalarTag</a> representing the kind of Scalar
-found in this index.</p><div class="fullcomment"><div class="comment cmt"><p>A <a name="org.saddle.scalar.ScalarTag" class="extype" href="../scalar/ScalarTag.html">ScalarTag</a> representing the kind of Scalar
-found in this index.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.index.IndexTime" class="extype" href="">IndexTime</a> → <a name="org.saddle.Index" class="extype" href="../Index.html">Index</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="org.saddle.index.IndexTime" class="extype" href="">IndexTime</a> → <a name="org.saddle.Index" class="extype" href="../Index.html">Index</a></dd></dl></div>
     </li><li visbl="pub" name="org.saddle.index.IndexTime#slice" data-isabs="false">
       <a id="slice(Int,Int,Int):IndexTime"></a>
       <h4 class="signature">
@@ -1141,6 +1138,10 @@ which do not occur at the specified locations.
         <div id="inheritedMembers">
         <div name="org.saddle.Index" class="parent">
               <h3>Inherited from <a name="org.saddle.Index" class="extype" href="../Index.html">Index</a>[<span name="org.joda.time.DateTime" class="extype">DateTime</span>]</h3>
+            </div><div name="scala.Serializable" class="parent">
+              <h3>Inherited from <span name="scala.Serializable" class="extype">Serializable</span></h3>
+            </div><div name="java.io.Serializable" class="parent">
+              <h3>Inherited from <span name="java.io.Serializable" class="extype">Serializable</span></h3>
             </div><div name="scala.AnyRef" class="parent">
               <h3>Inherited from AnyRef</h3>
             </div><div name="scala.Any" class="parent">
