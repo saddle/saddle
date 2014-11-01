@@ -20,6 +20,7 @@ import scala.{specialized => spec}
 import org.saddle._
 import ops._
 import Vec.Vec2Stats
+import org.saddle.scalar._
 
 /**
  * Rolling statistical methods made available on numeric Vec objects via enrichment.
@@ -80,15 +81,18 @@ class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] e
   val add = implicitly[AddOp[A]]
   val sub = implicitly[SubOp[A]]
   var s = sa.zero
+  var p = Scalar(sa.zero)
 
   def apply(v: Vec[A]): A = {
     if (i == 0) {
       s = v.sum
       i += 1
+      if (v.length > 0) p = v.first
     }
     else {
-      if (!v.first.isNA) s = sub(s, v.first.get)
+      if (!p.isNA) s = sub(s, p.get)
       if (!v.last.isNA) s = add(s, v.last.get)
+      p = v.first
     }
     s
   }
