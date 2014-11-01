@@ -61,15 +61,18 @@ class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Funct
   var i = 0
   var s = 0
   val sa = implicitly[ST[A]]
+  var p = Scalar(sa.zero)
 
   def apply(v: Vec[A]): Int = {
     if (i == 0) {
       s = v.count
       i += 1
+      if (v.length > 0) p = v.first
     }
     else {
-      if (!v.first.isNA) s -= 1
-      if (!v.last.isNA)  s += 1
+      if (!p.isNA) s -= 1
+      if (!v.last.isNA) s += 1
+      p = v.first
     }
     s
   }
@@ -103,22 +106,25 @@ class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Functi
   var s = 0d
   var c = 0
   val sa = implicitly[ST[A]]
+  var p = Scalar(sa.zero)
 
   def apply(v: Vec[A]): Double = {
     if (i == 0) {
       s = sa.toDouble(v.sum)
       c = v.count
       i += 1
+      if (v.length > 0) p = v.first
     }
     else {
-      if (!v.first.isNA) {
-        s -= sa.toDouble(v.first.get)
+      if (!p.isNA) {
+        s -= sa.toDouble(p.get)
         c -= 1
       }
       if (!v.last.isNA) {
         s += sa.toDouble(v.last.get)
         c += 1
       }
+      p = v.first
     }
     s / c
   }
