@@ -33,9 +33,9 @@ Saddle is distributed under the Apache License Version 2.0 (see LICENSE file).
 Copyright
 =========
 
-Copyright (c) 2013 Novus Partners, Inc.
+Copyright (c) 2013-2015 Novus Partners, Inc.
 
-Copyright (c) 2013 The Saddle Development Team
+Copyright (c) 2013-2015 The Saddle Development Team
 
 All rights reserved.
 
@@ -47,7 +47,7 @@ who have made such contributions.
 
 The copyright and license of each file shall read as follows:
 
-> Copyright (c) 2013 Saddle Development Team
+> Copyright (c) 2013-2015 Saddle Development Team
 >
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
