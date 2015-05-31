@@ -28,9 +28,13 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="ReIndexer$.html" title="Go to companion"><img src="../../../lib/trait_to_object_big.png" /></a>
+        <a href="ReIndexer$.html" title="See companion object"><img src="../../../lib/trait_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.saddle">saddle</a>.<a href="package.html" class="extype" name="org.saddle.index">index</a></p>
-        <h1><a href="ReIndexer$.html" title="Go to companion">ReIndexer</a></h1> <span class="permalink">
+        <h1><a href="ReIndexer$.html" title="See companion object">ReIndexer</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="ReIndexer$.html" title="See companion object">object ReIndexer</a>
+            | <a href="package.html" class="extype" name="org.saddle.index">package index</a>
+          </div></span></h3><span class="permalink">
       <a href="../../../index.html#org.saddle.index.ReIndexer" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
@@ -49,13 +53,13 @@
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>We often need to &quot;reindex&quot; one array/vec/series/frame so as to produce a new
 one.</p><p>First, note that an array A of values of type T is actually a mapping defined
-as</p><pre>f
+as</p><pre>              f
 [<span class="num">0</span>, A.length) <span class="kw">=&gt;</span> {T}</pre><p>That is, each integer index of the array yields a value of type T when it is
 de-referenced.</p><p>ReIndexer has two fields, lTake and rTake, which are array-based maps defined
-for some integers M and N as</p><pre>g
+for some integers M and N as</p><pre>       g
 [<span class="num">0</span>, N) <span class="kw">=&gt;</span> [-<span class="num">1</span>, M)</pre><p>In other words, lTake and rTake are arrays of length N whose entries are
 integers between -1 and M-1. We call these &quot;indexers&quot;.</p><p>Given a reindexer, g, a re-indexing operation on array A yields a new array
-B of length N which represents the following mapping:</p><pre>B
+B of length N which represents the following mapping:</p><pre>        B
 [<span class="num">0</span>, N)  <span class="kw">=&gt;</span>  {T}
 
 where B(i) == f(g(i)) <span class="kw">if</span> g(i) != -<span class="num">1</span>
