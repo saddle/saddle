@@ -143,9 +143,9 @@ object Shared {
         </developer>
       </developers>
     ),
-    scalaVersion := "2.10.5",
+    scalaVersion := "2.11.8",
     version := "1.3.5-SNAPSHOT",
-    crossScalaVersions := Seq("2.9.3", "2.10.5", "2.11.6"),
+    crossScalaVersions := Seq("2.9.3", "2.10.5", "2.11.8"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
     shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },
     resolvers ++= Seq(
