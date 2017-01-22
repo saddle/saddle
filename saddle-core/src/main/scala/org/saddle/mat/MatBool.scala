@@ -67,7 +67,7 @@ class MatBool(r: Int, c: Int, values: Array[Boolean]) extends Mat[Boolean] {
   private[saddle] def apply(r: Int, c: Int) = apply(r * numCols + c)
 
   // use with caution, may not return copy
-  private[saddle] def toArray = values
+  def toArray = values
 
   private[saddle] def toDoubleArray(implicit ev: NUM[Boolean]): Array[Double] = arrCopyToDblArr(values)
 

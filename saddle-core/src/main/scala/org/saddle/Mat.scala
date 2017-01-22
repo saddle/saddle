@@ -404,7 +404,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   private[saddle] def apply(r: Int, c: Int): A
 
   // use with caution, may not return copy
-  private[saddle] def toArray: Array[A]
+  def toArray: Array[A]
 
   // use with caution, may not return copy
   private[saddle] def toDoubleArray(implicit ev: NUM[A]): Array[Double]
@@ -543,4 +543,3 @@ object Mat extends BinOpMat {
    */
   def ident(n: Int): Mat[Double] = mat.ident(n)
 }
-

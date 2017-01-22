@@ -34,7 +34,7 @@ object SaddleBuild extends sbt.Build {
                 case _ => MergeStrategy.first
               }
             ),
-            base = file(".")) aggregate(core, hdf5, test_framework)
+            base = file(".")) aggregate(core, test_framework)
 
   lazy val core =
     project(id = "saddle-core",
@@ -57,21 +57,6 @@ object SaddleBuild extends sbt.Build {
               ) ++ Shared.testDeps(v)),
               testOptions in Test += Tests.Argument("console", "junitxml")
             ))
-
-  lazy val hdf5 =
-    project(id = "saddle-hdf5",
-            base = file("saddle-hdf5"),
-            settings = Seq(
-              initialCommands := """
-                |import org.joda.time.DateTime
-                |import org.saddle._
-                |import org.saddle.time._
-                |import org.saddle.io._""".stripMargin('|'),
-              libraryDependencies <++= scalaVersion (v => Seq(
-                "org.scala-saddle" % "jhdf5" % "2.9"
-              ) ++ Shared.testDeps(v)),
-              testOptions in Test += Tests.Argument("console", "junitxml")
-            )) dependsOn(core)
 
   lazy val test_framework =
     project(
@@ -110,7 +95,7 @@ object Shared {
   }
 
   val settings = Seq(
-    organization := "org.scala-saddle",
+    organization := "io.github.pityka",
     publishMavenStyle := true,
     publishArtifact in Test := false,
     pomIncludeRepository := { x => false },
@@ -141,25 +126,17 @@ object Shared {
           <organizationUrl>https://www.novus.com/</organizationUrl>
           <timezone>-5</timezone>
         </developer>
+        <developer>
+          <id>pityka</id>
+          <name>Istvan Bartha</name>
+          <email>bartha.pityu@gmail.com</email>
+        </developer>
       </developers>
     ),
-    scalaVersion := "2.10.5",
-    version := "1.3.5-SNAPSHOT",
-    crossScalaVersions := Seq("2.9.3", "2.10.5", "2.11.6"),
+    scalaVersion := "2.11.8",
+    version := "1.3.4-fork1-SNAPSHOT",
+    crossScalaVersions := Seq( "2.11.8"),
     scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
-    shellPrompt := { (state: State) => "[%s]$ " format(Project.extract(state).currentProject.id) },
-    resolvers ++= Seq(
-      "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",
-      "Sonatype OSS Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
-    ),
-    publishTo <<= (version) { version: String =>
-      val nexus = "https://oss.sonatype.org/"
-      if (version.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
     compile <<= (compile in Compile) dependsOn (compile in Test)
   )
 }

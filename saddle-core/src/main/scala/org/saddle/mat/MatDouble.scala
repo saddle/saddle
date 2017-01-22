@@ -66,7 +66,7 @@ class MatDouble(r: Int, c: Int, values: Array[Double]) extends Mat[Double] {
   private[saddle] def apply(r: Int, c: Int) = apply(r * numCols + c)
 
   // use with caution, may not return copy
-  private[saddle] def toArray: Array[Double] = values
+  def toArray: Array[Double] = values
 
   // use with caution, may not return copy
   private[saddle] def toDoubleArray(implicit ev: NUM[Double]): Array[Double] = values
