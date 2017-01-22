@@ -48,19 +48,19 @@ class FrameCheck extends Specification with ScalaCheck {
 
     "frame colSplitAt works" in {
       forAll { (f: Frame[Int, Int, Double]) =>
-        val idx = Gen.choose(0, f.numCols - 1)
+        (f.numCols > 0 ) ==> {val idx = Gen.choose(0, f.numCols - 1)
         forAll(idx) { i =>
           val (l, r) = f.colSplitAt(i)
           l.numCols must_== i
           r.numCols must_== f.numCols - i
           (l rconcat r) must_== f
         }
-      }
+      }}
     }
 
     "frame rowSplitAt works" in {
       forAll { (f: Frame[Int, Int, Double]) =>
-        val idx = Gen.choose(0, f.numRows - 1)
+          (f.numRows > 0 ) ==> {val idx = Gen.choose(0, f.numRows - 1)
         forAll(idx) { i =>
           val (l, r) = f.rowSplitAt(i)
           l.numRows must_== i
@@ -68,7 +68,7 @@ class FrameCheck extends Specification with ScalaCheck {
           (l concat r) must_== f
         }
       }
-    }
+    }}
 
     "Stringify works for one col, zero rows" in {
       val f = Frame(Array(Vec.empty[Double]) : _*)

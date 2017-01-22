@@ -86,7 +86,7 @@ class VecStatsSpec extends Specification {
 
   "Vector skew corner case works" in {
     val vec = Vec[Double](-1d, 1000, -1000, 1)
-    areClose(vec.skew, 0.0)
+    vec.skew must beLessThan(1E-9)    
   }
 
   "Rank works" in {
