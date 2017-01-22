@@ -34,7 +34,7 @@ object SaddleBuild extends sbt.Build {
                 case _ => MergeStrategy.first
               }
             ),
-            base = file(".")) aggregate(core, test_framework)
+            base = file(".")) aggregate(core)
 
   lazy val core =
     project(id = "saddle-core",
@@ -74,25 +74,12 @@ object SaddleBuild extends sbt.Build {
 }
 
 object Shared {
-  def testDeps(version: String, conf: String = "test") = {
-    val specs2 = if (version.startsWith("2.1"))
-      "org.specs2" %% "specs2" % "2.4.1"
-    else if (version.startsWith("2.9.3"))
-      "org.specs2" %% "specs2" % "1.12.4.1"
-    else
-      "org.specs2" %% "specs2" % "1.12.4"
-
-    val scalacheck = if (version.startsWith("2.9"))
-      "org.scalacheck" %% "scalacheck" % "1.10.1"
-    else
-      "org.scalacheck" %% "scalacheck" % "1.11.5"
-
+  def testDeps(version: String, conf: String = "test") =
     Seq(
-      specs2 % conf,
-      scalacheck % conf,
-      "junit" % "junit" % "4.11" % conf
+      "org.specs2" %% "specs2-core" % "3.8.6" % conf,
+      "org.specs2" %% "specs2-scalacheck" % "3.8.6" % conf
     )
-  }
+
 
   val settings = Seq(
     organization := "io.github.pityka",
@@ -133,10 +120,10 @@ object Shared {
         </developer>
       </developers>
     ),
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.1",
     version := "1.3.4-fork1-SNAPSHOT",
     crossScalaVersions := Seq( "2.11.8"),
-    scalacOptions := Seq("-deprecation", "-unchecked"), // , "-Xexperimental"),
-    compile <<= (compile in Compile) dependsOn (compile in Test)
+    scalacOptions := Seq("-deprecation", "-unchecked") // , "-Xexperimental"),
+    // compile <<= (compile in Compile) dependsOn (compile in Test)
   )
 }

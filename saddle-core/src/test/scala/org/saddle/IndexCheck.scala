@@ -30,32 +30,32 @@ class IndexCheck extends Specification with ScalaCheck {
 
     "access works" in {
       forAll { (ix: Index[Int]) =>
-        val idx = Gen.choose(0, ix.length - 1)
+          (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           ix.at(i) must_== Scalar(ix.toVec.contents(i))
           ix.raw(i) must_== ix.toVec.contents(i)
-        }
+        }}
       }
     }
 
     "key lookup works" in {
       forAll { (ix: Index[Int]) =>
-        val idx = Gen.choose(0, ix.length - 1)
+        (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           val v = ix.raw(i)
           ix.apply(v) must_== array.range(0, ix.length).filter(ix.raw(_) == v)
         }
-      }
+      }}
     }
 
     "key counts work" in {
       forAll { (ix: Index[Int]) =>
-        val idx = Gen.choose(0, ix.length - 1)
+      (ix.length > 0 ) ==> {   val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           val v = ix.raw(i)
           ix.count(v) must_== array.range(0, ix.length).map(l => if(ix.raw(l) == v) 1 else 0).sum
         }
-      }
+      }}
     }
 
     "index joins work" in {
@@ -144,7 +144,7 @@ class IndexCheck extends Specification with ScalaCheck {
     "access works" in {
       implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
       forAll { (ix: Index[DateTime]) =>
-        val idx = Gen.choose(0, ix.length - 1)
+        (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           ix.at(i) must_== Scalar(ix.toVec.contents(i))
           ix.raw(i) must_== ix.toVec.contents(i)
@@ -155,23 +155,24 @@ class IndexCheck extends Specification with ScalaCheck {
     "key lookup works" in {
       implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
       forAll { (ix: Index[DateTime]) =>
-        val idx = Gen.choose(0, ix.length - 1)
+      (ix.length > 0 ) ==> {   val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           val v = ix.raw(i)
           ix.apply(v) must_== array.range(0, ix.length).filter(ix.raw(_) == v)
         }
       }
+    }}
     }
 
     "key counts work" in {
       implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
       forAll { (ix: Index[DateTime]) =>
-        val idx = Gen.choose(0, ix.length - 1)
+        (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           val v = ix.raw(i)
           ix.count(v) must_== array.range(0, ix.length).map(l => if(ix.raw(l) == v) 1 else 0).sum
         }
-      }
+      }}
     }
 
     "index joins work" in {

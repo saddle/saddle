@@ -342,12 +342,12 @@ class VecStatsCheck extends Specification with ScalaCheck {
       case class Window(sz: Int)
 
       forAll { (v: Vec[Double]) =>
-        implicit val win = Arbitrary(for (sz <- Gen.choose(2, v.length)) yield Window(sz))
+          (v.length > 3 ) ==> {implicit val win = Arbitrary(for (sz <- Gen.choose(2, v.length)) yield Window(sz))
 
         forAll { (k: Window) =>
           v.rollingMedian(k.sz) must_== v.rolling(k.sz, _.median)
         }
-      }
+      }}
     }
   }
 
