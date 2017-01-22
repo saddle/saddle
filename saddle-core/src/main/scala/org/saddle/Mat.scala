@@ -403,8 +403,12 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   // implement access like matrix(i, j)
   private[saddle] def apply(r: Int, c: Int): A
 
-  // use with caution, may not return copy
-  private[saddle] def toArray: Array[A]
+  /**
+   * Returns the contents of this Mat in an array.
+   * If possible exposes the backing array without copying the elements.
+   * Changes to the returned array may directly modify the contents of the Mat.
+   */
+  def toArray: Array[A]
 
   // use with caution, may not return copy
   private[saddle] def toDoubleArray(implicit ev: NUM[A]): Array[Double]
@@ -543,4 +547,3 @@ object Mat extends BinOpMat {
    */
   def ident(n: Int): Mat[Double] = mat.ident(n)
 }
-

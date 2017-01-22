@@ -64,8 +64,7 @@ class MatLong(r: Int, c: Int, values: Array[Long]) extends Mat[Long] {
   // implement access like matrix(i, j)
   private[saddle] def apply(r: Int, c: Int) = apply(r * numCols + c)
 
-  // use with caution, may not return copy
-  private[saddle] def toArray = values
+  def toArray = values
 
   private[saddle] def toDoubleArray(implicit ev: NUM[Long]): Array[Double] = arrCopyToDblArr(values)
 
