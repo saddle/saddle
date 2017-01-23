@@ -16,9 +16,6 @@
 
 import sbt._
 import sbt.Keys._
-import sbtassembly.Plugin._
-import sbtassembly.Plugin.AssemblyKeys._
-import sbtrelease.ReleasePlugin._
 
 object SaddleBuild extends sbt.Build {
 
@@ -27,12 +24,7 @@ object SaddleBuild extends sbt.Build {
             settings = Seq(
               /* 'console' in root acts as if in core. */
               console <<= (console in core in Compile) { identity },
-              assembleArtifact in packageScala := false,
-              publishArtifact := false,
-              mergeStrategy in assembly := {
-                case "META-INF/MANIFEST.MF" | "META-INF/LICENSE" | "META-INF/BCKEY.DSA" => MergeStrategy.discard
-                case _ => MergeStrategy.first
-              }
+              publishArtifact := false
             ),
             base = file(".")) aggregate(core)
 
@@ -40,6 +32,7 @@ object SaddleBuild extends sbt.Build {
     project(id = "saddle-core",
             base = file("saddle-core"),
             settings = Seq(
+              name := "saddle-core-fork",
               initialCommands := """
                 |import org.joda.time.DateTime
                 |import org.saddle._
@@ -70,7 +63,7 @@ object SaddleBuild extends sbt.Build {
   def project(id: String, base: File, settings: Seq[Project.Setting[_]] = Nil) =
     Project(id = id,
             base = base,
-            settings = assemblySettings ++ Project.defaultSettings ++ Shared.settings ++ releaseSettings ++ settings)
+            settings = Project.defaultSettings ++ Shared.settings ++ settings)
 }
 
 object Shared {
@@ -83,11 +76,8 @@ object Shared {
 
   val settings = Seq(
     organization := "io.github.pityka",
-    publishMavenStyle := true,
     publishArtifact in Test := false,
-    pomIncludeRepository := { x => false },
     pomExtra := (
-      <url>http://saddle.github.io/</url>
       <licenses>
         <license>
           <name>Apache 2.0</name>
@@ -96,8 +86,8 @@ object Shared {
         </license>
       </licenses>
       <scm>
-        <url>git@github.com:saddle/saddle.git</url>
-        <connection>scm:git:git@github.com:saddle/saddle.git</connection>
+        <url>git@github.com:pityka/saddle.git</url>
+        <connection>scm:git:git@github.com:pityka/saddle.git</connection>
       </scm>
       <developers>
         <developer>
@@ -116,12 +106,11 @@ object Shared {
         <developer>
           <id>pityka</id>
           <name>Istvan Bartha</name>
-          <email>bartha.pityu@gmail.com</email>
         </developer>
       </developers>
     ),
     scalaVersion := "2.12.1",
-    version := "1.3.4-fork1-SNAPSHOT",
+    version := "1.3.4-fork1",
     crossScalaVersions := Seq( "2.11.8"),
     scalacOptions := Seq("-deprecation", "-unchecked") // , "-Xexperimental"),
     // compile <<= (compile in Compile) dependsOn (compile in Test)
