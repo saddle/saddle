@@ -3,3 +3,12 @@ scala:
   - 2.10.5
   - 2.11.8
   - 2.12.1
+  
+jdk:
+  - oraclejdk8
+  - openjdk7
+
+matrix:
+  exclude:
+    - scala: 2.12.1
+    - jdk: openjdk7
