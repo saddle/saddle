@@ -39,13 +39,15 @@ class SeriesCheck extends Specification with ScalaCheck {
 
     "take works" in {
       forAll { (s: Series[Int, Double]) =>
-        val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
+         (s.length > 0) ==> {
+          val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
         forAll(idx) { i =>
           val res = s.take(i.toArray)
           val exp = s(i(0)) concat s(i(1)) concat s(i(2))
           res must_== exp
         }
       }
+    }
     }
 
     "head works" in {
@@ -116,29 +118,32 @@ class SeriesCheck extends Specification with ScalaCheck {
       implicit val ser = Arbitrary(SeriesArbitraries.dupSeriesDoubleWithNA)
 
       forAll { (s: Series[Int, Double]) =>
-        val loc = Gen.choose(0, s.length - 1)
+         (s.length > 0) ==> {
+          val loc = Gen.choose(0, s.length - 1)
         forAll(loc) { i =>
           val idx = s.index.raw(i)
           s.first(idx) must_== s.values.at(s.index.findOne(_ == idx))
         }
       }
     }
+    }
 
     "last (key) works" in {
       implicit val ser = Arbitrary(SeriesArbitraries.dupSeriesDoubleWithNA)
 
       forAll { (s: Series[Int, Double]) =>
-        val loc = Gen.choose(0, s.length - 1)
+         (s.length > 0) ==> {val loc = Gen.choose(0, s.length - 1)
         forAll(loc) { i =>
           val idx = s.index.raw(i)
           s.last(idx) must_== s(idx).tail(1).at(0)
         }
       }
     }
+    }
 
     "apply/slice (no index dups) works" in {
       forAll { (s: Series[Int, Double]) =>
-        val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
+         (s.length > 0) ==> {val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
 
         forAll(idx) { i =>
           s(i.toArray) must_== s.take(i.toArray)
@@ -158,12 +163,13 @@ class SeriesCheck extends Specification with ScalaCheck {
         }
       }
     }
+    }
 
     "apply/slice (with index dups) works" in {
       implicit val ser = Arbitrary(SeriesArbitraries.dupSeriesDoubleWithNA)
 
       forAll { (s: Series[Int, Double]) =>
-        val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
+         (s.length > 0) ==> {val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
 
         forAll(idx) { i =>
           (i.length must be_<=(2)) or {
@@ -188,10 +194,11 @@ class SeriesCheck extends Specification with ScalaCheck {
         }
       }
     }
+    }
 
     "splitAt works" in {
       forAll { (s: Series[Int, Double]) =>
-        val idx = Gen.choose(0, s.length - 1)
+         (s.length > 0) ==> {val idx = Gen.choose(0, s.length - 1)
         forAll(idx) { i =>
           val (res1, res2) = s.splitAt(i)
           res1.length must_== i
@@ -199,6 +206,7 @@ class SeriesCheck extends Specification with ScalaCheck {
           (res1 concat res2) must_== s
         }
       }
+    }
     }
 
     "proxyWith" in {
@@ -220,11 +228,13 @@ class SeriesCheck extends Specification with ScalaCheck {
 
     "filterAt works" in {
       forAll { (s: Series[Int, Double]) =>
-        val idx = Gen.choose(0, s.length - 1)
+         (s.length > 0) ==> {
+          val idx = Gen.choose(0, s.length - 1)
         forAll(idx) { i =>
           (s.filterAt(_ != i).length == 0 || s.filterAt(_ != i).length == s.length - 1) must beTrue
         }
       }
+    }
     }
 
     "reindex works" in {
@@ -279,6 +289,7 @@ class SeriesCheck extends Specification with ScalaCheck {
 
     "take works" in {
       forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
         val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
         forAll(idx) { i =>
           val res = s.take(i.toArray)
@@ -287,9 +298,11 @@ class SeriesCheck extends Specification with ScalaCheck {
         }
       }
     }
+    }
 
     "first (key) works" in {
       forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
         val loc = Gen.choose(0, s.length - 1)
         forAll(loc) { i =>
           val idx = s.index.raw(i)
@@ -297,9 +310,11 @@ class SeriesCheck extends Specification with ScalaCheck {
         }
       }
     }
+    }
 
     "last (key) works" in {
       forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
         val loc = Gen.choose(0, s.length - 1)
         forAll(loc) { i =>
           val idx = s.index.raw(i)
@@ -307,9 +322,12 @@ class SeriesCheck extends Specification with ScalaCheck {
         }
       }
     }
+    }
 
     "apply/slice (with index dups) works" in {
       forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
+
         val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
 
         forAll(idx) { i =>
@@ -334,6 +352,7 @@ class SeriesCheck extends Specification with ScalaCheck {
           }
         }
       }
+    }
     }
 
     "proxyWith" in {

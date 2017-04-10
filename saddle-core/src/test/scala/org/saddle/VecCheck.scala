@@ -40,7 +40,7 @@ class VecCheck extends Specification with ScalaCheck {
 
     "single element access of vector" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.choose(0, v.length - 1)
+         (v.length > 0) ==> { val idx = Gen.choose(0, v.length - 1)
         val data = v.contents
         forAll(idx) { i =>
           (v.at(i).isNA must beTrue) or (v.at(i) must_== Value(data(i)))
@@ -48,10 +48,11 @@ class VecCheck extends Specification with ScalaCheck {
         }
       }
     }
+    }
 
     "multiple element access / slicing of vector" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.choose(0, v.length - 2)
+         (v.length > 1) ==> {val idx = Gen.choose(0, v.length - 2)
         val data = v.contents
         forAll(idx) { i =>
           v(i, i+1) must_== Vec(data(i), data(i + 1))
@@ -61,7 +62,7 @@ class VecCheck extends Specification with ScalaCheck {
           v(* -> i) must_== Vec(Range(0, i+1).map(data(_)) : _*)
           v(*) must_== v
         }
-      }
+      }}
     }
 
     "first works" in {
@@ -148,13 +149,13 @@ class VecCheck extends Specification with ScalaCheck {
 
     "filterAt works" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.choose(0, v.length)
+         (v.length > 0) ==> {val idx = Gen.choose(0, v.length)
         forAll(idx) { i =>
           val res = v.filterAt(_ != i)
           (res.length <= i) || (res.length must_== v.length - 1)
         }
       }
-    }
+    }}
 
     "where works" in {
       forAll { (v: Vec[Double]) =>
@@ -210,13 +211,13 @@ class VecCheck extends Specification with ScalaCheck {
 
     "sliceAt works" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.choose(0, v.length)
+         (v.length > 0) ==> {val idx = Gen.choose(0, v.length)
         forAll(idx) { i =>
           val slc = v.slice(1, i)
           val exp = v.contents.slice(1, i)
           slc must_== Vec(exp)
         }
-      }
+      }}
     }
 
     "foldLeft works" in {
@@ -278,14 +279,14 @@ class VecCheck extends Specification with ScalaCheck {
 
     "take works" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.listOfN(3, Gen.choose(0, v.length - 1))
+         (v.length > 0) ==> {val idx = Gen.listOfN(3, Gen.choose(0, v.length - 1))
         forAll(idx) { i =>
           val res = v.take(i.toArray)
           val exp = Vec(i.toArray.map(v.raw(_)))
           res must_== exp
           res must_== v(i : _*)
         }
-      }
+      }}
     }
 
     "mask works" in {
@@ -301,7 +302,7 @@ class VecCheck extends Specification with ScalaCheck {
 
     "splitAt works" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.choose(0, v.length - 1)
+         (v.length > 0) ==> {val idx = Gen.choose(0, v.length - 1)
         forAll(idx) { i =>
           val (res1, res2) = v.splitAt(i)
           res1.length must_== i
@@ -309,31 +310,31 @@ class VecCheck extends Specification with ScalaCheck {
           (res1 concat res2) must_== v
         }
       }
-    }
+    }}
 
     "shift works" in {
       forAll { (v: Vec[Double]) =>
         v.shift(0) must_== v
 
-        val idx = Gen.choose(0, v.length - 1)
+         (v.length > 0) ==> {val idx = Gen.choose(0, v.length - 1)
         forAll(idx) { i =>
           val res = v.shift(i)
           res.length must_== v.length
           res.slice(i, res.length) must_== v.slice(0, v.length - i)
         }
-      }
+      }}
     }
 
     "without works" in {
       forAll { (v: Vec[Double]) =>
-        val idx = Gen.listOfN(3, Gen.choose(0, v.length - 1))
+         (v.length > 0) ==> {val idx = Gen.listOfN(3, Gen.choose(0, v.length - 1))
         forAll(idx) { i =>
           val res = v.without(i.toArray)
           val tmp = Buffer[Double]()
           for (k <- 0 until v.length if !i.toSet.contains(k) ) tmp.add(v.raw(k))
           res must_== Vec(tmp.toArray)
         }
-      }
+      }}
     }
 
     "rolling works" in {

@@ -87,6 +87,7 @@ class MatCheck extends Specification with ScalaCheck {
 
      "takeRows works" in {
        forAll { (m: Mat[Double]) =>
+         (m.numRows > 0 ) ==> {
          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
            val res = m.takeRows(i : _*)
@@ -96,22 +97,23 @@ class MatCheck extends Specification with ScalaCheck {
          }
        }
      }
+     }
 
      "takeCols works" in {
        forAll { (m: Mat[Double]) =>
-         val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
+         (m.numRows > 0 ) ==> {val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
            val res = m.takeCols(i : _*)
            res.numCols must_== i.size
            val exp = for (j <- i) yield m.col(j)
            res must_== Mat(exp : _*)
          }
-       }
+       }}
      }
 
      "withoutRows works" in {
        forAll { (m: Mat[Double]) =>
-         val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
+         (m.numRows > 0 ) ==> {val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
            val res = m.withoutRows(i : _*)
@@ -119,12 +121,12 @@ class MatCheck extends Specification with ScalaCheck {
            val exp = for (j <- 0 until m.numRows if !loc.contains(j)) yield m.row(j)
            res must_== Mat(exp : _*).T
          }
-       }
+       }}
      }
 
      "withoutCols works" in {
        forAll { (m: Mat[Double]) =>
-         val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
+         (m.numCols > 0 ) ==> {val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numCols - 1))
          forAll(idx) { i =>
            val loc = Set(i : _*)
            val res = m.withoutCols(i : _*)
@@ -132,7 +134,7 @@ class MatCheck extends Specification with ScalaCheck {
            val exp = for (j <- 0 until m.numCols if !loc.contains(j)) yield m.col(j)
            res must_== Mat(exp : _*)
          }
-       }
+       }}
      }
 
      "rowsWithNA works (no NA)" in {
@@ -185,22 +187,22 @@ class MatCheck extends Specification with ScalaCheck {
 
      "col works" in {
        forAll { (m: Mat[Double]) =>
-         val idx = Gen.choose(0, m.numCols - 1)
+         (m.numCols> 0 ) ==> {val idx = Gen.choose(0, m.numCols - 1)
          val data = m.T.contents
          forAll(idx) { i =>
            m.col(i) must_== Vec(data).slice(i * m.numRows, (i + 1) * m.numRows)
          }
-       }
+       }}
      }
 
      "row works" in {
        forAll { (m: Mat[Double]) =>
-         val idx = Gen.choose(0, m.numRows - 1)
+         (m.numRows > 0 ) ==> {val idx = Gen.choose(0, m.numRows - 1)
          val data = m.contents
          forAll(idx) { i =>
            m.row(i) must_== Vec(data).slice(i * m.numCols, (i + 1) * m.numCols)
          }
-       }
+       }}
      }
 
      "mult works" in {
