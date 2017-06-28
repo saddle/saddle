@@ -139,9 +139,9 @@ object Shared {
       "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",
       "Sonatype OSS Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
     ),
-    publishTo <<= (version) { version: String =>
+    publishTo := {
       val nexus = "https://oss.sonatype.org/"
-      if (version.trim.endsWith("SNAPSHOT"))
+      if (version.value.trim.endsWith("SNAPSHOT"))
         Some("snapshots" at nexus + "content/repositories/snapshots")
       else
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
