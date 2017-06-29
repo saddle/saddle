@@ -271,4 +271,41 @@ case class RRule private (freq: Frequency = DAILY,
 
 object RRule {
   def apply(f: Frequency): RRule = new RRule(freq = f)
+  
+  import org.joda.time.format._
+  private val RRulePat = """(.+)=(.+)""".r
+  
+  def apply(s: String): RRule = {
+    
+    def wkday(value: String) = value match {
+      case "SU" => SU case "MO" => MO case "TU" => TU case "WE" => WE case "TH" => TH case "FR" => FR case "SA" => SA
+    }
+    def freq(value: String) = value match {
+      case "SECONDLY" => SECONDLY case "MINUTELY" => MINUTELY case "HOURLY" => HOURLY case "DAILY" => DAILY case "WEEKLY" => WEEKLY case "MONTHLY" => MONTHLY case "YEARLY" => YEARLY
+    }
+    def wkdays(value: String) = value.split(",").foldLeft(Seq[Weekday]())(_ :+ wkday(_))
+    def ints(value: String) = value.split(",").foldLeft(Seq[Int]())(_ :+ _.toInt)
+    def parsedt(value: String) = org.joda.time.LocalDateTime.parse(value, ISODateTimeFormat.basicDateTimeNoMillis()).toDateTime()
+
+    s.replaceAll("\\s*", "").split(";").foldLeft( RRule(f = null)) { (rule, component) =>
+      
+      val RRulePat(key, value) = component
+      key.toUpperCase match {
+        case "RRULE:FREQ" => RRule(freq(value))
+        case "INTERVAL" => rule.withInterval(value.toInt)
+        case "WKST" => rule.withWkSt(wkday(value))
+        case "COUNT" => rule.withCount(value.toInt)
+        case "UNTIL" => rule.withUntil(parsedt(value))
+        case "BYSETPOS" => rule.bySetPos(ints(value): _*)
+        case "BYMONTH" => rule.byMonth(ints(value): _*)
+        case "BYMONTHDAY" => rule.byMonthDay(ints(value): _*)
+        case "BYYEARDAY" => rule.byYearDay(ints(value): _*)
+        case "BYWEEKNO" => rule.byWeekNo(ints(value): _*)
+        case "BYDAY" => rule.byWeekDay(wkdays(value): _*)
+        case "BYHOUR" => rule.byHour(ints(value): _*)
+        case "BYMINUTE" => rule.byMinute(ints(value): _*)
+        case "BYSECOND" => rule.bySecond(ints(value): _*)
+      }
+    }
+  }
 }

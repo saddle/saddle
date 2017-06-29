@@ -170,4 +170,8 @@ package object time {
   def months(i: Int)   = Months.months(i)
   def weeks(i: Int)    = Weeks.weeks(i)
   def days(i: Int)     = Days.days(i)
+  
+  //implicit conversions from String to RRule and vice versa
+  implicit def rruleToString(r: RRule) = r.toString
+  implicit def strToRRule(value: String): RRule = RRule(value)
 }
