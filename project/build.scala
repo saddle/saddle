@@ -78,6 +78,7 @@ object Shared {
     organization := "io.github.pityka",
     publishArtifact in Test := false,
     pomExtra := (
+      <url>https://github.com/pityka/saddle</url>
       <licenses>
         <license>
           <name>Apache 2.0</name>
@@ -109,9 +110,9 @@ object Shared {
         </developer>
       </developers>
     ),
-    scalaVersion := "2.12.1",
+    scalaVersion := "2.12.4",
     version := "1.3.4-fork1",
-    crossScalaVersions := Seq( "2.11.8"),
+    crossScalaVersions := Seq( "2.11.11"),
     scalacOptions := Seq("-deprecation", "-unchecked") // , "-Xexperimental"),
     // compile <<= (compile in Compile) dependsOn (compile in Test)
   )
