@@ -1,5 +1,7 @@
 package org.saddle.framework
 
+import scala.reflect.ClassTag
+
 import org.saddle._
 import org.specs2.matcher._
 
@@ -7,8 +9,8 @@ import org.specs2.matcher._
  * A matcher for two numeric Mats that must be equal to within
  * a tolerance
  */
-class BeCloseToMat[T: Numeric : ClassManifest](m: Mat[T], delta: T) extends Matcher[Mat[T]] {
-  def apply[S <: Mat[T]](x: Expectable[S]) = {
+class BeCloseToMat[T: Numeric : ClassTag](m: Mat[T], delta: T) extends Matcher[Mat[T]] {
+  def apply[S <: Mat[T]](x: Expectable[S]): MatchResult[S] = {
     val num = implicitly[Numeric[T]]
 
     result(m.length == 0 || {
@@ -24,5 +26,5 @@ class BeCloseToMat[T: Numeric : ClassManifest](m: Mat[T], delta: T) extends Matc
 }
 
 object BeCloseToMat {
-  def apply[T: Numeric : ClassManifest](v: Mat[T], delta: T) = new BeCloseToMat[T](v, delta)
+  def apply[T: Numeric : ClassTag](v: Mat[T], delta: T) = new BeCloseToMat[T](v, delta)
 }

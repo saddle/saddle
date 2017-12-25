@@ -6,3 +6,6 @@ saddle.sublime-workspace
 project/target/
 target/
 !*api*
+saddle-core/target/
+*.png
+*.js

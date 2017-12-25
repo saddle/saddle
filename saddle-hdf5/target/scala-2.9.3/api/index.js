@@ -1,1 +1,0 @@
-Index.PACKAGES = {"org" : [], "org.saddle" : [], "org.saddle.io" : [{"object" : "org\/saddle\/io\/H5Implicits$.html", "name" : "org.saddle.io.H5Implicits"}, {"object" : "org\/saddle\/io\/H5Store$.html", "name" : "org.saddle.io.H5Store"}]};
