@@ -23,7 +23,7 @@ import org.saddle.scalar.NA
 /**
  * Hand-calculated tests
  */
-class VecStatsSpec extends Specification {
+class VecStatsSpec extends Specification with StatsHelper {
 
   val v1 = Vec[Double](1d, 2, 20, 23, 76, 12, -5, -27, 76, 67)
   val v1pos = Vec[Double](1d, 2, 20, 23, 76, 12, 76, 67)

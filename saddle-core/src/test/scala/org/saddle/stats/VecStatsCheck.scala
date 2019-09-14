@@ -28,7 +28,7 @@ import org.apache.commons.math.stat.descriptive.DescriptiveStatistics
 /**
  * Tests on arbitrarily-generated vectors
  */
-class VecStatsCheck extends Specification with ScalaCheck {
+class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
   /**
    * Double Vectors

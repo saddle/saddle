@@ -14,14 +14,14 @@
  * limitations under the License.
  **/
 
-package org.saddle
+package org.saddle.stats
 
 import org.specs2.mutable.Specification
 
 /**
  * Helpful matchers
  */
-package object stats extends Specification {
+trait StatsHelper extends Specification {
   def areClose(x: Double, y: Double, delta: Double = 1e-9) = {
     def isNaN  = (x.isNaN && y.isNaN) must beTrue
     def isEq   = x must_== y
