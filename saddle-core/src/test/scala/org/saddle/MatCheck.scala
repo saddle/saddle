@@ -204,33 +204,6 @@ class MatCheck extends Specification with ScalaCheck {
        }}
      }
 
-     "mult works" in {
-       import org.apache.commons.math.linear.Array2DRowRealMatrix
-
-       forAll { (ma: Mat[Double], mb: Mat[Double]) =>
-         if (ma.numCols != mb.numRows)
-           ma.mult(mb) must throwAn[IllegalArgumentException]
-         else {
-           val res = ma.mult(mb)
-
-           res.numRows must_== ma.numRows
-           res.numCols must_== mb.numCols
-
-           if (ma.numRows > 0 && mb.numRows > 0) {
-             val matA = new Array2DRowRealMatrix(ma.rows().map(_.toArray).toArray)
-             val matB = new Array2DRowRealMatrix(mb.rows().map(_.toArray).toArray)
-
-             val matC = matA.multiply(matB)
-
-             res.contents must_== flatten(matC.getData)
-           }
-           else {
-             res.numRows must_== 0
-           }
-         }
-       }
-     }
-
      "roundTo works" in {
        forAll { (ma: Mat[Double]) =>
          ma.contents.map((v: Double) => math.round(v * 100) / 100d) must_== ma.roundTo(2).contents

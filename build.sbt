@@ -89,7 +89,6 @@ lazy val core = project
   .settings(
     name := "saddle-core",
     libraryDependencies ++= Seq(
-      "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.19",
       "org.apache.commons" % "commons-math" % "2.2",
       "it.unimi.dsi" % "fastutil" % "6.5.4",
       "it.unimi.dsi" % "dsiutils" % "2.0.15",

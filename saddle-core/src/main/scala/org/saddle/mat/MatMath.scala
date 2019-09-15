@@ -24,28 +24,7 @@ import org.saddle._
  */
 object MatMath {
 
-  /**
-   * Performs matrix multiplication via EJML
-   *
-   * @param m1 Left hand matrix operand
-   * @param m2 Right hand matrix operand
-   */
-  def mult[A, B](m1: Mat[A], m2: Mat[B])(implicit evA: NUM[A], evB: NUM[B]): Mat[Double] = {
-    import org.ejml.data.DenseMatrix64F
-    import org.ejml.ops.CommonOps
-
-    // allocate result
-    val tmp = new DenseMatrix64F(m1.numRows, m2.numCols)
-
-    val d1 = DenseMatrix64F.wrap(m1.numRows, m1.numCols, m1.toDoubleArray)
-    val d2 = DenseMatrix64F.wrap(m2.numRows, m2.numCols, m2.toDoubleArray)
-
-    CommonOps.mult(d1, d2, tmp)
-
-    // return result
-    Mat(tmp.getNumRows, tmp.getNumCols, tmp.getData)
-  }
-
+  
   /**
    * Yields covariance matrix from input matrix whose columns are variable observations
    *

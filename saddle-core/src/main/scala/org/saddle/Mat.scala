@@ -16,7 +16,6 @@
 
 package org.saddle
 
-import mat._
 import scalar.{Scalar, ScalarTag}
 import ops.{BinOpMat, NumericOps}
 import scala.{specialized => spec}
@@ -350,19 +349,6 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * Returns rows of matrix as an indexed sequence of Vec instances
    */
   def rows(seq: IndexedSeq[Int]): IndexedSeq[Vec[A]] = seq.map(row _)
-
-  /**
-   * Multiplies this matrix against another
-   *
-   */
-  def mult[B](m: Mat[B])(implicit evA: NUM[A], evB: NUM[B]): Mat[Double] = {
-    if (numCols != m.numRows) {
-      val errMsg = "Cannot multiply (%d %d) x (%d %d)".format(numRows, numCols, m.numRows, m.numCols)
-      throw new IllegalArgumentException(errMsg)
-    }
-
-    MatMath.mult(this, m)
-  }
 
   /**
    * Rounds elements in the matrix (which must be numeric) to
