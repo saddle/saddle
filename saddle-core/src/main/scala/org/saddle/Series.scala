@@ -488,7 +488,7 @@ class Series[X: ST: ORD, T: ST](
   /**
    * Return key corresponding to minimum value in series
    */
-  def minKey(implicit num: NUM[T], ord: ORD[T]): Scalar[X] = array.argmin(values.toArray) match {
+  def minKey(implicit num: NUM[T]): Scalar[X] = array.argmin(values.toArray) match {
     case -1     => NA
     case _  @ i => index.at(i)
   }
@@ -496,7 +496,7 @@ class Series[X: ST: ORD, T: ST](
   /**
    * Return key corresponding to maximum value in series
    */
-  def maxKey(implicit num: NUM[T], ord: ORD[T]): Scalar[X] = array.argmax(values.toArray) match {
+  def maxKey(implicit num: NUM[T]): Scalar[X] = array.argmax(values.toArray) match {
     case -1     => NA
     case _  @ i => index.at(i)
   }
@@ -905,6 +905,7 @@ class Series[X: ST: ORD, T: ST](
 }
 
 object Series extends BinOpSeries {
+  import scala.language.implicitConversions
   // stats implicits
 
   type Vec2Stats[T] = Vec[T] => VecStats[T]

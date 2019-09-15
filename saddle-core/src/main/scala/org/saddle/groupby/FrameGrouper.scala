@@ -43,14 +43,14 @@ class FrameGrouper[Z: ST: ORD, X: ST: ORD, Y: ST: ORD, T: ST](
 
   // less powerful combine, ignores group key
   def combine[U: ST: ORD](fn: Vec[T] => U): Frame[Z, Y, U] =
-    combine( (k, v) => fn(v) )
+    combine( (_, v) => fn(v) )
 
   def transform[U: ST](fn: (Z, Vec[T]) => Vec[U]): Frame[X, Y, U] =
     Frame(frame.values.map(SeriesGrouper.transform(_, groups, fn)), frame.rowIx, frame.colIx)
 
   // less powerful transform, ignores group key
   def transform[U: ST](fn: Vec[T] => Vec[U]): Frame[X, Y, U] =
-    transform( (k, v) => fn(v) )
+    transform( (_, v) => fn(v) )
 }
 
 object FrameGrouper {

@@ -70,7 +70,7 @@ class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] with S
   // take all vecs that match provided type, along with their locations
   private[saddle] def takeType[B: ST]: (IndexedSeq[Vec[B]], Array[Int]) = {
     val bSt = implicitly[ST[B]]
-    val filt = cols.zipWithIndex.filter { case (col, ix) =>
+    val filt = cols.zipWithIndex.filter { case (col, _) =>
       col.scalarTag.runtimeClass.isPrimitive && (bSt.isAny || bSt.isAnyVal) ||
         !bSt.isAnyVal && bSt.runtimeClass.isAssignableFrom(col.scalarTag.runtimeClass)
     }
@@ -80,6 +80,8 @@ class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] with S
 }
 
 object MatCols {
+  import scala.language.implicitConversions
+  
   def empty[A: ST]: MatCols[A] = apply(Array.empty[Vec[A]])
 
   def apply[A: ST](cols: Vec[A]*): MatCols[A] = new MatCols[A](cols.toIndexedSeq)

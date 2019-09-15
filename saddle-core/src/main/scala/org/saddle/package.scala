@@ -16,11 +16,13 @@
 
 package org
 
-import joda.time.DateTime
+import scala.language.implicitConversions
+import scala.language.reflectiveCalls
 import org.saddle.index._
 
 // some typeclass interfaces we'll alias
 import org.saddle.scalar.ScalarTag
+import scala.reflect.ClassTag
 
 /**
  * == Saddle ==
@@ -66,7 +68,7 @@ package object saddle {
   /**
    * Shorthand for class manifest typeclass
    */
-  type CLM[C] = ClassManifest[C]
+  type CLM[C] = ClassTag[C]
 
   /**
    * Shorthand for scalar tag typeclass
@@ -172,14 +174,14 @@ package object saddle {
      */
     def to[T](implicit fn: na.type => T): T = fn(this)
 
-    implicit def naToByte(v: na.type): Byte = scalar.ScalarTagByte.missing
-    implicit def naToChar(v: na.type): Char = scalar.ScalarTagChar.missing
-    implicit def naToShort(v: na.type): Short = scalar.ScalarTagShort.missing
+    implicit val naToByte: na.type => Byte = (_:na.type) => scalar.ScalarTagByte.missing
+    implicit val naToChar: na.type => Char = (_:na.type) => scalar.ScalarTagChar.missing
+    implicit val naToShort: na.type => Short = (_:na.type) => scalar.ScalarTagShort.missing
 
-    implicit def naToInt(v: na.type): Int = scalar.ScalarTagInt.missing
-    implicit def naToLong(v: na.type): Long = scalar.ScalarTagLong.missing
-    implicit def naToFloat(v: na.type): Float = scalar.ScalarTagFloat.missing
-    implicit def naToDouble(v: na.type): Double = scalar.ScalarTagDouble.missing
+    implicit val naToInt: na.type => Int = (_:na.type) => scalar.ScalarTagInt.missing
+    implicit val naToLong: na.type => Long =(_:na.type) => scalar.ScalarTagLong.missing
+    implicit val naToFloat: na.type => Float = (_:na.type) => scalar.ScalarTagFloat.missing
+    implicit val naToDouble: na.type => Double = (_:na.type) => scalar.ScalarTagDouble.missing
 
     override def toString = "na"
   }

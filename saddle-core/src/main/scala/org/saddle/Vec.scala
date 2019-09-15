@@ -532,6 +532,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] with S
 }
 
 object Vec extends BinOpVec with VecStatsImplicits with VecBoolEnricher {
+  import scala.language.implicitConversions
   // **** constructions
 
   /**

@@ -37,6 +37,7 @@ sealed trait Weekday { this: Weekday =>
 }
 
 object Weekday {
+  import scala.language.implicitConversions
   /**
    * Allow for implicit Weekday => WeekdayNum conversion: e.g., MO => MO(0)
    */

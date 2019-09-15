@@ -44,7 +44,7 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
 
   def show(v: T) = "%s" format (if (v == null) "NA" else v.toString)
 
-  override def runtimeClass = implicitly[CLM[T]].erasure
+  override def runtimeClass = implicitly[CLM[T]].runtimeClass
 
   def makeBuf(sz: Int = Buffer.INIT_CAPACITY): Buffer[T] = new BufferAny[T](sz)(this)
   def makeLoc(sz: Int = Buffer.INIT_CAPACITY): Locator[T] = new LocatorAny[T](sz)(this)

@@ -131,7 +131,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Double]) =>
         val data = v.contents
-        v.countif(_ > 0.5) must_== data.filter(_ > 0.5).foldLeft(0)((x, y) => x + 1)
+        v.countif(_ > 0.5) must_== data.filter(_ > 0.5).foldLeft(0)((x, _) => x + 1)
       }
     }
 
@@ -140,7 +140,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Double]) =>
         val data = v.contents.filter(!_.isNaN)
-        v.countif(_ > 0.5) must_== data.filter(_ > 0.5).foldLeft(0)((x, y) => x + 1)
+        v.countif(_ > 0.5) must_== data.filter(_ > 0.5).foldLeft(0)((x, _) => x + 1)
       }
     }
 
@@ -434,7 +434,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Long]) =>
         val data = v.contents
-        areClose(v.prod, data.foldLeft(1L)(_ * _))
+        areClose(v.prod.toDouble, data.foldLeft(1L)(_ * _).toDouble)
       }
     }
 
@@ -443,7 +443,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Long]) =>
         val data = v.contents.filter(_ != Long.MinValue)
-        areClose(v.prod, data.foldLeft(1L)(_ * _))
+        areClose(v.prod.toDouble, data.foldLeft(1L)(_ * _).toDouble)
       }
     }
 
@@ -452,7 +452,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Long]) =>
         val data = v.contents
-        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, y) => x + 1)
+        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, _) => x + 1)
       }
     }
 
@@ -461,7 +461,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Long]) =>
         val data = v.contents.filter(_ != Long.MinValue)
-        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, y) => x + 1)
+        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, _) => x + 1)
       }
     }
 
@@ -470,7 +470,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Long]) =>
         val data = v.contents
-        areClose(v.logsum, data.foldLeft(0.0)(_ + math.log(_)))
+        areClose(v.logsum, data.map(_.toDouble).foldLeft(0.0)(_ + math.log(_)))
       }
     }
 
@@ -479,7 +479,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Long]) =>
         val data = v.contents.filter(_ != Long.MinValue)
-        areClose(v.logsum, data.foldLeft(0.0)(_ + math.log(_)))
+        areClose(v.logsum, data.map(_.toDouble).foldLeft(0.0)(_ + math.log(_)))
       }
     }
 
@@ -513,7 +513,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
         (len == 0 && med.isNaN) || {
           len % 2 match {
             case 0 => areClose(med, ( data(len/2) + data(len/2 - 1) ) / 2.0)
-            case 1 => areClose(med, data(len/2))
+            case 1 => areClose(med, data(len/2).toDouble)
           }
         }
       }
@@ -529,7 +529,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
         (len == 0 && med.isNaN) || {
           len % 2 match {
             case 0 => areClose(med, ( data(len/2) + data(len/2 - 1) ) / 2.0)
-            case 1 => areClose(med, data(len/2))
+            case 1 => areClose(med, data(len/2).toDouble)
           }
         }
       }
@@ -542,7 +542,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
         val mean = v.geomean
 
         val stats = new DescriptiveStatistics()
-        v.contents.foreach { v => stats.addValue(v) }
+        v.contents.foreach { v => stats.addValue(v.toDouble) }
 
         areClose(mean, stats.getGeometricMean)
       }
@@ -555,7 +555,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
         val mean = v.geomean
 
         val stats = new DescriptiveStatistics()
-        v.contents.filter(_ != Long.MinValue).foreach { v => stats.addValue(v) }
+        v.contents.filter(_ != Long.MinValue).foreach { v => stats.addValue(v.toDouble) }
 
         areClose(mean, stats.getGeometricMean)
       }
@@ -741,7 +741,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Int]) =>
         val data = v.contents
-        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, y) => x + 1)
+        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, _) => x + 1)
       }
     }
 
@@ -750,7 +750,7 @@ class VecStatsCheck extends Specification with ScalaCheck with StatsHelper {
 
       forAll { (v: Vec[Int]) =>
         val data = v.contents.filter(_ != Int.MinValue)
-        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, y) => x + 1)
+        v.countif(_ > 0) must_== data.filter(_ > 0).foldLeft(0)((x, _) => x + 1)
       }
     }
 

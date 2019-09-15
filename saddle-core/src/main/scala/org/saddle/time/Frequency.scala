@@ -16,7 +16,7 @@
 
 package org.saddle.time
 
-import org.joda.time.{Period, Duration}
+import org.joda.time.Period
 
 /**
  * Enumeration of frequency base for utilizing with an RRule

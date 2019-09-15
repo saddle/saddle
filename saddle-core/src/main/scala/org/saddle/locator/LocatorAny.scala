@@ -33,7 +33,7 @@ class LocatorAny[T: ST](sz: Int = Locator.INIT_CAPACITY) extends Locator[T] {
 
   def put(key: T, value: Int) {
     // prevents unboxing!
-    val tmp: Int = map.put(key, value)
+    val _: Int = map.put(key, value)
   }
 
   def contains(key: T) = map.containsKey(key)

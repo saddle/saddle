@@ -68,7 +68,7 @@ private[saddle] object JoinHelper {
     i = 1
     var pos = 0
     while (i <= max_groups) {
-      var lc = lcounts(i)
+      val lc = lcounts(i)
       val rc = rcounts(i)
       pos = marker(lLabels, rLabels, lc, rc, lpos, rpos, pos)
       lpos += lc

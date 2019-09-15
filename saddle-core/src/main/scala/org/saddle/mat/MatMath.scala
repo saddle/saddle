@@ -137,7 +137,7 @@ object MatMath {
   // ixB    : starting index of vector b
   // n      : length of vector
   // corr   : do correlation computation
-  private def covariance(values: Array[Double], ixA: Int, ixB: Int, n: Int, corr: Boolean = false): Double = {
+  private def covariance(values: Array[Double], ixA: Int, ixB: Int, n: Int, corr: Boolean): Double = {
     var va = 0.0
     var vb = 0.0
 

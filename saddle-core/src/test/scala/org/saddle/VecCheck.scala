@@ -94,8 +94,8 @@ class VecCheck extends Specification with ScalaCheck {
       forAll { (v: Vec[Double]) =>
         val data = v.contents
         v.map(_ + 1.0) must_== Vec(data.map(_ + 1.0))
-        v.map(d => 5.0) must_== Vec(data.map(d => if (d.isNaN) na.to[Double] else 5.0))
-        v.map(d => 5) must_== Vec[Int](data.map(d => if (d.isNaN) na.to[Int] else 5))
+        v.map(_ => 5.0) must_== Vec(data.map(d => if (d.isNaN) na.to[Double] else 5.0))
+        v.map(_ => 5) must_== Vec[Int](data.map(d => if (d.isNaN) na.to[Int] else 5))
       }
     }
 
@@ -230,7 +230,7 @@ class VecCheck extends Specification with ScalaCheck {
 
     "filterFoldLeft works" in {
       forAll { (v: Vec[Double]) =>
-        val res = v.filterFoldLeft(_ < 0)(0)((c: Int, x: Double) => c + 1)
+        val res = v.filterFoldLeft(_ < 0)(0)((c: Int, _: Double) => c + 1)
         val exp = v.filter(_ < 0).count
         res must_== exp
       }
@@ -238,7 +238,7 @@ class VecCheck extends Specification with ScalaCheck {
 
     "foldLeftWhile works" in {
       forAll { (v: Vec[Double]) =>
-        val res = v.foldLeftWhile(0)((c: Int, x: Double) => c + 1)((c: Int, x: Double) => c < 3)
+        val res = v.foldLeftWhile(0)((c: Int, _: Double) => c + 1)((c: Int, _: Double) => c < 3)
         var c = 0
         val exp = v.contents.takeWhile { (v: Double) => v.isNaN || { c += 1; c <= 3 } }
         res must_== Vec(exp).count
@@ -247,7 +247,7 @@ class VecCheck extends Specification with ScalaCheck {
 
     "scanLeft works" in {
       forAll { (v: Vec[Double]) =>
-        val res = v.scanLeft(0)((c: Int, x: Double) => c + 1)
+        val res = v.scanLeft(0)((c: Int, _: Double) => c + 1)
         res.length must_== v.length
         (res.last.isNA must beTrue) or (res.last must_== Value(v.count))
       }
@@ -255,7 +255,7 @@ class VecCheck extends Specification with ScalaCheck {
 
     "filterScanLeft works" in {
       forAll { (v: Vec[Double]) =>
-        val res = v.filterScanLeft(_ > 0.5)(0)((c: Int, x: Double) => c + 1)
+        val res = v.filterScanLeft(_ > 0.5)(0)((c: Int, _: Double) => c + 1)
         res.length must_== v.length
         (res.last.isNA must beTrue) or (res.last must_== Value(v.filter(_ > 0.5).count))
       }

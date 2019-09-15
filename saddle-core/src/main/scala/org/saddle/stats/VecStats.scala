@@ -393,7 +393,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
   }
 
   // percentile function: see: http://en.wikipedia.org/wiki/Percentile
-  protected def _percentile(v: Vec[Double], tile: Double, method: PctMethod)(implicit n: NUM[A]): Double = {
+  protected def _percentile(v: Vec[Double], tile: Double, method: PctMethod): Double = {
     val sd = ScalarTagDouble
     val vf = v.dropNA
     if (vf.length == 0 || tile < 0 || tile > 100)
@@ -419,7 +419,7 @@ class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
   val sd = ScalarTagDouble
 
   def sum: Double = r.filterFoldLeft(sd.notMissing)(0d)(_ + _)
-  def count: Int = r.filterFoldLeft(sd.notMissing)(0)((a, b) => a + 1)
+  def count: Int = r.filterFoldLeft(sd.notMissing)(0)((a, _) => a + 1)
 
   def min: Option[Double] =
     if (r.count == 0)
@@ -438,7 +438,7 @@ class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
     }
 
   def prod: Double = r.filterFoldLeft(sd.notMissing)(1d)(_ * _)
-  def countif(test: Double => Boolean): Int = r.filterFoldLeft(t => sd.notMissing(t) && test(t))(0)((a,b) => a + 1)
+  def countif(test: Double => Boolean): Int = r.filterFoldLeft(t => sd.notMissing(t) && test(t))(0)((a,_) => a + 1)
   def logsum: Double = r.filterFoldLeft(sd.notMissing)(0d)((x, y) => x + math.log(y))
   def mean: Double = sum / count
   def median: Double = _median(r)
@@ -473,9 +473,9 @@ class IntStats(r: Vec[Int]) extends VecStats[Int] {
     }
 
   def sum: Int = r.filterFoldLeft(si.notMissing)(0)(_ + _)
-  def count: Int = r.filterFoldLeft(si.notMissing)(0)((a, b) => a + 1)
+  def count: Int = r.filterFoldLeft(si.notMissing)(0)((a, _) => a + 1)
   def prod: Int = r.filterFoldLeft(si.notMissing)(1)(_ * _)
-  def countif(test: Int => Boolean): Int = r.filterFoldLeft(t => si.notMissing(t) && test(t))(0)((a,b) => a + 1)
+  def countif(test: Int => Boolean): Int = r.filterFoldLeft(t => si.notMissing(t) && test(t))(0)((a,_) => a + 1)
   def logsum: Double = r.filterFoldLeft(si.notMissing)(0d)((x, y) => x + math.log(y.asInstanceOf[Double]))
   def mean: Double = sum.asInstanceOf[Double] / count
   def median: Double = _median(r)
@@ -510,9 +510,9 @@ class LongStats(r: Vec[Long]) extends VecStats[Long] {
     }
 
   def sum: Long = r.filterFoldLeft(sl.notMissing)(0L)(_ + _)
-  def count: Int = r.filterFoldLeft(sl.notMissing)(0)((a, b) => a + 1)
+  def count: Int = r.filterFoldLeft(sl.notMissing)(0)((a, _) => a + 1)
   def prod: Long = r.filterFoldLeft(sl.notMissing)(1L)(_ * _)
-  def countif(test: Long => Boolean): Int = r.filterFoldLeft(t => sl.notMissing(t) && test(t))(0)((a,b) => a + 1)
+  def countif(test: Long => Boolean): Int = r.filterFoldLeft(t => sl.notMissing(t) && test(t))(0)((a,_) => a + 1)
   def logsum: Double = r.filterFoldLeft(sl.notMissing)(0d)((x, y) => x + math.log(y))
   def mean: Double = sum.asInstanceOf[Double] / count
   def median: Double = _median(r)

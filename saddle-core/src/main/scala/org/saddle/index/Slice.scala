@@ -78,5 +78,5 @@ object SliceTo {
 }
 
 object SliceAll {
-  def apply[T](k: T) = new SliceAll()
+  def apply[T]() = new SliceAll()
 }

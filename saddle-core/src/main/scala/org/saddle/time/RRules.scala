@@ -16,6 +16,7 @@
 
 package org.saddle.time
 
+import scala.language.reflectiveCalls
 import org.joda.time.DateTime
 
 /**

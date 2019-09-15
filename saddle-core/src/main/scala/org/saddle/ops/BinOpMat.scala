@@ -112,7 +112,7 @@ trait BinOpMat {
 
   // Binary op: matrix/matrix multiplication
   implicit def matmulOpWithMatrix[A, B, OP <: InnerProd](
-    implicit cb: ST[B], na: NUM[A], nb: NUM[B]) =
+    implicit na: NUM[A], nb: NUM[B]) =
     new BinOp[InnerProd, Mat[A], Mat[B], Mat[Double]] {
       def apply(m1: Mat[A], m2: Mat[B]): Mat[Double] = {
         m1.mult(m2)

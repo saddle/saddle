@@ -18,7 +18,6 @@ package org.saddle.util
 
 import annotation.tailrec
 import java.io.InputStream
-import org.saddle.vec
 
 /**
  * The Random class provides methods to generate pseudo-random numbers via a plug-in

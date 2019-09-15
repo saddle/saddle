@@ -145,11 +145,11 @@ package object mat {
     v: Array[T], n: Int, asRows: Boolean = false): Mat[T] = {
 
     if (asRows) {
-      val tmp = array.flatten(for (i <- 1 to n) yield v)
+      val tmp = array.flatten(for (_ <- 1 to n) yield v)
       Mat(n, v.length, tmp)
     }
     else {
-      val tmp = for (i <- array.range(0, n)) yield v
+      val tmp = for (_ <- array.range(0, n)) yield v
       Mat(tmp)
     }
   }

@@ -29,14 +29,14 @@ class SeriesGrouper[Y: ST: ORD, X: ST: ORD, T: ST](
 
   // less powerful combine, ignores group key
   def combine[U: ST: ORD](fn: Vec[T] => U): Series[Y, U] =
-    combine( (k, v) => fn(v) )
+    combine( (_, v) => fn(v) )
 
   def transform[U: ST](fn: (Y, Vec[T]) => Vec[U]): Series[X, U] =
     Series(SeriesGrouper.transform(series.values, groups, fn), series.index)
 
   // less powerful transform, ignores group key
   def transform[U: ST](fn: Vec[T] => Vec[U]): Series[X, U] =
-    transform( (k, v) => fn(v) )
+    transform( (_, v) => fn(v) )
 }
 
 object SeriesGrouper {

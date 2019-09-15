@@ -16,6 +16,7 @@
 
 package org.saddle.scalar
 
+import scala.reflect.ClassTag
 import scala.{ specialized => spec }
 import org.saddle._
 import org.saddle.locator.Locator
@@ -27,7 +28,7 @@ import org.saddle.array.Sorter
  * as an array. Often implicitly required when dealing with objects in Saddle
  */
 trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
-  extends ClassManifest[T] with SpecializedFactory[T] with CouldBeOrdered[T] with CouldBeNumber[T] with ScalarHelperOps[T] with Serializable{
+  extends ClassTag[T] with SpecializedFactory[T] with CouldBeOrdered[T] with CouldBeNumber[T] with ScalarHelperOps[T] with Serializable{
   // representation of missing data
   def missing: T
   def isMissing(t: T): Boolean

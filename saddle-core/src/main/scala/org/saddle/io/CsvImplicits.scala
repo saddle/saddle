@@ -44,6 +44,8 @@ case class CsvSettings(separChar: Char = ',',
  * }}}
  */
 object CsvImplicits {
+  import scala.language.implicitConversions
+  import scala.language.reflectiveCalls
   /**
    * Provides enrichment on Series object for writing to a Csv file.
    */

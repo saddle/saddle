@@ -16,6 +16,7 @@
 
 package org.saddle
 
+import scala.language.implicitConversions
 import vec._
 import index._
 import groupby._
@@ -524,7 +525,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * Overloaded method to create hierarchical index from two cols.
    */
   def withRowIndex(col1: Int, col2: Int)(implicit ordT: ORD[T]): Frame[(T, T), CX, T] = {
-    val newIx: Index[(T, T)] = Index.make(this.colAt(col1).toVec, this.colAt(col2).toVec)
+    val newIx: Index[(T, T)] = Index.make((this.colAt(col1).toVec, this.colAt(col2).toVec))
     this.setRowIndex(newIx).filterAt { case c => !Set(col1, col2).contains(c) }
   }
 
@@ -558,7 +559,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * Overloaded method to create hierarchical index from two rows.
    */
   def withColIndex(row1: Int, row2: Int)(implicit ordT: ORD[T]): Frame[RX, (T, T), T] = {
-    val newIx: Index[(T, T)] = Index.make(this.rowAt(row1).toVec, this.rowAt(row2).toVec)
+    val newIx: Index[(T, T)] = Index.make((this.rowAt(row1).toVec, this.rowAt(row2).toVec))
     this.setColIndex(newIx).rfilterAt { case r => !Set(row1, row2).contains(r) }
   }
 
@@ -880,7 +881,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * @tparam V type of resulting Frame values
    */
   def concat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
-    implicit pro: Promoter[T, U, V], mu: ST[U], md: ST[V]): Frame[RX, CX, V] = {
+    implicit pro: Promoter[T, U, V], md: ST[V]): Frame[RX, CX, V] = {
 
     val ixc = colIx.join(other.colIx, how)
 
@@ -1314,7 +1315,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * See concat; operates row-wise
    */
   def rconcat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
-    implicit wd1: Promoter[T, U, V], mu: ST[U], md: ST[V]): Frame[RX, CX, V] = T.concat(other.T, how).T
+    implicit wd1: Promoter[T, U, V], md: ST[V]): Frame[RX, CX, V] = T.concat(other.T, how).T
 
   /**
    * See where; operates row-wise

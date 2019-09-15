@@ -133,7 +133,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * @param r Array of row offsets
    * @param c Array of col offsets
    */
-  def at(r: Array[Int], c: Array[Int])(implicit st: ScalarTag[A]): Mat[A] = {
+  def at(r: Array[Int], c: Array[Int]): Mat[A] = {
     row(r).col(c)
   }
 
@@ -142,7 +142,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * @param r Array of row offsets
    * @param c Integer col offset
    */
-  def at(r: Array[Int], c: Int)(implicit st: ScalarTag[A]): Vec[A] = {
+  def at(r: Array[Int], c: Int): Vec[A] = {
     row(r).col(c)
   }
 
@@ -151,7 +151,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * @param r Integer row offset
    * @param c Array of col offsets
    */
-  def at(r: Int, c: Array[Int])(implicit st: ScalarTag[A]): Vec[A] = {
+  def at(r: Int, c: Array[Int]): Vec[A] = {
     col(c).row(r)
   }
 
@@ -160,7 +160,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * @param r Slice to apply to rows
    * @param c Slice to apply to cols
    */
-  def at(r: Slice[Int], c: Slice[Int])(implicit st: ScalarTag[A]): Mat[A] =
+  def at(r: Slice[Int], c: Slice[Int]): Mat[A] =
     row(r).col(c)
 
   /**
@@ -244,7 +244,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   /**
    * Yields row indices where row has some NA value
    */
-  def rowsWithNA(implicit ev: ST[A]): Set[Int] = {
+  def rowsWithNA: Set[Int] = {
     val builder = Set.newBuilder[Int]
     var i = 0
     while (i < numRows) {
@@ -257,24 +257,24 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   /**
    * Yields column indices where column has some NA value
    */
-  def colsWithNA(implicit ev: ST[A]): Set[Int] = T.rowsWithNA
+  def colsWithNA: Set[Int] = T.rowsWithNA
 
   /**
    * Yields a matrix without those rows that have NA
    */
-  def dropRowsWithNA(implicit ev: ST[A]): Mat[A] = withoutRows(rowsWithNA.toArray)
+  def dropRowsWithNA: Mat[A] = withoutRows(rowsWithNA.toArray)
 
   /**
    * Yields a matrix without those cols that have NA
    */
-  def dropColsWithNA(implicit ev: ST[A]): Mat[A] = withoutCols(colsWithNA.toArray)
+  def dropColsWithNA: Mat[A] = withoutCols(colsWithNA.toArray)
 
   /**
    * Returns a specific column of the Mat as a Vec
    *
    * @param c Column index
    */
-  def col(c: Int)(implicit ev: ST[A]): Vec[A] = {
+  def col(c: Int): Vec[A] = {
     assert(c >= 0 && c < numCols, "Array index %d out of bounds" format c)
     flattenT.slice(c * numRows, (c + 1) * numRows)
   }
@@ -283,13 +283,13 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * Access Mat columns at a particular integer offsets
    * @param locs a sequence of integer offsets
    */
-  def col(locs: Int*)(implicit ev: ST[A]): Mat[A] = takeCols(locs.toArray)
+  def col(locs: Int*): Mat[A] = takeCols(locs.toArray)
 
   /**
    * Access Mat columns at a particular integer offsets
    * @param locs an array of integer offsets
    */
-  def col(locs: Array[Int])(implicit ev: ST[A]): Mat[A] = takeCols(locs)
+  def col(locs: Array[Int]): Mat[A] = takeCols(locs)
 
   /**
    * Access mat columns specified by a slice
@@ -303,19 +303,19 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   /**
    * Returns columns of Mat as an indexed sequence of Vec instances
    */
-  def cols()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = Range(0, numCols).map(col _)
+  def cols(): IndexedSeq[Vec[A]] = Range(0, numCols).map(col _)
 
   /**
    * Returns columns of Mat as an indexed sequence of Vec instances
    */
-  def cols(seq: IndexedSeq[Int])(implicit ev: ST[A]): IndexedSeq[Vec[A]] = seq.map(col _)
+  def cols(seq: IndexedSeq[Int]): IndexedSeq[Vec[A]] = seq.map(col _)
 
   /**
    * Returns a specific row of the Mat as a Vec
    *
    * @param r Row index
    */
-  def row(r: Int)(implicit ev: ST[A]): Vec[A] = {
+  def row(r: Int): Vec[A] = {
     assert(r >= 0 && r < numRows, "Array index %d out of bounds" format r)
     flatten.slice(r * numCols, (r + 1) * numCols)
   }
@@ -324,13 +324,13 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
    * Access Mat rows at a particular integer offsets
    * @param locs a sequence of integer offsets
    */
-  def row(locs: Int*)(implicit ev: ST[A]): Mat[A] = takeRows(locs.toArray)
+  def row(locs: Int*): Mat[A] = takeRows(locs.toArray)
 
   /**
    * Access Mat rows at a particular integer offsets
    * @param locs an array of integer offsets
    */
-  def row(locs: Array[Int])(implicit ev: ST[A]): Mat[A] = takeRows(locs)
+  def row(locs: Array[Int]): Mat[A] = takeRows(locs)
 
   /**
    * Access Mat rows specified by a slice
@@ -344,12 +344,12 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   /**
    * Returns rows of matrix as an indexed sequence of Vec instances
    */
-  def rows()(implicit ev: ST[A]): IndexedSeq[Vec[A]] = Range(0, numRows).map(row _)
+  def rows(): IndexedSeq[Vec[A]] = Range(0, numRows).map(row _)
 
   /**
    * Returns rows of matrix as an indexed sequence of Vec instances
    */
-  def rows(seq: IndexedSeq[Int])(implicit ev: ST[A]): IndexedSeq[Vec[A]] = seq.map(row _)
+  def rows(seq: IndexedSeq[Int]): IndexedSeq[Vec[A]] = seq.map(row _)
 
   /**
    * Multiplies this matrix against another
@@ -382,7 +382,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   def toVec: Vec[A]
 
   private var flatCache: Option[Vec[A]] = None
-  private def flatten(implicit st: ST[A]): Vec[A] = flatCache.getOrElse {
+  private def flatten: Vec[A] = flatCache.getOrElse {
     this.synchronized {
       flatCache = Some(toVec)
       flatCache.get
@@ -390,7 +390,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
   }
 
   private var flatCacheT: Option[Vec[A]] = None
-  private def flattenT(implicit st: ST[A]): Vec[A] = flatCacheT.getOrElse {
+  private def flattenT: Vec[A] = flatCacheT.getOrElse {
     this.synchronized {
       flatCacheT = Some(T.toVec)
       flatCacheT.get
@@ -478,6 +478,8 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with S
 }
 
 object Mat extends BinOpMat {
+  import scala.language.implicitConversions
+  
   /**
    * Factory method to create a new Mat from raw materials
    * @param rows Number of rows in Mat

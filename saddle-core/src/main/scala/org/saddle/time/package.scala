@@ -16,6 +16,7 @@
 
 package org.saddle
 
+import scala.language.implicitConversions
 import org.joda.time._
 import org.joda.time.chrono.ISOChronology
 import org.saddle.vec.VecTime

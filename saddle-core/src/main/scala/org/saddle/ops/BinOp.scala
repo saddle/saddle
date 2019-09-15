@@ -168,9 +168,6 @@ object BinOp {
   implicit val andIL: BILL[BitAnd]   = new BinOpImpl[BitAnd, Int, Long, Long](_ & _)
   implicit val orIL : BILL[BitOr]    = new BinOpImpl[BitOr, Int, Long, Long](_ | _)
   implicit val xorIL: BILL[BitXor]   = new BinOpImpl[BitXor, Int, Long, Long](_ ^ _)
-  implicit val shlIL: BILL[BitShl]   = new BinOpImpl[BitShl, Int, Long, Long](_ << _)
-  implicit val shrIL: BILL[BitShr]   = new BinOpImpl[BitShr, Int, Long, Long](_ >> _)
-  implicit val ushIL: BILL[BitUShr]  = new BinOpImpl[BitUShr, Int, Long, Long](_ >>> _)
 
   // (x, y) => Int ops
 

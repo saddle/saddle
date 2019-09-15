@@ -16,9 +16,11 @@
 
 package org.saddle.time
 
-import org.joda.time.{Seconds, Days, DateTimeZone, DateTime}
-import scala.collection.JavaConversions._
-import com.google.ical.iter.{RecurrenceIterator, RecurrenceIteratorFactory}
+import org.joda.time.Days
+import org.joda.time.DateTimeZone
+import org.joda.time.DateTime
+import scala.collection.JavaConverters._
+import com.google.ical.iter.RecurrenceIteratorFactory
 import com.google.ical.compat.jodatime.DateTimeIteratorFactory
 import org.saddle.Index
 
@@ -57,7 +59,7 @@ import org.saddle.Index
  *  -- http://labix.org/python-dateutil
  *  -- https://pypi.python.org/pypi/python-dateutil
  */
-case class RRule private (freq: Frequency = DAILY,
+case class RRule private (freq: Frequency,
                           interval: Int = 1,
                           wkst: Option[Weekday] = None,
                           count: Option[Int] = None,
@@ -263,7 +265,7 @@ case class RRule private (freq: Frequency = DAILY,
       RecurrenceIteratorFactory.except(i1, tmpiter)
     }
 
-    DateTimeIteratorFactory.createDateTimeIterator(iterWithJoinsWithExcepts) map { dt => dt.withZone(inzone) }
+    DateTimeIteratorFactory.createDateTimeIterator(iterWithJoinsWithExcepts).asScala map { dt => dt.withZone(inzone) }
   }
 
   override def toString = toICal.toIcal

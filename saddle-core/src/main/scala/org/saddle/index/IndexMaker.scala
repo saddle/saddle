@@ -16,6 +16,9 @@
 
 package org.saddle.index
 
+import scala.language.higherKinds
+import scala.language.reflectiveCalls
+
 import org.saddle._
 
 /**
@@ -37,6 +40,7 @@ trait IndexMaker[I, O] {
  * Companion object which houses implicit instances of IndexMaker
  */
 object IndexMaker extends IndexMakerLowPriority {
+  
   // -------------------------
   // IndexMaker instances
 

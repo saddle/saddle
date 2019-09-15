@@ -18,7 +18,6 @@ package org.saddle.ops
 
 import org.saddle._
 import index._
-import vec._
 
 /**
  * Provides concrete implementations of binary operations for [[org.saddle.Frame]]; these

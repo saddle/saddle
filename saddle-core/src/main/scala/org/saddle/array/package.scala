@@ -459,7 +459,7 @@ package object array {
     var i = 0
 
     arrs.foreach { a =>
-      var l = a.length
+      val l = a.length
       var j = 0
       while(j < l) {
         newArr(i + j) = a(j)

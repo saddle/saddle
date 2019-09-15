@@ -19,7 +19,6 @@ package org.saddle.vec
 import scala.{specialized => spec}
 import scala.Predef._
 import org.saddle._
-import org.saddle.scalar._
 import util.Concat.Promoter
 
 /**

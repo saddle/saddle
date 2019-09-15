@@ -16,6 +16,7 @@
 
 package org.saddle
 
+import scala.language.reflectiveCalls
 import org.scalacheck.Gen
 import org.joda.time._
 import org.saddle.time._

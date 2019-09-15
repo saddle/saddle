@@ -22,7 +22,6 @@ import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
-import org.saddle._
 import org.saddle.array._
 import org.saddle.framework._
 
@@ -67,8 +66,8 @@ class MatCheck extends Specification with ScalaCheck {
        forAll { (m: Mat[Double]) =>
          val data = m.contents
          m.map(_ + 1.0) must_== Mat(m.numRows, m.numCols, data.map(_ + 1.0))
-         m.map(d => 5.0) must_== Mat(m.numRows, m.numCols, (data.map(d => if (d.isNaN) na.to[Double] else 5.0)))
-         m.map(d => 5) must_== Mat[Int](m.numRows, m.numCols, data.map(d => if (d.isNaN) na.to[Int] else 5))
+         m.map(_ => 5.0) must_== Mat(m.numRows, m.numCols, (data.map(d => if (d.isNaN) na.to[Double] else 5.0)))
+         m.map(_ => 5) must_== Mat[Int](m.numRows, m.numCols, data.map(d => if (d.isNaN) na.to[Int] else 5))
        }
      }
 

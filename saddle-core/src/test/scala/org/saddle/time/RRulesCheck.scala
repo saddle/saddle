@@ -16,6 +16,7 @@
 
 package org.saddle.time
 
+import scala.language.reflectiveCalls
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}

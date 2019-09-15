@@ -16,6 +16,7 @@
 
 package org.saddle.index
 
+import scala.language.implicitConversions
 import scala.{ specialized => spec }
 import org.saddle._
 import locator.Locator

@@ -16,6 +16,7 @@
 
 package org.saddle
 
+import scala.language.implicitConversions
 import scala.{ specialized => spec }
 
 /**

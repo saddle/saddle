@@ -40,6 +40,7 @@ sealed abstract class Scalar[+T] {
 }
 
 object Scalar {
+  import scala.language.implicitConversions
   /** An Scalar factory which creates Value(x) when the argument is neither null nor an NA primitive;
     * otherwise produces NA.
     *

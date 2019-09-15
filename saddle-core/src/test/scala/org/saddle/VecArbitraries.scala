@@ -17,7 +17,6 @@
 package org.saddle
 
 import org.scalacheck.Gen
-import org.saddle._
 
 /**
  * Arbitrary vector generators

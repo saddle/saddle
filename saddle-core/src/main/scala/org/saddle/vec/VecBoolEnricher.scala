@@ -1,5 +1,6 @@
 package org.saddle.vec
 
+import scala.language.implicitConversions
 import org.saddle.Vec
 
 /**

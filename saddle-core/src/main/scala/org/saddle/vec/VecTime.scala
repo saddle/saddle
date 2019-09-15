@@ -24,7 +24,6 @@ import scala.{specialized => spec}
 import util.Concat.Promoter
 import org.saddle.time._
 import org.saddle.util.Concat.Promoter
-import org.saddle.buffer.BufferInt
 
 /**
  * A compact native int representation of posix times at millisecond resolution which
@@ -159,7 +158,7 @@ object VecTime {
     val databuf = Array.ofDim[Long](sz)
 
     var c = 0 // byte counter
-    vecs.zipWithIndex.foreach { case (v, vidx) =>
+    vecs.zipWithIndex.foreach { case (v, _) =>
       val vlen = v.length
       var i = 0
       while (i < vlen) { databuf(c) = v.times(i); i += 1; c += 1 }

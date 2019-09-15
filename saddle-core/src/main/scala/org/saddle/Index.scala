@@ -527,6 +527,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] extends Serializable{
 }
 
 object Index {
+  import scala.language.implicitConversions
   /**
    * Factory method to create an index from a Vec of elements
    * @param values Vec

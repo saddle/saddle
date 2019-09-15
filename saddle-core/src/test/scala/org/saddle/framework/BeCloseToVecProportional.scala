@@ -1,13 +1,15 @@
 package org.saddle.framework
 
+import scala.language.reflectiveCalls
 import org.saddle.Vec
 import org.specs2.matcher._
+import scala.reflect.ClassTag
 
 /**
  * A matcher for two numeric Vecs that must be equal to within
  * a proportional tolerance
  */
-class BeCloseToVecProportional[T: Numeric : ClassManifest](v: Vec[T], delta: T) extends Matcher[Vec[T]] {
+class BeCloseToVecProportional[T: Numeric : ClassTag](v: Vec[T], delta: T) extends Matcher[Vec[T]] {
   def apply[S <: Vec[T]](x: Expectable[S]) = {
     val num = implicitly[Numeric[T]]
     result(v.length == 0 || {
@@ -23,5 +25,5 @@ class BeCloseToVecProportional[T: Numeric : ClassManifest](v: Vec[T], delta: T) 
 }
 
 object BeCloseToVecProportional {
-  def apply[T: Numeric : ClassManifest](v: Vec[T], delta: T) = new BeCloseToVecProportional[T](v, delta)
+  def apply[T: Numeric : ClassTag](v: Vec[T], delta: T) = new BeCloseToVecProportional[T](v, delta)
 }
