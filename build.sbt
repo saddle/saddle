@@ -89,9 +89,9 @@ lazy val core = project
   .settings(
     name := "saddle-core",
     libraryDependencies ++= Seq(
-      "org.apache.commons" % "commons-math" % "2.2",
       "it.unimi.dsi" % "fastutil" % "6.5.4",
       "it.unimi.dsi" % "dsiutils" % "2.0.15",
+      "org.apache.commons" % "commons-math" % "2.2" % "test",
       "org.specs2" %% "specs2-core" % "3.8.6" % "test",
       "org.specs2" %% "specs2-scalacheck" % "3.8.6" % "test"
     )
