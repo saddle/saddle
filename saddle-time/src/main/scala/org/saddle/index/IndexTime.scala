@@ -164,6 +164,25 @@ object IndexTime {
   @transient lazy private val sl = ScalarTagLong
 
   /**
+   * Factory method to create an Index from a recurrence rule between two
+   * dates.
+   *
+   * For instance:
+   *
+   * {{{
+   *   Index.make(RRules.bizEoms, datetime(2005,1,1), datetime(2005,12,31))
+   * }}}
+   *
+   * @param rrule Recurrence rule to use
+   * @param start The earliest datetime on or after which to being the recurrence
+   * @param end   The latest datetime on or before which to end the recurrence
+   */
+  def make(rrule: RRule, start: DateTime, end: DateTime): Index[DateTime] = {
+    import time._
+    Index((rrule.copy(count = None) withUntil end from start).toSeq : _*)
+  }
+
+  /**
    * Create a new IndexTime from a sequence of times
    */
   def apply(times : DateTime*): IndexTime = apply(Vec(times : _*))

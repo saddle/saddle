@@ -89,9 +89,6 @@ lazy val core = project
   .settings(
     name := "saddle-core",
     libraryDependencies ++= Seq(
-      "joda-time" % "joda-time" % "2.1",
-      "org.joda" % "joda-convert" % "1.2",
-      "org.scala-saddle" % "google-rfc-2445" % "20110304",
       "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.19",
       "org.apache.commons" % "commons-math" % "2.2",
       "it.unimi.dsi" % "fastutil" % "6.5.4",
@@ -101,11 +98,25 @@ lazy val core = project
     )
   )
 
+  lazy val time = project
+  .in(file("saddle-time"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "saddle-time",
+    libraryDependencies ++= Seq(
+      "joda-time" % "joda-time" % "2.1",
+      "org.joda" % "joda-convert" % "1.2",
+      "org.scala-saddle" % "google-rfc-2445" % "20110304",
+      "org.specs2" %% "specs2-core" % "3.8.6" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "3.8.6" % "test"
+    )
+  ).dependsOn(core)
+
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
     publishArtifact := false
   )
-  .aggregate(core)
+  .aggregate(core, time)
 
 parallelExecution in ThisBuild := false

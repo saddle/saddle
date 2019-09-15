@@ -17,6 +17,9 @@
 package org.saddle
 
 import org.scalacheck.Gen
+import org.joda.time._
+import org.saddle.time._
+
 
 object SeriesArbitraries {
 
@@ -37,5 +40,20 @@ object SeriesArbitraries {
     lst <- Gen.listOfN(n, Gen.frequency((9, Gen.chooseNum(-1e3, 1e3)), (1, na.to[Double])))
     idx <- Gen.listOfN(n, Gen.choose(0, 5))
   } yield Series(Vec(lst : _*), Index(idx : _*))
+
+  // rename to seriesdatetimedouble...
+  def seriesDateTimeDoubleNoDup: Gen[Series[DateTime, Double]] = for {
+    n <- Gen.choose(0, 40)
+    ix <- Gen.listOfN(n, IndexArbitraries.getDate)
+    uq = Index(ix.toSet.toSeq : _*)
+    lst <- Gen.listOfN(uq.length, Gen.chooseNum(-1e3, 1e3))
+  } yield Series(Vec(lst : _*), uq)
+
+  // rename to dupseriesdatetimedouble...
+  def seriesDateTimeDoubleWithNA: Gen[Series[DateTime, Double]] = for {
+    n <- Gen.choose(0, 20)
+    lst <- Gen.listOfN(n, Gen.frequency((9, Gen.chooseNum(-1e3, 1e3)), (1, na.to[Double])))
+    ix <- Gen.listOfN(n, IndexArbitraries.getDate)
+  } yield Series(Vec(lst : _*), Index(ix : _*))
 
 }

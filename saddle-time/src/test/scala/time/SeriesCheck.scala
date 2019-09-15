@@ -22,6 +22,8 @@ import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
 
+import org.joda.time._
+import org.saddle.time._
 
 
 class SeriesCheck extends Specification with ScalaCheck {
@@ -276,4 +278,111 @@ class SeriesCheck extends Specification with ScalaCheck {
 
   }
 
+  "Series[DateTime, Double] Tests" in {
+    implicit val ser = Arbitrary(SeriesArbitraries.seriesDateTimeDoubleWithNA)
+
+    "series equality" in {
+      forAll { (s: Series[DateTime, Double]) =>
+        (s must_== Series(s.toVec, s.index)) and (s must_== s)
+      }
+    }
+
+    "take works" in {
+      forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
+        val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
+        forAll(idx) { i =>
+          val res = s.take(i.toArray)
+          val exp = s.slice(i(0), i(0)+1) concat s.slice(i(1), i(1)+1) concat s.slice(i(2), i(2)+1)
+          res must_== exp
+        }
+      }
+    }
+    }
+
+    "first (key) works" in {
+      forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
+        val loc = Gen.choose(0, s.length - 1)
+        forAll(loc) { i =>
+          val idx = s.index.raw(i)
+          s.first(idx) must_== s.values.at(s.index.findOne(_ == idx))
+        }
+      }
+    }
+    }
+
+    "last (key) works" in {
+      forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
+        val loc = Gen.choose(0, s.length - 1)
+        forAll(loc) { i =>
+          val idx = s.index.raw(i)
+          s.last(idx) must_== s(idx).tail(1).at(0)
+        }
+      }
+    }
+    }
+
+    "apply/slice (with index dups) works" in {
+      forAll { (s: Series[DateTime, Double]) =>
+        s.length > 0 ==> {
+
+        val idx = Gen.listOfN(3, Gen.choose(0, s.length - 1))
+
+        forAll(idx) { i =>
+          (i.length must be_<=(2)) or {
+            val locs = i.toArray
+            val keys = s.index.take(locs).toArray
+            val exp = s(keys(0)) concat s(keys(1)) concat s(keys(2))
+
+            s(keys) must_== exp
+            s(keys : _*) must_== exp
+
+            val srt = s.sortedIx
+
+            val exp2 = srt.slice(srt.index.getFirst(keys(0)),
+                                 srt.index.getLast(keys(1)) + 1)
+            srt(keys(0) -> keys(1)) must_== exp2
+            srt.sliceBy(keys(0), keys(1)) must_== exp2
+
+            val exp3 = srt.slice(srt.index.getFirst(keys(0)),
+                                 srt.index.getLast(keys(1)) - srt.index.count(keys(1)) + 1)
+            srt.sliceBy(keys(0), keys(1), inclusive = false) must_== exp3
+          }
+        }
+      }
+    }
+    }
+
+    "proxyWith" in {
+      implicit val ser = Arbitrary(SeriesArbitraries.seriesDateTimeDoubleNoDup)
+
+      forAll { (s1: Series[DateTime, Double], s2: Series[DateTime, Double]) =>
+        val proxied = s1.proxyWith(s2)
+        val all = for (i <- 0 until proxied.length if s1.at(i).isNA && i < s2.length) yield {
+          proxied.at(i) must_== s2.at(i)
+        }
+        all.foldLeft(true)((acc, v) => acc && v.isSuccess)
+      }
+    }
+
+    "reindex works" in {
+      implicit val ser = Arbitrary(SeriesArbitraries.seriesDateTimeDoubleNoDup)
+
+      forAll { (s1: Series[DateTime, Double], s2: Series[DateTime, Double]) =>
+        s1.reindex(s2.index).index must_== s2.index
+      }
+    }
+
+    "serialization works" in  {
+
+      implicit val ser = Arbitrary(SeriesArbitraries.seriesDateTimeDoubleNoDup)
+
+      forAll { s: Series[DateTime, Double] =>
+        s must_== serializedCopy(s)
+      }
+    }
+
+  }
 }

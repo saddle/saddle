@@ -1,6 +1,5 @@
 package org.saddle
 
-import org.joda.time.DateTime
 import org.saddle.scalar.ScalarTag
 import org.scalacheck._
 import scala.reflect.ClassTag
@@ -8,7 +7,6 @@ import scala.reflect.ClassTag
 package object framework {
   /* Implicit generators for factories needing Double and DateTime generation. */
   implicit def double = boundedDouble
-  implicit def dt = dateTimeEpochToNow
 
   /** Yield an arbitrary Double List of size 100 */
   implicit def arbList: Arbitrary[List[Double]] = Arbitrary(Gen.listOfN(100, boundedDouble))
@@ -30,9 +28,6 @@ package object framework {
 
   /** A generator for longs between 0 and the current time in milliseconds. */
   def longEpochToNow: Gen[Long] = Gen.choose(1l, System.currentTimeMillis)
-
-  /** A generator for DateTimeS between the start of the epoch and now. */
-  def dateTimeEpochToNow: Gen[DateTime] = longEpochToNow map (new DateTime(_))
 
   /** A generator for Vectors of an arbitrary size. */
   def genVectorOfN[S: Gen : ScalarTag](size: Int): Gen[Vec[S]] =

@@ -22,11 +22,15 @@ import org.joda.time.chrono.ISOChronology
 import org.saddle.vec.VecTime
 import org.saddle.index.IndexTime
 import scala.Some
+import org.saddle.scalar.ScalarTagTime
 
 /**
  * Functionality to assist in TimeSeries related operations
  */
 package object time {
+
+  implicit val stTime : org.saddle.scalar.ScalarTag[DateTime] = ScalarTagTime
+
   val ISO_CHRONO = ISOChronology.getInstance
   val ISO_CHRONO_UTC = ISOChronology.getInstanceUTC
 
@@ -160,7 +164,7 @@ package object time {
   /**
    * Provides an implicit ordering for DateTime
    */
-  implicit def dtOrdering = new Ordering[DateTime] {
+  implicit val dtOrdering = new Ordering[DateTime] {
     def compare(x: DateTime, y: DateTime) = x.compareTo(y)
   }
 
@@ -171,4 +175,22 @@ package object time {
   def months(i: Int)   = Months.months(i)
   def weeks(i: Int)    = Weeks.weeks(i)
   def days(i: Int)     = Days.days(i)
+
+   /**
+   * Factory method to create an Index from a recurrence rule between two
+   * dates.
+   *
+   * For instance:
+   *
+   * {{{
+   *   Index.make(RRules.bizEoms, datetime(2005,1,1), datetime(2005,12,31))
+   * }}}
+   *
+   * @param rrule Recurrence rule to use
+   * @param start The earliest datetime on or after which to being the recurrence
+   * @param end   The latest datetime on or before which to end the recurrence
+   */
+  def make(rrule: RRule, start: DateTime, end: DateTime): Index[DateTime] = {
+    Index((rrule.copy(count = None) withUntil end from start).toSeq : _*)
+  }
 }

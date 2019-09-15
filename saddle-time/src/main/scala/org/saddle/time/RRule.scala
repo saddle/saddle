@@ -22,7 +22,6 @@ import org.joda.time.DateTime
 import scala.collection.JavaConverters._
 import com.google.ical.iter.RecurrenceIteratorFactory
 import com.google.ical.compat.jodatime.DateTimeIteratorFactory
-import org.saddle.Index
 
 /**
  * Wrapper of a RFC 2445 RRULE or EXRULE as implemented in the google
@@ -227,7 +226,7 @@ case class RRule private (freq: Frequency,
           val ubound = dt.plusDays(ival)
 
           // create index and count backward from min conforming time >= dt
-          val idx = Index.make(outer, lbound, ubound)
+          val idx = org.saddle.index.IndexTime.make(outer, lbound, ubound)
           idx.raw(idx.rsearch(dt) - iabs)
         }
       }

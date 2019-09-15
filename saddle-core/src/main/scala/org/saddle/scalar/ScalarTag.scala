@@ -70,7 +70,6 @@ object ScalarTag extends ScalarTagImplicits {
   implicit val stFloat = ScalarTagFloat
   implicit val stLong = ScalarTagLong
   implicit val stDouble = ScalarTagDouble
-  implicit val stTime = ScalarTagTime
 }
 
 trait ScalarTagImplicits extends ScalarTagImplicitsL1 {

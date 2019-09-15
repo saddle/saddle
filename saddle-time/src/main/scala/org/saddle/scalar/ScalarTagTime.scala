@@ -49,7 +49,7 @@ object ScalarTagTime extends ScalarTagAny[DateTime] {
     new IndexTime(Index(time2LongArray(vec.toArray)))
 
   override def makeSorter(implicit ord: ORD[DateTime]): Sorter[DateTime] =
-    Sorter.timeSorter
+    org.saddle.time.timeSorter
 
   @transient lazy private val fmtZ = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSSZZ")
 

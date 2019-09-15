@@ -22,34 +22,38 @@ import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
 import scalar.Scalar
+import org.joda.time._
 
 class IndexCheck extends Specification with ScalaCheck {
-  "Int Index Tests" in {
-    implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntWithDups)
 
+  "Time Index Tests" in {
     "access works" in {
-      forAll { (ix: Index[Int]) =>
-          (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
+      forAll { (ix: Index[DateTime]) =>
+        (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           ix.at(i) must_== Scalar(ix.toVec.contents(i))
           ix.raw(i) must_== ix.toVec.contents(i)
-        }}
+        }
       }
     }
 
     "key lookup works" in {
-      forAll { (ix: Index[Int]) =>
-        (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
+      forAll { (ix: Index[DateTime]) =>
+      (ix.length > 0 ) ==> {   val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           val v = ix.raw(i)
           ix.apply(v) must_== array.range(0, ix.length).filter(ix.raw(_) == v)
         }
-      }}
+      }
+    }}
     }
 
     "key counts work" in {
-      forAll { (ix: Index[Int]) =>
-      (ix.length > 0 ) ==> {   val idx = Gen.choose(0, ix.length - 1)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
+      forAll { (ix: Index[DateTime]) =>
+        (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
         forAll(idx) { i =>
           val v = ix.raw(i)
           ix.count(v) must_== array.range(0, ix.length).map(l => if(ix.raw(l) == v) 1 else 0).sum
@@ -58,7 +62,9 @@ class IndexCheck extends Specification with ScalaCheck {
     }
 
     "index joins work" in {
-      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
+
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
         val all = Seq(index.LeftJoin, index.RightJoin, index.OuterJoin, index.InnerJoin) map { jointype =>
           val res = ix1.join(ix2, how = jointype)
 
@@ -76,32 +82,33 @@ class IndexCheck extends Specification with ScalaCheck {
     }
 
     "index union works" in {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
-      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeNoDups)
+
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
         ix1.union(ix2).index.toSeq.toSet must_== { ix1.toSeq ++ ix2.toSeq }.toSet
       }
     }
 
     "without dups, index union is outer join" in {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeNoDups)
 
-      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
         ix1.join(ix2, how=index.OuterJoin).index.toSeq.toSet must_== { ix1.toSeq ++ ix2.toSeq }.toSet
       }
     }
 
     "index intersect works" in {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeNoDups)
 
-      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
-        ix1.intersect(ix2).index.toSeq.toSet must_== ix1.toSeq.toSet[Int].intersect(ix2.toSeq.toSet[Int])
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
+        ix1.intersect(ix2).index.toSeq.toSet must_== ix1.toSeq.toSet[DateTime].intersect(ix2.toSeq.toSet[DateTime])
       }
     }
 
     "joins preserves index order with dups" in {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntWithDups)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
 
-      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
         val ixs1 = ix1.sorted
         val ixs2 = ix2.sorted
 
@@ -113,9 +120,9 @@ class IndexCheck extends Specification with ScalaCheck {
     }
 
     "joins preserves index order no dups" in {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeNoDups)
 
-      forAll { (ix1: Index[Int], ix2: Index[Int]) =>
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) =>
         val ixs1 = ix1.sorted
         val ixs2 = ix2.sorted
 
@@ -127,16 +134,15 @@ class IndexCheck extends Specification with ScalaCheck {
     }
 
     "serialization works" in  {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
 
-      forAll { (ix1: Index[Int], ix2: Index[Int]) => {
+      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
+
+      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) => {
         ix1 must_== serializedCopy(ix1)
         ix2 must_== serializedCopy(ix2)
       }
       }
     }
 
-
   }
-
 }

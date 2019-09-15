@@ -16,22 +16,17 @@
 
 package org.saddle
 
-import org.specs2.mutable.Specification
+import org.scalacheck.Gen
 
-class SeriesSpec extends Specification {
+object FrameArbitraries {
 
-  "non-spec primitive groupby must work" in {
-    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
-    s.groupBy.combine(_.first.getOrElse(0)) must_== Series('a' -> 1, 'b' -> 2)
-  }
+  // Generates frame of size of up to 20x10
+  //  with 90% of entries between -1e3/+1e3 and 10% NA
 
-  "map works" in {
-    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
-    s.map { case (k, v) => (k, v+1) } must_== s + 1
-  }
+  def frameDoubleWithNA: Gen[Frame[Int, Int, Double]] = for {
+    n <- Gen.choose(0, 20)
+    m <- Gen.choose(0, 10)
+    lst <- Gen.listOfN(n * m, Gen.frequency((9, Gen.chooseNum(-1e3, 1e3)), (1, na.to[Double])))
+  } yield Frame(Mat(n, m, lst.toArray))
 
-  "flatMap works" in {
-    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
-    s.flatMap { case (k, v) => Some((k, v+1)) } must_== s + 1
-  }
 }
