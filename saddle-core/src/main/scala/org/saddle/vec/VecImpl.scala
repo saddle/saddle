@@ -18,6 +18,7 @@ package org.saddle.vec
 
 import scala.{ specialized => spec }
 import org.saddle._
+import metal.mutable.Buffer
 
 // Specialized method implementations for code reuse in implementations of Vec; NA-safe
 private[saddle] object VecImpl {
@@ -106,7 +107,7 @@ private[saddle] object VecImpl {
     val b = implicitly[ST[B]].makeBuf(vec.length)
     while (i < vec.length) {
       val v: A = vec(i)
-      for { u <- f(v) } b.add(u)
+      for { u <- f(v) } b.+=(u)
       i += 1
     }
     Vec(b.toArray)
@@ -241,10 +242,10 @@ private[saddle] object VecImpl {
   def find[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: A => Boolean): Vec[Int] = {
     val sa = implicitly[ST[A]]
     var i = 0
-    val buf = Buffer[Int]()
+    val buf = Buffer.empty[Int]
     while(i < vec.length) {
       val v: A = vec(i)
-      if (sa.notMissing(v) && pred(v)) buf.add(i)
+      if (sa.notMissing(v) && pred(v)) buf.+=(i)
       i += 1
     }
     Vec(buf.toArray)
@@ -289,10 +290,10 @@ private[saddle] object VecImpl {
   def filter[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: A => Boolean): Vec[A] = {
     val sa = implicitly[ST[A]]
     var i = 0
-    val buf = Buffer[A]()
+    val buf = Buffer.empty[A]
     while(i < vec.length) {
       val v: A = vec(i)
-      if (sa.notMissing(v) && pred(v)) buf.add(v)
+      if (sa.notMissing(v) && pred(v)) buf.+=(v)
       i += 1
     }
     Vec(buf.toArray)
@@ -300,10 +301,10 @@ private[saddle] object VecImpl {
 
   def filterAt[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: Int => Boolean): Vec[A] = {
     var i = 0
-    val buf = Buffer[A]()
+    val buf = Buffer.empty[A]
     while(i < vec.length) {
       val v: A = vec(i)
-      if (pred(i)) buf.add(v)
+      if (pred(i)) buf.+=(v)
       i += 1
     }
     Vec(buf.toArray)
@@ -311,10 +312,10 @@ private[saddle] object VecImpl {
 
   def where[@spec(Boolean, Int, Long, Double) A: ST](vec: Vec[A])(pred: Array[Boolean]): Vec[A] = {
     var i = 0
-    val buf = Buffer[A]()
+    val buf = Buffer.empty[A]
     while(i < vec.length) {
       val v: A = vec(i)
-      if (pred(i)) buf.add(v)
+      if (pred(i)) buf.+=(v)
       i += 1
     }
     Vec(buf.toArray)

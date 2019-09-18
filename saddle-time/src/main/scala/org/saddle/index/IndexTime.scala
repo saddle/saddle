@@ -51,19 +51,19 @@ class IndexTime(val times: Index[Long],
   @transient lazy private val _locator = new Locator[DateTime] {
     lazy val _keys = times.uniques.map(l2t)
 
-    def contains(key: DateTime) = times.contains(t2l(key))
-    def get(key: DateTime) = times.getFirst(t2l(key))
+    override def contains(key: DateTime) = times.contains(t2l(key))
+    override def get(key: DateTime) = times.getFirst(t2l(key))
 
-    def count(key: DateTime) = times.count(t2l(key))
+    override def count(key: DateTime) = times.count(t2l(key))
 
-    def keys() = _keys.toArray
-    def counts() = times.counts
+    override def keys() = _keys.toArray
+    override def counts() = times.counts
 
-    def size = _keys.length
+    override def size = _keys.length
 
     // these should not be accessible
-    def put(key: DateTime, value: Int) { throw new IllegalAccessError() }
-    def inc(key: DateTime) = throw new IllegalAccessError()
+    override def put(key: DateTime, value: Int) { throw new IllegalAccessError() }
+    override def inc(key: DateTime) = throw new IllegalAccessError()
   }
 
   protected def locator = _locator
@@ -115,7 +115,9 @@ class IndexTime(val times: Index[Long],
   }
 
   // default implementation, could be sped up in specialized instances
-  def isMonotonic = times.isMonotonic
+  def isMonotonic = {
+    times.isMonotonic
+  }
 
   // check whether, if not unique, the index values are at least grouped together
   def isContiguous = times.isContiguous

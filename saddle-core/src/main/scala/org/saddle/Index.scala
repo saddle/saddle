@@ -23,6 +23,7 @@ import locator.Locator
 import util.Concat.Promoter
 import vec.VecImpl
 import java.io.OutputStream
+import metal.mutable.{Buffer => MBuffer}
 
 /**
  * Index provides a constant-time look-up of a value within array-backed storage,
@@ -85,18 +86,18 @@ trait Index[@spec(Boolean, Int, Long, Double) T] extends Serializable{
    */
   def apply(keys: T*): Array[Int] = {
     val szhint = keys.length
-    val result = Buffer[Int](szhint)
+    val result = new MBuffer(new Array[Int](szhint),0)
     var i = 0
     while(i < szhint) {
       val elems = get(keys(i))
       var k = 0
       while(k < elems.length) {
-        result.add(elems(k))
+        result.+=(elems(k))
         k += 1
       }
       i += 1
     }
-    result
+    result.toArray
   }
 
   /**

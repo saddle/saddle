@@ -20,6 +20,7 @@ import scala.language.implicitConversions
 import scala.{ specialized => spec }
 import org.saddle._
 import locator.Locator
+import metal.mutable.Buffer
 
 /**
  * Concrete implementation of Joiner instance which is specialized on basic
@@ -139,7 +140,6 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
   // Private class to factorize indexes (ie, turn into enum representation)
   private class Factorizer(sz: Int) {
     val map     = Locator[T](sz)                // backing hashmap
-    var uniques = Buffer[T](sz)                 // list of unique index keys seen
     var numUniq = 0                             // number of distinct factors
 
     // Yields factor labels based on all the indexes processed in a successive manner.
@@ -154,10 +154,8 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
         val loc = map.get(v)
         if (loc != -1) {
           labels(i) = loc
-        }
-        else {
+        } else {
           map.put(v, numUniq)
-          uniques.add(v)
           labels(i) = numUniq
           numUniq += 1
         }
@@ -306,9 +304,9 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
     // want to scan over the smaller one; make lft the smaller one
     val szhint = if (left.length > right.length) right.length else left.length
 
-    val res = Buffer[T](szhint)
-    val lft = Buffer[Int](szhint)
-    val rgt = Buffer[Int](szhint)
+    val res = new Buffer(new Array[T](szhint),0)
+    val lft = new Buffer(new Array[Int](szhint),0)
+    val rgt = new Buffer(new Array[Int](szhint),0)
 
     val switchLR = left.length > right.length
 
@@ -319,17 +317,16 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
       val k = ltmp.raw(i)
       val v = rtmp.getFirst(k)
       if (v != -1) {
-        res.add(k)
-        rgt.add(v)
-        lft.add(i)
+        res.+=(k)
+        rgt.+=(v)
+        lft.+=(i)
       }
       i += 1
     }
-
-    val result: Array[T] = res
+    val result: Array[T] = res.toArray
     val (lres, rres) = if (switchLR) (rgt, lft) else (lft, rgt)
 
-    ReIndexer(Some(lres), Some(rres), Index(Vec(result)))
+    ReIndexer(Some(lres.toArray), Some(rres.toArray), Index(Vec(result)))
   }
 
   def outerJoinMonotonicUnique(left: Index[T], right: Index[T]): ReIndexer[T] = {
@@ -540,17 +537,17 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
     // hits hashmap
     val szhint = left.length + right.length
 
-    val res = Buffer[T](szhint)
-    val lft = Buffer[Int](szhint)
-    val rgt = Buffer[Int](szhint)
+    val res = new Buffer[T](new Array[T](szhint),0)
+    val lft = new Buffer[Int](new Array[Int](szhint),0)
+    val rgt = new Buffer[Int](new Array[Int](szhint),0)
 
     var i = 0
     while (i < left.length) {
       val v = left.raw(i)
       val r = right.getFirst(v)
-      res.add(v)
-      lft.add(i)
-      rgt.add(r)
+      res.+=(v)
+      lft.+=(i)
+      rgt.+=(r)
       i += 1
     }
 
@@ -558,21 +555,20 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T]
     while (j < right.length) {
       val v = right.raw(j)
       if (left.getFirst(v) == -1) {
-        res.add(v)
-        rgt.add(j)
-        lft.add(-1)
+        res.+=(v)
+        rgt.+=(j)
+        lft.+=(-1)
       }
       j += 1
     }
-
-    val result: Array[T] = res
-    ReIndexer(Some(lft), Some(rgt), Index(result))
+    val result: Array[T] = res.toArray
+    ReIndexer(Some(lft.toArray), Some(rgt.toArray), Index(result))
   }
 
   def leftJoinMonotonicUnique(left: Index[T], right: Index[T]): ReIndexer[T] = {
     val scalar = left.scalarTag
     val rgt = Array.ofDim[Int](left.length)
-
+    
     var i = 0
     var j = 0
     val ll = left.length

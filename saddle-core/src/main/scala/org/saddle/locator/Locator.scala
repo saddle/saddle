@@ -18,6 +18,7 @@ package org.saddle.locator
 
 import org.saddle._
 import scala.{ specialized => spec }
+import org.saddle.ST
 
 /**
  * The Locator class provides a mapping from a key to the first location of that key
@@ -41,19 +42,19 @@ import scala.{ specialized => spec }
  * }}}
  * where s(t) = min(i) for any i such that f(i) = t.
  */
-trait Locator[@spec(Boolean, Int, Long, Double) T] extends Serializable{
+trait Locator[@spec(Boolean, Int, Long, Double) T] {
   /**
    * Whether the instance contains the key
    * @param key The key to query
    */
-  def contains(key: T): Boolean
+  def contains(key: T): Boolean 
 
   /**
    * Should return the first offset corresponding to the provided key,
    * or -1 if none was found.
    * @param key The key to query
    */
-  def get(key: T): Int
+  def get(key: T): Int 
 
   /**
    * Put a new key into the map along with an associated integer
@@ -61,19 +62,19 @@ trait Locator[@spec(Boolean, Int, Long, Double) T] extends Serializable{
    * @param key Key to put into map
    * @param value Value to associate with key
    */
-  def put(key: T, value: Int)
+  def put(key: T, value: Int) 
 
   /**
    * Return the number of times the key was entered into the map
    * @param key The key to query
    */
-  def count(key: T): Int
+  def count(key: T): Int 
 
   /**
    * Increment the count for a key
    * @param key The key whose count should increment
    */
-  def inc(key: T): Int
+  def inc(key: T): Int 
 
   /**
    * Return the keys contained in the map in original insertion order
@@ -83,13 +84,14 @@ trait Locator[@spec(Boolean, Int, Long, Double) T] extends Serializable{
   /**
    * Returns counts associated with the keys in the same order as keys()
    */
-  def counts(): Array[Int]
+  def counts(): Array[Int] 
 
   /**
    * Number of entries in the Locator map
    */
   def size: Int
 }
+
 
 object Locator {
   val INIT_CAPACITY = 16
@@ -99,5 +101,5 @@ object Locator {
    * @param sz Backing hashmap size (default 16)
    * @tparam C Type of elements to be stored in Locator
    */
-  def apply[C](sz: Int = 16)(implicit st: ST[C]): Locator[C] = st.makeLoc(sz)
+  def apply[@spec(Boolean, Int, Long, Double) C](sz: Int = 16)(implicit st: ST[C]): Locator[C] = st.makeLoc(sz)
 }

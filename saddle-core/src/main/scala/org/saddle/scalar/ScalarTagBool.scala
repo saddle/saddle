@@ -19,10 +19,10 @@ package org.saddle.scalar
 import org.saddle._
 import org.saddle.vec.VecBool
 import org.saddle.mat.MatBool
-import org.saddle.buffer.BufferAny
 import org.saddle.index.IndexAny
-import org.saddle.locator.LocatorBool
+import org.saddle.locator.{LocatorBool, Locator}
 import org.saddle.array.Sorter
+import metal.mutable.Buffer
 
 /**
  * Boolean ScalarTag
@@ -45,8 +45,8 @@ object ScalarTagBool extends ScalarTag[Boolean] {
 
   override def runtimeClass = classOf[Boolean]
 
-  def makeBuf(sz: Int = Buffer.INIT_CAPACITY) = new BufferAny[Boolean](sz)
-  def makeLoc(sz: Int = Buffer.INIT_CAPACITY) = new LocatorBool()
+  def makeBuf(sz: Int = org.saddle.Buffer.INIT_CAPACITY) = new Buffer(new Array[Boolean](sz),0)
+  def makeLoc(sz: Int = Locator.INIT_CAPACITY) = new LocatorBool()
   def makeVec(arr: Array[Boolean]) = new VecBool(arr)
   def makeMat(r: Int, c: Int, arr: Array[Boolean]) = new MatBool(r, c, arr)
   def makeIndex(vec: Vec[Boolean])(implicit ord: ORD[Boolean]): Index[Boolean] = new IndexAny[Boolean](vec)

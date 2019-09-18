@@ -18,7 +18,7 @@ package org.saddle
 
 import scala.{ specialized => spec }
 import util.Random
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import metal.mutable.{HashSet => MetalHashSet}
 
 /**
  * This package contains utilities for working with arrays that
@@ -282,16 +282,16 @@ package object array {
    * produce a new array.
    */
   def remove[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], locs: Array[Int]): Array[T] = {
-    val set = new IntOpenHashSet(locs.length)
-
+    import metal.syntax._
+    val set = MetalHashSet.reservedSize[Int](locs.size)
     var i = 0
     while (i < locs.length) {
       val loc = locs(i)
-      if (loc >= 0 && loc < arr.length) set.add(loc)
+      if (loc >= 0 && loc < arr.length) set += loc
       i += 1
     }
 
-    val len = arr.length - set.size()
+    val len = arr.length - set.size
     val res = empty[T](len)
 
     i = 0

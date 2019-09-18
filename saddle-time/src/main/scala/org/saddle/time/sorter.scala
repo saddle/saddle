@@ -5,12 +5,13 @@ import org.joda.time._
 import org.saddle.array.Sorter
 import org.saddle.array
 import org.saddle.scalar.ScalarTagTime
-import it.unimi.dsi.fastutil.longs.LongArrays
+import org.saddle.array.PermuteMergeSort
+import spire.std.long._
 
 object timeSorter extends Sorter[DateTime] {
   def argSorted(arr: Array[DateTime]) = {
     val res = array.range(0, arr.length)
-    LongArrays.radixSortIndirect(res, ScalarTagTime.time2LongArray(arr), true)
+    PermuteMergeSort.sort(ScalarTagTime.time2LongArray(arr),res)
     res
   }
 

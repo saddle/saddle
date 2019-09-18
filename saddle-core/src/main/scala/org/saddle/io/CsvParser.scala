@@ -18,7 +18,6 @@ package org.saddle.io
 
 import org.saddle._
 import collection.mutable.ArrayBuffer
-import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet
 
 /**
  * Holds parameters to customize CSV parsing
@@ -81,17 +80,10 @@ object CsvParser {
     if (locs.length == 0) locs = (0 until firstLine.length).toArray
 
     // set up buffers to store parsed data
-    val bufdata = for { _ <- locs } yield Buffer[String](1024)
+    val bufdata = for { _ <- locs } yield new ArrayBuffer[String](1024)
 
-    // this seriously helps reduce memory footprint w/o major perf. impact
-    val interner = new ObjectLinkedOpenHashSet[String]()
     def addToBuffer(s: String, buf: Int) {
-      if (!interner.contains(s)) {
-        interner.add(s)
-        bufdata(buf).add(s)
-      }
-      else
-        bufdata(buf).add(interner.get(s))
+        bufdata(buf).append(s)
     }
 
     // first line is either header, or needs to be processed

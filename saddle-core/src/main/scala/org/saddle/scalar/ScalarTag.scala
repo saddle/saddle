@@ -21,6 +21,7 @@ import scala.{ specialized => spec }
 import org.saddle._
 import org.saddle.locator.Locator
 import org.saddle.array.Sorter
+import metal.mutable.Buffer
 
 /**
  * Typeclass definition for scalar tags. A ScalarTag contains important meta-data regarding
@@ -115,8 +116,8 @@ trait CouldBeNumber[@spec(Boolean, Int, Long, Float, Double) T] {
 }
 
 trait SpecializedFactory[@spec(Boolean, Int, Long, Float, Double) T] {
-  def makeBuf(sz: Int = Buffer.INIT_CAPACITY): Buffer[T]
-  def makeLoc(sz: Int = Buffer.INIT_CAPACITY): Locator[T]
+  def makeBuf(sz: Int = org.saddle.Buffer.INIT_CAPACITY): Buffer[T]
+  def makeLoc(sz: Int = Locator.INIT_CAPACITY): Locator[T]
   def makeVec(arr: Array[T]): Vec[T]
   def makeMat(r: Int, c: Int, arr: Array[T]): Mat[T]
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T]

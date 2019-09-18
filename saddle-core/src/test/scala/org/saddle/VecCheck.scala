@@ -330,8 +330,8 @@ class VecCheck extends Specification with ScalaCheck {
          (v.length > 0) ==> {val idx = Gen.listOfN(3, Gen.choose(0, v.length - 1))
         forAll(idx) { i =>
           val res = v.without(i.toArray)
-          val tmp = Buffer[Double]()
-          for (k <- 0 until v.length if !i.toSet.contains(k) ) tmp.add(v.raw(k))
+          val tmp = scala.collection.mutable.ArrayBuffer[Double]()
+          for (k <- 0 until v.length if !i.toSet.contains(k) ) tmp.append(v.raw(k))
           res must_== Vec(tmp.toArray)
         }
       }}

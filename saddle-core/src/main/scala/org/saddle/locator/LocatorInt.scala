@@ -16,43 +16,36 @@
 
 package org.saddle.locator
 
-import it.unimi.dsi.fastutil.ints.{Int2IntLinkedOpenHashMap, Int2IntOpenHashMap}
+import metal.mutable.{HashMap, Buffer}
+import metal.syntax._
 
-/**
- * A integer-to-integer hash map, backed by fastutil implementation
- */
-class LocatorInt(sz: Int = Locator.INIT_CAPACITY) extends Locator[Int] {
-  val map = new Int2IntLinkedOpenHashMap(sz)
-  val cts = new Int2IntOpenHashMap(sz)
-
-  map.defaultReturnValue(-1)
-  cts.defaultReturnValue(0)
-
-  def get(key: Int): Int = map.get(key)
-
-  def put(key: Int, value: Int) {
-    // prevents unboxing!
-    val _ = map.put(key, value)
+class LocatorInt(sz:Int = Locator.INIT_CAPACITY) extends Locator[Int] {
+  var keyOrder = new Buffer(new Array[Int](sz), 0)
+  val map = HashMap.reservedSize[Int,Int](sz)
+  val cts = HashMap.reservedSize[Int,Int](sz)
+  
+  def contains(key: Int): Boolean = map.contains(key)
+  def get(key: Int): Int = map.get(key).getOrElse(-1)
+  def put(key: Int, value: Int) = if (!contains(key)) {
+    map.update(key, value)
+    keyOrder.+=(key)
   }
-
-  def contains(key: Int) = map.containsKey(key)
-
-  def size = map.size()
-
-  def keys() = map.keySet().toIntArray
-
-  def inc(key: Int): Int = cts.addTo(key, 1)
-
-  def count(key: Int) = cts.get(key)
-
-  def counts() = {
-    val iter = map.keySet().iterator()
+  def count(key: Int): Int = cts.get(key).getOrElse(0)
+  def inc(key: Int): Int = {
+    val u = count(key)
+    cts.update(key, u+1)
+    u 
+  }
+  def keys(): Array[Int] = keyOrder.toArray
+  def counts(): Array[Int] = {
+    val iter = map.keys.iterator
     val res  = Array.ofDim[Int](size)
     var i = 0
     while(iter.hasNext) {
-      res(i) = cts.get(iter.nextInt())
+      res(i) = count(iter.next)
       i += 1
     }
     res
   }
+  def size: Int = keyOrder.length
 }

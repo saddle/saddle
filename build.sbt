@@ -76,11 +76,7 @@ lazy val commonSettings = Seq(
   },
   fork := true,
   cancelable in Global := true,
-  initialCommands := """
-                |import org.joda.time.DateTime
-                |import org.saddle._
-                |import org.saddle.time._
-                |import org.saddle.io._""".stripMargin('|')
+  resolvers += "bintray/denisrosset" at "https://dl.bintray.com/denisrosset/maven"
 )
 
 lazy val core = project
@@ -89,15 +85,15 @@ lazy val core = project
   .settings(
     name := "saddle-core",
     libraryDependencies ++= Seq(
-      "it.unimi.dsi" % "fastutil" % "6.5.4",
-      "it.unimi.dsi" % "dsiutils" % "2.0.15",
+      "org.scala-metal" %% "metal-core" % "0.16.0.0",
+      "org.scala-metal" %% "metal-library" % "0.16.0.0",
       "org.apache.commons" % "commons-math" % "2.2" % "test",
       "org.specs2" %% "specs2-core" % "3.8.6" % "test",
       "org.specs2" %% "specs2-scalacheck" % "3.8.6" % "test"
     )
   )
 
-  lazy val time = project
+lazy val time = project
   .in(file("saddle-time"))
   .settings(commonSettings: _*)
   .settings(
@@ -109,7 +105,8 @@ lazy val core = project
       "org.specs2" %% "specs2-core" % "3.8.6" % "test",
       "org.specs2" %% "specs2-scalacheck" % "3.8.6" % "test"
     )
-  ).dependsOn(core)
+  )
+  .dependsOn(core)
 
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)

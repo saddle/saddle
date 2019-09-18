@@ -19,6 +19,7 @@ package org.saddle.mat
 import scala.Int
 import scala.{specialized => spec}
 import org.saddle._
+import metal.mutable.Buffer
 
 /**
  * Houses specialized method implementations for code reuse in Mat subclasses
@@ -45,7 +46,7 @@ private[saddle] object MatImpl {
     if (m.length == 0) Mat.empty[A]
     else {
       val locset = locs.toSet
-      val buf = Buffer[A](m.length)
+      val buf = new Buffer[A](new Array[A](m.length),0)
       var r = 0
       var nRows = 0
       while (r < m.numRows) {
@@ -53,7 +54,7 @@ private[saddle] object MatImpl {
           nRows += 1
           var c = 0
           while (c < m.numCols) {
-            buf.add(m(r, c))
+            buf.+=(m(r, c))
             c += 1
           }
         }
@@ -62,20 +63,20 @@ private[saddle] object MatImpl {
       if (nRows == 0)
         Mat.empty[A]
       else
-        Mat(nRows, m.numCols, buf)
+        Mat(nRows, m.numCols, buf.toArray)
     }
   }
 
   def takeRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
     if (m.length == 0) Mat.empty[A]
     else {
-      val buf = Buffer[A](m.length)
+      val buf = new Buffer[A](new Array[A](m.length),0)
       var r = 0
       while (r < locs.length) {
         val currRow = locs(r)
         var c = 0
         while (c < m.numCols) {
-          buf.add(m(currRow, c))
+          buf.+=(m(currRow, c))
           c += 1
         }
         r += 1

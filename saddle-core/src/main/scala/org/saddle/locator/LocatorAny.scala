@@ -16,55 +16,38 @@
 
 package org.saddle.locator
 
+import org.saddle._
 import org.saddle.ST
-import it.unimi.dsi.fastutil.objects.{Object2IntLinkedOpenHashMap, Object2IntOpenHashMap}
+import metal.mutable.{HashMap, Buffer}
+import metal.syntax._
 
-/**
- * An object-to-integer hash map, backed by fastutil implementation
- */
-class LocatorAny[T: ST](sz: Int = Locator.INIT_CAPACITY) extends Locator[T] {
-  val map = new Object2IntLinkedOpenHashMap[T](sz)
-  val cts = new Object2IntOpenHashMap[T](sz)
-
-  map.defaultReturnValue(-1)
-  cts.defaultReturnValue(0)
-
-  def get(key: T): Int = map.getInt(key)
-
-  def put(key: T, value: Int) {
-    // prevents unboxing!
-    val _: Int = map.put(key, value)
+class LocatorAny[T: ST](sz:Int = Locator.INIT_CAPACITY) extends Locator[T] {
+  var keyOrder = new Buffer(new Array[T](sz), 0)
+  val map = HashMap.reservedSize[T,Int](sz)
+  val cts = HashMap.reservedSize[T,Int](sz)
+  
+  def contains(key: T): Boolean = map.contains(key)
+  def get(key: T): Int = map.get(key).getOrElse(-1)
+  def put(key: T, value: Int) = if (!contains(key)) {
+    map.update(key, value)
+    keyOrder.+=(key)
   }
-
-  def contains(key: T) = map.containsKey(key)
-
-  def size = map.size()
-
-  def inc(key: T) = cts.addTo(key, 1)
-
-  def count(key: T) = cts.getInt(key)
-
-  def counts() = {
-    val iter = map.keySet().iterator()
+  def count(key: T): Int = cts.get(key).getOrElse(0)
+  def inc(key: T): Int = {
+    val u = count(key)
+    cts.update(key, u+1)
+    u 
+  }
+  def keys(): Array[T] = keyOrder.toArray
+  def counts(): Array[Int] = {
+    val iter = map.keys.iterator
     val res  = Array.ofDim[Int](size)
     var i = 0
     while(iter.hasNext) {
-      res(i) = cts.getInt(iter.next())
+      res(i) = count(iter.next)
       i += 1
     }
     res
   }
-
-  def keys() = {
-    val ks = map.keySet()
-    val it = ks.iterator()
-    val sz = ks.size()
-    val newArr = implicitly[ST[T]].newArray(sz)
-    var i = 0
-    while (i < sz) {
-      newArr(i) = it.next()
-      i += 1
-    }
-    newArr
-  }
+  def size: Int = keyOrder.length
 }

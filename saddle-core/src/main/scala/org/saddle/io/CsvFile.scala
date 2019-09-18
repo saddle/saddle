@@ -16,9 +16,6 @@
 
 package org.saddle.io
 
-import java.io.{InputStreamReader, BufferedReader, RandomAccessFile}
-import java.nio.channels.FileChannel
-import it.unimi.dsi.io.ByteBufferInputStream
 import org.saddle.UTF8
 
 /**
@@ -38,16 +35,20 @@ import org.saddle.UTF8
  * @param encoding Encoding of text file
  */
 class CsvFile(path: String, encoding: String = UTF8) extends CsvSource {
-  private val file = new RandomAccessFile(path, "r")
-  private val chan = file.getChannel
-
-  private val stream = ByteBufferInputStream.map(chan, FileChannel.MapMode.READ_ONLY)
-  private val reader = new BufferedReader(new InputStreamReader(stream, encoding))
+  val source = scala.io.Source.fromFile(new java.io.File(path))
+  val lines = source.getLines
 
   def readLine = {
-    val line = reader.readLine()
-    if (line == null) file.close()
-    line
+    if (lines.hasNext) {
+      val line = lines.next 
+      if (!lines.hasNext) {
+        source.close
+      }
+      line
+    } else {
+      source.close
+      null
+    }
   }
 
   override def toString = "CsvFile(%s, encoding: %s)".format(path, encoding)

@@ -50,5 +50,18 @@ class ArrayCheck extends Specification with ScalaCheck {
         array.sum(arr, locs, 0) must_== v.sum
       }
     }
+    "insertion sort" in {
+      forAll {  (arr1: Seq[Int]) =>
+        val p = Array.ofDim[Int](arr1.size)
+        import spire.std.int._
+        array.PermuteInsertionSort.sort(arr1.toArray,0,arr1.size,p)
+        p must_== arr1.toArray.zipWithIndex.sortBy(_._1).map(_._2)
+      }
+    }
+    "merge sort" in {
+      forAll {  (arr1: Seq[Int]) =>
+        array.argsort(arr1.toArray) must_== arr1.toArray.zipWithIndex.sortBy(_._1).map(_._2)
+      }
+    }
   }
 }

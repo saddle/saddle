@@ -274,4 +274,5 @@ package object saddle {
    * Constant used in string byte-level manipulation
    */
   val UTF8 = "UTF-8"
+  
 }

@@ -16,43 +16,36 @@
 
 package org.saddle.locator
 
-import it.unimi.dsi.fastutil.doubles.{Double2IntOpenHashMap, Double2IntLinkedOpenHashMap}
+import metal.mutable.{HashMap, Buffer}
+import metal.syntax._
 
-/**
- * A double-to-integer hash map, backed by fastutil implementation
- */
-class LocatorDouble(sz: Int = Locator.INIT_CAPACITY) extends Locator[Double] {
-  val map = new Double2IntLinkedOpenHashMap(sz)
-  val cts = new Double2IntOpenHashMap(sz)
-
-  map.defaultReturnValue(-1)
-  cts.defaultReturnValue(0)
-
-  def get(key: Double): Int = map.get(key)
-
-  def put(key: Double, value: Int) {
-    // prevents unboxing!
-    val _ = map.put(key, value)
+class LocatorDouble(sz:Int = Locator.INIT_CAPACITY) extends Locator[Double] {
+  var keyOrder = new Buffer(new Array[Double](sz), 0)
+  val map = HashMap.reservedSize[Double,Int](sz)
+  val cts = HashMap.reservedSize[Double,Int](sz)
+  
+  def contains(key: Double): Boolean = map.contains(key)
+  def get(key: Double): Int = map.get(key).getOrElse(-1)
+  def put(key: Double, value: Int) = if (!contains(key)) {
+    map.update(key, value)
+    keyOrder.+=(key)
   }
-
-  def contains(key: Double) = map.containsKey(key)
-
-  def size = map.size()
-
-  def keys() = map.keySet().toDoubleArray
-
-  def inc(key: Double): Int = cts.addTo(key, 1)
-
-  def count(key: Double) = cts.get(key)
-
-  def counts() = {
-    val iter = map.keySet().iterator()
+  def count(key: Double): Int = cts.get(key).getOrElse(0)
+  def inc(key: Double): Int = {
+    val u = count(key)
+    cts.update(key, u+1)
+    u 
+  }
+  def keys(): Array[Double] = keyOrder.toArray
+  def counts(): Array[Int] = {
+    val iter = map.keys.iterator
     val res  = Array.ofDim[Int](size)
     var i = 0
     while(iter.hasNext) {
-      res(i) = cts.get(iter.nextDouble())
+      res(i) = count(iter.next)
       i += 1
     }
     res
   }
+  def size: Int = keyOrder.length
 }

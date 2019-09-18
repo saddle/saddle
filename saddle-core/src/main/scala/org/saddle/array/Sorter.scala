@@ -18,13 +18,15 @@ package org.saddle.array
 
 import org.saddle.ORD
 import org.saddle.vec.VecBool
-import it.unimi.dsi.fastutil.chars.CharArrays
-import it.unimi.dsi.fastutil.bytes.ByteArrays
-import it.unimi.dsi.fastutil.shorts.ShortArrays
-import it.unimi.dsi.fastutil.ints.IntArrays
-import it.unimi.dsi.fastutil.floats.FloatArrays
-import it.unimi.dsi.fastutil.longs.LongArrays
-import it.unimi.dsi.fastutil.doubles.DoubleArrays
+import spire.std.byte._
+import spire.std.int._
+import spire.std.long._
+import spire.std.double._
+import spire.std.char._
+import spire.std.short._
+import spire.std.float._
+import spire.math.MergeSort
+
 
 /**
 * Typeclass interface for sorting implementations
@@ -43,13 +45,13 @@ object Sorter {
   object byteSorter extends Sorter[Byte] {
     def argSorted(arr: Array[Byte]) = {
       val res = range(0, arr.length)
-      ByteArrays.radixSortIndirect(res, arr, true)
+      PermuteMergeSort.sort(arr,res)
       res
     }
 
     def sorted(arr: Array[Byte]) = {
       val res = arr.clone()
-      ByteArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
@@ -57,13 +59,13 @@ object Sorter {
   object charSorter extends Sorter[Char] {
     def argSorted(arr: Array[Char]) = {
       val res = range(0, arr.length)
-      CharArrays.radixSortIndirect(res, arr, true)
+      PermuteMergeSort.sort(arr,res)
       res
     }
 
     def sorted(arr: Array[Char]) = {
       val res = arr.clone()
-      CharArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
@@ -71,13 +73,13 @@ object Sorter {
   object shortSorter extends Sorter[Short] {
     def argSorted(arr: Array[Short]) = {
       val res = range(0, arr.length)
-      ShortArrays.radixSortIndirect(res, arr, true)
+      PermuteMergeSort.sort(arr,res)
       res
     }
 
     def sorted(arr: Array[Short]) = {
       val res = arr.clone()
-      ShortArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
@@ -85,13 +87,13 @@ object Sorter {
   object intSorter extends Sorter[Int] {
     def argSorted(arr: Array[Int]) = {
       val res = range(0, arr.length)
-      IntArrays.radixSortIndirect(res, arr, true)
+      PermuteMergeSort.sort(arr,res)
       res
     }
 
     def sorted(arr: Array[Int]) = {
       val res = arr.clone()
-      IntArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
@@ -100,13 +102,13 @@ object Sorter {
     def argSorted(arr: Array[Float]) = {
       val tmp = nanToNegInf(arr)               // fastutil sorts NaN to PosInf
       val res = range(0, arr.length)
-      FloatArrays.radixSortIndirect(res, tmp, true)
+      PermuteMergeSort.sort(tmp,res)
       res
     }
 
     def sorted(arr: Array[Float]) = {
       val res = nanToNegInf(arr)
-      FloatArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
@@ -114,13 +116,13 @@ object Sorter {
   object longSorter extends Sorter[Long] {
     def argSorted(arr: Array[Long]) = {
       val res = range(0, arr.length)
-      LongArrays.radixSortIndirect(res, arr, true)
+      PermuteMergeSort.sort(arr,res)
       res
     }
 
     def sorted(arr: Array[Long]) = {
       val res = arr.clone()
-      LongArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
@@ -131,13 +133,13 @@ object Sorter {
     def argSorted(arr: Array[Double]) = {
       val tmp = nanToNegInf(arr)                // fastutil sorts NaN to PosInf
       val res = range(0, arr.length)
-      DoubleArrays.radixSortIndirect(res, tmp, true)
+      PermuteMergeSort.sort(tmp,res)
       res
     }
 
     def sorted(arr: Array[Double]) = {
       val res = nanToNegInf(arr)
-      DoubleArrays.radixSort(res)
+      MergeSort.sort(res)
       res
     }
   }
