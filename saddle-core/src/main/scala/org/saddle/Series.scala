@@ -19,7 +19,6 @@ package org.saddle
 import util.Concat.Promoter
 import ops._
 import vec._
-import stats._
 import index._
 import groupby._
 import scalar._
@@ -902,40 +901,15 @@ class Series[X: ST: ORD, T: ST](
   }
 
   override def toString: String = stringify()
+
+  def sum(implicit na: NUM[T]): T = toVec.sum
+  def count: Int = toVec.count
+  def countif(test: T => Boolean): Int = toVec.countif(test)
 }
 
 object Series extends BinOpSeries {
   import scala.language.implicitConversions
-  // stats implicits
 
-  type Vec2Stats[T] = Vec[T] => VecStats[T]
-  type Vec2RollingStats[T] = Vec[T] => VecRollingStats[T]
-  type Vec2ExpandingStats[T] = Vec[T] => VecExpandingStats[T]
-
-  type Series2Stats[T] = Series[_, T] => VecStats[T]
-
-  /**
-   * Enrich Series with basic stats
-   * @param s Series[_, T]
-   */
-  implicit def seriesToStats[T: Vec2Stats](s: Series[_, T]): VecStats[T] =
-    implicitly[Vec2Stats[T]].apply(s.values)
-
-  /**
-   * Enrich Series with rolling stats
-   * @param s Series[_, T]
-   */
-  implicit def seriesToRollingStats[X: ST: ORD, T: Vec2RollingStats: ST](
-    s: Series[X, T]): SeriesRollingStats[X, T] =
-    SeriesRollingStats[X, T](s)
-
-  /**
-   * Enrich Series with expanding stats
-   * @param s Series[_, T]
-   */
-  implicit def seriesToExpandingStats[X: ST: ORD, T: Vec2ExpandingStats: ST](
-    s: Series[X, T]): SeriesExpandingStats[X, T] =
-    SeriesExpandingStats[X, T](s)
 
   /**
    * Implicitly allow Series to be treated as a single-column Frame

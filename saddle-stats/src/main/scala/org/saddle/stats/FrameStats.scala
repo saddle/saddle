@@ -30,17 +30,17 @@ class FrameStats[RX, CX, T: ST](frame: Frame[RX, CX, T]) {
   // --------------------------------------
   // helpful math ops
 
-  type S2Stats = Series.Series2Stats[T]
+  type S2Stats = Series2Stats[T]
 
   /**
    * Sum of the elements of each column, ignoring NA values
    */
-  def sum(implicit ev: S2Stats): Series[CX, T] = frame.reduce(_.sum)
+  def sum(implicit  na: NUM[T]): Series[CX, T] = frame.reduce(_.sum)
 
   /**
    * Count of the elements of each column, ignoring NA values
    */
-  def count(implicit ev: S2Stats): Series[CX, Int] = frame.reduce(_.count)
+  def count: Series[CX, Int] = frame.reduce(_.count)
 
   /**
    * Min of the elements of each column, ignoring NA values
@@ -61,7 +61,7 @@ class FrameStats[RX, CX, T: ST](frame: Frame[RX, CX, T]) {
    * Conditional count of the elements of each column, ignoring NA values
    * @param test Function predicate to utilize in count, T => Boolean
    */
-  def countif(test: T => Boolean)(implicit ev: S2Stats): Series[CX, Int] = frame.reduce(_.countif(test))
+  def countif(test: T => Boolean): Series[CX, Int] = frame.reduce(_.countif(test))
 
   /**
    * Sum of the natural logs of the elements of each column, ignoring NA values.

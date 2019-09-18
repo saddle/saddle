@@ -17,7 +17,6 @@
 package org.saddle.stats
 
 import org.saddle._
-import Series.Vec2ExpandingStats
 
 /**
  * Expanding statistical methods made available on numeric Series objects via enrichment.

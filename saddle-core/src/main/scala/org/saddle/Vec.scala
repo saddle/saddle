@@ -455,6 +455,10 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] with S
    */
   def toSeq: IndexedSeq[T] = toArray.toIndexedSeq
 
+  def sum(implicit na: NUM[T], st: ST[T]): T = filterFoldLeft(st.notMissing)(st.zero)((a,b) => na.plus(a,b))
+  def count: Int = filterFoldLeft(scalarTag.notMissing)(0)((a, _) => a + 1)
+  def countif(test: T => Boolean): Int = filterFoldLeft(t => scalarTag.notMissing(t) && test(t))(0)((a,_) => a + 1)
+
   /**
    * Returns a Vec whose backing array has been copied
    */
@@ -531,7 +535,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] with S
   override def toString = stringify()
 }
 
-object Vec extends BinOpVec with VecStatsImplicits with VecBoolEnricher {
+object Vec extends BinOpVec with VecBoolEnricher {
   import scala.language.implicitConversions
   // **** constructions
 

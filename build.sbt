@@ -108,11 +108,24 @@ lazy val time = project
   )
   .dependsOn(core)
 
+lazy val stats = project
+  .in(file("saddle-stats"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "saddle-stats",
+    libraryDependencies ++= Seq(
+      "org.apache.commons" % "commons-math" % "2.2" % "test",
+      "org.specs2" %% "specs2-core" % "3.8.6" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "3.8.6" % "test"
+    )
+  )
+  .dependsOn(core)
+
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
     publishArtifact := false
   )
-  .aggregate(core, time)
+  .aggregate(core, time, stats)
 
 parallelExecution in ThisBuild := false

@@ -19,7 +19,6 @@ package org.saddle.stats
 import scala.{specialized => spec}
 import org.saddle._
 import ops._
-import Vec.Vec2Stats
 import org.saddle.scalar._
 
 /**

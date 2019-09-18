@@ -16,12 +16,10 @@
 
 package org.saddle
 
-import scala.language.implicitConversions
 import vec._
 import index._
 import groupby._
 import ops._
-import stats._
 import util.Concat.Promoter
 import scalar.Scalar
 import java.io.OutputStream
@@ -1577,12 +1575,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
 
 object Frame extends BinOpFrame {
   // --------------------------------
-  // stats implicits
-
-  /**
-   * Enrich a Frame to provide statistical methods
-   */
-  implicit def frameToStats[RX, CX, T: ST](f: Frame[RX, CX, T]) = new FrameStats[RX, CX, T](f)
+  
 
   // --------------------------------
   // instantiations
