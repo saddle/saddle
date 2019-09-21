@@ -295,7 +295,7 @@ class Series[X: ST: ORD, T: ST](
    * Additive inverse of Series with numeric elements
    *
    */
-  def unary_-(implicit num: Numeric[T]): Series[X, T] = Series(-values, index)
+  def unary_-(implicit num: NUM[T]): Series[X, T] = Series(-values, index)
 
   // slicing
 
@@ -487,7 +487,7 @@ class Series[X: ST: ORD, T: ST](
   /**
    * Return key corresponding to minimum value in series
    */
-  def minKey(implicit num: NUM[T]): Scalar[X] = array.argmin(values.toArray) match {
+  def minKey(implicit num: NUM[T], ord: Ordering[T]): Scalar[X] = array.argmin(values.toArray) match {
     case -1     => NA
     case _  @ i => index.at(i)
   }
@@ -495,7 +495,7 @@ class Series[X: ST: ORD, T: ST](
   /**
    * Return key corresponding to maximum value in series
    */
-  def maxKey(implicit num: NUM[T]): Scalar[X] = array.argmax(values.toArray) match {
+  def maxKey(implicit num: NUM[T], ord: Ordering[T]): Scalar[X] = array.argmax(values.toArray) match {
     case -1     => NA
     case _  @ i => index.at(i)
   }

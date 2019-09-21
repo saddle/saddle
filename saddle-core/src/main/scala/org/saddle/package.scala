@@ -63,7 +63,7 @@ package object saddle {
   /**
    * Shorthand for numeric typeclass
    */
-  type NUM[C] = Numeric[C]
+  type NUM[C] = spire.math.Numeric[C]
 
   /**
    * Shorthand for class manifest typeclass
