@@ -17,7 +17,6 @@
 package org.saddle.scalar
 
 import org.saddle._
-import org.saddle.vec.VecInt
 import org.saddle.mat.MatInt
 import metal.mutable.Buffer
 import org.saddle.index.IndexInt
@@ -47,7 +46,7 @@ object ScalarTagInt extends ScalarTag[Int] {
 
   def makeBuf(sz: Int = org.saddle.Buffer.INIT_CAPACITY) = new Buffer(new Array[Int](sz),0)
   def makeLoc(sz: Int = Locator.INIT_CAPACITY) = new LocatorInt(sz)
-  def makeVec(arr: Array[Int]) = new VecInt(arr)
+  def makeVec(arr: Array[Int]) = Vec(arr)(this)
   def makeMat(r: Int, c: Int, arr: Array[Int]) = new MatInt(r, c, arr)
   def makeIndex(vec: Vec[Int])(implicit ord: ORD[Int]): Index[Int] = new IndexInt(vec)
   def makeSorter(implicit ord: ORD[Int]): Sorter[Int] = Sorter.intSorter

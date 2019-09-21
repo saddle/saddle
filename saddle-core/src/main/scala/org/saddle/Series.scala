@@ -295,7 +295,7 @@ class Series[X: ST: ORD, T: ST](
    * Additive inverse of Series with numeric elements
    *
    */
-  def unary_-(): Series[X, T] = Series(-values, index)
+  def unary_-(implicit num: Numeric[T]): Series[X, T] = Series(-values, index)
 
   // slicing
 
@@ -928,7 +928,7 @@ object Series extends BinOpSeries {
    * object of [[org.saddle.Vec]].
    * @param v Series[_, Boolean]
    */
-  implicit def serToBoolLogic(v: Series[_, Boolean]) = Vec.vecToBoolLogic(v.toVec)
+  // implicit def serToBoolLogic(v: Series[_, Boolean]) = Vec.vecToBoolLogic(v.toVec)
 
   // factory methods
 

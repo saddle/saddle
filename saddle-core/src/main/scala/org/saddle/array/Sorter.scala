@@ -16,8 +16,8 @@
 
 package org.saddle.array
 
-import org.saddle.ORD
 import org.saddle.vec.VecBool
+import org.saddle.ORD
 import spire.std.byte._
 import spire.std.int._
 import spire.std.long._

@@ -26,6 +26,71 @@ import util.Concat.Promoter
 
 import java.io.OutputStream
 
+
+object Vec extends BinOpVec with VecBoolEnricher {
+  import scala.language.implicitConversions
+  /**
+   * Factory method to create a Vec from an array of elements
+   *
+   * @param arr Array
+   * @tparam T Type of elements in array
+   */
+  def apply[@spec(Boolean, Int, Long, Double) T](arr: Array[T])(implicit st: ST[T]): Vec[T] = new VecDefault(arr, st)
+
+  /**
+   * Factory method to create a Vec from a sequence of elements. For example,
+   *
+   * {{{
+   *   Vec(1,2,3)
+   *   Vec(Seq(1,2,3) : _*)
+   * }}}
+   *
+   * @param values Sequence
+   * @tparam T Type of elements in Vec
+   */
+  def apply[@spec(Boolean, Int, Long, Double) T: ST](values: T*): Vec[T] = Vec(values.toArray)
+
+  /**
+   * Creates an empty Vec of type T.
+   *
+   * @tparam T Vec type parameter
+   */
+  def empty[T: ST]: Vec[T] = Vec(Array.empty[T])
+
+  // **** conversions
+
+  // Vec is isomorphic to array
+
+  /**
+   * A Vec may be implicitly converted to an array. Use responsibly;
+   * please do not circumvent immutability of Vec class!
+   * @param s Vec
+   * @tparam T Type parameter of Vec
+   */
+  implicit def vecToArray[T](s: Vec[T]) = s.toArray
+
+  /**
+   * An array may be implicitly converted to a Vec.
+   * @param arr Array
+   * @tparam T Type parameter of Array
+   */
+  implicit def arrayToVec[T: ST](arr: Array[T]) = Vec(arr)
+
+  /**
+   * A Vec may be implicitly ''widened'' to a Series.
+   *
+   * @param s Vec to widen to Series
+   * @tparam A Type of elements in Vec
+   */
+  implicit def vecToSeries[A: ST](s: Vec[A]) = Series(s)
+
+  /**
+   * A Vec may be implicitly converted to a single column Mat
+   */
+  implicit def vecToMat[A: ST](s: Vec[A]): Mat[A] = Mat(s)
+}
+
+
 /**
  * `Vec` is an immutable container for 1D homogeneous data (a "vector"). It is
  * backed by an array and indexed from 0 to length - 1.
@@ -69,7 +134,7 @@ import java.io.OutputStream
  *
  * @tparam T Type of elements within the Vec
  */
-trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
+trait Vec[@spec(Boolean,Int,Long,Double) T] extends NumericOps[Vec[T]] {
   /**
    * The number of elements in the container                                                  F
    */
@@ -87,12 +152,12 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * representation might contain primitive NA's that need to be boxed so that
    * they aren't utilized unknowingly in calculations.
    */
-  private[saddle] def apply(loc: Int): T
+  def apply(loc: Int): T
 
   /**
    * Set to true when the vec is shifted over the backing array
    */
-  protected def needsCopy: Boolean = false
+  def needsCopy: Boolean 
 
   // ----------
   // get values
@@ -101,18 +166,13 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * Access a boxed element of a Vec[A] at a single location
    * @param loc offset into Vec
    */
-  def at(loc: Int): Scalar[T] = {
-    implicit val st = scalarTag
-    apply(loc)
-  }
+  def at(loc: Int): Scalar[T]
 
   /**
    * Access an unboxed element of a Vec[A] at a single location
    * @param loc offset into Vec
    */
-  def raw(loc: Int): T = {
-    apply(loc)
-  }
+  def raw(loc: Int): T 
 
   /**
    * Slice a Vec at a sequence of locations, e.g.
@@ -122,7 +182,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param locs locations at which to slice
    */
-  def apply(locs: Int*): Vec[T] = take(locs.toArray)
+  def apply(locs: Int*): Vec[T]
 
   /**
    * Slice a Vec at a sequence of locations, e.g.
@@ -132,7 +192,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param locs locations at which to slice
    */
-  def apply(locs: Array[Int]): Vec[T] = take(locs)
+  def apply(locs: Array[Int]): Vec[T] 
 
   /**
    * Slice a Vec at a bound of locations, e.g.
@@ -142,51 +202,41 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param rng evaluates to IRange
    */
-  def apply(rng: Slice[Int]): Vec[T] = {
-    val idx  = new IndexIntRange(length)
-    val pair = rng(idx)
-    slice(pair._1, pair._2)
-  }
+  def apply(rng: Slice[Int]): Vec[T]
 
   /**
    * Access the first element of a Vec[A], or NA if length is zero
    */
-  def first: Scalar[T] = {
-    implicit val st = scalarTag
-    if (length > 0) apply(0) else NA
-  }
+  def first: Scalar[T] 
 
   /**
    * Access the last element of a Vec[A], or NA if length is zero
    */
-  def last: Scalar[T] = {
-    implicit val st = scalarTag
-    if (length > 0) apply(length - 1) else NA
-  }
+  def last: Scalar[T] 
 
   // ----------
 
   /**
    * Return copy of backing array
    */
-  def contents: Array[T] = copy.toArray
+  def contents: Array[T] 
 
   /**
    * Return first n elements
    * @param n Number of elements to access
    */
-  def head(n: Int): Vec[T] = slice(0, n)
+  def head(n: Int): Vec[T] 
 
   /**
    * Return last n elements
    * @param n Number of elements to access
    */
-  def tail(n: Int): Vec[T] = slice(length - n, length)
+  def tail(n: Int): Vec[T] 
 
   /**
    * True if and only if number of elements is zero
    */
-  def isEmpty: Boolean = length == 0
+  def isEmpty: Boolean
 
   /**
    * Equivalent to slicing operation; e.g.
@@ -214,7 +264,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param m Mask vector of Vec[Boolean]
    */
-  def mask(m: Vec[Boolean]): Vec[T] = VecImpl.mask(this, m, scalarTag.missing)(scalarTag)
+  def mask(m: Vec[Boolean]): Vec[T]
 
   /**
    * Returns Vec whose locations are NA where the result of the
@@ -222,7 +272,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param f A function taking an element and returning a Boolean
    */
-  def mask(f: T => Boolean): Vec[T] = VecImpl.mask(this, f, scalarTag.missing)(scalarTag)
+  def mask(f: T => Boolean): Vec[T] 
 
   /**
    * Concatenate two Vec instances together, where there exists some way to
@@ -242,7 +292,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * Additive inverse of Vec with numeric elements
    *
    */
-  def unary_-(): Vec[T]
+  def unary_-()(implicit num: NUM[T]): Vec[T]
 
   // Must implement specialized methods independently of specialized class, workaround to
   // https://issues.scala-lang.org/browse/SI-5281
@@ -310,7 +360,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * Execute a (side-effecting) operation on each (non-NA) element in the vec
    * @param op operation to execute
    */
-  def foreach(op: T => Unit) { VecImpl.foreach(this)(op)(scalarTag) }
+  def foreach(op: T => Unit) : Unit
 
   /**
    * Execute a (side-effecting) operation on each (non-NA) element in vec which satisfies
@@ -318,43 +368,42 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * @param pred Function A => Boolean
    * @param op Side-effecting function
    */
-  def forall(pred: T => Boolean)(op: T => Unit) { VecImpl.forall(this)(pred)(op)(scalarTag) }
+  def forall(pred: T => Boolean)(op: T => Unit) : Unit 
 
   /**
    * Return Vec of integer locations (offsets) which satisfy some predicate
    * @param pred Predicate function from A => Boolean
    */
-  def find(pred: T => Boolean): Vec[Int] = VecImpl.find(this)(pred)(scalarTag)
+  def find(pred: T => Boolean): Vec[Int] 
 
   /**
    * Return first integer location which satisfies some predicate, or -1 if there is none
    * @param pred Predicate function from A => Boolean
    */
-  def findOne(pred: T => Boolean): Int = VecImpl.findOne(this)(pred)(scalarTag)
+  def findOne(pred: T => Boolean): Int 
 
   /**
    * Return true if there exists some element of the Vec which satisfies the predicate function
    * @param pred Predicate function from A => Boolean
    */
-  def exists(pred: T => Boolean): Boolean = findOne(pred) != -1
-
+  def exists(pred: T => Boolean): Boolean 
   /**
    * Return Vec whose elements satisfy a predicate function
    * @param pred Predicate function from A => Boolean
    */
-  def filter(pred: T => Boolean): Vec[T] = VecImpl.filter(this)(pred)(scalarTag)
+  def filter(pred: T => Boolean): Vec[T]
 
   /**
    * Return vec whose offets satisfy a predicate function
    * @param pred Predicate function from Int => Boolean
    */
-  def filterAt(pred: Int => Boolean): Vec[T] = VecImpl.filterAt(this)(pred)(scalarTag)
+  def filterAt(pred: Int => Boolean): Vec[T]
 
   /**
    * Return Vec whose elements are selected via a Vec of booleans (where that Vec holds the value true)
    * @param pred Predicate vector: Vec[Boolean]
    */
-  def where(pred: Vec[Boolean]): Vec[T] = VecImpl.where(this)(pred.toArray)(scalarTag)
+  def where(pred: Vec[Boolean]): Vec[T]
 
   /**
    * Produce a Vec whose entries are the result of executing a function on a sliding window of the
@@ -369,15 +418,12 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * Yield a Vec whose elements have been sorted (in ascending order)
    * @param ev evidence of Ordering[A]
    */
-  def sorted(implicit ev: ORD[T], st: ST[T]) = take(array.argsort(toArray))
+  def sorted(implicit ev: ORD[T], st: ST[T]) : Vec[T]
 
   /**
    * Yield a Vec whose elements have been reversed from their original order
    */
-  def reversed: Vec[T] = {
-    implicit val tag = scalarTag
-    Vec(array.reverse(toArray))
-  }
+  def reversed: Vec[T] 
 
   /**
    * Creates a view into original vector from an offset up to, but excluding,
@@ -397,14 +443,13 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * @param to Ending offset
    * @param stride Increment within slice
    */
-  def sliceBy(from: Int, to: Int, stride: Int = 1): Vec[T] =
-    slice(from, to + stride, stride)
+  def sliceBy(from: Int, to: Int, stride: Int = 1): Vec[T]
 
   /**
    * Split Vec into two Vecs at position i
    * @param i Position at which to split Vec
    */
-  def splitAt(i: Int): (Vec[T], Vec[T]) = (slice(0, i), slice(i, length))
+  def splitAt(i: Int): (Vec[T], Vec[T]) 
 
   /**
    * Creates a view into original Vec, but shifted so that n
@@ -425,7 +470,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * }}}
    *
    */
-  def pad: Vec[T] = VecImpl.pad(this)(scalarTag)
+  def pad: Vec[T] 
 
   /**
    * Replaces all NA values for which there is a non-NA value at a lower offset
@@ -439,7 +484,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    * }}}
    *
    */
-  def padAtMost(n: Int): Vec[T] = VecImpl.pad(this, n)(scalarTag)
+  def padAtMost(n: Int): Vec[T] 
 
   /**
    * Fills NA values in vector with result of a function which acts on the index of
@@ -447,17 +492,17 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
    *
    * @param f A function from Int => A; yields value for NA value at ith position
    */
-  def fillNA(f: Int => T): Vec[T] = VecImpl.vecfillNA(this)(f)(scalarTag)
+  def fillNA(f: Int => T): Vec[T] 
 
   /**
    * Converts Vec to an indexed sequence (default implementation is immutable.Vector)
    *
    */
-  def toSeq: IndexedSeq[T] = toArray.toIndexedSeq
+  def toSeq: IndexedSeq[T] 
 
-  def sum(implicit na: NUM[T], st: ST[T]): T = filterFoldLeft(st.notMissing)(st.zero)((a,b) => na.plus(a,b))
-  def count: Int = filterFoldLeft(scalarTag.notMissing)(0)((a, _) => a + 1)
-  def countif(test: T => Boolean): Int = filterFoldLeft(t => scalarTag.notMissing(t) && test(t))(0)((a,_) => a + 1)
+  def sum(implicit na: NUM[T], st: ST[T]): T 
+  def count: Int 
+  def countif(test: T => Boolean): Int 
 
   /**
    * Returns a Vec whose backing array has been copied
@@ -466,139 +511,18 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
 
   private[saddle] def toArray: Array[T]
 
-  private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double] = {
-    val arr = toArray
-    val buf = new Array[Double](arr.length)
-    var i = 0
-    while(i < arr.length) {
-      buf(i) = scalarTag.toDouble(arr(i))
-      i += 1
-    }
-    buf
-  }
-
-  /** Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values. */
-  override def hashCode(): Int = foldLeft(1)(_ * 31 + _.hashCode())
-
-  /**
-   * Default equality does an iterative, element-wise equality check of all values.
-   *
-   * NB: to avoid boxing, is overwritten in child classes
-   */
-  override def equals(o: Any): Boolean = o match {
-    case rv: Vec[_] => (this eq rv) || (this.length == rv.length) && {
-      var i = 0
-      var eq = true
-      while(eq && i < this.length) {
-        eq &&= (apply(i) == rv(i) || this.scalarTag.isMissing(apply(i)) && rv.scalarTag.isMissing(rv(i)))
-        i += 1
-      }
-      eq
-    }
-    case _ => false
-  }
+  private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double] 
 
   /**
    * Creates a string representation of Vec
    * @param len Max number of elements to include
    */
-  def stringify(len: Int = 10): String = {
-    val half = len / 2
-
-    val buf = new StringBuilder()
-
-    implicit val st = scalarTag
-
-    val maxf = (a: Int, b: String) => math.max(a, b.length)
-
-    if (length == 0)
-      buf append "Empty Vec"
-    else {
-      buf.append("[%d x 1]\n" format (length))
-      val vlen = { head(half) concat tail(half) }.map(scalarTag.show(_)).foldLeft(0)(maxf)
-
-      def createRow(r: Int): String = ("%" + { if (vlen > 0) vlen else 1 } + "s\n").format(scalarTag.show(apply(r)))
-      buf append util.buildStr(len, length, createRow, " ... \n" )
-    }
-
-    buf.toString()
-  }
+  def stringify(len: Int): String 
 
   /**
    * Pretty-printer for Vec, which simply outputs the result of stringify.
    * @param len Number of elements to display
    */
-  def print(len: Int = 10, stream: OutputStream = System.out) {
-    stream.write(stringify(len).getBytes)
-  }
+  def print(len: Int, stream: OutputStream) 
 
-  override def toString = stringify()
 }
-
-object Vec extends BinOpVec with VecBoolEnricher {
-  import scala.language.implicitConversions
-  // **** constructions
-
-  /**
-   * Factory method to create a Vec from an array of elements
-   *
-   * @param arr Array
-   * @tparam T Type of elements in array
-   */
-  def apply[T](arr: Array[T])(implicit st: ST[T]): Vec[T] = st.makeVec(arr)
-
-  /**
-   * Factory method to create a Vec from a sequence of elements. For example,
-   *
-   * {{{
-   *   Vec(1,2,3)
-   *   Vec(Seq(1,2,3) : _*)
-   * }}}
-   *
-   * @param values Sequence
-   * @tparam T Type of elements in Vec
-   */
-  def apply[T: ST](values: T*): Vec[T] = Vec(values.toArray)
-
-  /**
-   * Creates an empty Vec of type T.
-   *
-   * @tparam T Vec type parameter
-   */
-  def empty[T: ST]: Vec[T] = Vec(Array.empty[T])
-
-  // **** conversions
-
-  // Vec is isomorphic to array
-
-  /**
-   * A Vec may be implicitly converted to an array. Use responsibly;
-   * please do not circumvent immutability of Vec class!
-   * @param s Vec
-   * @tparam T Type parameter of Vec
-   */
-  implicit def vecToArray[T](s: Vec[T]) = s.toArray
-
-  /**
-   * An array may be implicitly converted to a Vec.
-   * @param arr Array
-   * @tparam T Type parameter of Array
-   */
-  implicit def arrayToVec[T: ST](arr: Array[T]) = Vec(arr)
-
-  /**
-   * A Vec may be implicitly ''widened'' to a Vec.
-   *
-   * @param s Vec to widen to Series
-   * @tparam A Type of elements in Vec
-   */
-  implicit def vecToSeries[A: ST](s: Vec[A]) = Series(s)
-
-  /**
-   * A Vec may be implicitly converted to a single column Mat
-   */
-  implicit def vecToMat[A: ST](s: Vec[A]): Mat[A] = Mat(s)
-}
-
-
-

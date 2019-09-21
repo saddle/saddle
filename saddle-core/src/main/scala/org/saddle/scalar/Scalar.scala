@@ -47,8 +47,8 @@ object Scalar {
     *  @param  x the value
     *  @return Value(value) if value not null or NA primitive; otherwise NA
     *  */
-  def apply[T: ST](x: T): Scalar[T] =
-    if (x == null || implicitly[ST[T]].isMissing(x)) NA else Value(x)
+  def apply[@specialized(Boolean, Int, Double, Float, Long) T](x: T)(implicit st: ST[T]): Scalar[T] =
+    if (x == null || st.isMissing(x)) NA else Value(x)
 
   /**
    * Provides comparisons of Scalars, where NA always evaluates as less than non-NA
@@ -88,7 +88,7 @@ object Scalar {
   implicit def optionToScalar[T: ST](op: Option[T]): Scalar[T] = op.map { Scalar(_) } getOrElse NA
 }
 
-case class Value[+T : ST](el: T) extends Scalar[T] {
+case class Value[@specialized(Boolean, Int, Double, Float, Long) +T : ST](el: T) extends Scalar[T] {
   def isNA = implicitly[ST[T]].isMissing(el)
   def get = el
 

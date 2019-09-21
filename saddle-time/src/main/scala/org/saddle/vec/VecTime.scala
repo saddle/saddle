@@ -32,9 +32,9 @@ import org.saddle.util.Concat.Promoter
  * @param times A Vec[Long], where each element is a millisecond timestamp
  * @param tzone Optional time zone containing localization info
  */
-class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Vec[DateTime] {
+class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone) extends VecDefault[DateTime](null, ScalarTagTime) {
 
-  @transient lazy val scalarTag = ScalarTagTime
+  @transient override val scalarTag = ScalarTagTime
 
   @transient lazy val chrono = ISO_CHRONO.withZone(tzone)
 
@@ -44,58 +44,58 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
   private def t2l(t: DateTime) = if (scalarTag.isMissing(t)) lmf.missing else t.getMillis
   private def vl2vt(l: Vec[Long]) = new VecTime(l, tzone)
 
-  def length = times.length
+  override def length = times.length
 
-  private[saddle] def apply(loc: Int) = l2t(times(loc))
+  override def apply(loc: Int) = l2t(times(loc))
 
-  def take(locs: Array[Int]) = vl2vt(times.take(locs))
+  override def take(locs: Array[Int]) = vl2vt(times.take(locs))
 
-  def without(locs: Array[Int]) = vl2vt(times.without(locs))
+  override def without(locs: Array[Int]) = vl2vt(times.without(locs))
 
   // specialized concatenation
   def concat(x: VecTime) = vl2vt(Vec(util.Concat.append(times.toArray, x.times.toArray)))
 
   // general concatenation
-  def concat[B, C](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C]) =
+  override  def concat[@spec(Boolean, Int, Long, Double) B, @spec(Boolean, Int, Long, Double) C](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C]) =
     Vec(util.Concat.append[DateTime, B, C](toArray, v.toArray))
 
-  def unary_-() = sys.error("Cannot negate VecTime")
+    override def unary_-()(implicit num: NUM[DateTime]) = sys.error("Cannot negate VecTime")
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
+    override  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (DateTime) => B) =
     times.map(v => f(l2t(v)))
 
-  def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: DateTime => Vec[B]): Vec[B] =
+    override def flatMap[@spec(Boolean, Int, Long, Double) B : ST](f: DateTime => Vec[B]): Vec[B] =
     VecImpl.flatMap(this)(f)
 
-  def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
+    override def foldLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.foldLeft(init)((a,b) => f(a, l2t(b)))
 
-  def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
+    override def scanLeft[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B) =
     times.scanLeft(init)((a,b) => f(a, l2t(b)))
 
-  def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
+    override def filterFoldLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
     times.filterFoldLeft(l2t _ andThen pred)(init)((a, b) => f(a, l2t(b)))
 
-  def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
+    override def filterScanLeft[@spec(Boolean, Int, Long, Double) B: ST](pred: (DateTime) => Boolean)(init: B)(f: (B, DateTime) => B) =
     times.filterScanLeft(l2t _ andThen pred)(init)((a, b) => f(a, l2t(b)))
 
-  def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B)(
+    override def foldLeftWhile[@spec(Boolean, Int, Long, Double) B: ST](init: B)(f: (B, DateTime) => B)(
     cond: (B, DateTime) => Boolean) = times.foldLeftWhile(init)((a, b) => f(a, l2t(b)))((a, b) => cond(a, l2t(b)))
 
-  def zipMap[@spec(Boolean, Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](
+    override def zipMap[@spec(Boolean, Int, Long, Double) B: ST, @spec(Boolean, Int, Long, Double) C: ST](
     other: Vec[B])(f: (DateTime, B) => C) = times.zipMap(other)((a, b) => f(l2t(a), b))
 
-  def dropNA = vl2vt(times.dropNA)
+    override def dropNA = vl2vt(times.dropNA)
 
-  def hasNA = times.hasNA
+    override def hasNA = times.hasNA
 
-  def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: (Vec[DateTime]) => B) =
+    override def rolling[@spec(Boolean, Int, Long, Double) B: ST](winSz: Int, f: (Vec[DateTime]) => B) =
     times.rolling(winSz, vl2vt _ andThen f)
 
-  def slice(from: Int, until: Int, stride: Int) =
+    override def slice(from: Int, until: Int, stride: Int) =
     vl2vt(times.slice(from, until, stride))
 
-  def shift(n: Int) = vl2vt(times.shift(n))
+    override def shift(n: Int) = vl2vt(times.shift(n))
 
   override def sorted(implicit ev: ORD[DateTime], st: ST[DateTime]) = take(array.argsort(times.toArray))
 
@@ -105,9 +105,9 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 
   override def reversed: VecTime = vl2vt(times.reversed)
 
-  protected def copy = vl2vt(Vec(times.contents))
+  override   def copy = vl2vt(Vec(times.contents))
 
-  private[saddle] def toArray = times.toArray.map(l2t)
+  override def toArray = times.toArray.map(l2t)
 }
 
 object VecTime {

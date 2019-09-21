@@ -20,7 +20,6 @@ import scala.{specialized => spec}
 import org.saddle._
 import org.saddle.scalar._
 import util.Concat.Promoter
-import vec.VecInt
 import locator.Locator
 
 /**
@@ -76,7 +75,7 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
 
   // take values of index at certain locations
   def take(locs: Array[Int]) =
-    Index(new VecInt(locs).map(i => if (i == -1) IndexImpl.sentinelErr else guardLoc(i) + from))
+    Index(Vec(locs).map(i => if (i == -1) IndexImpl.sentinelErr else guardLoc(i) + from))
 
   def without(locs: Array[Int]): Index[Int] =
     array.remove(asArr, locs)
@@ -97,7 +96,7 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
     else
       genIdx.slice(from, until, stride)
 
-  def getAll(keys: Array[Int]) = new VecInt(keys).filter(locator.contains _).map(_ - from).toArray
+  def getAll(keys: Array[Int]) = Vec(keys).filter(locator.contains _).map(_ - from).toArray
 
   def isMonotonic = true
 

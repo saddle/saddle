@@ -18,7 +18,6 @@ package org.saddle.stats
 
 import scala.{specialized => spec}
 import org.saddle._
-import org.saddle.vec._
 import org.saddle.scalar._
 
 /**
@@ -256,7 +255,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
         ar(i) = sd.missing
       i += 1
     }
-    new VecDouble(ar)
+    Vec(ar)
   }
 
   // Fast median function that is N/A friendly; destructive to array
