@@ -60,7 +60,7 @@ import org.saddle.index.{IndexIntRange, Slice}
  *
  * @tparam A Type of elements within the Mat
  */
-trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] with Serializable{
+trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def scalarTag: ScalarTag[A]
 
   /**

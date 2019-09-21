@@ -17,7 +17,6 @@
 package org.saddle
 
 import mat.MatMath
-import org.saddle.Serde._
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
@@ -228,11 +227,7 @@ class MatCheck extends Specification with ScalaCheck {
      }
    }
 
-  "serialization works" in  {
-    forAll { ma: Mat[Double] =>
-      ma must_== serializedCopy(ma)
-    }
-  }
+ 
 
 
 }

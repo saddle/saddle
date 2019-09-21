@@ -23,7 +23,7 @@ import org.saddle.scalar._
  * An IndexedSeq of Vecs which must all have the same length; a container for
  * 2D data for a Frame.
  */
-class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] with Serializable{
+class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
   require(cols.length < 2 || cols.forall(_.length == cols(0).length),
           "Vecs must all be the same length")
 

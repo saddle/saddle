@@ -16,7 +16,6 @@
 
 package org.saddle
 
-import org.saddle.Serde._
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
@@ -126,15 +125,7 @@ class IndexCheck extends Specification with ScalaCheck {
       }
     }
 
-    "serialization works" in  {
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexIntNoDups)
-
-      forAll { (ix1: Index[Int], ix2: Index[Int]) => {
-        ix1 must_== serializedCopy(ix1)
-        ix2 must_== serializedCopy(ix2)
-      }
-      }
-    }
+   
 
 
   }

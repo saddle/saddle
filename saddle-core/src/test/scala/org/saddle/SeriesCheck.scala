@@ -16,7 +16,6 @@
 
 package org.saddle
 
-import org.saddle.Serde._
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
@@ -268,11 +267,7 @@ class SeriesCheck extends Specification with ScalaCheck {
       }
     }
 
-    "serialization works" in  {
-        forAll { s1: Series[Int, Double] =>
-          s1 must_== serializedCopy(s1)
-      }
-    }
+    
 
   }
 

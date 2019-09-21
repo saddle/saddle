@@ -16,7 +16,6 @@
 
 package org.saddle
 
-import org.saddle.Serde._
 import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
@@ -129,17 +128,6 @@ class IndexCheck extends Specification with ScalaCheck {
         ixs1.join(ixs2, how=index.LeftJoin).index.isMonotonic must beTrue
         ixs1.join(ixs2, how=index.InnerJoin).index.isMonotonic must beTrue
         ixs1.join(ixs2, how=index.OuterJoin).index.isMonotonic must beTrue
-      }
-    }
-
-    "serialization works" in  {
-
-      implicit val arbIndex = Arbitrary(IndexArbitraries.indexTimeWithDups)
-
-      forAll { (ix1: Index[DateTime], ix2: Index[DateTime]) => {
-        ix1 must_== serializedCopy(ix1)
-        ix2 must_== serializedCopy(ix2)
-      }
       }
     }
 

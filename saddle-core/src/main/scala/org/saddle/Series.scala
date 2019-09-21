@@ -99,7 +99,7 @@ import org.saddle.mat.MatCols
  * @tparam T Type of elements in the values array, for which there must be an implicit ST
  */
 class Series[X: ST: ORD, T: ST](
-  val values: Vec[T], val index: Index[X]) extends NumericOps[Series[X, T]] with Serializable{
+  val values: Vec[T], val index: Index[X]) extends NumericOps[Series[X, T]] {
 
   require(values.length == index.length,
          "Values length %d != index length %d" format (values.length, index.length))

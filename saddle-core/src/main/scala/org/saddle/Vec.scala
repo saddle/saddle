@@ -69,7 +69,7 @@ import java.io.OutputStream
  *
  * @tparam T Type of elements within the Vec
  */
-trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] with Serializable{
+trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   /**
    * The number of elements in the container                                                  F
    */

@@ -21,7 +21,6 @@ import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
 import org.saddle.scalar.Value
-import Serde.serializedCopy
 
 
 /**
@@ -368,11 +367,7 @@ class VecCheck extends Specification with ScalaCheck {
       }
     }
 
-    "serialization works" in  {
-      forAll { v:Vec[Double] =>
-        v must_== serializedCopy(v)
-      }
-    }
+   
 
   }
 

@@ -29,7 +29,7 @@ import metal.mutable.{Buffer => MBuffer}
  * Index provides a constant-time look-up of a value within array-backed storage,
  * as well as operations to support joining and slicing.
  */
-trait Index[@spec(Boolean, Int, Long, Double) T] extends Serializable{
+trait Index[@spec(Boolean, Int, Long, Double) T] {
   protected def locator: Locator[T]
 
   /**

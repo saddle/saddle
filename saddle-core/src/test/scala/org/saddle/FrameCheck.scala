@@ -20,7 +20,6 @@ import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{ Gen, Arbitrary }
 import org.scalacheck.Prop._
-import Serde.serializedCopy
 
 class FrameCheck extends Specification with ScalaCheck {
 
@@ -80,11 +79,6 @@ class FrameCheck extends Specification with ScalaCheck {
       f.T must_== Frame(Vec("a", "d"), Vec("b", "e"), Vec("c", "f"))
     }
 
-    "serialization works" in  {
-      forAll { f: Frame[Int, Int, Double] =>
-        f must_== serializedCopy(f)
-      }
-    }
 
 
 
