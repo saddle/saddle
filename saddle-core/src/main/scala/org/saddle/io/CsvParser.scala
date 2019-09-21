@@ -20,60 +20,38 @@ import org.saddle._
 import collection.mutable.ArrayBuffer
 
 /**
- * Holds parameters to customize CSV parsing
- *
- * @param separChar The separator; default is comma
- * @param quoteChar Within matching quotes, treat separChar as normal char;
- *                  default is double-quote
- * @param withQuote If true, do not strip quote character from quoted fields
- * @param skipLines Whether to skip some integer number of lines, default 0
- */
-case class CsvParams(separChar: Char    = ',',
-                     quoteChar: Char    = '"',
-                     withQuote: Boolean = false,
-                     skipLines: Int     = 0)
-
-/**
  * Csv parsing utilities
  */
 object CsvParser {
-  /**
-   * Extract data from a CSV data source for populating a Frame.
-   *
-   * For example,
-   *
-   * {{{
-   *   val src = < some CsvSource >
-   *   val data = CsvParser.parse(CsvParser.parseInt)(src)
-   *   ...
-   *   data.toFrame
-   *   data.toFrameNoHeader
-   * }}}
-   *
-   * @param source The csv data source to operate on
-   */
-  def parse(source: CsvSource): Frame[Int, Int, String] = parse()(source)
 
   /**
    * Another parse function.
    *
    * @param cols The column offsets to parse (if empty, parse everything)
-   * @param params The CsvParams to utilize in parsing
+   * @param separChar The separator; default is comma
+   * @param quoteChar Within matching quotes, treat separChar as normal char;
+   *                  default is double-quote
+   * @param withQuote If true, do not strip quote character from quoted fields
    * @param source The csv data source to operate on
    */
-  def parse(cols: Seq[Int] = List(), params: CsvParams = CsvParams())(source: CsvSource): Frame[Int, Int, String] = {
+  def parse(source: Iterator[String], cols: Seq[Int] = Nil, separChar: Char  = ',',
+            quoteChar: Char    = '"',
+            withQuote: Boolean = false): Frame[Int, Int, String] = {
 
-    require(params.separChar != params.quoteChar,
+    require(separChar != quoteChar,
             "Separator character and quote character cannot be the same")
+
+    if (source.isEmpty) {
+      sys.error("No data to parse")
+    }
 
     // sorted, unique column locations to parse
     var locs = Set(cols : _*).toArray[Int].sorted
 
     // parse first line
     val firstLine = {
-      val line = source.readLine
-      if (line == null) sys.error("No data to parse")
-      extractAllFields(line, params)
+      val line = source.next
+      extractAllFields(line, quoteChar, separChar, withQuote)
     }
 
     // what column locations to extract
@@ -93,22 +71,23 @@ object CsvParser {
     // parse remaining rows
     var str: String = null
     var nln: Int = 0
-    while ( { str = source.readLine; str != null } ) {
-      extractFields(str, addToBuffer, locs, params)
+    while ( source.hasNext ) {
+      str = source.next
+      extractFields(str, addToBuffer, locs, quoteChar, separChar, withQuote)
       nln += 1
     }
 
     val columns = bufdata map { b => Vec(b.toArray) }
 
-    Frame(columns : _*).row(params.skipLines -> *)
+    Frame(columns : _*)
   }
 
   private def extractFields(line: String, callback: (String, Int) => Unit,
-                            locs: Array[Int], params: CsvParams) {
+                            locs: Array[Int], quoteChar: Char, separChar: Char, withQuote: Boolean) {
 
-    val quote = params.quoteChar
-    val sep = params.separChar
-    val stripQuote = !params.withQuote
+    val quote = quoteChar
+    val sep = separChar
+    val stripQuote = !withQuote
 
     var inQ = false                     // whether our scan is between quotes
 
@@ -170,10 +149,10 @@ object CsvParser {
     }
   }
 
-  private def extractAllFields(line: String, params: CsvParams): Array[String] = {
-    val quote = params.quoteChar
-    val sep = params.separChar
-    val stripQuote = !params.withQuote
+  private def extractAllFields(line: String, quoteChar: Char, separChar: Char, withQuote: Boolean): Array[String] = {
+    val quote = quoteChar
+    val sep = separChar
+    val stripQuote = !withQuote
 
     val result = ArrayBuffer[String]()
 
@@ -220,14 +199,14 @@ object CsvParser {
   }
 
   def parseInt(s: String) =
-    try { java.lang.Integer.parseInt(s) } catch { case _ : NumberFormatException => Int.MinValue }
+    try { s.toInt } catch { case _ : NumberFormatException => Int.MinValue }
 
   def parseLong(s: String) =
-    try { java.lang.Long.parseLong(s) } catch { case _ : NumberFormatException => Long.MinValue }
+    try { s.toLong } catch { case _ : NumberFormatException => Long.MinValue }
 
   def parseFloat(s: String) =
-    try { java.lang.Float.parseFloat(s) } catch { case _ : NumberFormatException => Float.NaN }
+    try { s.toFloat } catch { case _ : NumberFormatException => Float.NaN }
 
   def parseDouble(s: String) =
-    try { java.lang.Double.parseDouble(s) } catch { case _ : NumberFormatException => Double.NaN }
+    try { s.toDouble } catch { case _ : NumberFormatException => Double.NaN }
 }

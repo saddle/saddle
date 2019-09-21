@@ -18,11 +18,18 @@ package org.saddle.io
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import java.io._
-import org.saddle.{na, Index, Vec, Frame, UTF8}
+import org.saddle.{na, Index, Vec, Frame}
 
 
 class CsvCheck extends Specification with ScalaCheck {
+  "csv string parsing and writing works" in {
+    
+    val expect = Frame(Vec("1","4","5","7"), Vec("25", "55", "9", "8"), Vec("36", "6", "38", "9")).setColIndex(Index("a", "b,c,d","e"))
+
+    val parsedBack = (CsvParser.parse(scala.io.Source.fromString(new String(CsvWriter.writeFrameToArray(expect))).getLines).withColIndex(0).withRowIndex(0).mapRowIndex(_.toInt))
+
+    parsedBack must_== expect
+  }
   "csv string parsing works" in {
     val data =
       """a,"b,c,d",e
@@ -31,13 +38,10 @@ class CsvCheck extends Specification with ScalaCheck {
         |5,9,38
         |7, "8",    "9",   """.stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
-    val src = new CsvSource {
-      def readLine = buf.readLine()
-    }
+    val src = scala.io.Source.fromString(data).getLines
 
-    val frame = CsvParser.parse()(src).withColIndex(0).resetRowIndex
+    val frame = CsvParser.parse(src).withColIndex(0).resetRowIndex
     val expect = Frame(Vec("1","4","5","7"), Vec("25", "55", "9", "8"), Vec("36", "6", "38", "9")).setColIndex(Index("a", "b,c,d","e"))
 
     frame must_== expect
@@ -50,13 +54,11 @@ class CsvCheck extends Specification with ScalaCheck {
         |4,5,"test",
         |7, "8",    "9",   """.stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
-    val src = new CsvSource {
-      def readLine = buf.readLine()
-    }
+    val src = scala.io.Source.fromString(data).getLines
 
-    val frame = CsvParser.parse()(src).withColIndex(0).resetRowIndex.mapValues(CsvParser.parseInt)
+
+    val frame = CsvParser.parse(src).withColIndex(0).resetRowIndex.mapValues(CsvParser.parseInt)
     val expect = Frame(Vec(1, 4, 7), Vec(2, 5, 8), Vec(3, na.to[Int], 9)).setColIndex(Index("a", "b,c,d","e"))
 
     frame must_== expect
@@ -69,13 +71,10 @@ class CsvCheck extends Specification with ScalaCheck {
         |4,5
         |7, "8",    "9",   """.stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
+    val src = scala.io.Source.fromString(data).getLines
 
-    val src = new CsvSource {
-      def readLine = buf.readLine()
-    }
 
-    CsvParser.parse()(src) must throwAn[ArrayIndexOutOfBoundsException]
+    CsvParser.parse(src) must throwAn[ArrayIndexOutOfBoundsException]
   }
 
   "csv parsing still works when final field is empty" in {
@@ -83,12 +82,10 @@ class CsvCheck extends Specification with ScalaCheck {
      """1,2,3
        |1,2,""".stripMargin
 
-    val buf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes(UTF8))))
 
-    val src = new CsvSource {
-      def readLine = buf.readLine()
-    }
+       val src = scala.io.Source.fromString(data).getLines
 
-    CsvParser.parse()(src) must throwAn[ArrayIndexOutOfBoundsException].not
+
+    CsvParser.parse(src) must throwAn[ArrayIndexOutOfBoundsException].not
   }
 }

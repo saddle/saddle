@@ -20,9 +20,10 @@ import java.io.{OutputStream, BufferedOutputStream, FileOutputStream}
 
 import org.saddle._
 import scalar.ScalarTag
+import java.io.ByteArrayOutputStream
 
 /**
- * Settings for writing a CsvFile
+ * Settings for writing a CSV file
  *
  * @param separChar Separator; default is comma
  * @param useQuote If true, fields containing separChar will be wrapped in quotes
@@ -33,42 +34,38 @@ case class CsvSettings(separChar: Char = ',',
                        useQuote: Boolean = true,
                        encoding: String = UTF8)
 
-/**
- * Provides implicit functionality for writing data to CSV file format. Usage:
- *
- * {{{
- *   import CsvImplicits._
- *
- *   val f = Frame(...)
- *   f.writeCsvFile("tmp.csv")
- * }}}
- */
-object CsvImplicits {
-  import scala.language.implicitConversions
-  import scala.language.reflectiveCalls
-  /**
+object CsvWriter {
+   /**
    * Provides enrichment on Series object for writing to a Csv file.
    */
-  implicit def series2CsvWriter[X: ST: ORD, T: ST](series: Series[X, T]) = new {
-    def writeCsvFile(path: String,
+    def writeSeriesToFile[X: ST: ORD, T: ST](
+                    series: Series[X,T],
+                    path: String,
                      withColIx: Boolean = false,
                      withRowIx: Boolean = true,
-                     settings: CsvSettings = new CsvSettings()) {
-      frame2CsvWriter(Frame(series)).writeCsvFile(path, withColIx, withRowIx, settings)
-    }
+                     settings: CsvSettings = new CsvSettings()) : Unit = 
+                     writeFrameToFile(Frame(series),path, withColIx, withRowIx, settings)
+    
 
-    def writeCsvStream(stream: OutputStream,
+    def writeSeriesToStream[X: ST: ORD, T: ST](
+      series: Series[X,T],
+      stream: OutputStream,
                        withColIx: Boolean = false,
                        withRowIx: Boolean = true,
-                       settings: CsvSettings = new CsvSettings()) {
-      frame2CsvWriter(Frame(series)).writeCsvStream(stream, withColIx, withRowIx, settings)
-    }
-  }     // end new
+                       settings: CsvSettings = new CsvSettings()) : Unit =  
+                       writeFrameToStream(Frame(series), stream, withColIx, withRowIx, settings)
 
-  /**
-   * Provides enrichment on Frame object for writing to a Csv file.
-   */
-  implicit def frame2CsvWriter[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T]) = new {
+    def writeSeriesToArray[X: ST: ORD, T: ST](
+      series: Series[X,T],
+                       withColIx: Boolean = false,
+                       withRowIx: Boolean = true,
+                       settings: CsvSettings = new CsvSettings()) : Array[Byte] =  {
+                      val os = new java.io.ByteArrayOutputStream
+                      writeFrameToStream(Frame(series), os, withColIx, withRowIx, settings)
+                      os.toByteArray()
+                       }
+    
+      
     /**
      * Write a frame in CSV format to a file at the path provided
      *
@@ -77,21 +74,32 @@ object CsvImplicits {
      * @param withRowIx If true, print out index value as first column
      * @param settings Settings to use in formatting
      */
-    def writeCsvFile(path: String,
+    def writeFrameToFile[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T],
+     path: String,
                      withColIx: Boolean = true,
                      withRowIx: Boolean = true,
-                     settings: CsvSettings = new CsvSettings()) {
+                     settings: CsvSettings = new CsvSettings()) : Unit = {
 
       val file = new FileOutputStream(path)
       val stream = new BufferedOutputStream(file, 4 * 1024)
 
       try {
-        writeCsvStream(stream, withColIx, withRowIx, settings)
+        writeFrameToStream(frame, stream, withColIx, withRowIx, settings)
       }
       finally {
         stream.close()
         file.close()
       }
+    }
+
+    def writeFrameToArray[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T],
+                     withColIx: Boolean = true,
+                     withRowIx: Boolean = true,
+                     settings: CsvSettings = new CsvSettings()) : Array[Byte] = {
+
+      val stream = new ByteArrayOutputStream()
+        writeFrameToStream(frame, stream, withColIx, withRowIx, settings)
+        stream.toByteArray
     }
 
     /**
@@ -102,10 +110,11 @@ object CsvImplicits {
      * @param withRowIx If true, print out index value as first column
      * @param settings Settings to use in formatting
      */
-    def writeCsvStream(stream: OutputStream,
+    def writeFrameToStream[RX: ST: ORD, CX: ST: ORD, T: ST](frame: Frame[RX, CX, T],
+    stream: OutputStream,
                        withColIx: Boolean = true,
                        withRowIx: Boolean = true,
-                       settings: CsvSettings = new CsvSettings()) {
+                       settings: CsvSettings = new CsvSettings()) = {
 
       val newLine = "\n".getBytes(settings.encoding)
 
@@ -172,6 +181,5 @@ object CsvImplicits {
       }
     }
 
-  }   // end new
 
 }
