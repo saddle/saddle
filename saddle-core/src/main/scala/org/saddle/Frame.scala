@@ -1035,6 +1035,9 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     resultingFrame.setColIndex(newColIndex)
   }
 
+  def addCol(other: Series[RX, T],newColIx: CX, how: JoinType = LeftJoin ): Frame[RX, CX, T] = joinSPreserveColIx(other, how, newColIx)
+  
+
   /**
    * Perform a join with another Frame[RX, CX, T] according to the row index. The `how`
    * argument dictates how the join is to be performed:
@@ -1376,6 +1379,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * See joinSPreserveColIx; operates row-wise
    */
   def rjoinSPreserveRowIx(other: Series[CX, T], how: JoinType = LeftJoin, newRowIx: RX): Frame[RX, CX, T] = T.joinSPreserveColIx(other, how, newRowIx).T
+
+  def addRow(other: Series[CX, T],newRowIx: RX, how: JoinType = LeftJoin ): Frame[RX, CX, T] = rjoinSPreserveRowIx(other, how, newRowIx)
 
   /**
    * See join; operates row-wise

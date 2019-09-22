@@ -26,6 +26,15 @@ class FrameSpec extends Specification {
     Seq((1,2,3)).toFrame must_== Frame(1 -> Series(2->3)).T
   }
 
+  "AddRow works" in {
+    Frame(1 -> Series(1 -> 1, 2->2,3->3), 2 -> Series(1->4,2->5,3->6)).addRow(Series(3,4,5),2) must_== 
+    Frame(1 -> Series(1 -> 1, 2->2,3->3, 2->4), 2 -> Series(1->4,2->5,3->6, 2->5))
+  }
+  "AddCols works" in {
+    Frame(1 -> Series(1 -> 1, 2->2,3->3), 2 -> Series(1->4,2->5,3->6)).addCol(Series(7,8,9,10),2) must_== 
+    Frame(1 -> Series(1 -> 1, 2->2,3->3), 2 -> Series(1->4,2->5,3->6),2 -> Series(1->8,2->9,3->10))
+  }
+
   "Frame.empty behaves as expected" in {
     Frame("a" -> Vec.empty[Int], "b" -> Vec.empty[Int]).isEmpty must_== true
   }
