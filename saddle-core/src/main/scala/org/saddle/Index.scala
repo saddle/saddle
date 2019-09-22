@@ -526,7 +526,6 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
 }
 
 object Index {
-  import scala.language.implicitConversions
   /**
    * Factory method to create an index from a Vec of elements
    * @param values Vec
@@ -576,22 +575,6 @@ object Index {
    * @tparam C type of Index
    */
   def empty[C: ST: ORD]: Index[C] = Index(Array.empty[C])
-
-  // (safe) conversions
-
-  /**
-   * An array may be implicitly converted to an Index
-   * @param arr Array
-   * @tparam C Type of elements in array
-   */
-  implicit def arrayToIndex[C: ST: ORD](arr: Array[C]) = Index(arr)
-
-  /**
-   * A Vec may be implicitly converted to an Index
-   * @param s Vec
-   * @tparam C Type of elements in Vec
-   */
-  implicit def vecToIndex[C: ST: ORD](s: Vec[C]) = Index(s.toArray)
 
   /**
    * Provides an index-specific exception

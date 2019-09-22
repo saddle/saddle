@@ -78,7 +78,7 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
     Index(Vec(locs).map(i => if (i == -1) IndexImpl.sentinelErr else guardLoc(i) + from))
 
   def without(locs: Array[Int]): Index[Int] =
-    array.remove(asArr, locs)
+    Index(array.remove(asArr, locs))
 
   def concat[B, C](x: Index[B])(implicit wd: Promoter[Int, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Int, B, C](toArray, x.toArray))

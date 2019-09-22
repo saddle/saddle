@@ -735,7 +735,7 @@ class Series[X: ST: ORD, T: ST](
     val indexer = this.index.join(other.index, how)
     val lseq = indexer.lTake.map(this.values.take(_)) getOrElse this.values
     val rseq = indexer.rTake.map(other.values.take(_)) getOrElse other.values
-    Frame(MatCols(lseq, rseq), indexer.index, Array(0, 1))
+    Frame(MatCols(lseq, rseq), indexer.index, Index(Array(0, 1)))
   }
 
   /**

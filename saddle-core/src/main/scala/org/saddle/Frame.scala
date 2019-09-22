@@ -512,6 +512,15 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     Frame(values, newIx, colIx) withMat cachedMat
 
   /**
+   * Create a new Frame using the current values but with the new row index. Positions
+   * of the values do not change. Length of new index must be equal to number of rows.
+   * @param newIx A new Index
+   * @tparam Y Type of elements of new Index
+   */
+  def setRowIndex[Y: ST: ORD](newIx: Array[Y]): Frame[Y, CX, T] =
+    setRowIndex(Index(newIx))
+
+  /**
    * Create a new Frame using the current values but with the new row index specified
    * by the column at a particular offset, and with that column removed from the frame
    * data body.
@@ -1653,7 +1662,7 @@ object Frame extends BinOpFrame {
       case 0 => empty[RX, Int, T]
       case 1 => Frame(asIdxSeq.map(_.values), asIdxSeq(0).index, IndexIntRange(1))
       case _ => {
-        val init = Frame(IndexedSeq(asIdxSeq(0).values), asIdxSeq(0).index, Array(0))
+        val init = Frame(IndexedSeq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
         val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
         Frame(temp.values, temp.rowIx, IndexIntRange(temp.numCols))
       }
@@ -1693,7 +1702,7 @@ object Frame extends BinOpFrame {
       case 0 => empty[RX, CX, T]
       case 1 => Frame(asIdxSeq.map(_.values), asIdxSeq(0).index, idx)
       case _ => {
-        val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Array(0))
+        val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
         val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
         Frame(temp.values, temp.rowIx, idx)
       }
@@ -1803,7 +1812,7 @@ object Panel {
       case 0 => empty[RX, Int]
       case 1 => Frame(asIdxSeq.map(_.values), asIdxSeq(0).index, IndexIntRange(1))
       case _ => {
-        val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Array(0))
+        val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
         val temp = asIdxSeq.tail.foldLeft(init)( _.joinS(_, OuterJoin))
         Frame(temp.values, temp.rowIx, IndexIntRange(temp.numCols))
       }
@@ -1843,7 +1852,7 @@ object Panel {
       case 0 => empty[RX, CX]
       case 1 => Frame(asIdxSeq.map(_.values), asIdxSeq(0).index, idx)
       case _ => {
-        val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Array(0))
+        val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
         val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
         Frame(temp.values, temp.rowIx, idx)
       }
