@@ -1,6 +1,5 @@
 package org.saddle.framework
 
-import scala.language.reflectiveCalls
 import org.saddle.Vec
 import org.specs2.matcher._
 import scala.reflect.ClassTag

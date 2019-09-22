@@ -27,7 +27,7 @@ import util.Concat.Promoter
 import java.io.OutputStream
 
 
-object Vec extends BinOpVec with VecBoolEnricher {
+object Vec extends BinOpVec  {
   /**
    * Factory method to create a Vec from an array of elements
    *
@@ -55,6 +55,33 @@ object Vec extends BinOpVec with VecBoolEnricher {
    * @tparam T Vec type parameter
    */
   def empty[T: ST]: Vec[T] = Vec(Array.empty[T])
+
+  implicit class VecToBoolLogic(v: Vec[Boolean]) {
+    /**
+     * True if all elements are true
+     */
+    def all: Boolean  = -1 == v.findOne(_ == false)
+
+    /**
+     * True if some elements are true
+     */
+    def some: Boolean = -1 != v.findOne(_ == true)
+
+    /**
+     * True if no elements are true
+     */
+    def none: Boolean = !some
+
+    /**
+     * Number of elements which are true
+     */
+    def countT: Int = v.foldLeft(0)((a, b) => a + (if (b) 1 else 0))
+
+    /**
+     * Number of elements which are false
+     */
+    def countF: Int = v.foldLeft(0)((a, b) => a + (if (b) 0 else 1))
+  }
 }
 
 
