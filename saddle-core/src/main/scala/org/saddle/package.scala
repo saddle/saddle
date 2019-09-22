@@ -194,6 +194,9 @@ package object saddle {
   implicit class SeqToVec[T: ST](s: Seq[T]) {
     def toVec: Vec[T] = Vec(s : _*)
   }
+  implicit class ArrToVec[@specialized(Boolean,Int,Long,Double) T: ST](s: Array[T]) {
+    def toVec: Vec[T] = Vec(s)
+  }
 
   /**
    * Augments Seq with a toIndex method that returns a new Index instance.
