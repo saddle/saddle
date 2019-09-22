@@ -28,13 +28,52 @@ import java.io.OutputStream
  */
 class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Array[T], val scalarTag: ScalarTag[T]) extends Mat[T] {
   implicit private[this] def st = scalarTag
-  def repr = this
 
   def numRows = r
 
   def numCols = c
 
+  /** Returns the backing array of this Mat
+   * Mutations to this array are visible to this Mat
+   * 
+   * Elements are laid out in row-major order
+   */
+  def toArray = values
+
+   /**
+   * Return unboxed value of matrix at an offset from zero in row-major order
+   *
+   * @param i index
+   */
+  def raw(i: Int): T = values(i)
+
+  /**
+   * Return unboxed value of matrix at row/column
+   *
+   * @param r row index
+   * @param c col index
+   */
+  def raw(r: Int, c: Int): T = values(r * numCols + c)
+
+  /**
+   * Concatenate all rows into a single row-wise Vec instance
+   * 
+   * Underlying array is shared between the two instances
+   */
   def toVec = scalarTag.makeVec(toArray)
+
+  /**
+   * Returns (a copy of) the contents of matrix as a single array in
+   * row-major order
+   *
+   */
+  def contents: Array[T] = values.clone()
+
+  /**
+   * Makes a copy of this Mat
+   *
+   */
+  def copy : Mat[T] = new MatDefault(r,c,values.clone,scalarTag)
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (T) => B): Mat[B] = MatImpl.map(this)(f)
 
@@ -65,24 +104,19 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
    */
   def withoutRows(locs: Array[Int]): Mat[T] = MatImpl.withoutRows(this, locs)
 
+  /**
+   * Changes the shape of matrix without changing the underlying data
+   * 
+   * Backing array will be shared between the two instances!
+   */
   def reshape(r: Int, c: Int): Mat[T] = new MatDefault(r, c, values, scalarTag)
 
-  // access like vector in row-major order
-  private[saddle] def apply(i: Int) = values(i)
-
-  // implement access like matrix(i, j)
-  private[saddle] def apply(r: Int, c: Int) = apply(r * numCols + c)
-
-  // use with caution, may not return copy
-  def toArray = values
-
-  private[saddle] def toDoubleArray(implicit ev: NUM[T]): Array[Double] = arrCopyToDblArr(values)
-
-  private[saddle] def arrCopyToDblArr(r: Array[T])(implicit ev: NUM[T]): Array[Double] = {
-    val arr = Array.ofDim[Double](r.length)
+  private[saddle] def toDoubleArray(implicit ev: NUM[T]): Array[Double] = {
+    val arr = Array.ofDim[Double](values.length)
     var i = 0
-    while(i < r.length) {
-      arr(i) = scalarTag.toDouble(r(i))
+    val n = arr.length
+    while(i < n) {
+      arr(i) = scalarTag.toDouble(values(i))
       i += 1
     }
     arr
@@ -94,7 +128,7 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
       var i = 0
       var eq = true
       while(eq && i < length) {
-        eq &&= (apply(i) == rv(i) || this.scalarTag.isMissing(apply(i)) && rv.scalarTag.isMissing(rv(i)))
+        eq &&= (raw(i) == rv.raw(i) || this.scalarTag.isMissing(raw(i)) && rv.scalarTag.isMissing(rv.raw(i)))
         i += 1
       }
       eq
@@ -119,21 +153,6 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
    *
    */
   def isEmpty: Boolean = length == 0
-
-  /**
-   * Return unboxed value of matrix at an offset from zero in row-major order
-   *
-   * @param i index
-   */
-  def raw(i: Int): T = apply(i)
-
-  /**
-   * Return unboxed value of matrix at row/column
-   *
-   * @param r row index
-   * @param c col index
-   */
-  def raw(r: Int, c: Int): T = apply(r, c)
 
   /**
    * Return scalar value of matrix at offset from zero in row-major order
@@ -188,12 +207,7 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
   def at(r: Slice[Int], c: Slice[Int]): Mat[T] =
     row(r).col(c)
 
-  /**
-   * Returns (a copy of) the contents of matrix as a single array in
-   * row-major order
-   *
-   */
-  def contents: Array[T] = toVec.toArray.clone()
+  
 
   /**
    * Create Mat comprised of same values in specified rows
@@ -293,12 +307,12 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
   /**
    * Returns columns of Mat as an indexed sequence of Vec instances
    */
-  def cols(): IndexedSeq[Vec[T]] = Range(0, numCols).map(col _)
+  def cols(): IndexedSeq[Vec[T]] = Range(0, numCols).map(col)
 
   /**
    * Returns columns of Mat as an indexed sequence of Vec instances
    */
-  def cols(seq: IndexedSeq[Int]): IndexedSeq[Vec[T]] = seq.map(col _)
+  def cols(seq: IndexedSeq[Int]): IndexedSeq[Vec[T]] = seq.map(col)
 
   /**
    * Returns a specific row of the Mat as a Vec
@@ -307,7 +321,7 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
    */
   def row(r: Int): Vec[T] = {
     assert(r >= 0 && r < numRows, "Array index %d out of bounds" format r)
-    flatten.slice(r * numCols, (r + 1) * numCols)
+    toVec.slice(r * numCols, (r + 1) * numCols)
   }
 
   /**
@@ -334,12 +348,12 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
   /**
    * Returns rows of matrix as an indexed sequence of Vec instances
    */
-  def rows(): IndexedSeq[Vec[T]] = Range(0, numRows).map(row _)
+  def rows(): IndexedSeq[Vec[T]] = Range(0, numRows).map(row)
 
   /**
    * Returns rows of matrix as an indexed sequence of Vec instances
    */
-  def rows(seq: IndexedSeq[Int]): IndexedSeq[Vec[T]] = seq.map(row _)
+  def rows(seq: IndexedSeq[Int]): IndexedSeq[Vec[T]] = seq.map(row)
 
   /**
    * Rounds elements in the matrix (which must be numeric) to
@@ -353,21 +367,7 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
     map(rounder)
   }
 
-  private var flatCache: Option[Vec[T]] = None
-  private def flatten: Vec[T] = flatCache.getOrElse {
-    this.synchronized {
-      flatCache = Some(toVec)
-      flatCache.get
-    }
-  }
-
-  private var flatCacheT: Option[Vec[T]] = None
-  private def flattenT: Vec[T] = flatCacheT.getOrElse {
-    this.synchronized {
-      flatCacheT = Some(T.toVec)
-      flatCacheT.get
-    }
-  }
+  private def flattenT: Vec[T] = T.toVec
 
   /**
    * Creates a string representation of Mat
@@ -394,7 +394,7 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
       val buf = new StringBuilder()
       val strFn = (col: Int) => {
         val l = lenMap(col)
-        "%" + { if (l > 0) l else 1 } + "s " format scalarTag.show(apply(r, col))
+        "%" + { if (l > 0) l else 1 } + "s " format scalarTag.show(raw(r, col))
       }
       buf.append(util.buildStr(ncols, numCols, strFn))
       buf.append("\n")

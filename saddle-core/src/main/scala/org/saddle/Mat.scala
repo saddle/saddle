@@ -169,6 +169,8 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   /**
    * Changes the shape of matrix without changing the underlying data
+   * 
+   * Backing array will be shared between the two instances!
    */
   def reshape(r: Int, c: Int): Mat[A]
 
@@ -330,17 +332,22 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
 
   /**
    * Concatenate all rows into a single row-wise Vec instance
+   * 
+   * Underlying array is shared between the two instances
    */
   def toVec: Vec[A]
 
+   /**
+   * Makes a copy of this Mat
+   *
+   */
+  def copy : Mat[A] 
 
-  // access like vector in row-major order
-  private[saddle] def apply(i: Int): A
-
-  // implement access like matrix(i, j)
-  private[saddle] def apply(r: Int, c: Int): A
-
-  // use with caution, may not return copy
+  /** Returns the backing array of this Mat
+   * Mutations to this array are visible to this Mat
+   * 
+   * Elements are laid out in row-major order
+   */
   def toArray: Array[A]
 
   // use with caution, may not return copy

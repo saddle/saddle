@@ -32,7 +32,7 @@ private[saddle] object MatImpl {
     val buf = Array.ofDim[B](mat.length)
     var i = 0
     while(i < mat.length) {
-      val v = mat(i)
+      val v = mat.raw(i)
       if (sca.isMissing(v))
         buf(i) = scb.missing
       else
@@ -54,7 +54,7 @@ private[saddle] object MatImpl {
           nRows += 1
           var c = 0
           while (c < m.numCols) {
-            buf.+=(m(r, c))
+            buf.+=(m.raw(r, c))
             c += 1
           }
         }
@@ -76,7 +76,7 @@ private[saddle] object MatImpl {
         val currRow = locs(r)
         var c = 0
         while (c < m.numCols) {
-          buf.+=(m(currRow, c))
+          buf.+=(m.raw(currRow, c))
           c += 1
         }
         r += 1
