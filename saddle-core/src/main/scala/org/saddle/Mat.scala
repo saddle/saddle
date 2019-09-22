@@ -365,10 +365,11 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * @param nrows Number of elements to display
    */
   def print(nrows: Int = 8, ncols: Int = 8, stream: OutputStream = System.out) : Unit
+
+  def toFrame : Frame[Int,Int,A]
 }
 
 object Mat extends BinOpMat {
-  import scala.language.implicitConversions
   
   /**
    * Factory method to create a new Mat from raw materials
@@ -384,13 +385,6 @@ object Mat extends BinOpMat {
     def apply[@spec(Boolean,Int,Long,Double) T](rows: Int, cols: Int, vec: Vec[T])(implicit st: ST[T]): Mat[T] = 
     if (rows == 0 || cols == 0) new MatDefault(0, 0, Array.empty[T], st) 
     else new MatDefault(rows, cols, vec.toArray, st)
-
-  /**
-   * Allows implicit promoting from a Mat to a Frame instance
-   * @param m Mat instance
-   * @tparam T The type of elements in Mat
-   */
-  implicit def matToFrame[T: ST](m: Mat[T]) = Frame(m)
 
   /**
    * Factory method to create an empty Mat

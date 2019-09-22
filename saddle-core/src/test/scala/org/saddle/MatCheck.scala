@@ -154,14 +154,14 @@ class MatCheck extends Specification with ScalaCheck {
      "dropRowsWithNA works" in {
        implicit val arbMat = Arbitrary(MatArbitraries.matDoubleWithNA)
        forAll { (m: Mat[Double]) =>
-         m.dropRowsWithNA must_== m.rdropNA.toMat
+         m.dropRowsWithNA must_== m.toFrame.rdropNA.toMat
        }
      }
 
      "dropColsWithNA works" in {
        implicit val arbMat = Arbitrary(MatArbitraries.matDoubleWithNA)
        forAll { (m: Mat[Double]) =>
-         m.dropColsWithNA must_== m.dropNA.toMat
+         m.dropColsWithNA must_== m.toFrame.dropNA.toMat
        }
      }
 

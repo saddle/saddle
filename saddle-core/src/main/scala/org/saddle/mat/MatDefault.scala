@@ -419,4 +419,9 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
   /** Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values. */
   override def hashCode(): Int = toVec.foldLeft(1)(_ * 31 + _.hashCode())
 
+  /**
+   * Converst to Frame
+   */
+  def toFrame = Frame(this)
+
 }
