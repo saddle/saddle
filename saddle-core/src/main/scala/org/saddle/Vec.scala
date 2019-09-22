@@ -146,15 +146,6 @@ trait Vec[@spec(Boolean,Int,Long,Double) T] extends NumericOps[Vec[T]] {
   def scalarTag: ScalarTag[T]
 
   /**
-   * Danger - could expose internal NA's
-   *
-   * Access an element by location. This is made private because the internal
-   * representation might contain primitive NA's that need to be boxed so that
-   * they aren't utilized unknowingly in calculations.
-   */
-  def apply(loc: Int): T
-
-  /**
    * Set to true when the vec is shifted over the backing array
    */
   def needsCopy: Boolean 

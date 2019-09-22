@@ -196,7 +196,7 @@ object IndexTime {
     val millis = array.empty[Long](times.length)
     var i = 0
     while (i < millis.length) {
-      val t = times(i)
+      val t = times.raw(i)
       millis(i) = if(st.isMissing(t)) sl.missing else t.getMillis
       i += 1
     }

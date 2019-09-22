@@ -66,7 +66,7 @@ object SeriesGrouper {
       var k = 0
       while (k < sz) {
         // put each value back into original location
-        res(i(k)) = v(k)
+        res(i(k)) = v.raw(k)
         k += 1
       }
     }

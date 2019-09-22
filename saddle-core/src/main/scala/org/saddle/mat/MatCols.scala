@@ -37,12 +37,12 @@ class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
 
   // the r'th element of the c'th vector
   // danger - could expose internal NA's
-  private[saddle] def apply(r: Int, c: Int): A = cols(c)(r)
+  private[saddle] def apply(r: Int, c: Int): A = cols(c).raw(r)
 
   // ith vector
   def apply(i: Int): Vec[A] = cols(i)
 
-  def at(r: Int, c: Int): Scalar[A] = cols(c)(r)
+  def at(r: Int, c: Int): Scalar[A] = cols(c).at(r)
 
   // take vectors at particular locations
   def take(locs: Array[Int]): MatCols[A] = {

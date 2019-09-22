@@ -46,7 +46,7 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 
   override def length = times.length
 
-  override def apply(loc: Int) = l2t(times(loc))
+  override def raw(loc: Int) = l2t(times.raw(loc))
 
   override def take(locs: Array[Int]) = vl2vt(times.take(locs))
 
@@ -161,7 +161,7 @@ object VecTime {
     vecs.zipWithIndex.foreach { case (v, _) =>
       val vlen = v.length
       var i = 0
-      while (i < vlen) { databuf(c) = v.times(i); i += 1; c += 1 }
+      while (i < vlen) { databuf(c) = v.times.raw(i); i += 1; c += 1 }
     }
 
     new VecTime(Vec(databuf))

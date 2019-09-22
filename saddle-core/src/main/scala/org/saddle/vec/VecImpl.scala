@@ -27,8 +27,8 @@ private[saddle] object VecImpl {
     val buf = Array.ofDim[A](v1.length)
     var i = 0
     while(i < v1.length) {
-      val a = v1(i)
-      val b = v2(i)
+      val a = v1.raw(i)
+      val b = v2.raw(i)
       buf(i) = if (!b) a else value
       i += 1
     }
@@ -41,7 +41,7 @@ private[saddle] object VecImpl {
     val buf = Array.ofDim[A](v1.length)
     var i = 0
     while(i < v1.length) {
-      val a = v1(i)
+      val a = v1.raw(i)
       buf(i) = if (sa.isMissing(a) || !f(a)) a else value
       i += 1
     }
@@ -54,7 +54,7 @@ private[saddle] object VecImpl {
     var acc = init
     var i = 0
     while(i < vec.length) {
-      val v = vec(i)
+      val v = vec.raw(i)
       if (sa.notMissing(v)) acc = f(acc, v)
       i += 1
     }
@@ -71,7 +71,7 @@ private[saddle] object VecImpl {
     var acc = init
     var i = 0
     while(i < vec.length) {
-      val v = vec(i)
+      val v = vec.raw(i)
       if (sa.notMissing(v)) {
         if (cond(acc, v))
           acc = f(acc, v)
@@ -90,7 +90,7 @@ private[saddle] object VecImpl {
     val buf = Array.ofDim[B](vec.length)
     var i = 0
     while (i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (sca.isMissing(v))
         buf(i) = scb.missing
       else
@@ -106,7 +106,7 @@ private[saddle] object VecImpl {
     var i = 0
     val b = implicitly[ST[B]].makeBuf(vec.length)
     while (i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       for { u <- f(v) } b.+=(u)
       i += 1
     }
@@ -127,7 +127,7 @@ private[saddle] object VecImpl {
     var acc = init
     var i = 0
     while(i < vec.length) {
-      val v = vec(i)
+      val v = vec.raw(i)
       if (sca.notMissing(v)) {
         acc = f(acc, v)
         buf(i) = acc
@@ -149,8 +149,8 @@ private[saddle] object VecImpl {
     val buf = Array.ofDim[C](v1.length)
     var i = 0
     while(i < v1.length) {
-      val a = v1(i)
-      val b = v2(i)
+      val a = v1.raw(i)
+      val b = v2.raw(i)
       if (sca.isMissing(a) || scb.isMissing(b)) {
         buf(i) = scc.missing
       }
@@ -168,7 +168,7 @@ private[saddle] object VecImpl {
     var acc = init
     var i = 0
     while(i < vec.length) {
-      val vi = vec(i)
+      val vi = vec.raw(i)
       if (sa.notMissing(vi) && pred(vi)) {
         acc = f(acc, vi)
       }
@@ -185,7 +185,7 @@ private[saddle] object VecImpl {
     var acc = init
     var i = 0
     while(i < vec.length) {
-      val v = vec(i)
+      val v = vec.raw(i)
       if (sa.notMissing(v) && pred(v)) {
         acc = f(acc, v)
         buf(i) = acc
@@ -223,7 +223,7 @@ private[saddle] object VecImpl {
     val sa = implicitly[ST[A]]
     var i = 0
     while (i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (sa.notMissing(v)) op(v)
       i += 1
     }
@@ -233,7 +233,7 @@ private[saddle] object VecImpl {
     val sa = implicitly[ST[A]]
     var i = 0
     while (i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (sa.notMissing(v) && pred(v)) op(v)
       i += 1
     }
@@ -244,7 +244,7 @@ private[saddle] object VecImpl {
     var i = 0
     val buf = Buffer.empty[Int]
     while(i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (sa.notMissing(v) && pred(v)) buf.+=(i)
       i += 1
     }
@@ -256,7 +256,7 @@ private[saddle] object VecImpl {
     var ex = false
     var i = 0
     while (!ex && i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       ex = sa.isMissing(v)
       i += 1
     }
@@ -268,7 +268,7 @@ private[saddle] object VecImpl {
     var ex = true
     var i = 0
     while (ex && i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       ex = ex && sa.isMissing(v)
       i += 1
     }
@@ -280,7 +280,7 @@ private[saddle] object VecImpl {
     var ex = false
     var i = 0
     while (!ex && i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       ex = sa.notMissing(v) && pred(v)
       i += 1
     }
@@ -292,7 +292,7 @@ private[saddle] object VecImpl {
     var i = 0
     val buf = Buffer.empty[A]
     while(i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (sa.notMissing(v) && pred(v)) buf.+=(v)
       i += 1
     }
@@ -303,7 +303,7 @@ private[saddle] object VecImpl {
     var i = 0
     val buf = Buffer.empty[A]
     while(i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (pred(i)) buf.+=(v)
       i += 1
     }
@@ -314,7 +314,7 @@ private[saddle] object VecImpl {
     var i = 0
     val buf = Buffer.empty[A]
     while(i < vec.length) {
-      val v: A = vec(i)
+      val v: A = vec.raw(i)
       if (pred(i)) buf.+=(v)
       i += 1
     }
@@ -328,11 +328,11 @@ private[saddle] object VecImpl {
       val lim = if (atMost > 0) atMost else vec.length
       val sa = implicitly[ST[A]]
       val buf = array.empty[A](vec.length)
-      buf(0) = vec(0)
+      buf(0) = vec.raw(0)
       var i = 1
       var c = lim
       while(i < vec.length) {
-        val v: A = vec(i)
+        val v: A = vec.raw(i)
         if (sa.notMissing(v)) {
           buf(i) = v
           c = lim
@@ -366,7 +366,7 @@ private[saddle] object VecImpl {
     val l = vec.length
     val s = implicitly[ST[A]]
     while (i < l) {
-      if (s.isMissing(buf(i))) buf(i) = f(idx(i))
+      if (s.isMissing(buf(i))) buf(i) = f(idx.raw(i))
       i += 1
     }
     Vec(buf)

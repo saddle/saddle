@@ -33,8 +33,6 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    */
   def length = values.length
 
-  def apply(i: Int): T = values(i)
-
   /**
    * Returns a Vec whose backing array has been copied
    */
@@ -173,11 +171,11 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
 
       override def length = math.ceil((ub - b) / stride.toDouble).toInt
 
-      override def apply(i: Int): T = {
+      override def raw(i: Int): T = {
         val loc = b + i * stride
         if (loc >= ub)
           throw new ArrayIndexOutOfBoundsException("Cannot access location %d >= length %d".format(loc, ub))
-        self.apply(loc)
+        self.raw(loc)
       }
 
       override def needsCopy = true
@@ -202,14 +200,14 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
     new VecDefault(values, scalarTag) {
       override def length = self.length
 
-      override def apply(i: Int): T = {
+      override def raw(i: Int): T = {
         val loc = b + i
         if (loc >= e || loc < b)
           throw new ArrayIndexOutOfBoundsException("Cannot access location %d (vec length %d)".format(i, self.length))
         else if (loc >= self.length || loc < 0)
           scalarTag.missing
         else
-          self.apply(loc)
+          self.raw(loc)
       }
 
       override def needsCopy = true
@@ -225,7 +223,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
       val buf = new Array[T](length)
       var i = 0
       while( i < length ) {
-        buf(i) = apply(i)
+        buf(i) = raw(i)
         i += 1
       }
       buf
@@ -238,17 +236,14 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    * @param loc offset into Vec
    */
   def at(loc: Int): Scalar[T] = {
-    implicit val st = scalarTag
-    apply(loc)
+    Scalar(raw(loc))(scalarTag)
   }
 
   /**
    * Access an unboxed element of a Vec[A] at a single location
    * @param loc offset into Vec
    */
-  def raw(loc: Int): T = {
-    apply(loc)
-  }
+  def raw(loc: Int): T = values(loc)
 
   /**
    * Slice a Vec at a sequence of locations, e.g.
@@ -289,7 +284,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    */
   def first: Scalar[T] = {
     implicit val st = scalarTag
-    if (length > 0) apply(0) else NA
+    if (length > 0) raw(0) else NA
   }
 
   /**
@@ -297,7 +292,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    */
   def last: Scalar[T] = {
     implicit val st = scalarTag
-    if (length > 0) apply(length - 1) else NA
+    if (length > 0) raw(length - 1) else NA
   }
 
   /**
@@ -500,7 +495,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
       var i = 0
       var eq = true
       while(eq && i < this.length) {
-        eq &&= (apply(i) == rv(i) || this.scalarTag.isMissing(apply(i)) && rv.scalarTag.isMissing(rv(i)))
+        eq &&= (raw(i) == rv.raw(i) || this.scalarTag.isMissing(raw(i)) && rv.scalarTag.isMissing(rv.raw(i)))
         i += 1
       }
       eq
@@ -527,7 +522,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
       buf.append("[%d x 1]\n" format (length))
       val vlen = { head(half) concat tail(half) }.map(scalarTag.show(_)).foldLeft(0)(maxf)
 
-      def createRow(r: Int): String = ("%" + { if (vlen > 0) vlen else 1 } + "s\n").format(scalarTag.show(apply(r)))
+      def createRow(r: Int): String = ("%" + { if (vlen > 0) vlen else 1 } + "s\n").format(scalarTag.show(raw(r)))
       buf append util.buildStr(len, length, createRow, " ... \n" )
     }
 

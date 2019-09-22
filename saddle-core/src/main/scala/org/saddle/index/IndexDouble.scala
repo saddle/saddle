@@ -40,7 +40,7 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
   def toVec: Vec[Double] = keys
 
   // get the key at the position specified
-  def raw(idx: Int): Double = keys(idx)
+  def raw(idx: Int): Double = keys.raw(idx)
 
   def take(locs: Array[Int]): Index[Double] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
 

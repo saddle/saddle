@@ -40,7 +40,7 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   def toVec: Vec[T] = keys
 
   // get the key at the position specified
-  def raw(idx: Int): T = keys(idx)
+  def raw(idx: Int): T = keys.raw(idx)
 
   def take(locs: Array[Int]): Index[T] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
 

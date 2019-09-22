@@ -39,7 +39,7 @@ class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
   def toVec: Vec[Boolean] = keys
 
   // get the key at the position specified
-  def raw(idx: Int): Boolean = keys(idx)
+  def raw(idx: Int): Boolean = keys.raw(idx)
 
   def take(locs: Array[Int]): Index[Boolean] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
 

@@ -248,9 +248,9 @@ trait VecStats[@spec(Int, Long, Double) A] {
     val ar = Array.ofDim[Double](r.length)
     var i = 0
     while( i < r.length ) {
-      val v = r(i)
+      val v = r.raw(i)
       if (sa.notMissing(v))
-        ar(i) = subOp(r(i), mn)
+        ar(i) = subOp(v, mn)
       else
         ar(i) = sd.missing
       i += 1
@@ -268,7 +268,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
       var i = 0
       var j = 0
       while(i < r.length) {
-        val v = sa.toDouble(r(i))
+        val v = sa.toDouble(r.raw(i))
         if (v == v) {
           arr(j) = v
           j += 1
@@ -399,7 +399,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
       sd.missing
     else {
       val c = vf.length
-      if (c == 1) vf(0)
+      if (c == 1) vf.raw(0)
       else {
         val n = method match {
           case PctMethod.Excel => (tile / 100.0) * (c - 1.0) + 1.0
@@ -408,7 +408,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
         val s = vf.sorted
         val k = math.floor(n).toInt
         val d = n - k
-        if (k <= 0) s(0) else if (k >= c) s.last else s(k - 1) + d * (s(k) - s(k-1))
+        if (k <= 0) s.raw(0) else if (k >= c) s.last else s.raw(k - 1) + d * (s.raw(k) - s.raw(k-1))
       }
     }
   }

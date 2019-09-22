@@ -40,7 +40,7 @@ class IndexInt(keys: Vec[Int]) extends Index[Int] {
   def toVec: Vec[Int] = keys
 
   // get the key at the position specified
-  def raw(idx: Int): Int = keys(idx)
+  def raw(idx: Int): Int = keys.raw(idx)
 
   def take(locs: Array[Int]): Index[Int] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
 

@@ -36,7 +36,7 @@ trait BinOpVec {
       val ar = new Array[C](sz)
       var i = 0
       while (i < sz) {
-        ar(i) = op(v1(i), v2)
+        ar(i) = op(v1.raw(i), v2)
         i += 1
       }
       Vec(ar)
@@ -84,7 +84,7 @@ trait BinOpVec {
       val ar = new Array[C](sz)
       var i = 0
       while (i < sz) {
-        ar(i) = op(v1(i), v2(i))
+        ar(i) = op(v1.raw(i), v2.raw(i))
         i += 1
       }
       Vec(ar)
@@ -133,7 +133,7 @@ trait BinOpVec {
       val ar = new Array[C](sz)
       var i = 0
       while (i < sz) {
-        ar(i) = opmul(v1(i), v2(i))
+        ar(i) = opmul(v1.raw(i), v2.raw(i))
         i += 1
       }
       Vec(ar).foldLeft(implicitly[ST[C]].zero)(opadd.apply)
@@ -166,7 +166,7 @@ trait BinOpVec {
       while (i < rc) {
         var j = 0
         while(j < cc) {
-          values(i * cc + j) = opmul(v1(i), v2(j))
+          values(i * cc + j) = opmul(v1.raw(i), v2.raw(j))
           j += 1
         }
         i += 1

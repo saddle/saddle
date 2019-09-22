@@ -48,6 +48,11 @@ object IndexMaker extends IndexMakerLowPriority {
     new IndexMaker[(T[I1], T[I2]), (I1, I2)] {
       def apply(in: (T[I1], T[I2])) = zip2V(in._1, in._2)
     }
+  
+    implicit def make2Vec[ I1: ST: ORD, I2: ST: ORD] =
+    new IndexMaker[(Vec[I1], Vec[I2]), (I1, I2)] {
+      def apply(in: (Vec[I1], Vec[I2])) = zip2Vec(in._1, in._2)
+    }
 
   implicit def make3V[T[K] <: SeqLike[K], I1: ST: ORD, I2: ST: ORD, I3: ST: ORD] =
     new IndexMaker[(T[I1], T[I2], T[I3]), (I1, I2, I3)] {
@@ -75,6 +80,19 @@ object IndexMaker extends IndexMakerLowPriority {
     var i = 0
     while (i < sz) {
       arr(i) = (a(i), b(i))
+      i += 1
+    }
+    Index(arr)
+  }
+
+  private def zip2Vec[A: ST: ORD, B: ST: ORD](a: Vec[A], b: Vec[B]): Index[(A, B)] = {
+    require(a.length == b.length,
+            "Arguments must have same length")
+    val sz = a.length
+    val arr = Array.ofDim[(A, B)](sz)
+    var i = 0
+    while (i < sz) {
+      arr(i) = (a.raw(i), b.raw(i))
       i += 1
     }
     Index(arr)

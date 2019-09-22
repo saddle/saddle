@@ -121,13 +121,13 @@ class Series[X: ST: ORD, T: ST](
    * Access an unboxed element of a Series at a single location
    * @param loc offset into Series
    */
-  def raw(loc: Int): T = values(loc)
+  def raw(loc: Int): T = values.raw(loc)
 
   /**
    * Access a boxed element of a Series at a single location
    * @param loc offset into Series
    */
-  def at(loc: Int): Scalar[T] = values(loc)
+  def at(loc: Int): Scalar[T] = values.at(loc)
 
   /**
    * Access multiple locations of a Series, returning a new Series comprising those locations
@@ -846,7 +846,7 @@ class Series[X: ST: ORD, T: ST](
       val isca = index.scalarTag
       val vidx = index.toVec
       val idxHf = { vidx.head(half) concat vidx.tail(half) }
-      val ilens = idxHf.map(isca.strList(_)).foldLeft(isca.strList(vidx(0)).map(_.length))(maxf)
+      val ilens = idxHf.map(isca.strList(_)).foldLeft(isca.strList(vidx.raw(0)).map(_.length))(maxf)
 
       val vsca = values.scalarTag
       val vlHf = { values.head(half) concat values.tail(half) }
