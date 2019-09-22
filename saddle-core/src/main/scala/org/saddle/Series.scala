@@ -185,7 +185,7 @@ class Series[X: ST: ORD, T: ST](
    * Access a boxed element of a Series index at a single location
    * @param loc offset into Series
    */
-  def keyAt(loc: Int): Scalar[X] = index.raw(loc)
+  def keyAt(loc: Int): Scalar[X] = Scalar(index.raw(loc))
 
   /**
    * Access a multiple locations of a Series index, returning a new Index
@@ -441,13 +441,19 @@ class Series[X: ST: ORD, T: ST](
   def filterAt(pred: Int => Boolean) = Series(values.filterAt(pred), Index(index.toVec.filterAt(pred)))
 
   /**
+   * Return Series whose keys and values are chosen via a
+   * Series[_, Boolean] where the latter contains a true value.
+   * @param pred Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)
+   */
+  def where(pred: Series[_, Boolean]): Series[X, T] = where(pred.values)
+  /**
    * Return Series whose keys and values are chosen via a Vec[Boolean] or a
    * Series[_, Boolean] where the latter contains a true value.
    * @param pred Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)
    */
-  def where(pred: Series[_, Boolean]): Series[X, T] = {
-    val newVals = VecImpl.where(this.values)(pred.values.toArray)
-    val newIdx  = VecImpl.where(index.toVec)(pred.values.toArray)
+  def where(pred: Vec[Boolean]): Series[X, T] = {
+    val newVals = VecImpl.where(this.values)(pred.toArray)
+    val newIdx  = VecImpl.where(index.toVec)(pred.toArray)
     Series(newVals, Index(newIdx))
   }
 
@@ -465,7 +471,7 @@ class Series[X: ST: ORD, T: ST](
    * predicate function.
    * @param pred Function from T to Boolean
    */
-  def findKey(pred: T => Boolean): Index[X] = index.take(find(pred))
+  def findKey(pred: T => Boolean): Index[X] = index.take(find(pred).toArray)
 
   /**
    * Find the first int offset (or -1 if none) where a value of the Series satisfies

@@ -28,7 +28,6 @@ import java.io.OutputStream
 
 
 object Vec extends BinOpVec with VecBoolEnricher {
-  import scala.language.implicitConversions
   /**
    * Factory method to create a Vec from an array of elements
    *
@@ -56,38 +55,6 @@ object Vec extends BinOpVec with VecBoolEnricher {
    * @tparam T Vec type parameter
    */
   def empty[T: ST]: Vec[T] = Vec(Array.empty[T])
-
-  // **** conversions
-
-  // Vec is isomorphic to array
-
-  /**
-   * A Vec may be implicitly converted to an array. Use responsibly;
-   * please do not circumvent immutability of Vec class!
-   * @param s Vec
-   * @tparam T Type parameter of Vec
-   */
-  implicit def vecToArray[T](s: Vec[T]) = s.toArray
-
-  /**
-   * An array may be implicitly converted to a Vec.
-   * @param arr Array
-   * @tparam T Type parameter of Array
-   */
-  implicit def arrayToVec[T: ST](arr: Array[T]) = Vec(arr)
-
-  /**
-   * A Vec may be implicitly ''widened'' to a Series.
-   *
-   * @param s Vec to widen to Series
-   * @tparam A Type of elements in Vec
-   */
-  implicit def vecToSeries[A: ST](s: Vec[A]) = Series(s)
-
-  /**
-   * A Vec may be implicitly converted to a single column Mat
-   */
-  implicit def vecToMat[A: ST](s: Vec[A]): Mat[A] = Mat(s)
 }
 
 

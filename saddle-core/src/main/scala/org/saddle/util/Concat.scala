@@ -16,7 +16,7 @@
 
 package org.saddle.util
 
-import scala.language.implicitConversions
+
 import scala.{ specialized => spec }
 import org.saddle._
 import org.saddle.scalar._
@@ -59,6 +59,7 @@ object Concat extends LowPriorityConcatImplicits {
                       @spec(Boolean, Byte, Int, Long, Double) -B,
                       @spec(Boolean, Byte, Int, Long, Double) +C](promoteA: A => C, promoteB: B => C)
 
+                      import scala.language.implicitConversions
   implicit def id[T](a: T): T = a
 
   // boolean promoting

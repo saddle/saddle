@@ -62,8 +62,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param loc Offset into index
    */
   def at(loc: Int): Scalar[T] = {
-    implicit val tag = scalarTag
-    raw(loc)
+    Scalar(raw(loc))(scalarTag)
   }
 
   /**
@@ -415,14 +414,12 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param current Key value to find
    */
   def prev(current: Scalar[T]): Scalar[T] = {
-    implicit val tag = scalarTag
-
     if (!isContiguous)
       throw Index.IndexException("Cannot traverse index that is not contiguous in its values")
 
     val prevSpot = locator.get(current.get) - 1
     prevSpot match {
-      case x if x >= 0 => raw(x)
+      case x if x >= 0 => Scalar(raw(x))(scalarTag)
       case _           => current
     }
   }
@@ -434,14 +431,12 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * @param current Key value to find
    */
   def next(current: Scalar[T]): Scalar[T] = {
-    implicit val tag = scalarTag
-
     if (!isContiguous)
       throw Index.IndexException("Cannot traverse index that is not contiguous in its values")
 
     val nextSpot = locator.get(current.get) + locator.count(current.get)
     nextSpot match {
-      case x if x < length => raw(x)
+      case x if x < length => Scalar(raw(x))(scalarTag)
       case _               => current
     }
   }

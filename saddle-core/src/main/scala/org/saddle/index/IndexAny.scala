@@ -42,9 +42,9 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   // get the key at the position specified
   def raw(idx: Int): T = keys.raw(idx)
 
-  def take(locs: Array[Int]): Index[T] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
+  def take(locs: Array[Int]): Index[T] = Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
 
-  def without(locs: Array[Int]): Index[T] = Index(array.remove(keys, locs))
+  def without(locs: Array[Int]): Index[T] = Index(array.remove(keys.toArray, locs))
 
   def concat[B, C](x: Index[B])(implicit wd: Promoter[T, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[T, B, C](toArray, x.toArray))
@@ -88,7 +88,7 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
     if (fnd > 0)
       locator.get(t)
     else
-      -(binarySearch(keys, t) + 1)
+      -(binarySearch(keys.toArray, t) + 1)
   }
 
   // find the last location whereby an insertion would maintain a sorted index
@@ -100,7 +100,7 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
     if (fnd > 0)
       fnd + locator.get(t)
     else
-      -(binarySearch(keys, t) + 1)
+      -(binarySearch(keys.toArray, t) + 1)
   }
 
   // adapted from java source

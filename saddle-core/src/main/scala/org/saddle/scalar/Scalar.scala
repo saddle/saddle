@@ -40,7 +40,6 @@ sealed abstract class Scalar[+T] {
 }
 
 object Scalar {
-  import scala.language.implicitConversions
   /** An Scalar factory which creates Value(x) when the argument is neither null nor an NA primitive;
     * otherwise produces NA.
     *
@@ -61,12 +60,8 @@ object Scalar {
       case (_,   _) => implicitly[ORD[T]].compare(x.get, y.get)
     }
   }
-
-  /**
-   * Provides implicit boxing of primitive to scalar
-   */
-  implicit def scalarBox[T : ST](el: T): Scalar[T] = Scalar(el)
-
+  import scala.language.implicitConversions
+  
   /**
    * Provides implicit unboxing from double scalar to primitive
    */
@@ -85,7 +80,6 @@ object Scalar {
    * Scalar is isomorphic to Option
    */
   implicit def scalarToOption[T](sc: Scalar[T]): Option[T] = if (sc.isNA) None else Some(sc.get)
-  implicit def optionToScalar[T: ST](op: Option[T]): Scalar[T] = op.map { Scalar(_) } getOrElse NA
 }
 
 case class Value[@specialized(Boolean, Int, Double, Float, Long) +T : ST](el: T) extends Scalar[T] {

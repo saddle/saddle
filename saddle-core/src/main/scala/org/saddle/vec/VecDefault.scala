@@ -89,7 +89,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    *
    * @param locs Location of elements to take
    */
-  def take(locs: Array[Int]): Vec[T] = array.take[T](toArray, locs, scalarTag.missing)
+  def take(locs: Array[Int]): Vec[T] = Vec(array.take[T](toArray, locs, scalarTag.missing))
 
   /**
    * The complement of the take operation; slice out
@@ -97,7 +97,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    *
    * @param locs Location of elements not to take
    */
-  def without(locs: Array[Int]): Vec[T] = array.remove(toArray, locs)
+  def without(locs: Array[Int]): Vec[T] = Vec(array.remove(toArray, locs))
 
   /**
    * Drop the elements of the Vec which are NA
@@ -302,16 +302,14 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    * Access the first element of a Vec[A], or NA if length is zero
    */
   def first: Scalar[T] = {
-    implicit val st = scalarTag
-    if (length > 0) raw(0) else NA
+    if (length > 0) Scalar(raw(0))(scalarTag) else NA
   }
 
   /**
    * Access the last element of a Vec[A], or NA if length is zero
    */
   def last: Scalar[T] = {
-    implicit val st = scalarTag
-    if (length > 0) raw(length - 1) else NA
+    if (length > 0) Scalar(raw(length - 1))(scalarTag) else NA
   }
 
   /**

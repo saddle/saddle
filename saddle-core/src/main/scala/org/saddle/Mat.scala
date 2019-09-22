@@ -380,6 +380,10 @@ object Mat extends BinOpMat {
   def apply[@spec(Boolean,Int,Long,Double) T](rows: Int, cols: Int, arr: Array[T])(implicit st: ST[T]): Mat[T] = 
     if (rows == 0 || cols == 0) new MatDefault(0, 0, Array.empty[T], st) 
     else new MatDefault(rows, cols, arr, st)
+  
+    def apply[@spec(Boolean,Int,Long,Double) T](rows: Int, cols: Int, vec: Vec[T])(implicit st: ST[T]): Mat[T] = 
+    if (rows == 0 || cols == 0) new MatDefault(0, 0, Array.empty[T], st) 
+    else new MatDefault(rows, cols, vec.toArray, st)
 
   /**
    * Allows implicit promoting from a Mat to a Frame instance

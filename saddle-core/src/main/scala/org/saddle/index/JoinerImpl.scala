@@ -16,7 +16,6 @@
 
 package org.saddle.index
 
-import scala.language.implicitConversions
 import scala.{ specialized => spec }
 import org.saddle._
 import locator.Locator
@@ -27,6 +26,7 @@ import metal.mutable.Buffer
  * types.
  */
 class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD] extends Joiner[T] {
+  import scala.language.implicitConversions
   private implicit def wrapArray(arr: Array[Int]): Option[Array[Int]] = Some(arr)
 
   def join(left: Index[T], right: Index[T], how: JoinType): ReIndexer[T] = {

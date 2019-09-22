@@ -41,9 +41,9 @@ class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
   // get the key at the position specified
   def raw(idx: Int): Boolean = keys.raw(idx)
 
-  def take(locs: Array[Int]): Index[Boolean] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
+  def take(locs: Array[Int]): Index[Boolean] = Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
 
-  def without(locs: Array[Int]): Index[Boolean] = Index(array.remove(keys, locs))
+  def without(locs: Array[Int]): Index[Boolean] = Index(array.remove(keys.toArray, locs))
 
   def concat[B, C](x: Index[B])(implicit wd: Promoter[Boolean, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Boolean, B, C](toArray, x.toArray))
@@ -52,7 +52,7 @@ class IndexBool(keys: Vec[Boolean]) extends Index[Boolean] {
 
   def isContiguous: Boolean = isUnique || contiguous
 
-  def argSort: Array[Int] = VecBool.argSort(keys)
+  def argSort: Array[Int] = VecBool.argSort(keys.toArray)
 
   def reversed: Index[Boolean] = new IndexBool(toVec.reversed)
 

@@ -226,6 +226,26 @@ package object array {
   }
 
   /**
+   * Takes values from array arr at particular offsets so as to produce a new array.
+   * Offset -1 is mapped to by-name parameter `missing`.
+   *
+   * Note that each integer I at offset O in `offsets` works to "take" input[I] to
+   * output[O]. Eg, Array(2,0,1) permutes locations as follows:
+   *
+   *  - 2 to 0
+   *  - 0 to 1
+   *  - 1 to 2
+   *
+   * For example,
+   *
+   * {{{
+   *   take(Array(5,6,7), Array(2,0,1), -1) == Array(7,5,6)
+   * }}}
+   */
+  def take[@spec(Boolean, Int, Long, Double) T: ST](
+    arr: Array[T], offsets: Vec[Int], missing: => T): Array[T] = take(arr,offsets.toArray,missing)
+
+  /**
    * Compute the sum of the array at particular offets. If any of the offets is -1,
    * the pass-by-name value 'missing' is used instead.
    *
@@ -399,6 +419,7 @@ package object array {
    * @param arr Array to sort
    */
   def argsort[T: ST: ORD](arr: Array[T]): Array[Int] = implicitly[ST[T]].makeSorter.argSorted(arr)
+  def argsort[T: ST: ORD](vec: Vec[T]): Array[Int] = argsort(vec.toArray)
 
   /**
    * Stable sort of array argument (not destructive), using radix sort

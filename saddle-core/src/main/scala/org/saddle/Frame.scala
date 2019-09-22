@@ -454,7 +454,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   def reindexRow(rix: Index[RX]): Frame[RX, CX, T] = {
     val ixer = rowIx.getIndexer(rix)
     ixer.map { i =>
-      Frame(values.map(v => Vec(array.take(v, i, v.scalarTag.missing))), rix, colIx)
+      Frame(values.map(v => Vec(array.take(v.toArray, i, v.scalarTag.missing))), rix, colIx)
     } getOrElse this
   }
 
@@ -909,9 +909,18 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
    * true value.
    * @param pred Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)
    */
-  def where(pred: Series[_, Boolean]): Frame[RX, CX, T] = {
-    val newVals = values.zipWithIndex.flatMap(z => if (pred.values.raw(z._2)) Seq(z._1) else Seq.empty[Vec[T]] )
-    val newIdx  = VecImpl.where(Vec(this.colIx.toArray))(pred.values.toArray)
+  def where(pred: Series[_, Boolean]): Frame[RX, CX, T] = 
+    where(pred.values)
+
+  /**
+   * Create Frame whose rows satisfy the rule that their keys and values are chosen
+   * via a Vec[Boolean] or a Series[_, Boolean] predicate when the latter contains a
+   * true value.
+   * @param pred Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)
+   */
+  def where(pred: Vec[ Boolean]): Frame[RX, CX, T] = {
+    val newVals = values.zipWithIndex.flatMap(z => if (pred.raw(z._2)) Seq(z._1) else Seq.empty[Vec[T]] )
+    val newIdx  = VecImpl.where(Vec(this.colIx.toArray))(pred.toArray)
     Frame(newVals, rowIx, Index(newIdx))
   }
 
@@ -1327,8 +1336,14 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   /**
    * See where; operates row-wise
    */
-  def rwhere(pred: Series[_, Boolean]): Frame[RX, CX, T] = {
-    val predv = pred.values
+  def rwhere(pred: Series[_, Boolean]): Frame[RX, CX, T] = 
+    rwhere(pred.values)
+    
+  /**
+   * See where; operates row-wise
+   */
+  def rwhere(pred: Vec[Boolean]): Frame[RX, CX, T] = {
+    val predv = pred
     new Frame(new MatCols(values.map(v => v.where(predv))), Index(rowIx.toVec.where(predv)), colIx)
   }
 
@@ -1442,7 +1457,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
 
   private def rows(): MatCols[T] = {
     if (cachedRows.isEmpty) {
-      cachedRows = Some(toMat.rows())
+      cachedRows = Some(MatCols(toMat.rows():_*))
     }
     cachedRows.get
   }
@@ -1725,7 +1740,7 @@ object Frame extends BinOpFrame {
     if (mat.length == 0)
       empty[RX, CX, T]
     else {
-      new Frame[RX, CX, T](mat.cols(), rowIx, colIx) withMat Some(mat)
+      new Frame[RX, CX, T](MatCols(mat.cols():_*), rowIx, colIx) withMat Some(mat)
     }
 }
 

@@ -19,7 +19,6 @@ package org.saddle.stats
 import scala.{specialized => spec}
 import org.saddle._
 import org.saddle.scalar._
-
 /**
  * Trait which specifies how to break a rank tie
  */
@@ -482,7 +481,7 @@ class IntStats(r: Vec[Int]) extends VecStats[Int] {
   def variance: Double = _variance(r, _ - _)
   def skew: Double = _skew(r, _ - _)
   def kurt: Double = _kurt(r, _ - _)
-  def percentile(tile: Double, method: PctMethod = PctMethod.NIST): Double = _percentile(r.toDoubleArray, tile, method)
+  def percentile(tile: Double, method: PctMethod = PctMethod.NIST): Double = _percentile(Vec(r.toDoubleArray), tile, method)
 
   def demeaned: Vec[Double] = _demeaned(r, _ - _)
   def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true): Vec[Double] = _rank(r.toDoubleArray, tie, ascending)
@@ -519,7 +518,7 @@ class LongStats(r: Vec[Long]) extends VecStats[Long] {
   def variance: Double = _variance(r, _ - _)
   def skew: Double = _skew(r, _ - _)
   def kurt: Double = _kurt(r, _ - _)
-  def percentile(tile: Double, method: PctMethod = PctMethod.NIST): Double = _percentile(r.toDoubleArray, tile, method)
+  def percentile(tile: Double, method: PctMethod = PctMethod.NIST): Double = _percentile(Vec(r.toDoubleArray), tile, method)
 
   def demeaned: Vec[Double] = _demeaned(r, _ - _)
   def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true): Vec[Double] = _rank(r.toDoubleArray, tie, ascending)

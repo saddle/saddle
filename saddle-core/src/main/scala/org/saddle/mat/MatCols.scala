@@ -80,7 +80,6 @@ class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
 }
 
 object MatCols {
-  import scala.language.implicitConversions
   
   def empty[A: ST]: MatCols[A] = apply(Array.empty[Vec[A]])
 
@@ -89,9 +88,6 @@ object MatCols {
   def apply[A: ST](cols: Array[Vec[A]]): MatCols[A] = new MatCols[A](cols)
 
   def apply[A: ST](mat: Mat[A]): MatCols[A] = new MatCols[A](mat.cols())
-
-  // implicit lifting to of Seq[Vec[_]] to VecSeq
-  implicit def Seq2VecSeq[A: ST](cols: Seq[Vec[A]]): MatCols[A] = new MatCols[A](cols.toIndexedSeq)
 
   // Logic to get string widths of columns in a sequence of vectors
   private[saddle] def colLens[A: ST](cols: MatCols[A], numCols: Int, len: Int): Map[Int, Int] = {

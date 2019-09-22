@@ -42,9 +42,9 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
   // get the key at the position specified
   def raw(idx: Int): Double = keys.raw(idx)
 
-  def take(locs: Array[Int]): Index[Double] = Index(array.take(keys, locs, IndexImpl.sentinelErr))
+  def take(locs: Array[Int]): Index[Double] = Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
 
-  def without(locs: Array[Int]): Index[Double] = Index(array.remove(keys, locs))
+  def without(locs: Array[Int]): Index[Double] = Index(array.remove(keys.toArray, locs))
 
   def concat[B, C](x: Index[B])(implicit wd: Promoter[Double, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Double, B, C](toArray, x.toArray))
@@ -87,7 +87,7 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
     if (fnd > 0)
       locator.get(t)
     else
-      -(binarySearch(keys, t) + 1)
+      -(binarySearch(keys.toArray, t) + 1)
   }
 
   // find the last location whereby an insertion would maintain a sorted index
@@ -99,7 +99,7 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
     if (fnd > 0)
       fnd + locator.get(t)
     else
-      -(binarySearch(keys, t) + 1)
+      -(binarySearch(keys.toArray, t) + 1)
   }
 
   def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: Double => B): Index[B] =
