@@ -460,20 +460,22 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
 
   /** Sums up the elements of a numeric Vec
    * 
+   * NOTE: scalac only specialized correctly if using the method in VecImpl
+   * referring to this.filterFoldLeft boxes
    */ 
-  def sum(implicit na: NUM[T], st: ST[T]): T = filterFoldLeft(st.notMissing)(st.zero)((a,b) => na.plus(a,b))
+  def sum(implicit na: NUM[T], st: ST[T]): T = VecImpl.filterFoldLeft(this)(st.notMissing)(st.zero)((a,b) => na.plus(a,b))
 
   /** Counts the number of non-NA elements
    */ 
-  def count: Int = filterFoldLeft(scalarTag.notMissing)(0)((a, _) => a + 1)
+  def count: Int = VecImpl.filterFoldLeft(this)(scalarTag.notMissing)(0)((a, _) => a + 1)
 
   /** Counts the number of non-NA elements satisfying the predicate
    */ 
-  def countif(test: T => Boolean): Int = filterFoldLeft(t => scalarTag.notMissing(t) && test(t))(0)((a,_) => a + 1)
+  def countif(test: T => Boolean): Int = VecImpl.filterFoldLeft(this)(t => scalarTag.notMissing(t) && test(t))(0)((a,_) => a + 1)
 
   /** Counts the number of elements which equal `a`
    */ 
-  def countif(a: T): Int = filterFoldLeft(t => t == a)(0)((a,_) => a + 1)
+  def countif(a: T): Int = VecImpl.filterFoldLeft(this)(t => t == a)(0)((a,_) => a + 1)
 
   private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double] = {
     val arr = toArray
