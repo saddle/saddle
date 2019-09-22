@@ -14,13 +14,13 @@
  * limitations under the License.
  **/
 
-package org.saddle
+package org.saddle.vec
 
 import scala.{specialized => spec}
 import org.saddle.util.Concat.Promoter
 import org.saddle.scalar._
 import org.saddle.ops.NumericOps
-import org.saddle.vec.VecImpl
+import org.saddle._
 import org.saddle.index.Slice
 import org.saddle.index.IndexIntRange
 import java.io.OutputStream
