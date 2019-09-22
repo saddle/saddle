@@ -17,7 +17,6 @@
 package org
 
 import scala.language.implicitConversions
-import scala.language.reflectiveCalls
 import org.saddle.index._
 
 // some typeclass interfaces we'll alias
@@ -123,16 +122,6 @@ package object saddle {
   implicit def pair2SliceFrom[T](p: (T, SliceAll)) = SliceFrom(p._1)
 
   /**
-   * Provides for one-element slicing, e.g.
-   *
-   * {{{
-   *   val v = Vec(1,2,3, 4)
-   *   val u = v(1)
-   * }}}
-   */
-  implicit def pair2SliceSingle[T](k: T) = Slice(k, k)
-
-  /**
    * Syntactic sugar, placeholder for 'slice-all'
    *
    * {{{
@@ -202,7 +191,7 @@ package object saddle {
    * @param s  A value of type Seq[T]
    * @tparam T Type of elements of Vec
    */
-  implicit def seqToVec[T: ST](s: Seq[T]) = new {
+  implicit class SeqToVec[T: ST](s: Seq[T]) {
     def toVec: Vec[T] = Vec(s : _*)
   }
 
@@ -237,7 +226,7 @@ package object saddle {
    * @tparam T Type of data elements of Series
    * @tparam X Type of index elements of Series
    */
-  implicit def seqToSeries[T: ST, X: ST: ORD](s: Seq[(X, T)]) = new {
+  implicit class SeqToSeries[T: ST, X: ST: ORD](s: Seq[(X, T)]) {
     def toSeries: Series[X, T] = Series(s : _*)
   }
 
@@ -263,8 +252,8 @@ package object saddle {
    * @tparam RX Type of row index elements of Frame
    * @tparam CX Type of col index elements of Frame
    */
-  implicit def seqToFrame[RX: ST: ORD, CX: ST: ORD, T: ST](s: Seq[(RX, CX, T)]) = new {
-    def toFrame: Frame[RX, CX, T] = {
+  implicit class SeqToFrame[RX: ST: ORD, CX: ST: ORD, T: ST](s: Seq[(RX, CX, T)]) {
+    def toFrame = {
       val grp = s.map { case (r, c, v) => ((r, c), v) }
       grp.toSeries.pivot
     }

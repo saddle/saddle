@@ -22,6 +22,10 @@ import org.specs2.mutable.Specification
  * Specs for a Frame
  */
 class FrameSpec extends Specification {
+  "Seq[(A,B,C)] converts to a Frame" in {
+    Seq((1,2,3)).toFrame must_== Frame(1 -> Series(2->3)).T
+  }
+
   "Frame.empty behaves as expected" in {
     Frame("a" -> Vec.empty[Int], "b" -> Vec.empty[Int]).isEmpty must_== true
   }

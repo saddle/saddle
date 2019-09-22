@@ -1,3 +1,5 @@
+package org.saddle
+
 /**
  * Copyright (c) 2013 Saddle Development Team
  *
@@ -14,28 +16,11 @@
  * limitations under the License.
  **/
 
-package org.saddle
-
 import org.specs2.mutable.Specification
 
-class SeriesSpec extends Specification {
+class VecSpec extends Specification {
 
-  "Seq[(A,B)] converst to Series" in {
-    Seq(1 ->2).toSeries must_== Series(1->2)
-  }
-
-  "non-spec primitive groupby must work" in {
-    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
-    s.groupBy.combine(_.first.getOrElse(0)) must_== Series('a' -> 1, 'b' -> 2)
-  }
-
-  "map works" in {
-    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
-    s.map { case (k, v) => (k, v+1) } must_== s + 1
-  }
-
-  "flatMap works" in {
-    val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
-    s.flatMap { case (k, v) => Some((k, v+1)) } must_== s + 1
+  "Seq[A] converst to Vec" in {
+    Seq(1).toVec must_== Vec(1)
   }
 }
