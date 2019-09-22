@@ -17,7 +17,6 @@
 package org.saddle.scalar
 
 import org.saddle._
-import org.saddle.mat.MatAny
 import org.saddle.index.IndexAny
 import org.saddle.locator.{LocatorAny, Locator}
 import org.saddle.array.Sorter
@@ -48,7 +47,7 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
   def makeBuf(sz: Int = org.saddle.Buffer.INIT_CAPACITY): Buffer[T] = new Buffer(new Array[T](sz),0)
   def makeLoc(sz: Int = Locator.INIT_CAPACITY): Locator[T] = new LocatorAny[T](sz)(this)
   def makeVec(arr: Array[T]): Vec[T] = Vec(arr)(this)
-  def makeMat(r: Int, c: Int, arr: Array[T]): Mat[T] = new MatAny[T](r, c, arr)(this)
+  def makeMat(r: Int, c: Int, arr: Array[T]): Mat[T] = Mat(r, c, arr)(this)
   def makeIndex(vec: Vec[T])(implicit ord: ORD[T]): Index[T] = new IndexAny[T](vec)(this, ord)
   def makeSorter(implicit ord: ORD[T]): Sorter[T] = Sorter.anySorter[T]
 

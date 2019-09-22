@@ -17,7 +17,6 @@
 package org.saddle.scalar
 
 import org.saddle._
-import org.saddle.mat.MatDouble
 import metal.mutable.Buffer
 import org.saddle.index.IndexDouble
 import org.saddle.locator.{LocatorDouble, Locator}
@@ -50,7 +49,7 @@ object ScalarTagDouble extends ScalarTag[Double] {
   def makeBuf(sz: Int = org.saddle.Buffer.INIT_CAPACITY) = new Buffer(new Array[Double](sz),0)
   def makeLoc(sz: Int = Locator.INIT_CAPACITY) = new LocatorDouble(sz)
   def makeVec(arr: Array[Double]) = Vec(arr)(this)
-  def makeMat(r: Int, c: Int, arr: Array[Double]) = new MatDouble(r, c, arr)
+  def makeMat(r: Int, c: Int, arr: Array[Double]) = Mat(r, c, arr)(this)
   def makeIndex(vec: Vec[Double])(implicit ord: ORD[Double]): Index[Double] = new IndexDouble(vec)
   def makeSorter(implicit ord: ORD[Double]): Sorter[Double] = Sorter.doubleSorter
 
