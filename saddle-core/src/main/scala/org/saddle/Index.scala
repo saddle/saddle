@@ -111,7 +111,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
    * Take values of the index at certain locations, returning a new Index
    * consisting of those values.
    *
-   * See also [[org.saddle.array.take]]
+   * See also org.saddle.array.take
    *
    * @param locs Locations to take
    */

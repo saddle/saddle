@@ -67,7 +67,7 @@ import org.saddle._
  *   - rTake = {0, 1, 2, 3, -1},
  *   - index = Index(0, 1, 2, 3, 4).
  *
- * These indexers are then amenable to using with [[org.saddle.array.take]] to
+ * These indexers are then amenable to using with org.saddle.array.take to
  * select elements out of an indexed data structure.
  *
  * A performance optimization is to make lTake and rTake of type Option[Array],

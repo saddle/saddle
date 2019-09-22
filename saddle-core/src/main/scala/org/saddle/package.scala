@@ -37,8 +37,6 @@ import scala.reflect.ClassTag
  *
  * The building blocks are intended to be easily composed.
  *
- * Additionally, there are some numerical utilities: eg, a fast suite of [[org.saddle.util.Random]]
- * number generators).
  *
  * The foundational building blocks are:
  *
