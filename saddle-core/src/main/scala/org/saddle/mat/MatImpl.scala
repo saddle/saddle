@@ -19,7 +19,6 @@ package org.saddle.mat
 import scala.Int
 import scala.{specialized => spec}
 import org.saddle._
-import metal.mutable.Buffer
 
 /**
  * Houses specialized method implementations for code reuse in Mat subclasses
@@ -45,43 +44,44 @@ private[saddle] object MatImpl {
   def withoutRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
     if (m.length == 0) Mat.empty[A]
     else {
-      val locset = locs.toSet
-      val buf = new Buffer[A](new Array[A](m.length),0)
+      val N = m.numRows
+      val M = m.numCols
+      val locset = locs.filter(i => i >= 0 && i < N).toSet
+      val nRows = locset.size
+      val K = N - nRows
+      val buf = new Array[A](M * K)
       var r = 0
-      var nRows = 0
-      while (r < m.numRows) {
+      var j = 0
+      val src = m.toArray
+      while (r < N) {
         if (!locset.contains(r)) {
-          nRows += 1
-          var c = 0
-          while (c < m.numCols) {
-            buf.+=(m.raw(r, c))
-            c += 1
-          }
+          Array.copy(src,r*M,buf, j*M, M)
+          j += 1
         }
         r += 1
       }
-      if (nRows == 0)
+      
+      if (K == 0)
         Mat.empty[A]
       else
-        Mat(nRows, m.numCols, buf.toArray)
+        Mat(K, M, buf)
     }
   }
 
   def takeRows[@spec(Boolean, Int, Long, Double) A: ST](m: Mat[A], locs: Array[Int]): Mat[A] = {
     if (m.length == 0) Mat.empty[A]
     else {
-      val buf = new Buffer[A](new Array[A](m.length),0)
+      val M = m.numCols
+      val buf = new Array[A](locs.size * M)
       var r = 0
-      while (r < locs.length) {
+      val src = m.toArray
+      val n = locs.length
+      while (r < n) {
         val currRow = locs(r)
-        var c = 0
-        while (c < m.numCols) {
-          buf.+=(m.raw(currRow, c))
-          c += 1
-        }
+        Array.copy(src,currRow*M,buf, r*M, M)
         r += 1
       }
-      Mat(r, m.numCols, buf.toArray)
+      Mat(r, M, buf)
     }
   }
 }

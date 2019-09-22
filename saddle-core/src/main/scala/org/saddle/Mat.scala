@@ -347,6 +347,7 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
    * Mutations to this array are visible to this Mat
    * 
    * Elements are laid out in row-major order
+   * Constant time operation
    */
   def toArray: Array[A]
 
