@@ -225,6 +225,63 @@ class MatCheck extends Specification with ScalaCheck {
          }
        }
      }
+     "setCell works" in {
+      forAll { (m: Mat[Double]) => (m.numRows > 0 && m.numCols > 0) ==> {
+        
+          m.mutateSetCell(0,0,3.0)
+          m.raw(0,0) must_== 3.0
+      }
+      }
+    }
+     "setRow works" in {
+      forAll { (m: Mat[Double]) => (m.numRows > 0 && m.numCols > 0) ==> {
+          m.mutateSetRow(0,3.0)
+          m.row(0) must_== vec.zeros(m.numCols) + 3d
+      }
+      }
+    }
+     "setCol works" in {
+      forAll { (m: Mat[Double]) => (m.numRows > 0 && m.numCols > 0) ==> {
+          m.mutateSetColumn(0,3.0)
+          m.col(0) must_== vec.zeros(m.numRows) + 3d
+      }
+      }
+    }
+     "setDiagonal works" in {
+      forAll { (m: Mat[Double]) => (m.numRows > 0 && m.numCols > 0) ==> {
+          m.mutateSetDiagonal(3.0)
+          (for (i <- 0 until math.min(m.numRows,m.numCols)) yield m.raw(i,i)).toVec must_== vec.zeros(math.min(m.numRows,m.numCols)) + 3d
+      }
+      }
+    }
+     "setLowerTriangle works" in {
+      forAll { (m: Mat[Double]) => (m.numRows > 0 && m.numCols > 0) ==> {
+        val cl =m.copy
+          m.mutateSetLowerTriangle(3.0)
+          if (m.numRows == 1 || m.numCols ==1)  cl must_== m 
+          else
+          (
+            for {
+              i <- 0 until math.min(m.numRows,m.numCols)
+              j <- 0 until i
+             } yield m.raw(i,j)).toSeq.distinct must_== Seq.fill(if (math.min(m.numRows,m.numCols) < 2) 0 else 1)(3d)
+      }
+      }
+    }
+     "setUpperTriangle works" in {
+      forAll { (m: Mat[Double]) => (m.numRows > 0 && m.numCols > 0) ==> {
+        val cl = m.copy
+          m.mutateSetUpperTriangle(3.0)
+          if (m.numRows == 1 || m.numCols ==1)  cl must_== m 
+          else
+          (
+            for {
+              i <- 1 until math.min(m.numRows,m.numCols)
+              j <- i until math.min(m.numRows,m.numCols)
+             } yield m.raw(i,j)).toSeq.distinct must_== Seq.fill(if (math.min(m.numRows,m.numCols) < 2) 0 else 1)(3d)
+      }
+      }
+    }
    }
 
  

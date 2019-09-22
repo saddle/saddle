@@ -368,6 +368,13 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def print(nrows: Int = 8, ncols: Int = 8, stream: OutputStream = System.out) : Unit
 
   def toFrame : Frame[Int,Int,A]
+
+  def mutateSetCell(r:Int,c:Int,v:A) : Unit
+  def mutateSetRow(r:Int,v:A) : Unit
+  def mutateSetColumn(c:Int,v:A) : Unit
+  def mutateSetDiagonal(v:A) : Unit
+  def mutateSetUpperTriangle(v:A) : Unit
+  def mutateSetLowerTriangle(v:A) : Unit
 }
 
 object Mat extends BinOpMat {

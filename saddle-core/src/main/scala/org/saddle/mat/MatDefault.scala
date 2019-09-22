@@ -424,4 +424,57 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](r: Int, c: Int, values: Ar
    */
   def toFrame = Frame(this)
 
+  def mutateSetCell(r:Int,c:Int,v:T) : Unit = {
+    values(r * numCols + c) = v
+  }
+  def mutateSetRow(r:Int,v:T) : Unit = {
+    var i = 0
+    val rr = r * numCols 
+    while (i < numCols) {
+      values(rr + i) = v
+      i+=1
+    }
+  }
+  def mutateSetColumn(c:Int,v:T) : Unit  =  {
+    var i = 0
+    while (i < numRows) {
+      values(i*numCols + c) = v
+      i+=1
+    }
+  }
+  def mutateSetDiagonal(v:T) : Unit = {
+    val n = math.min(numCols,numRows)
+    var i = 0 
+    while (i < n) {
+      values(i*numCols + i) = v
+      i+=1
+    }
+  }
+  def mutateSetLowerTriangle(v:T) : Unit = {
+    val n = math.min(numCols,numRows)
+    var i = 0 
+    var j = 0
+    while (i < n) {
+      while (j < i ) {
+        values(i*numCols + j) = v
+        j += 1
+      }
+      j = 0
+      i+=1
+    }
+  }
+  def mutateSetUpperTriangle(v:T) : Unit = {
+    val n = math.min(numCols,numRows)
+    var i = 0 
+    var j = i+1
+    while (i < n) {
+      while (j < n ) {
+        values(i*numCols + j) = v
+        j += 1
+      }
+      j = i+1
+      i+=1
+    }
+  }
+
 }
