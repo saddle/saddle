@@ -147,6 +147,8 @@ trait Vec[@spec(Boolean,Int,Long,Double) T] extends NumericOps[Vec[T]] {
 
   /**
    * Set to true when the vec is shifted over the backing array
+   * false iff the backing array is a contiguous sequence of the elements of this Vec
+   * false iff 0 until length map (raw) == the backing array
    */
   def needsCopy: Boolean 
 

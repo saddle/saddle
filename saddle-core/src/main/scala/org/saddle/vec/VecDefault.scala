@@ -29,16 +29,55 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
   implicit private[this] def st : ST[T] = scalarTag
 
   /**
+   * Set to true when the vec is shifted over the backing array
+   * false iff the backing array is a contiguous sequence of the elements of this Vec
+   * false iff 0 until length map raw toArray structurally equals the backing array
+   */
+  override def needsCopy: Boolean =  false
+
+  /**
    * The number of elements in the container                                                  F
    */
   def length = values.length
 
   /**
+   * Access an unboxed element of a Vec[A] at a single location
+   * @param loc offset into Vec
+   */
+  def raw(loc: Int): T = values(loc)
+
+  /** Returns an array containing the elements of this Vec in contiguous order
+   * 
+   * May or may not return the backing array, therefore mutations to the returned array 
+   * may or may not are visible to this Vec 
+   * 
+   * If `needsCopy` is false then it returns the backing array
+   * If `needsCopy` is true then the backing array is not contiguous
+   */
+  def toArray: Array[T] = {
+    // need to check if we're a view on an array
+    if (!needsCopy)
+      values
+    else {
+      val buf = new Array[T](length)
+      var i = 0
+      while( i < length ) {
+        buf(i) = raw(i)
+        i += 1
+      }
+      buf
+    }
+  }
+
+  /**
    * Returns a Vec whose backing array has been copied
    */
-  def copy: Vec[T] = Vec(toArray.clone())
+  def copy: Vec[T] = Vec(this.contents)
 
-  override def needsCopy: Boolean =  false
+  /**
+   * Return copy of backing array
+   */
+  def contents: Array[T] = if (needsCopy) toArray else toArray.clone()
 
   /**
    * Equivalent to slicing operation; e.g.
@@ -214,21 +253,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
     }
   }
 
-  /* May or may not return a copy - mutate with care */
-  def toArray: Array[T] = {
-    // need to check if we're a view on an array
-    if (!needsCopy)
-      values
-    else {
-      val buf = new Array[T](length)
-      var i = 0
-      while( i < length ) {
-        buf(i) = raw(i)
-        i += 1
-      }
-      buf
-    }
-  }
+  
 
 
   /**
@@ -238,12 +263,6 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
   def at(loc: Int): Scalar[T] = {
     Scalar(raw(loc))(scalarTag)
   }
-
-  /**
-   * Access an unboxed element of a Vec[A] at a single location
-   * @param loc offset into Vec
-   */
-  def raw(loc: Int): T = values(loc)
 
   /**
    * Slice a Vec at a sequence of locations, e.g.
@@ -296,11 +315,6 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
   }
 
   /**
-   * Return copy of backing array
-   */
-  def contents: Array[T] = copy.toArray
-
-  /**
    * Return first n elements
    * @param n Number of elements to access
    */
@@ -345,7 +359,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
    * @param pred Function A => Boolean
    * @param op Side-effecting function
    */
-  def forall(pred: T => Boolean)(op: T => Unit) { VecImpl.forall(this)(pred)(op)(scalarTag) }
+  def forall(pred: T => Boolean)(op: T => Unit) : Unit =  VecImpl.forall(this)(pred)(op)(scalarTag) 
 
   /**
    * Return Vec of integer locations (offsets) which satisfy some predicate
