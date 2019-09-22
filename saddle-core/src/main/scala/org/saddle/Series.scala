@@ -911,20 +911,21 @@ class Series[X: ST: ORD, T: ST](
   def sum(implicit na: NUM[T]): T = toVec.sum
   def count: Int = toVec.count
   def countif(test: T => Boolean): Int = toVec.countif(test)
-}
-
-object Series extends BinOpSeries {
-  import scala.language.implicitConversions
-
 
   /**
-   * Implicitly allow Series to be treated as a single-column Frame
+   * Converts to a single-column Frame
    *
    * @param s Series to promote
    * @tparam X Type of Index
    * @tparam T Type of values Vec
    */
-  implicit def serToFrame[X: ST: ORD, T: ST](s: Series[X, T]): Frame[X, Int, T] = Frame(s)
+  def toFrame: Frame[X, Int, T] = Frame(this)
+}
+
+object Series extends BinOpSeries {
+
+
+  
 
   // some pimped-on logic methods. scala.Function1 is not specialized on
   // Boolean input. not sure I care to work around this
