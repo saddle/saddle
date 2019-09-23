@@ -920,6 +920,25 @@ class Series[X: ST: ORD, T: ST](
    * @tparam T Type of values Vec
    */
   def toFrame: Frame[X, Int, T] = Frame(this)
+
+  /** Replaces all occurences of `key` with `value`, if present
+   * 
+   * If `idx` is not present then returns the same Series
+   */ 
+  def updated(value: T, keys: X*) = {
+    val locs = index(keys:_*)
+    if (locs.isEmpty) this 
+    else Series(values.updated(locs,value),index)
+  }
+  /** Replaces all occurences of `key` with `value`, if present
+   * 
+   * If `idx` is not present then returns the same Series
+   */ 
+  def updated(value: T,keys:Array[X]) = {
+    val locs = index(keys)
+    if (locs.isEmpty) this 
+    else Series(values.updated(locs,value),index)
+  }
 }
 
 object Series extends BinOpSeries {

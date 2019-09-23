@@ -20,8 +20,20 @@ import org.specs2.mutable.Specification
 
 class SeriesSpec extends Specification {
 
-  "Seq[(A,B)] converst to Series" in {
+  "Seq[(A,B)] converts to Series" in {
     Seq(1 ->2).toSeries must_== Series(1->2)
+  }
+  "Updated works" in {
+    val s = Seq(1 ->2, 2-> 3, 3->4).toSeries
+    s.updated(5,0) must_== s
+  }
+  "Updated works" in {
+    val s = Seq(1 ->2, 2-> 3, 3->4).toSeries
+    s.updated(5,1) must_== Seq(1 ->5, 2-> 3, 3->4).toSeries
+  }
+  "Updated works" in {
+    val s = Seq(1 ->2, 2-> 3, 3->4).toSeries
+    s.updated(5,Array(2,1,0)) must_== Seq(1 ->5, 2-> 5, 3->4).toSeries 
   }
 
   "non-spec primitive groupby must work" in {

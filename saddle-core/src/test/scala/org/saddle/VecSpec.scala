@@ -26,4 +26,7 @@ class VecSpec extends Specification {
   "Updated works" in {
     Vec(1,2,3).updated(0,3) must_== Vec(3,2,3)
   }
+  "Updated works on locs" in {
+    Vec(1,2,3).updated(Array(4,1,0),5) must_== Vec(5,5,3)
+  }
 }

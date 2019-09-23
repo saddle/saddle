@@ -572,4 +572,22 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
     ar(offset) = value 
     Vec(ar)
   }
+
+  /** Returns a new Vec with the value at `offset` set to `value
+   * 
+   * Copies before mutating.
+   * Ignores invalid offsets in the array
+   */ 
+  def updated(offset: Array[Int], value: T) : Vec[T] = {
+    val ar = copy.toArray
+    var i = 0
+    val n = offset.size
+    while (i < n) {
+      val j = offset(i)
+      if (j < length){
+      ar(j) = value}
+      i+=1
+    }
+    Vec(ar)
+  }
 }

@@ -526,4 +526,11 @@ trait Vec[@spec(Boolean,Int,Long,Double) T] extends NumericOps[Vec[T]] {
    */ 
   def updated(offset: Int, value: T) : Vec[T]
 
+  /** Returns a new Vec with the values at `offset` set to `value
+   * 
+   * Copies before mutating.
+   * Ignores invalid offsets in the array
+   */ 
+  def updated(offsets: Array[Int], value: T) : Vec[T]
+
 }
