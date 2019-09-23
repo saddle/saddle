@@ -562,4 +562,14 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
     val rounder = (x: T) => math.round(scalarTag.toDouble(x) * pwr) / pwr
     map(rounder)
   }
+
+  /** Returns a new Vec with the value at `offset` set to `value
+   * 
+   * Copies before mutating.
+   */ 
+  def updated(offset: Int, value: T) : Vec[T] = {
+    val ar = copy.toArray
+    ar(offset) = value 
+    Vec(ar)
+  }
 }

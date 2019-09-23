@@ -20,7 +20,10 @@ import org.specs2.mutable.Specification
 
 class VecSpec extends Specification {
 
-  "Seq[A] converst to Vec" in {
+  "Seq[A] converts to Vec" in {
     Seq(1).toVec must_== Vec(1)
+  }
+  "Updated works" in {
+    Vec(1,2,3).updated(0,3) must_== Vec(3,2,3)
   }
 }

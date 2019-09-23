@@ -520,4 +520,10 @@ trait Vec[@spec(Boolean,Int,Long,Double) T] extends NumericOps[Vec[T]] {
    */
   def roundTo(sig: Int = 2)(implicit ev: NUM[T]): Vec[Double] 
 
+  /** Returns a new Vec with the value at `offset` set to `value
+   * 
+   * Copies before mutating.
+   */ 
+  def updated(offset: Int, value: T) : Vec[T]
+
 }
