@@ -550,4 +550,16 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
   }
 
   override def toString = stringify()
+
+  /**
+   * Rounds elements in the vec (which must be numeric) to
+   * a significance level
+   *
+   * @param sig Significance level to round to (e.g., 2 decimal places)
+   */
+  def roundTo(sig: Int = 2)(implicit ev: NUM[T]): Vec[Double] = {
+    val pwr = math.pow(10, sig)
+    val rounder = (x: T) => math.round(scalarTag.toDouble(x) * pwr) / pwr
+    map(rounder)
+  }
 }

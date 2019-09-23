@@ -512,4 +512,12 @@ trait Vec[@spec(Boolean,Int,Long,Double) T] extends NumericOps[Vec[T]] {
    */
   def print(len: Int, stream: OutputStream) 
 
+  /**
+   * Rounds elements in the vec (which must be numeric) to
+   * a significance level
+   *
+   * @param sig Significance level to round to (e.g., 2 decimal places)
+   */
+  def roundTo(sig: Int = 2)(implicit ev: NUM[T]): Vec[Double] 
+
 }
