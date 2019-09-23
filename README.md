@@ -1,5 +1,5 @@
-![Build status](https://github.com/pityka/saddle/workflows/CI/badge.svg)
-![codecov](https://codecov.io/gh/pityka/saddle/branch/master/graph/badge.svg)
+[![Build status](https://github.com/pityka/saddle/workflows/CI/badge.svg)](https://github.com/pityka/saddle/actions)
+[![codecov](https://codecov.io/gh/pityka/saddle/branch/master/graph/badge.svg)](https://codecov.io/gh/pityka/saddle)
 
 This repository is a fork of the original Saddle library which has seen no 
 activity for some time.
