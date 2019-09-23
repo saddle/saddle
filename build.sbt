@@ -49,7 +49,7 @@ lazy val commonSettings = Seq(
   licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
   publishTo := sonatypePublishTo.value,
   pomExtra in Global := {
-    <url>https://pityka.github.io/tasks/</url>
+    <url>https://github.com/pityka/saddle</url>
       <scm>
         <connection>scm:git:github.com/pityka/saddle</connection>
         <developerConnection>scm:git:git@github.com:pityka/saddle</developerConnection>
