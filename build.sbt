@@ -122,11 +122,24 @@ lazy val stats = project
   )
   .dependsOn(core)
 
+lazy val linalg = project
+  .in(file("saddle-linalg"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "saddle-linalg",
+    libraryDependencies ++= Seq(
+      "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly (),
+      "net.sourceforge.f2j" % "arpack_combined_all" % "0.1",
+      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+    )
+  )
+  .dependsOn(core)
+
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
     publishArtifact := false
   )
-  .aggregate(core, time, stats)
+  .aggregate(core, time, stats, linalg)
 
 parallelExecution in ThisBuild := false

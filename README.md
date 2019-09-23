@@ -48,7 +48,7 @@ via code repository commit messages. The copyright to the entirety of the code
 base is shared among the Saddle Development Team, comprised of the developers
 who have made such contributions.
 
-The copyright and license of each file shall read as follows:
+The copyright and license of each file shall read as follows (except under saddle-linalg/):
 
 > Copyright (c) 2013-2015 Saddle Development Team
 >
@@ -67,6 +67,9 @@ The copyright and license of each file shall read as follows:
 
 Individual contributors may, if they so desire, append their names to
 the CONTRIBUTORS file.
+
+Code in the saddle-linalg/ folder is licensed under MIT and its copyright holder is
+Istvan Bartha. See the saddle-linalg/LICENSE file.
 
 About the Copyright Holders
 ===========================
