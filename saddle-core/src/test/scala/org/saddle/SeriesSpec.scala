@@ -35,6 +35,10 @@ class SeriesSpec extends Specification {
     val s = Seq(1 ->2, 2-> 3, 3->4).toSeries
     s.updated(5,Array(2,1,0)) must_== Seq(1 ->5, 2-> 5, 3->4).toSeries 
   }
+  "Updated works" in {
+    val s = Seq(1 ->2, 2-> 3, 3->4).toSeries
+    s.updated(5,Array.empty[Int]) must_== s 
+  }
 
   "non-spec primitive groupby must work" in {
     val s = Series('a' -> 1, 'b' -> 2, 'b' -> 3)
