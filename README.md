@@ -1,8 +1,11 @@
-==========================
+![Build status](https://github.com/pityka/saddle/workflows/CI/badge.svg)
+![codecov](https://codecov.io/gh/pityka/saddle/branch/master/graph/badge.svg)
+
+This repository is a fork of the original Saddle library which has seen no 
+activity for some time.
+
 Saddle: Scala Data Library
 ==========================
-
-[![Build Status](https://secure.travis-ci.org/saddle/saddle.png?branch=master)](http://travis-ci.org/saddle/saddle)
 
 Introduction
 ============
