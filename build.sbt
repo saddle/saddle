@@ -1,6 +1,5 @@
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.9",
-  version := "2.0.0-SNAPSHOT",
   parallelExecution in Test := false,
   scalacOptions ++= Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -47,7 +46,7 @@ lazy val commonSettings = Seq(
 ) ++ Seq(
   organization := "io.github.pityka",
   licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
-  publishTo := sonatypePublishTo.value,
+  // publishTo := sonatypePublishTo.value,
   pomExtra in Global := {
     <url>https://github.com/pityka/saddle</url>
       <scm>
