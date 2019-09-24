@@ -1,8 +1,8 @@
 name: sonatype
 on:
   push:
-    # branches: [master]
-    # tags: ["*"]
+    branches: [master]
+    tags: ["*"]
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -13,7 +13,7 @@ jobs:
       - name: Publish
         run: |
           git ls-remote --get-url origin
-          sbt ci-release
+          sbt test ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
