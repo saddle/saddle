@@ -410,6 +410,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
   /**
    * Given a key, return the previous value in the Index (in the natural, ie supplied,
    * order). The Index must at least be contiguous, if not unique.
+   * Returns `current` if it is the first.
    *
    * @param current Key value to find
    */
@@ -427,6 +428,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
   /**
    * Given a key, return the next value in the Index (in the natural, ie supplied,
    * order). The Index must at least be contiguous, if not unique.
+   * Returns `current` if it is the last.
    *
    * @param current Key value to find
    */

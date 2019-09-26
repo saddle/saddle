@@ -71,6 +71,43 @@ class IndexCheck extends Specification with ScalaCheck {
           (Index((ix.toSeq.take(cr) :+ elem) ++ ix.toSeq.drop(cr):_*).isMonotonic must_== true) 
       }
     }
+
+    "IndexMaker tuple2 works" in {
+      val gen = for {
+        n <- Gen.choose(0,100)
+        v1 <- Gen.listOfN(n,Gen.choose(0,1000))
+        v2 <- Gen.listOfN(n,Gen.choose(0,1000))
+      } yield (v1,v2)
+      forAll(gen){ case (v1,v2) =>
+        Index.make((v1,v2)).toSeq must_== (v1 zip v2)
+      }
+    }
+
+    "IndexMaker tuple2 works with Vecs" in {
+      val gen = for {
+        n <- Gen.choose(0,100)
+        v1 <- Gen.listOfN(n,Gen.choose(0,1000))
+        v2 <- Gen.listOfN(n,Gen.choose(0,1000))
+      } yield (v1,v2)
+      forAll(gen){ case (v1,v2) =>
+        Index.make((v1.toVec,v2.toVec)).toSeq must_== (v1 zip v2)
+      }
+    }
+
+    "hashcode and equality works" in {
+      val gen = for {
+        n <- Gen.choose(1,100)
+        v1 <- Gen.listOfN(n,Arbitrary.arbitrary[Index[Int]])
+      } yield v1.distinct
+      forAll(gen) { indices =>
+        val hashmap = indices.zipWithIndex.toMap 
+        indices.zipWithIndex.forall{ case (ix,idx) =>
+          hashmap(ix) == idx
+        } must_== true
+      }
+    }
+
+ 
    
 
     "key lookup works" in {

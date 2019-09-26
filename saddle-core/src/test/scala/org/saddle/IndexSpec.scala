@@ -1,13 +1,25 @@
 package org.saddle
 
 import org.specs2.mutable.Specification
-
+import scalar.Scalar
 /**
  * User: Adam Klein
  * Date: 2/19/13
  * Time: 7:17 PM
  */
 class IndexSpec extends Specification {
+  "Index methods" should {
+    "next works" in {
+      Index(1,2,2,2,3).next(Scalar(2)) must_== Scalar(3)
+      Index(1,2,2,2,3).next(Scalar(3)) must_== Scalar(3)
+      Index(1,2,2,2,3).next(Scalar(1)) must_== Scalar(2)
+    }
+    "prev works" in {
+      Index(1,2,2,2,3).prev(Scalar(2)) must_== Scalar(1)
+      Index(1,2,2,2,3).prev(Scalar(3)) must_== Scalar(2)
+      Index(1,2,2,2,3).prev(Scalar(1)) must_== Scalar(1)
+    }
+  }
   "Index Joins" should {
     "Unique sorted left join" in {
       val ix1 = Index(0, 1, 2)
