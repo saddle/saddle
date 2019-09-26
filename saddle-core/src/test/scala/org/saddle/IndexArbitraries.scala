@@ -31,5 +31,11 @@ object IndexArbitraries {
     l <- Gen.choose(0, 20)
     lst <- Gen.listOfN(l, Gen.chooseNum(0, l))
   } yield lst.toSet[Int].toSeq.toIndex
+ 
+  def intPair: Gen[Index[(Int,Int)]] = for {
+    l <- Gen.choose(0, 20)
+    lst <- Gen.listOfN(l, Gen.chooseNum(0, l))
+    lst2 <- Gen.listOfN(l, Gen.chooseNum(0, l))
+  } yield (lst zip lst2).toIndex
 
 }

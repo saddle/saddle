@@ -107,7 +107,50 @@ class IndexCheck extends Specification with ScalaCheck {
       }
     }
 
- 
+    "contains works" in {
+      forAll{ (ix: Index[Int], elem: Int) =>
+        ix.contains(elem) must_== ix.toSeq.contains(elem)
+      }
+    }
+    "exists works" in {
+      forAll{ (ix: Index[Int], elem: Int) =>
+        ix.exists(_ == elem) must_== ix.toSeq.find(_ == elem).isDefined
+      }
+    }
+    "last works" in {
+      forAll{ (ix: Index[Int]) =>
+        (ix.last: Option[Int]) must_== (if (ix.toSeq.isEmpty) None else Some(ix.toSeq.last))
+      }
+    }
+    "first works" in {
+      forAll{ (ix: Index[Int]) =>
+        (ix.first: Option[Int]) must_== (if (ix.toSeq.isEmpty) None else Some(ix.toSeq.head))
+      }
+    }
+
+    "split works" in {
+      implicit val arb = Arbitrary(IndexArbitraries.intPair)
+      forAll{ (ix: Index[(Int,Int)]) =>
+        ix.split must_== {
+          val (v1,v2) = ix.toSeq.unzip
+          (Index(v1:_*),Index(v2:_*))
+      } 
+    }
+  }
+    "dropLevel works" in {
+      implicit val arb = Arbitrary(IndexArbitraries.intPair)
+      forAll{ (ix: Index[(Int,Int)]) =>
+        ix.dropLevel must_== ix.toSeq.map(_._1).toIndex
+    }
+  }
+
+  "stack work" in {
+    forAll{ (ix: Index[Int], ix2: Index[Int]) =>
+      ix.stack(ix2) must_== (
+        for (i <- ix.toSeq; j <- ix2.toSeq) yield (i,j)
+      ).toIndex
+    }
+  }
    
 
     "key lookup works" in {

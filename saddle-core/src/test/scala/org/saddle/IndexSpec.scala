@@ -19,6 +19,12 @@ class IndexSpec extends Specification {
       Index(1,2,2,2,3).prev(Scalar(3)) must_== Scalar(2)
       Index(1,2,2,2,3).prev(Scalar(1)) must_== Scalar(1)
     }
+    "sliceBy works" in {
+      Index(1,2,2,2,3,3,4).sliceBy(1,4) must_== Index(1,2,2,2,3,3,4)
+      Index(1,2,2,2,3,3,4).sliceBy(1,4,false) must_== Index(1,2,2,2,3,3)
+      Index(1,2,2,2,3,3,4).sliceBy(2,3,false) must_== Index(2,2,2)
+      Index(1,2,2,2,3,3,4).sliceBy(2,3) must_== Index(2,2,2,3,3)
+    }
   }
   "Index Joins" should {
     "Unique sorted left join" in {
