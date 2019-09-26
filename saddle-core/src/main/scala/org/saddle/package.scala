@@ -209,7 +209,7 @@ package object saddle {
    * @param ix A value of type Seq[X]
    * @tparam X Type of index elements
    */
-  implicit def seqToIndex[X: ST: ORD](ix: Seq[X]) = new {
+  implicit class SeqToIndex[X: ST: ORD](ix: Seq[X])  {
     def toIndex: Index[X] = Index(ix : _*)
   }
 

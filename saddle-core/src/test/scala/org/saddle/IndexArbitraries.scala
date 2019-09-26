@@ -16,7 +16,6 @@
 
 package org.saddle
 
-import scala.language.reflectiveCalls
 import org.scalacheck.Gen
 
 object IndexArbitraries {
