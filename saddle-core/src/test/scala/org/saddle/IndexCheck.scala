@@ -36,6 +36,22 @@ class IndexCheck extends Specification with ScalaCheck {
       }
     }
 
+    "without works" in {
+      forAll { (ix: Index[Int]) =>
+          (ix.length > 0 ) ==> { 
+
+            val idx = for {
+              n <- Gen.choose(0,ix.length-1)
+              l <- Gen.listOfN(n, Gen.oneOf(ix.toSeq))
+            } yield l
+
+        forAll(idx) { idx =>
+          val without = ix.without(idx.toArray)
+          without must_== Index(ix.toSeq.zipWithIndex.filterNot(v => idx.contains(v._2)).map(_._1):_*)
+        }}
+      }
+    }
+
     "key lookup works" in {
       forAll { (ix: Index[Int]) =>
         (ix.length > 0 ) ==> { val idx = Gen.choose(0, ix.length - 1)
