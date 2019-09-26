@@ -48,9 +48,30 @@ class IndexCheck extends Specification with ScalaCheck {
         forAll(idx) { idx =>
           val without = ix.without(idx.toArray)
           without must_== Index(ix.toSeq.zipWithIndex.filterNot(v => idx.contains(v._2)).map(_._1):_*)
-        }}
+        }
+      }
       }
     }
+  
+    "reversed works" in {
+      forAll { (ix: Index[Int]) =>
+          val reversed = ix.reversed 
+          reversed must_== Index(ix.toSeq.reverse:_*)
+      }
+    }
+   
+    "lsearch and rsearch works" in {
+      forAll { (ix1: Index[Int], elem:Int) =>
+        val ix = ix1.sorted
+          val cl = ix.lsearch(elem)
+          val cr = ix.lsearch(elem)
+          
+          (cl <= cr) and
+          (Index((ix.toSeq.take(cl) :+ elem) ++ ix.toSeq.drop(cl):_*).isMonotonic must_== true) and 
+          (Index((ix.toSeq.take(cr) :+ elem) ++ ix.toSeq.drop(cr):_*).isMonotonic must_== true) 
+      }
+    }
+   
 
     "key lookup works" in {
       forAll { (ix: Index[Int]) =>
