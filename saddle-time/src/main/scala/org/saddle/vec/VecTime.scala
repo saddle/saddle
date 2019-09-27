@@ -99,8 +99,6 @@ class VecTime(val times: Vec[Long], val tzone: DateTimeZone = ISO_CHRONO.getZone
 
   override def sorted(implicit ev: ORD[DateTime], st: ST[DateTime]) = take(array.argsort(times.toArray))
 
-  override def pad: VecTime = vl2vt(times.pad)
-
   override def fillNA(f: Int => DateTime): VecTime = vl2vt(times.fillNA(f andThen t2l))
 
   override def reversed: VecTime = vl2vt(times.reversed)

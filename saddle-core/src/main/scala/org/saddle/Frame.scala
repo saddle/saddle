@@ -933,17 +933,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   def shift(n: Int = 1): Frame[RX, CX, T] = Frame(values.map(_.shift(n)), rowIx, colIx)
 
   /**
-   * In each column, replaces all NA values for which there is a non-NA value at
-   * a prior offset with the corresponding most-recent, non-NA value. See Vec.pad
-   */
-  def pad: Frame[RX, CX, T] = mapVec(_.pad)
-
-  /**
-   * Same as above, but limits the number of observations padded. See Vec.padAtMost
-   */
-  def padAtMost(n: Int): Frame[RX, CX, T] = mapVec(_.padAtMost(n))
-
-  /**
    * Return Frame whose columns satisfy a predicate function operating on that
    * column
    * @param pred Predicate function from Series[RX, T] => Boolean

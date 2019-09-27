@@ -358,15 +358,6 @@ class VecCheck extends Specification with ScalaCheck {
       }
     }
 
-    "pad works" in {
-      Vec[Double](1d, na, na, 2d).pad must_== Vec[Double](1d, 1d, 1d, 2d)
-      Vec[Double](1d, na, na, 2d).padAtMost(1) must_== Vec[Double](1d, 1d, na, 2d)
-
-      forAll { (v: Vec[Double]) =>
-        (v.length > 0 && v.at(0).isNA) || (v.pad.hasNA must beFalse)
-      }
-    }
-
    
 
   }

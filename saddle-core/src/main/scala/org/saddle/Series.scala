@@ -360,28 +360,6 @@ class Series[X: ST: ORD, T: ST](
   def shift(n: Int = 1): Series[X, T] = Series(values.shift(n), index)
 
   /**
-   * Replaces all NA values for which there is a non-NA value at a prior offset
-   * with the corresponding most-recent, non-NA value. E.g,
-   *
-   * {{{
-   *   Series(1, 2, NA, 3, NA).pad == Series(1, 2, 2, 3, 3)
-   *   Series(NA, 1, 2, NA).pad == Series(NA, 1, 2, 2)
-   * }}}
-   *
-   */
-  def pad: Series[X, T] = Series(values.pad, index)
-
-  /**
-   * Same as above, but limits the amount of padding to N observations.
-   *
-   * {{{
-   *   Series(1, 2, NA, NA, 3).padAtMost(1) == Series(1, 2, 2, NA, 3)
-   * }}}
-   *
-   */
-  def padAtMost(n: Int): Series[X, T] = Series(values.padAtMost(n), index)
-
-  /**
    * Fills NA values in series with result of a function which acts on the index of
    * the particular NA value found
    *

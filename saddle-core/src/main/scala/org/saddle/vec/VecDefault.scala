@@ -426,32 +426,6 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](values: Array[T], val scal
   def splitAt(i: Int): (Vec[T], Vec[T]) = (slice(0, i), slice(i, length))
 
   /**
-   * Replaces all NA values for which there is a non-NA value at a lower offset
-   * with the corresponding highest-offset, non-NA value. E.g,
-   *
-   * {{{
-   *   Vec(1, 2, NA, 3, NA).pad == Vec(1, 2, 2, 3, 3)
-   *   Vec(NA, 1, 2, NA).pad == Vec(NA, 1, 2, 2)
-   * }}}
-   *
-   */
-  def pad: Vec[T] = VecImpl.pad(this)(scalarTag)
-
-  /**
-   * Replaces all NA values for which there is a non-NA value at a lower offset
-   * with the corresponding highest-offset, non-NA value; but looking back only
-   * at most N positions.
-   *
-   * {{{
-   *   Vec(1, 2, NA, 3, NA).padAtMost(1) == Vec(1, 2, 2, 3, 3)
-   *   Vec(NA, 1, 2, NA).padAtMost(1) == Vec(NA, 1, 2, 2)
-   *   Vec(1, NA, NA, 3, NA).padAtMost(1) == Vec(1, 1, NA, 3, 3)
-   * }}}
-   *
-   */
-  def padAtMost(n: Int): Vec[T] = VecImpl.pad(this, n)(scalarTag)
-
-  /**
    * Fills NA values in vector with result of a function which acts on the index of
    * the particular NA value found
    *

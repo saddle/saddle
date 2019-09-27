@@ -240,6 +240,12 @@ class SeriesCheck extends Specification with ScalaCheck {
       }
     }
 
+    "reindex works" in {
+      forAll { (s1: Series[Int, Double], s2: Series[Int, Double]) =>
+        s1.reindex(s2.index.toSeq:_*).index must_== s2.index
+      }
+    }
+
     "pivot works" in {
       val v1 = vec.rand(8)
       val v3 = vec.rand(7)
@@ -266,7 +272,6 @@ class SeriesCheck extends Specification with ScalaCheck {
         f.melt.pivot must_== f
       }
     }
-
     
 
   }
