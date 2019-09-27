@@ -1,19 +1,18 @@
 /**
-* Copyright (c) 2013 Saddle Development Team
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
 **/
-
 package org.saddle.array
 
 import org.saddle.vec.VecBool
@@ -27,10 +26,9 @@ import spire.std.short._
 import spire.std.float._
 import spire.math.MergeSort
 
-
 /**
-* Typeclass interface for sorting implementations
-*/
+  * Typeclass interface for sorting implementations
+  */
 trait Sorter[T] {
   def argSorted(arr: Array[T]): Array[Int]
   def sorted(arr: Array[T]): Array[T]
@@ -45,7 +43,7 @@ object Sorter {
   object byteSorter extends Sorter[Byte] {
     def argSorted(arr: Array[Byte]) = {
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(arr,res)
+      PermuteMergeSort.sort(arr, res)
       res
     }
 
@@ -59,7 +57,7 @@ object Sorter {
   object charSorter extends Sorter[Char] {
     def argSorted(arr: Array[Char]) = {
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(arr,res)
+      PermuteMergeSort.sort(arr, res)
       res
     }
 
@@ -73,7 +71,7 @@ object Sorter {
   object shortSorter extends Sorter[Short] {
     def argSorted(arr: Array[Short]) = {
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(arr,res)
+      PermuteMergeSort.sort(arr, res)
       res
     }
 
@@ -87,7 +85,7 @@ object Sorter {
   object intSorter extends Sorter[Int] {
     def argSorted(arr: Array[Int]) = {
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(arr,res)
+      PermuteMergeSort.sort(arr, res)
       res
     }
 
@@ -100,9 +98,9 @@ object Sorter {
 
   object floatSorter extends Sorter[Float] {
     def argSorted(arr: Array[Float]) = {
-      val tmp = nanToNegInf(arr)               // fastutil sorts NaN to PosInf
+      val tmp = nanToNegInf(arr) // fastutil sorts NaN to PosInf
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(tmp,res)
+      PermuteMergeSort.sort(tmp, res)
       res
     }
 
@@ -116,7 +114,7 @@ object Sorter {
   object longSorter extends Sorter[Long] {
     def argSorted(arr: Array[Long]) = {
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(arr,res)
+      PermuteMergeSort.sort(arr, res)
       res
     }
 
@@ -127,13 +125,11 @@ object Sorter {
     }
   }
 
-
-
   object doubleSorter extends Sorter[Double] {
     def argSorted(arr: Array[Double]) = {
-      val tmp = nanToNegInf(arr)                // fastutil sorts NaN to PosInf
+      val tmp = nanToNegInf(arr) // fastutil sorts NaN to PosInf
       val res = range(0, arr.length)
-      PermuteMergeSort.sort(tmp,res)
+      PermuteMergeSort.sort(tmp, res)
       res
     }
 

@@ -242,8 +242,11 @@ class SVD extends FunSuite {
 
     assert(back.roundTo(10) == m)
     assert(
-      m1.u.roundTo(7) == Mat(Vec(-0.6196295, -0.7848945),
-                             Vec(-0.7848945, 0.6196295)))
+      m1.u.roundTo(7) == Mat(
+        Vec(-0.6196295, -0.7848945),
+        Vec(-0.7848945, 0.6196295)
+      )
+    )
 
   }
 }
@@ -311,7 +314,9 @@ class EigNSSuite extends FunSuite {
       m1.eigNonSymm.toString == EigenDecompositionNonSymmetric(
         Mat(Vec(-0.5658, -0.8246), Vec(-0.9094, 0.4160)),
         Vec(-0.3723, 5.3723).reversed,
-        Vec(0d, 0d)).toString)
+        Vec(0d, 0d)
+      ).toString
+    )
   }
 
 }
@@ -322,7 +327,9 @@ class EigSSuite extends FunSuite {
     assert(
       m1.eigSymm.toString == EigenDecompositionSymmetric(
         Mat(Vec(0.7071, 0.7071), Vec(-0.7071, 0.7071)),
-        Vec(3d, -1d)).toString)
+        Vec(3d, -1d)
+      ).toString
+    )
   }
 
 }
@@ -333,12 +340,16 @@ class EigSTruncSuite extends FunSuite {
     assert(
       m1.eigSymm(2).toString == EigenDecompositionSymmetric(
         Mat(Vec(0.7071, 0.7071), Vec(-0.7071, 0.7071)),
-        Vec(3d, -1d)).toString)
+        Vec(3d, -1d)
+      ).toString
+    )
 
     assert(
       m1.eigSymm(1).toString == EigenDecompositionSymmetric(
         Mat(Vec(0.7071, 0.7071)),
-        Vec(3d)).toString)
+        Vec(3d)
+      ).toString
+    )
   }
 
 }
@@ -349,9 +360,12 @@ class DxMSuite extends FunSuite {
 
     assert(m1.mDiagFromLeft(Vec(10d)) == Mat(Vec(10d), Vec(30d), Vec(50d)))
     assert(
-      m1.mDiagFromLeft(Vec(10d, 0.5)) == Mat(Vec(10d, 1d),
-                                             Vec(30d, 2d),
-                                             Vec(50d, 3d)))
+      m1.mDiagFromLeft(Vec(10d, 0.5)) == Mat(
+        Vec(10d, 1d),
+        Vec(30d, 2d),
+        Vec(50d, 3d)
+      )
+    )
   }
 
 }
@@ -362,8 +376,11 @@ class MxDSuite extends FunSuite {
 
     assert(m1.mDiagFromRight(Vec(10d)) == Mat(Vec(10d, 20d, 30d)))
     assert(
-      m1.mDiagFromRight(Vec(10d, 0.5)) == Mat(Vec(10d, 20d, 30d),
-                                              Vec(1.5, 2d, 2.5)))
+      m1.mDiagFromRight(Vec(10d, 0.5)) == Mat(
+        Vec(10d, 20d, 30d),
+        Vec(1.5, 2d, 2.5)
+      )
+    )
   }
 
 }
@@ -416,7 +433,8 @@ class CholeskySuite extends FunSuite {
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
     assert(
-      a.choleskyLower.get.roundTo(2) == Mat(Vec(3.16, 4.43), Vec(14d, 0.63)))
+      a.choleskyLower.get.roundTo(2) == Mat(Vec(3.16, 4.43), Vec(14d, 0.63))
+    )
 
   }
 
@@ -426,8 +444,10 @@ class DeterminantPDSuite extends FunSuite {
   test("2x2") {
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
-    assert(math.abs(
-      a.determinantPD.get - a.eigenValuesSymm(100).map(math.log10).sum) < 1E-10)
+    assert(
+      math
+        .abs(a.determinantPD.get - a.eigenValuesSymm(100).map(math.log10).sum) < 1e-10
+    )
 
   }
 
@@ -446,7 +466,8 @@ class DiagXAInverseXtSuite extends FunSuite {
 
     assert(
       cholesky.solveLowerTriangularForTransposed(x).get.T.roundTo(2) ==
-        Mat(Vec(0.32, 0.95), Vec(0.95, -0.32), Vec(1.58, -1.58)))
+        Mat(Vec(0.32, 0.95), Vec(0.95, -0.32), Vec(1.58, -1.58))
+    )
 
     val z = cholesky.solveLowerTriangularForTransposed(x).get
     val diag2 = z.diagOuterM
@@ -477,7 +498,8 @@ class DiagXAInverseXtSuite2 extends FunSuite {
         .solveUpperTriangularForTransposed((choleskyT mm a).T)
         .get
         .T
-        .roundTo(2) == a)
+        .roundTo(2) == a
+    )
 
   }
 
@@ -487,9 +509,11 @@ class SolveSuite extends FunSuite {
     val b = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
-    val b1 = Mat(Vec(0.9999999999999964, 2d),
-                 Vec(3.000000000000001, 4d),
-                 Vec(5.000000000000007, 6d))
+    val b1 = Mat(
+      Vec(0.9999999999999964, 2d),
+      Vec(3.000000000000001, 4d),
+      Vec(5.000000000000007, 6d)
+    )
 
     val x = a.solve(b).get
     assert((a mm x) == b1)

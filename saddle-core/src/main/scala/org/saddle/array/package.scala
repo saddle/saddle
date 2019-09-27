@@ -1,41 +1,41 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle
 
-import scala.{ specialized => spec }
+import scala.{specialized => spec}
 import spire.random.rng.Well19937c
 import metal.mutable.{HashSet => MetalHashSet}
 
 /**
- * This package contains utilities for working with arrays that
- * are specialized for numeric types.
- */
+  * This package contains utilities for working with arrays that
+  * are specialized for numeric types.
+  */
 package object array {
   import spire.random.Generator
+
   /**
-   * Create a new array consisting of a range of numbers from a lower bound up to, but
-   * not including, an upper bound, at a particular increment (default 1)
-   */
+    * Create a new array consisting of a range of numbers from a lower bound up to, but
+    * not including, an upper bound, at a particular increment (default 1)
+    */
   def range(from: Int, until: Int, step: Int = 1): Array[Int] = {
     val sz = math.ceil((until - from) / step.toDouble).toInt
     var i = from
     var k = 0
     val arr = Array.ofDim[Int](sz)
-    while(k < sz) {
+    while (k < sz) {
       arr(k) = i
       k += 1
       i += step
@@ -44,21 +44,24 @@ package object array {
   }
 
   /**
-   * Create a new initialized empty array
-   */
-  def empty[@spec(Boolean, Int, Long, Double) T: ST](len: Int): Array[T] = Array.ofDim[T](len)
+    * Create a new initialized empty array
+    */
+  def empty[@spec(Boolean, Int, Long, Double) T: ST](len: Int): Array[T] =
+    Array.ofDim[T](len)
 
   /**
-   * Return a uniform random permutation of the array
-   */
-  def shuffle[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T]): Array[T] = {
+    * Return a uniform random permutation of the array
+    */
+  def shuffle[@spec(Boolean, Int, Long, Double) T: ST](
+      arr: Array[T]
+  ): Array[T] = {
     var i = 0
     val sz = arr.length
     val result = arr.clone()
-    while(i < sz) {
+    while (i < sz) {
       // maintains the invariant that at position i in result, all items to the left of i
       // have been randomly selected from the remaining sz - i locations
-      val loc = i + math.floor( (sz - i) * defaultRandom.nextDouble ).toInt
+      val loc = i + math.floor((sz - i) * defaultRandom.nextDouble).toInt
       val tmp = result(i)
       result(i) = result(loc)
       result(loc) = tmp
@@ -68,9 +71,12 @@ package object array {
   }
 
   /**
-   * Repeat elements of the array some number of times
-   */
-  def tile[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], n: Int): Array[T] = {
+    * Repeat elements of the array some number of times
+    */
+  def tile[@spec(Boolean, Int, Long, Double) T: ST](
+      arr: Array[T],
+      n: Int
+  ): Array[T] = {
     require(n >= 0, "n must not be negative")
     val sz = arr.length * n
     val res = empty[T](sz)
@@ -89,8 +95,8 @@ package object array {
   private val defaultRandom = Well19937c.fromTime()
 
   /**
-   * Generate an array of random integers
-   */
+    * Generate an array of random integers
+    */
   def randInt(sz: Int): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     defaultRandom.fillInts(arr)
@@ -98,21 +104,21 @@ package object array {
   }
 
   /**
-   * Generate an array of random positive integers in [from,to]
-   */
-  def randInt(sz: Int, from: Int, to:Int): Array[Int] = {
+    * Generate an array of random positive integers in [from,to]
+    */
+  def randInt(sz: Int, from: Int, to: Int): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = defaultRandom.nextInt(from,to)
+    while (i < sz) {
+      arr(i) = defaultRandom.nextInt(from, to)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of a random long integers
-   */
+    * Generate an array of a random long integers
+    */
   def randLong(sz: Int): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     defaultRandom.fillLongs(arr)
@@ -120,49 +126,51 @@ package object array {
   }
 
   /**
-   * Generate an array of a random long integers in [from,to]
-   */
-  def randLong(sz: Int, from: Long, to:Long): Array[Long] = {
+    * Generate an array of a random long integers in [from,to]
+    */
+  def randLong(sz: Int, from: Long, to: Long): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = defaultRandom.nextLong(from,to)
+    while (i < sz) {
+      arr(i) = defaultRandom.nextLong(from, to)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random doubles on [0,1)
-   */
+    * Generate an array of random doubles on [0,1)
+    */
   def randDouble(sz: Int): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = defaultRandom.nextDouble
       i += 1
     }
     arr
   }
+
   /**
-   * Generate an array of random doubles on [0,n)
-   */
+    * Generate an array of random doubles on [0,n)
+    */
   def randDouble(sz: Int, n: Double): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = defaultRandom.nextDouble(n)
       i += 1
     }
     arr
   }
+
   /**
-   * Generate an array of random doubles on [min,until)
-   */
-  def randDouble(sz: Int, min: Double, until:Double): Array[Double] = {
+    * Generate an array of random doubles on [min,until)
+    */
+  def randDouble(sz: Int, min: Double, until: Double): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = defaultRandom.nextDouble(min, until)
       i += 1
     }
@@ -170,38 +178,38 @@ package object array {
   }
 
   /**
-   * Generate an array of random positive integers
-   */
+    * Generate an array of random positive integers
+    */
   def randIntPos(sz: Int): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = defaultRandom.nextInt(0,Int.MaxValue)
+    while (i < sz) {
+      arr(i) = defaultRandom.nextInt(0, Int.MaxValue)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random long positive integers
-   */
+    * Generate an array of random long positive integers
+    */
   def randLongPos(sz: Int): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = defaultRandom.nextLong(0,Long.MaxValue)
+    while (i < sz) {
+      arr(i) = defaultRandom.nextLong(0, Long.MaxValue)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random positive doubles on (0, 1]
-   */
+    * Generate an array of random positive doubles on (0, 1]
+    */
   def randDoublePos(sz: Int): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = 1d - defaultRandom.nextDouble
       i += 1
     }
@@ -209,9 +217,9 @@ package object array {
   }
 
   /**
-   * Generate an array of random doubles which is normally distributed
-   * with a mean of zero and stdev of one.
-   */
+    * Generate an array of random doubles which is normally distributed
+    * with a mean of zero and stdev of one.
+    */
   def randNormal(sz: Int): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     defaultRandom.fillGaussians(arr)
@@ -219,22 +227,22 @@ package object array {
   }
 
   /**
-   * Generate an array of random doubles which is normally distributed
-   * with a mean of mu and stdev of sigma.
-   */
+    * Generate an array of random doubles which is normally distributed
+    * with a mean of mu and stdev of sigma.
+    */
   def randNormal2(sz: Int, mu: Double, sigma: Double): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = defaultRandom.nextGaussian(mu,sigma)
+    while (i < sz) {
+      arr(i) = defaultRandom.nextGaussian(mu, sigma)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random integers
-   */
+    * Generate an array of random integers
+    */
   def randInt(rng: Generator, sz: Int): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     rng.fillInts(arr)
@@ -242,71 +250,78 @@ package object array {
   }
 
   /**
-   * Generate an array of random positive integers in [from,to]
-   */
-  def randInt(rng: Generator,sz: Int, from: Int, to:Int): Array[Int] = {
+    * Generate an array of random positive integers in [from,to]
+    */
+  def randInt(rng: Generator, sz: Int, from: Int, to: Int): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = rng.nextInt(from,to)
+    while (i < sz) {
+      arr(i) = rng.nextInt(from, to)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of a random long integers
-   */
-  def randLong(rng: Generator,sz: Int): Array[Long] = {
+    * Generate an array of a random long integers
+    */
+  def randLong(rng: Generator, sz: Int): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     rng.fillLongs(arr)
     arr
   }
 
   /**
-   * Generate an array of a random long integers in [from,to]
-   */
-  def randLong(rng: Generator,sz: Int, from: Long, to:Long): Array[Long] = {
+    * Generate an array of a random long integers in [from,to]
+    */
+  def randLong(rng: Generator, sz: Int, from: Long, to: Long): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = rng.nextLong(from,to)
+    while (i < sz) {
+      arr(i) = rng.nextLong(from, to)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random doubles on [0,1)
-   */
-  def randDouble(rng: Generator,sz: Int): Array[Double] = {
+    * Generate an array of random doubles on [0,1)
+    */
+  def randDouble(rng: Generator, sz: Int): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = rng.nextDouble
       i += 1
     }
     arr
   }
+
   /**
-   * Generate an array of random doubles on [0,n)
-   */
-  def randDouble(rng: Generator,sz: Int, n: Double): Array[Double] = {
+    * Generate an array of random doubles on [0,n)
+    */
+  def randDouble(rng: Generator, sz: Int, n: Double): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = rng.nextDouble(n)
       i += 1
     }
     arr
   }
+
   /**
-   * Generate an array of random doubles on [min,until)
-   */
-  def randDouble(rng: Generator,sz: Int, min: Double, until:Double): Array[Double] = {
+    * Generate an array of random doubles on [min,until)
+    */
+  def randDouble(
+      rng: Generator,
+      sz: Int,
+      min: Double,
+      until: Double
+  ): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = rng.nextDouble(min, until)
       i += 1
     }
@@ -314,38 +329,38 @@ package object array {
   }
 
   /**
-   * Generate an array of random positive integers
-   */
-  def randIntPos(rng: Generator,sz: Int): Array[Int] = {
+    * Generate an array of random positive integers
+    */
+  def randIntPos(rng: Generator, sz: Int): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = rng.nextInt(0,Int.MaxValue)
+    while (i < sz) {
+      arr(i) = rng.nextInt(0, Int.MaxValue)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random long positive integers
-   */
-  def randLongPos(rng: Generator,sz: Int): Array[Long] = {
+    * Generate an array of random long positive integers
+    */
+  def randLongPos(rng: Generator, sz: Int): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = rng.nextLong(0,Long.MaxValue)
+    while (i < sz) {
+      arr(i) = rng.nextLong(0, Long.MaxValue)
       i += 1
     }
     arr
   }
 
   /**
-   * Generate an array of random positive doubles on (0, 1]
-   */
-  def randDoublePos(rng: Generator,sz: Int): Array[Double] = {
+    * Generate an array of random positive doubles on (0, 1]
+    */
+  def randDoublePos(rng: Generator, sz: Int): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
+    while (i < sz) {
       arr(i) = 1d - rng.nextDouble
       i += 1
     }
@@ -353,51 +368,59 @@ package object array {
   }
 
   /**
-   * Generate an array of random doubles which is normally distributed
-   * with a mean of zero and stdev of one.
-   */
-  def randNormal(rng: Generator,sz: Int): Array[Double] = {
+    * Generate an array of random doubles which is normally distributed
+    * with a mean of zero and stdev of one.
+    */
+  def randNormal(rng: Generator, sz: Int): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     rng.fillGaussians(arr)
     arr
   }
 
   /**
-   * Generate an array of random doubles which is normally distributed
-   * with a mean of mu and stdev of sigma.
-   */
-  def randNormal2(rng: Generator,sz: Int, mu: Double, sigma: Double): Array[Double] = {
+    * Generate an array of random doubles which is normally distributed
+    * with a mean of mu and stdev of sigma.
+    */
+  def randNormal2(
+      rng: Generator,
+      sz: Int,
+      mu: Double,
+      sigma: Double
+  ): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
-    while(i < sz) {
-      arr(i) = rng.nextGaussian(mu,sigma)
+    while (i < sz) {
+      arr(i) = rng.nextGaussian(mu, sigma)
       i += 1
     }
     arr
   }
 
   /**
-   * Takes values from array arr at particular offsets so as to produce a new array.
-   * Offset -1 is mapped to by-name parameter `missing`.
-   *
-   * Note that each integer I at offset O in `offsets` works to "take" input[I] to
-   * output[O]. Eg, Array(2,0,1) permutes locations as follows:
-   *
-   *  - 2 to 0
-   *  - 0 to 1
-   *  - 1 to 2
-   *
-   * For example,
-   *
-   * {{{
-   *   take(Array(5,6,7), Array(2,0,1), -1) == Array(7,5,6)
-   * }}}
-   */
+    * Takes values from array arr at particular offsets so as to produce a new array.
+    * Offset -1 is mapped to by-name parameter `missing`.
+    *
+    * Note that each integer I at offset O in `offsets` works to "take" input[I] to
+    * output[O]. Eg, Array(2,0,1) permutes locations as follows:
+    *
+    *  - 2 to 0
+    *  - 0 to 1
+    *  - 1 to 2
+    *
+    * For example,
+    *
+    * {{{
+    *   take(Array(5,6,7), Array(2,0,1), -1) == Array(7,5,6)
+    * }}}
+    */
   def take[@spec(Boolean, Int, Long, Double) T: ST](
-    arr: Array[T], offsets: Array[Int], missing: => T): Array[T] = {
+      arr: Array[T],
+      offsets: Array[Int],
+      missing: => T
+  ): Array[T] = {
     val res = empty[T](offsets.length)
     var i = 0
-    while(i < offsets.length) {
+    while (i < offsets.length) {
       val idx = offsets(i)
       if (idx == -1)
         res(i) = missing
@@ -409,43 +432,49 @@ package object array {
   }
 
   /**
-   * Takes values from array arr at particular offsets so as to produce a new array.
-   * Offset -1 is mapped to by-name parameter `missing`.
-   *
-   * Note that each integer I at offset O in `offsets` works to "take" input[I] to
-   * output[O]. Eg, Array(2,0,1) permutes locations as follows:
-   *
-   *  - 2 to 0
-   *  - 0 to 1
-   *  - 1 to 2
-   *
-   * For example,
-   *
-   * {{{
-   *   take(Array(5,6,7), Array(2,0,1), -1) == Array(7,5,6)
-   * }}}
-   */
+    * Takes values from array arr at particular offsets so as to produce a new array.
+    * Offset -1 is mapped to by-name parameter `missing`.
+    *
+    * Note that each integer I at offset O in `offsets` works to "take" input[I] to
+    * output[O]. Eg, Array(2,0,1) permutes locations as follows:
+    *
+    *  - 2 to 0
+    *  - 0 to 1
+    *  - 1 to 2
+    *
+    * For example,
+    *
+    * {{{
+    *   take(Array(5,6,7), Array(2,0,1), -1) == Array(7,5,6)
+    * }}}
+    */
   def take[@spec(Boolean, Int, Long, Double) T: ST](
-    arr: Array[T], offsets: Vec[Int], missing: => T): Array[T] = take(arr,offsets.toArray,missing)
+      arr: Array[T],
+      offsets: Vec[Int],
+      missing: => T
+  ): Array[T] = take(arr, offsets.toArray, missing)
 
   /**
-   * Compute the sum of the array at particular offets. If any of the offets is -1,
-   * the pass-by-name value 'missing' is used instead.
-   *
-   * For example,
-   *
-   * {{{
-   *   sum(Array(1,2,3,4), Array(0,2,), 0)
-   * }}}
-   */
+    * Compute the sum of the array at particular offets. If any of the offets is -1,
+    * the pass-by-name value 'missing' is used instead.
+    *
+    * For example,
+    *
+    * {{{
+    *   sum(Array(1,2,3,4), Array(0,2,), 0)
+    * }}}
+    */
   def sum[@spec(Boolean, Int, Long, Double) T: ST: NUM: ops.AddOp](
-    arr: Array[T], offsets: Array[Int], missing: => T): T = {
+      arr: Array[T],
+      offsets: Array[Int],
+      missing: => T
+  ): T = {
     val st = implicitly[ST[T]]
     val nm = implicitly[NUM[T]]
     val op = implicitly[ops.AddOp[T]]
     var res = st.zero(nm)
     var i = 0
-    while(i < offsets.length) {
+    while (i < offsets.length) {
       val idx = offsets(i)
       res = if (idx == -1) op(res, missing) else op(res, arr(idx))
       i += 1
@@ -454,26 +483,28 @@ package object array {
   }
 
   /**
-   * Sends values from an array to particular offsets so as to produce a new array.
-   * This does the inverse of 'take'; ie, each integer I at offset O in `offsets`
-   * works to "send" input[O] to output[I]. Eg, Array(2,0,1) permutes locations as
-   * follows:
-   *
-   *   - 0 to 2
-   *   - 1 to 0
-   *   - 2 to 1
-   *
-   * For example,
-   *
-   * {{{
-   *   send(Array(5,6,7), Array(2,0,1)) == Array(6,7,5)
-   * }}}
-   */
+    * Sends values from an array to particular offsets so as to produce a new array.
+    * This does the inverse of 'take'; ie, each integer I at offset O in `offsets`
+    * works to "send" input[O] to output[I]. Eg, Array(2,0,1) permutes locations as
+    * follows:
+    *
+    *   - 0 to 2
+    *   - 1 to 0
+    *   - 2 to 1
+    *
+    * For example,
+    *
+    * {{{
+    *   send(Array(5,6,7), Array(2,0,1)) == Array(6,7,5)
+    * }}}
+    */
   def send[@spec(Boolean, Int, Long, Double) T: ST](
-    arr: Array[T], offsets: Array[Int]): Array[T] = {
+      arr: Array[T],
+      offsets: Array[Int]
+  ): Array[T] = {
     val res = empty[T](offsets.length)
     var i = 0
-    while(i < offsets.length) {
+    while (i < offsets.length) {
       res(offsets(i)) = arr(i)
       i += 1
     }
@@ -481,10 +512,13 @@ package object array {
   }
 
   /**
-   * Remove values from array arr at particular offsets so as to
-   * produce a new array.
-   */
-  def remove[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], locs: Array[Int]): Array[T] = {
+    * Remove values from array arr at particular offsets so as to
+    * produce a new array.
+    */
+  def remove[@spec(Boolean, Int, Long, Double) T: ST](
+      arr: Array[T],
+      locs: Array[Int]
+  ): Array[T] = {
     import metal.syntax._
     val set = MetalHashSet.reservedSize[Int](locs.size)
     var i = 0
@@ -511,12 +545,16 @@ package object array {
   }
 
   /**
-   * Put a single value into array arr at particular offsets, so as to produce a new array.
-   */
-  def put[@spec(Boolean, Int, Long, Double) T](arr: Array[T], offsets: Array[Int], value: T): Array[T] = {
+    * Put a single value into array arr at particular offsets, so as to produce a new array.
+    */
+  def put[@spec(Boolean, Int, Long, Double) T](
+      arr: Array[T],
+      offsets: Array[Int],
+      value: T
+  ): Array[T] = {
     val res = arr.clone()
     var i = 0
-    while(i < offsets.length) {
+    while (i < offsets.length) {
       val idx = offsets(i)
       res(idx) = value
       i += 1
@@ -525,13 +563,17 @@ package object array {
   }
 
   /**
-   * Put a value into array arr at particular offsets provided by a boolean array where its locations
-   * are true, so as to produce a new array.
-   */
-  def put[@spec(Boolean, Int, Long, Double) T](arr: Array[T], offsets: Array[Boolean], value: T): Array[T] = {
+    * Put a value into array arr at particular offsets provided by a boolean array where its locations
+    * are true, so as to produce a new array.
+    */
+  def put[@spec(Boolean, Int, Long, Double) T](
+      arr: Array[T],
+      offsets: Array[Boolean],
+      value: T
+  ): Array[T] = {
     val res = arr.clone()
     var i = 0
-    while(i < offsets.length) {
+    while (i < offsets.length) {
       if (offsets(i)) res(i) = value
       i += 1
     }
@@ -539,13 +581,17 @@ package object array {
   }
 
   /**
-   * Put n values into array arr at particular offsets, where the values come from another array,
-   * so as to produce a new array.
-   */
-  def putn[@spec(Boolean, Int, Long, Double) T](arr: Array[T], offsets: Array[Int], values: Array[T]): Array[T] = {
+    * Put n values into array arr at particular offsets, where the values come from another array,
+    * so as to produce a new array.
+    */
+  def putn[@spec(Boolean, Int, Long, Double) T](
+      arr: Array[T],
+      offsets: Array[Int],
+      values: Array[T]
+  ): Array[T] = {
     val res = arr.clone()
     var i = 0
-    while(i < offsets.length) {
+    while (i < offsets.length) {
       val idx = offsets(i)
       res(idx) = values(i)
       i += 1
@@ -554,8 +600,8 @@ package object array {
   }
 
   /**
-   * Fill array with value
-   */
+    * Fill array with value
+    */
   def fill[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], v: T) {
     var i = 0
     while (i < arr.length) {
@@ -565,16 +611,21 @@ package object array {
   }
 
   /**
-   * Derived from numpy 1.7
-   *
-   * Return evenly spaced numbers over a specified interval.
-   *
-   * Returns num evenly spaced samples, calculated over the
-   * interval [start, stop].
-   *
-   * The endpoint of the interval can optionally be excluded.
-   */
-  def linspace(start: Double, stop: Double, num: Int = 50, endpoint: Boolean = true): Array[Double] = {
+    * Derived from numpy 1.7
+    *
+    * Return evenly spaced numbers over a specified interval.
+    *
+    * Returns num evenly spaced samples, calculated over the
+    * interval [start, stop].
+    *
+    * The endpoint of the interval can optionally be excluded.
+    */
+  def linspace(
+      start: Double,
+      stop: Double,
+      num: Int = 50,
+      endpoint: Boolean = true
+  ): Array[Double] = {
     if (num <= 0)
       Array.empty[Double]
     else if (num == 1)
@@ -587,7 +638,7 @@ package object array {
       val n = num - 1
       result(0) = start
       while (i < n) {
-        result(i) = result(i-1) + step
+        result(i) = result(i - 1) + step
         i += 1
       }
       result(n) = stop
@@ -596,26 +647,30 @@ package object array {
   }
 
   /**
-   * Stable indirect sort resulting in permutation of numbers [0, n), whose application
-   * on an array results in a sorted array.
-   *
-   * @param arr Array to sort
-   */
-  def argsort[T: ST: ORD](arr: Array[T]): Array[Int] = implicitly[ST[T]].makeSorter.argSorted(arr)
+    * Stable indirect sort resulting in permutation of numbers [0, n), whose application
+    * on an array results in a sorted array.
+    *
+    * @param arr Array to sort
+    */
+  def argsort[T: ST: ORD](arr: Array[T]): Array[Int] =
+    implicitly[ST[T]].makeSorter.argSorted(arr)
   def argsort[T: ST: ORD](vec: Vec[T]): Array[Int] = argsort(vec.toArray)
 
   /**
-   * Stable sort of array argument (not destructive), using radix sort
-   * implementation wherever possible.
-   *
-   * @param arr Array to sort
-   */
-  def sort[T: ST: ORD](arr: Array[T]): Array[T] = implicitly[ST[T]].makeSorter.sorted(arr)
+    * Stable sort of array argument (not destructive), using radix sort
+    * implementation wherever possible.
+    *
+    * @param arr Array to sort
+    */
+  def sort[T: ST: ORD](arr: Array[T]): Array[T] =
+    implicitly[ST[T]].makeSorter.sorted(arr)
 
   /**
-   * Reverse an array
-   */
-  def reverse[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T]): Array[T] = {
+    * Reverse an array
+    */
+  def reverse[@spec(Boolean, Int, Long, Double) T: ST](
+      arr: Array[T]
+  ): Array[T] = {
     val end = arr.length - 1
     val newArr = new Array[T](end + 1)
 
@@ -628,21 +683,24 @@ package object array {
   }
 
   /**
-   * Filter an array based on a predicate function, wherever that predicate is true
-   */
-  def filter[@spec(Boolean, Int, Long, Double) T: ST](f: T => Boolean)(arr: Array[T]): Array[T] = {
+    * Filter an array based on a predicate function, wherever that predicate is true
+    */
+  def filter[@spec(Boolean, Int, Long, Double) T: ST](
+      f: T => Boolean
+  )(arr: Array[T]): Array[T] = {
     var i = 0
     var count = 0
-    while(i < arr.length) {
+    while (i < arr.length) {
       val v = arr(i)
       if (f(v)) count += 1
       i += 1
     }
-    if (count == arr.length) arr else {
+    if (count == arr.length) arr
+    else {
       val res = empty[T](count)
       i = 0
       count = 0
-      while(i < arr.length) {
+      while (i < arr.length) {
         val v = arr(i)
         if (f(v)) {
           res(count) = v
@@ -655,9 +713,11 @@ package object array {
   }
 
   /**
-   * Flatten a sequence of arrays into a single array
-   */
-  def flatten[@spec(Boolean, Int, Long, Double) T: ST](arrs: Seq[Array[T]]): Array[T] = {
+    * Flatten a sequence of arrays into a single array
+    */
+  def flatten[@spec(Boolean, Int, Long, Double) T: ST](
+      arrs: Seq[Array[T]]
+  ): Array[T] = {
     val size = arrs.map(_.length).sum
     val newArr = new Array[T](size)
     var i = 0
@@ -665,7 +725,7 @@ package object array {
     arrs.foreach { a =>
       val l = a.length
       var j = 0
-      while(j < l) {
+      while (j < l) {
         newArr(i + j) = a(j)
         j += 1
       }
@@ -676,12 +736,13 @@ package object array {
   }
 
   /**
-   * Return the integer offset of the minimum element, or -1 for an empty array
-   */
+    * Return the integer offset of the minimum element, or -1 for an empty array
+    */
   def argmin[@spec(Int, Long, Double) T: ST: ORD: NUM](arr: Array[T]): Int = {
     val sca = implicitly[ST[T]]
     val sz = arr.length
-    if (sz == 0) -1 else {
+    if (sz == 0) -1
+    else {
       var (min, arg) = if (sca.isMissing(arr(0))) (sca.inf, -1) else (arr(0), 0)
       var i = 1
       while (i < sz) {
@@ -697,13 +758,15 @@ package object array {
   }
 
   /**
-   * Return the integer offset of the maximum element, or -1 for an empty array
-   */
+    * Return the integer offset of the maximum element, or -1 for an empty array
+    */
   def argmax[@spec(Int, Long, Double) T: ST: ORD: NUM](arr: Array[T]): Int = {
     val sca = implicitly[ST[T]]
     val sz = arr.length
-    if (sz == 0) -1 else {
-      var (max, arg) = if (sca.isMissing(arr(0))) (sca.negInf, -1) else (arr(0), 0)
+    if (sz == 0) -1
+    else {
+      var (max, arg) =
+        if (sca.isMissing(arr(0))) (sca.negInf, -1) else (arr(0), 0)
       var i = 1
       while (i < sz) {
         val v = arr(i)

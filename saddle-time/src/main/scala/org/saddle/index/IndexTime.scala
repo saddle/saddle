@@ -1,22 +1,21 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.index
 
-import scala.{ specialized => spec }
+import scala.{specialized => spec}
 
 import org.saddle._
 import org.saddle.scalar._
@@ -29,14 +28,16 @@ import org.saddle.time._
 import org.saddle.util.Concat.Promoter
 
 /**
- * A compact native int representation of posix times at millisecond resolution which
- * conforms to and extends the interface of Index[DateTime]
- *
- * @param times An Index[Long], where each element is a millisecond timestamp
- * @param tzone Optional time zone containing localization info
- */
-class IndexTime(val times: Index[Long],
-                val tzone: DateTimeZone = ISO_CHRONO.getZone) extends Index[DateTime] {
+  * A compact native int representation of posix times at millisecond resolution which
+  * conforms to and extends the interface of Index[DateTime]
+  *
+  * @param times An Index[Long], where each element is a millisecond timestamp
+  * @param tzone Optional time zone containing localization info
+  */
+class IndexTime(
+    val times: Index[Long],
+    val tzone: DateTimeZone = ISO_CHRONO.getZone
+) extends Index[DateTime] {
 
   @transient lazy val scalarTag = ScalarTagTime
 
@@ -44,8 +45,10 @@ class IndexTime(val times: Index[Long],
 
   @transient lazy private val lmf = ScalarTagLong
 
-  private def l2t(l: Long) = if (lmf.isMissing(l)) scalarTag.missing else new DateTime(l, chrono)
-  private def t2l(t: DateTime) = if (scalarTag.isMissing(t)) lmf.missing else t.getMillis
+  private def l2t(l: Long) =
+    if (lmf.isMissing(l)) scalarTag.missing else new DateTime(l, chrono)
+  private def t2l(t: DateTime) =
+    if (scalarTag.isMissing(t)) lmf.missing else t.getMillis
   private def il2it(l: Index[Long]) = new IndexTime(l, tzone)
 
   @transient lazy private val _locator = new Locator[DateTime] {
@@ -62,18 +65,20 @@ class IndexTime(val times: Index[Long],
     override def size = _keys.length
 
     // these should not be accessible
-    override def put(key: DateTime, value: Int) { throw new IllegalAccessError() }
+    override def put(key: DateTime, value: Int) {
+      throw new IllegalAccessError()
+    }
     override def inc(key: DateTime) = throw new IllegalAccessError()
   }
 
   protected def locator = _locator
 
   /**
-   * Localize TimeIndex using particular time zone. Note, this does not
-   * change the values of the times; merely how they are interpreted.
-   *
-   * @param tzone The time zone
-   */
+    * Localize TimeIndex using particular time zone. Note, this does not
+    * change the values of the times; merely how they are interpreted.
+    *
+    * @param tzone The time zone
+    */
   def withZone(tzone: DateTimeZone) = new IndexTime(times, tzone)
 
   def length = times.length
@@ -91,7 +96,9 @@ class IndexTime(val times: Index[Long],
     il2it(Index(util.Concat.append(times.toArray, x.times.toArray)))
 
   // general concatenation
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C], oc: ORD[C]) =
+  def concat[B, C](
+      x: Index[B]
+  )(implicit wd: Promoter[DateTime, B, C], mc: ST[C], oc: ORD[C]) =
     Index(util.Concat.append[DateTime, B, C](toArray, x.toArray))
 
   // find the first location whereby an insertion would maintain a sorted index
@@ -134,8 +141,8 @@ class IndexTime(val times: Index[Long],
   }
 
   private def getTimes(other: Index[DateTime]): Index[Long] = other match {
-    case ts : IndexTime => ts.times
-    case _              => other.map(t2l)
+    case ts: IndexTime => ts.times
+    case _             => other.map(t2l)
   }
 
   override def getIndexer(other: Index[DateTime]): Option[Array[Int]] = {
@@ -166,38 +173,41 @@ object IndexTime {
   @transient lazy private val sl = ScalarTagLong
 
   /**
-   * Factory method to create an Index from a recurrence rule between two
-   * dates.
-   *
-   * For instance:
-   *
-   * {{{
-   *   Index.make(RRules.bizEoms, datetime(2005,1,1), datetime(2005,12,31))
-   * }}}
-   *
-   * @param rrule Recurrence rule to use
-   * @param start The earliest datetime on or after which to being the recurrence
-   * @param end   The latest datetime on or before which to end the recurrence
-   */
+    * Factory method to create an Index from a recurrence rule between two
+    * dates.
+    *
+    * For instance:
+    *
+    * {{{
+    *   Index.make(RRules.bizEoms, datetime(2005,1,1), datetime(2005,12,31))
+    * }}}
+    *
+    * @param rrule Recurrence rule to use
+    * @param start The earliest datetime on or after which to being the recurrence
+    * @param end   The latest datetime on or before which to end the recurrence
+    */
   def make(rrule: RRule, start: DateTime, end: DateTime): Index[DateTime] = {
     import time._
-    Index((rrule.copy(count = None) withUntil end from start).toSeq : _*)
+    Index((rrule.copy(count = None) withUntil end from start).toSeq: _*)
   }
 
   /**
-   * Create a new IndexTime from a sequence of times
-   */
-  def apply(times : DateTime*): IndexTime = apply(Vec(times : _*))
+    * Create a new IndexTime from a sequence of times
+    */
+  def apply(times: DateTime*): IndexTime = apply(Vec(times: _*))
 
   /**
-   * Create a new IndexTime from a Vec of times, with an attached timezone
-   */
-  def apply(times : Vec[DateTime], tzone: DateTimeZone = ISO_CHRONO.getZone): IndexTime = {
+    * Create a new IndexTime from a Vec of times, with an attached timezone
+    */
+  def apply(
+      times: Vec[DateTime],
+      tzone: DateTimeZone = ISO_CHRONO.getZone
+  ): IndexTime = {
     val millis = array.empty[Long](times.length)
     var i = 0
     while (i < millis.length) {
       val t = times.raw(i)
-      millis(i) = if(st.isMissing(t)) sl.missing else t.getMillis
+      millis(i) = if (st.isMissing(t)) sl.missing else t.getMillis
       i += 1
     }
     new IndexTime(Index(millis), tzone)

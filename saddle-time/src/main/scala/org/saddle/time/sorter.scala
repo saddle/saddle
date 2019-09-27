@@ -11,7 +11,7 @@ import spire.std.long._
 object timeSorter extends Sorter[DateTime] {
   def argSorted(arr: Array[DateTime]) = {
     val res = array.range(0, arr.length)
-    PermuteMergeSort.sort(ScalarTagTime.time2LongArray(arr),res)
+    PermuteMergeSort.sort(ScalarTagTime.time2LongArray(arr), res)
     res
   }
 

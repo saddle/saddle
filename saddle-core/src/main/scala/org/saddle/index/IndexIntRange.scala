@@ -1,19 +1,18 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.index
 
 import scala.{specialized => spec}
@@ -23,23 +22,23 @@ import util.Concat.Promoter
 import locator.Locator
 
 /**
- * An implementation of an Index[Int] which implicitly represents a bound of integers,
- * which lazily generates its elements as an array when needed. This compact representation
- * is the default when creating a Saddle object such as [[org.saddle.Series]] which
- * requires and index and one is not supplied.
- */
+  * An implementation of an Index[Int] which implicitly represents a bound of integers,
+  * which lazily generates its elements as an array when needed. This compact representation
+  * is the default when creating a Saddle object such as [[org.saddle.Series]] which
+  * requires and index and one is not supplied.
+  */
 class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
-  require( length >= 0, "Length must be non-negative!" )
+  require(length >= 0, "Length must be non-negative!")
 
   @transient lazy val scalarTag = ScalarTagInt
 
-  @transient private lazy val asArr  = array.range(from, from + length)
+  @transient private lazy val asArr = array.range(from, from + length)
   @transient private lazy val genIdx = Index(asArr)
 
   /**
-   * Custom implementation of a Locator to serve as the backing map in a
-   * more space-efficient manner than the full blown LocatorInt implementation.
-   */
+    * Custom implementation of a Locator to serve as the backing map in a
+    * more space-efficient manner than the full blown LocatorInt implementation.
+    */
   protected def locator = new Locator[Int] {
     def size = length
 
@@ -65,7 +64,9 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
 
   private def guardLoc(loc: Int): Int =
     if (loc < 0 || loc >= length)
-      throw new ArrayIndexOutOfBoundsException("Location %d is out of bounds" format loc)
+      throw new ArrayIndexOutOfBoundsException(
+        "Location %d is out of bounds" format loc
+      )
     else
       loc
 
@@ -75,12 +76,17 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
 
   // take values of index at certain locations
   def take(locs: Array[Int]) =
-    Index(Vec(locs).map(i => if (i == -1) IndexImpl.sentinelErr else guardLoc(i) + from))
+    Index(
+      Vec(locs)
+        .map(i => if (i == -1) IndexImpl.sentinelErr else guardLoc(i) + from)
+    )
 
   def without(locs: Array[Int]): Index[Int] =
     Index(array.remove(asArr, locs))
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[Int, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](
+      x: Index[B]
+  )(implicit wd: Promoter[Int, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Int, B, C](toArray, x.toArray))
 
   // find the first location whereby an insertion would maintain a sorted index
@@ -92,11 +98,15 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
   // slice at array locations, [from, until)
   def slice(from: Int, until: Int, stride: Int) =
     if (stride == 1)
-      new IndexIntRange(math.min(length, until - from), math.max(this.from + math.max(from, 0), 0))
+      new IndexIntRange(
+        math.min(length, until - from),
+        math.max(this.from + math.max(from, 0), 0)
+      )
     else
       genIdx.slice(from, until, stride)
 
-  def getAll(keys: Array[Int]) = Vec(keys).filter(locator.contains _).map(_ - from).toArray
+  def getAll(keys: Array[Int]) =
+    Vec(keys).filter(locator.contains _).map(_ - from).toArray
 
   def isMonotonic = true
 
@@ -113,7 +123,9 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
   def join(other: Index[Int], how: JoinType = LeftJoin): ReIndexer[Int] =
     JoinerImpl.join(this, other, how)
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: (Int) => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](
+      f: (Int) => B
+  ): Index[B] =
     genIdx map f
 
   private[saddle] def toArray = asArr

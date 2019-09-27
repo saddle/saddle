@@ -12,9 +12,11 @@ class DPotrfException(i: Int) extends Exception(s"""|dpotrf error, info=$i
 
 case class SVDResult(u: Mat[Double], sigma: Vec[Double], vt: Mat[Double])
 
-case class EigenDecompositionNonSymmetric(q: Mat[Double],
-                                          lambdaReal: Vec[Double],
-                                          lambdaImag: Vec[Double])
+case class EigenDecompositionNonSymmetric(
+    q: Mat[Double],
+    lambdaReal: Vec[Double],
+    lambdaImag: Vec[Double]
+)
 
 case class EigenDecompositionSymmetric(q: Mat[Double], lambdaReal: Vec[Double])
 
@@ -42,17 +44,19 @@ trait OpImpl {
         assert(a.numRows > 0)
         val result = Array.ofDim[Double](a.numRows)
 
-        BLAS.dgemv("T",
-                   a.numCols,
-                   a.numRows,
-                   1.0,
-                   a.toArray,
-                   a.numCols,
-                   b.toArray,
-                   1,
-                   0.0,
-                   result,
-                   1)
+        BLAS.dgemv(
+          "T",
+          a.numCols,
+          a.numRows,
+          1.0,
+          a.toArray,
+          a.numCols,
+          b.toArray,
+          1,
+          0.0,
+          result,
+          1
+        )
         Vec(result)
       }
     }
@@ -65,17 +69,19 @@ trait OpImpl {
         assert(a.numRows > 0)
         val result = Array.ofDim[Double](a.numCols)
 
-        BLAS.dgemv("N",
-                   a.numCols,
-                   a.numRows,
-                   1.0,
-                   a.toArray,
-                   a.numCols,
-                   b.toArray,
-                   1,
-                   0.0,
-                   result,
-                   1)
+        BLAS.dgemv(
+          "N",
+          a.numCols,
+          a.numRows,
+          1.0,
+          a.toArray,
+          a.numCols,
+          b.toArray,
+          1,
+          0.0,
+          result,
+          1
+        )
         Vec(result)
       }
     }
@@ -88,17 +94,19 @@ trait OpImpl {
         assert(a.numRows > 0)
         assert(result.size == a.numRows)
 
-        BLAS.dgemv("T",
-                   a.numCols,
-                   a.numRows,
-                   1.0,
-                   a.toArray,
-                   a.numCols,
-                   b.toArray,
-                   1,
-                   0.0,
-                   result,
-                   1)
+        BLAS.dgemv(
+          "T",
+          a.numCols,
+          a.numRows,
+          1.0,
+          a.toArray,
+          a.numCols,
+          b.toArray,
+          1,
+          0.0,
+          result,
+          1
+        )
         ()
       }
     }
@@ -111,17 +119,19 @@ trait OpImpl {
         assert(a.numRows > 0)
         assert(result.size == a.numCols)
 
-        BLAS.dgemv("N",
-                   a.numCols,
-                   a.numRows,
-                   1.0,
-                   a.toArray,
-                   a.numCols,
-                   b.toArray,
-                   1,
-                   0.0,
-                   result,
-                   1)
+        BLAS.dgemv(
+          "N",
+          a.numCols,
+          a.numRows,
+          1.0,
+          a.toArray,
+          a.numCols,
+          b.toArray,
+          1,
+          0.0,
+          result,
+          1
+        )
         ()
       }
     }
@@ -144,49 +154,53 @@ trait OpImpl {
         val ifail = Array.ofDim[Int](K)
         val iwork = Array.ofDim[Int](5 * m.numRows)
 
-        LAPACK.dsyevx("N",
-                      "I",
-                      "U",
-                      m.numRows,
-                      a,
-                      m.numRows,
-                      0d,
-                      0d,
-                      1,
-                      K,
-                      0d,
-                      outw,
-                      wr,
-                      vl,
-                      m.numRows,
-                      workQuery,
-                      -1,
-                      iwork,
-                      ifail,
-                      info)
+        LAPACK.dsyevx(
+          "N",
+          "I",
+          "U",
+          m.numRows,
+          a,
+          m.numRows,
+          0d,
+          0d,
+          1,
+          K,
+          0d,
+          outw,
+          wr,
+          vl,
+          m.numRows,
+          workQuery,
+          -1,
+          iwork,
+          ifail,
+          info
+        )
 
         val work = Array.ofDim[Double](workQuery(0).toInt)
 
-        LAPACK.dsyevx("N",
-                      "I",
-                      "U",
-                      m.numRows,
-                      a,
-                      m.numRows,
-                      0d,
-                      0d,
-                      m.numRows - K + 1,
-                      m.numRows,
-                      0d,
-                      outw,
-                      wr,
-                      vl,
-                      m.numRows,
-                      work,
-                      work.size,
-                      iwork,
-                      ifail,
-                      info)
+        LAPACK.dsyevx(
+          "N",
+          "I",
+          "U",
+          m.numRows,
+          a,
+          m.numRows,
+          0d,
+          0d,
+          m.numRows - K + 1,
+          m.numRows,
+          0d,
+          outw,
+          wr,
+          vl,
+          m.numRows,
+          work,
+          work.size,
+          iwork,
+          ifail,
+          info
+        )
 
         val success = info.`val` == 0
 
@@ -215,49 +229,53 @@ trait OpImpl {
         val ifail = Array.ofDim[Int](K)
         val iwork = Array.ofDim[Int](5 * m.numRows)
 
-        LAPACK.dsyevx("V",
-                      "I",
-                      "U",
-                      m.numRows,
-                      a,
-                      m.numRows,
-                      0d,
-                      0d,
-                      1,
-                      K,
-                      0d,
-                      outw,
-                      wr,
-                      vl,
-                      m.numRows,
-                      workQuery,
-                      -1,
-                      iwork,
-                      ifail,
-                      info)
+        LAPACK.dsyevx(
+          "V",
+          "I",
+          "U",
+          m.numRows,
+          a,
+          m.numRows,
+          0d,
+          0d,
+          1,
+          K,
+          0d,
+          outw,
+          wr,
+          vl,
+          m.numRows,
+          workQuery,
+          -1,
+          iwork,
+          ifail,
+          info
+        )
 
         val work = Array.ofDim[Double](workQuery(0).toInt)
 
-        LAPACK.dsyevx("V",
-                      "I",
-                      "U",
-                      m.numRows,
-                      a,
-                      m.numRows,
-                      0d,
-                      0d,
-                      m.numRows - K + 1,
-                      m.numRows,
-                      0d,
-                      outw,
-                      wr,
-                      vl,
-                      m.numRows,
-                      work,
-                      work.size,
-                      iwork,
-                      ifail,
-                      info)
+        LAPACK.dsyevx(
+          "V",
+          "I",
+          "U",
+          m.numRows,
+          a,
+          m.numRows,
+          0d,
+          0d,
+          m.numRows - K + 1,
+          m.numRows,
+          0d,
+          outw,
+          wr,
+          vl,
+          m.numRows,
+          work,
+          work.size,
+          iwork,
+          ifail,
+          info
+        )
 
         val success = info.`val` == 0
 
@@ -319,37 +337,41 @@ trait OpImpl {
         val workQuery = Array.ofDim[Double](1)
         val info = new org.netlib.util.intW(0)
 
-        LAPACK.dgeev("V",
-                     "N",
-                     m.numRows,
-                     a,
-                     m.numRows,
-                     wr,
-                     wi,
-                     vl,
-                     m.numRows,
-                     null,
-                     1,
-                     workQuery,
-                     -1,
-                     info)
+        LAPACK.dgeev(
+          "V",
+          "N",
+          m.numRows,
+          a,
+          m.numRows,
+          wr,
+          wi,
+          vl,
+          m.numRows,
+          null,
+          1,
+          workQuery,
+          -1,
+          info
+        )
 
         val work = Array.ofDim[Double](workQuery(0).toInt)
 
-        LAPACK.dgeev("V",
-                     "N",
-                     m.numRows,
-                     a,
-                     m.numRows,
-                     wr,
-                     wi,
-                     vl,
-                     m.numRows,
-                     null,
-                     1,
-                     work,
-                     work.size,
-                     info)
+        LAPACK.dgeev(
+          "V",
+          "N",
+          m.numRows,
+          a,
+          m.numRows,
+          wr,
+          wi,
+          vl,
+          m.numRows,
+          null,
+          1,
+          work,
+          work.size,
+          info
+        )
 
         val success = info.`val` == 0
 
@@ -452,9 +474,9 @@ trait OpImpl {
       assert(m.numRows > 0)
 
       /* Lapack gives us the SVD of the transpose
-        * t(a) = v t(s) t(u)
-        *   a  = u s t(v)
-        */
+       * t(a) = v t(s) t(u)
+       *   a  = u s t(v)
+       */
       val cop = m.toArray.clone
       val s = Array.ofDim[Double](math.min(m.numRows, m.numCols))
       val u = Array.ofDim[Double](m.numCols * m.numCols)
@@ -524,31 +546,37 @@ trait OpImpl {
 
       val ipiv = Array.ofDim[Int](math.max(1, math.min(m.numCols, m.numRows)))
 
-      LAPACK.dgetrf(m.numCols,
-                    m.numRows,
-                    array,
-                    m.numCols,
-                    ipiv,
-                    new org.netlib.util.intW(0))
+      LAPACK.dgetrf(
+        m.numCols,
+        m.numRows,
+        array,
+        m.numCols,
+        ipiv,
+        new org.netlib.util.intW(0)
+      )
 
       val lworkQuery = Array.ofDim[Double](1)
 
-      LAPACK.dgetri(m.numCols,
-                    array,
-                    m.numCols,
-                    ipiv,
-                    lworkQuery,
-                    -1,
-                    new org.netlib.util.intW(0))
+      LAPACK.dgetri(
+        m.numCols,
+        array,
+        m.numCols,
+        ipiv,
+        lworkQuery,
+        -1,
+        new org.netlib.util.intW(0)
+      )
 
       val work = Array.ofDim[Double](lworkQuery(0).toInt + 1)
-      LAPACK.dgetri(m.numCols,
-                    array,
-                    m.numCols,
-                    ipiv,
-                    work,
-                    lworkQuery(0).toInt + 1,
-                    new org.netlib.util.intW(0))
+      LAPACK.dgetri(
+        m.numCols,
+        array,
+        m.numCols,
+        ipiv,
+        work,
+        lworkQuery(0).toInt + 1,
+        new org.netlib.util.intW(0)
+      )
 
       Mat(m.numCols, m.numCols, array)
 
@@ -595,7 +623,8 @@ trait OpImpl {
                     |< 0:  if INFO = -i, the i-th argument had an illegal
                     |value
                     |> 0:  if INFO = i, the (i,i) element of the factor U
-                    |or L is zero, and the inverse could not be computed.""".stripMargin + ", matrix: " + m.toString)
+                    |or L is zero, and the inverse could not be computed.""".stripMargin + ", matrix: " + m.toString
+          )
         }
 
       }
@@ -741,16 +770,18 @@ trait OpImpl {
          * B is transposed implicitly because Mat[_] is row major and lapack is col major
          * A is transposed by lapack
          */
-        LAPACK.dtrtrs("U",
-                      "T",
-                      "N",
-                      a.numCols,
-                      b.numRows,
-                      aarray,
-                      b.numCols,
-                      barray,
-                      b.numCols,
-                      info)
+        LAPACK.dtrtrs(
+          "U",
+          "T",
+          "N",
+          a.numCols,
+          b.numRows,
+          aarray,
+          b.numCols,
+          barray,
+          b.numCols,
+          info
+        )
 
         if (info.`val` == 0) {
 
@@ -782,16 +813,18 @@ trait OpImpl {
          * B is transposed implicitly because Mat[_] is row major and lapack is col major
          * A is transposed by lapack
          */
-        LAPACK.dtrtrs("L",
-                      "T",
-                      "N",
-                      a.numCols,
-                      b.numRows,
-                      aarray,
-                      b.numCols,
-                      barray,
-                      b.numCols,
-                      info)
+        LAPACK.dtrtrs(
+          "L",
+          "T",
+          "N",
+          a.numCols,
+          b.numRows,
+          aarray,
+          b.numCols,
+          barray,
+          b.numCols,
+          info
+        )
 
         if (info.`val` == 0) {
 
@@ -820,14 +853,16 @@ trait OpImpl {
         val ipiv = Array.ofDim[Int](a.numRows)
         val info = new org.netlib.util.intW(0)
 
-        LAPACK.dgesv(a.numCols,
-                     b.numCols,
-                     aarray,
-                     a.numRows,
-                     ipiv,
-                     barray,
-                     b.numRows,
-                     info)
+        LAPACK.dgesv(
+          a.numCols,
+          b.numCols,
+          aarray,
+          a.numRows,
+          ipiv,
+          barray,
+          b.numRows,
+          info
+        )
 
         if (info.`val` == 0) {
 
@@ -864,16 +899,18 @@ trait OpImpl {
          * X is transposed implicitly because Mat[_] is row major and lapack is col major
          * U is transposed by lapack
          */
-        LAPACK.dtrtrs("U",
-                      "T",
-                      "N",
-                      a.numCols,
-                      x.numRows,
-                      aarray,
-                      a.numCols,
-                      xarray,
-                      x.numCols,
-                      info2)
+        LAPACK.dtrtrs(
+          "U",
+          "T",
+          "N",
+          a.numCols,
+          x.numRows,
+          aarray,
+          a.numCols,
+          xarray,
+          x.numCols,
+          info2
+        )
 
         if (info.`val` == 0 && info2.`val` == 0) {
 
@@ -903,7 +940,8 @@ trait OpImpl {
           |< 0:  if INFO = -i, the i-th argument had an illegal value
           |> 0:  if INFO = i, the i-th diagonal element of A is zero,
                 indicating that the matrix is singular and the
-                solutions X have not been computed.""".stripMargin + ", matrix: " + x.toString)
+                solutions X have not been computed.""".stripMargin + ", matrix: " + x.toString
+          )
         }
 
       }
@@ -941,13 +979,17 @@ trait OpImpl {
 
   implicit val mult1c =
     new MatGemmOp[aAxBpbC, Mat[Double]] {
-      def apply(a: Mat[Double],
-                b: Mat[Double],
-                c: Mat[Double],
-                alpha: Double,
-                beta: Double): Mat[Double] = {
-        assert(a.numCols == b.numRows,
-               s"Incorrect dimensions ${a.numCols} ${b.numRows}")
+      def apply(
+          a: Mat[Double],
+          b: Mat[Double],
+          c: Mat[Double],
+          alpha: Double,
+          beta: Double
+      ): Mat[Double] = {
+        assert(
+          a.numCols == b.numRows,
+          s"Incorrect dimensions ${a.numCols} ${b.numRows}"
+        )
         assert(c.numRows == a.numRows && c.numCols == b.numCols)
         assert(b.numCols > 0)
         assert(b.numRows > 0)
@@ -1007,11 +1049,13 @@ trait OpImpl {
 
   implicit val mult2c =
     new MatGemmOp[aAtxBpbC, Mat[Double]] {
-      def apply(a: Mat[Double],
-                b: Mat[Double],
-                c: Mat[Double],
-                alpha: Double,
-                beta: Double): Mat[Double] = {
+      def apply(
+          a: Mat[Double],
+          b: Mat[Double],
+          c: Mat[Double],
+          alpha: Double,
+          beta: Double
+      ): Mat[Double] = {
         assert(a.numRows == b.numRows)
         assert(c.numRows == a.numCols && c.numCols == b.numCols)
         assert(b.numCols > 0)
@@ -1069,10 +1113,12 @@ trait OpImpl {
 
   implicit val mult2cself =
     new MatGemmSelfOp[aAtxApbC, Mat[Double]] {
-      def apply(a: Mat[Double],
-                c: Mat[Double],
-                alpha: Double,
-                beta: Double): Mat[Double] = {
+      def apply(
+          a: Mat[Double],
+          c: Mat[Double],
+          alpha: Double,
+          beta: Double
+      ): Mat[Double] = {
         assert(c.numRows == a.numCols && c.numCols == a.numCols)
 
         assert(c.numCols > 0)
@@ -1162,11 +1208,13 @@ trait OpImpl {
 
   implicit val mult3c =
     new MatGemmOp[aAxBtpbC, Mat[Double]] {
-      def apply(a: Mat[Double],
-                b: Mat[Double],
-                c: Mat[Double],
-                alpha: Double,
-                beta: Double): Mat[Double] = {
+      def apply(
+          a: Mat[Double],
+          b: Mat[Double],
+          c: Mat[Double],
+          alpha: Double,
+          beta: Double
+      ): Mat[Double] = {
         assert(a.numCols == b.numCols)
         assert(c.numRows == a.numRows && c.numCols == b.numRows)
         assert(b.numCols > 0)
@@ -1197,10 +1245,12 @@ trait OpImpl {
 
   implicit val mult3selfplus =
     new MatGemmSelfOp[aAxAtpbC, Mat[Double]] {
-      def apply(a: Mat[Double],
-                c: Mat[Double],
-                alpha: Double,
-                beta: Double): Mat[Double] = {
+      def apply(
+          a: Mat[Double],
+          c: Mat[Double],
+          alpha: Double,
+          beta: Double
+      ): Mat[Double] = {
         assert(c.numRows == a.numRows && c.numCols == a.numRows)
 
         assert(a.numRows > 0)
@@ -1260,11 +1310,13 @@ trait OpImpl {
 
   implicit val mult4c =
     new MatGemmOp[aAtxBtpbC, Mat[Double]] {
-      def apply(a: Mat[Double],
-                b: Mat[Double],
-                c: Mat[Double],
-                alpha: Double,
-                beta: Double): Mat[Double] = {
+      def apply(
+          a: Mat[Double],
+          b: Mat[Double],
+          c: Mat[Double],
+          alpha: Double,
+          beta: Double
+      ): Mat[Double] = {
         assert(a.numRows == b.numCols)
         assert(c.numRows == a.numCols && c.numCols == b.numRows)
         assert(b.numCols > 0)

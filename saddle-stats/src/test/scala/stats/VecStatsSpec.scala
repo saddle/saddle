@@ -1,19 +1,18 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.stats
 
 import org.specs2.mutable.Specification
@@ -21,8 +20,8 @@ import org.saddle._
 import org.saddle.scalar.NA
 
 /**
- * Hand-calculated tests
- */
+  * Hand-calculated tests
+  */
 class VecStatsSpec extends Specification with StatsHelper {
 
   val v1 = Vec[Double](1d, 2, 20, 23, 76, 12, -5, -27, 76, 67)
@@ -86,21 +85,77 @@ class VecStatsSpec extends Specification with StatsHelper {
 
   "Vector skew corner case works" in {
     val vec = Vec[Double](-1d, 1000, -1000, 1)
-    vec.skew must beLessThan(1E-9)    
+    vec.skew must beLessThan(1e-9)
   }
 
   "Rank works" in {
     val vec = Vec[Double](1.0, 5.0, 4.0, 4.0, NA, 3.0)
 
-    vec.rank(tie = stats.RankTie.Avg, ascending = true) must_== Vec[Double](1.0, 5.0, 3.5, 3.5, NA, 2.0)
-    vec.rank(tie = stats.RankTie.Min, ascending = true) must_== Vec[Double](1.0, 5.0, 3.0, 3.0, NA, 2.0)
-    vec.rank(tie = stats.RankTie.Max, ascending = true) must_== Vec[Double](1.0, 5.0, 4.0, 4.0, NA, 2.0)
-    vec.rank(tie = stats.RankTie.Nat, ascending = true) must_== Vec[Double](1.0, 5.0, 3.0, 4.0, NA, 2.0)
+    vec.rank(tie = stats.RankTie.Avg, ascending = true) must_== Vec[Double](
+      1.0,
+      5.0,
+      3.5,
+      3.5,
+      NA,
+      2.0
+    )
+    vec.rank(tie = stats.RankTie.Min, ascending = true) must_== Vec[Double](
+      1.0,
+      5.0,
+      3.0,
+      3.0,
+      NA,
+      2.0
+    )
+    vec.rank(tie = stats.RankTie.Max, ascending = true) must_== Vec[Double](
+      1.0,
+      5.0,
+      4.0,
+      4.0,
+      NA,
+      2.0
+    )
+    vec.rank(tie = stats.RankTie.Nat, ascending = true) must_== Vec[Double](
+      1.0,
+      5.0,
+      3.0,
+      4.0,
+      NA,
+      2.0
+    )
 
-    vec.rank(tie = stats.RankTie.Avg, ascending = false) must_== Vec[Double](5.0, 1.0, 2.5, 2.5, NA, 4.0)
-    vec.rank(tie = stats.RankTie.Min, ascending = false) must_== Vec[Double](5.0, 1.0, 2.0, 2.0, NA, 4.0)
-    vec.rank(tie = stats.RankTie.Max, ascending = false) must_== Vec[Double](5.0, 1.0, 3.0, 3.0, NA, 4.0)
-    vec.rank(tie = stats.RankTie.Nat, ascending = false) must_== Vec[Double](5.0, 1.0, 2.0, 3.0, NA, 4.0)
+    vec.rank(tie = stats.RankTie.Avg, ascending = false) must_== Vec[Double](
+      5.0,
+      1.0,
+      2.5,
+      2.5,
+      NA,
+      4.0
+    )
+    vec.rank(tie = stats.RankTie.Min, ascending = false) must_== Vec[Double](
+      5.0,
+      1.0,
+      2.0,
+      2.0,
+      NA,
+      4.0
+    )
+    vec.rank(tie = stats.RankTie.Max, ascending = false) must_== Vec[Double](
+      5.0,
+      1.0,
+      3.0,
+      3.0,
+      NA,
+      4.0
+    )
+    vec.rank(tie = stats.RankTie.Nat, ascending = false) must_== Vec[Double](
+      5.0,
+      1.0,
+      2.0,
+      3.0,
+      NA,
+      4.0
+    )
 
     val vec2 = Vec.empty[Double]
     vec2.rank() must_== vec2
@@ -120,14 +175,23 @@ class VecStatsSpec extends Specification with StatsHelper {
 
     Vec(1d).percentile(0) must_== Vec(1d).percentile(100)
 
-    val tst = Vec[Double](NA, -1000.0000, 0.0000, -946.7879, -256.7953, 1000.0000, -307.5079, -832.8867)
+    val tst = Vec[Double](
+      NA,
+      -1000.0000,
+      0.0000,
+      -946.7879,
+      -256.7953,
+      1000.0000,
+      -307.5079,
+      -832.8867
+    )
     areClose(tst.percentile(50), -307.5079, 1e-4)
 
     val tst2 = Vec[Double](1, 0)
     areClose(tst2.percentile(50), 0.5, 1e-4)
 
     val tst3 = Vec(0.785, 0.0296, 0.2408, 0.884, 0.5759, 0.8087, 0.4421)
-    areClose(tst3.percentile(0, PctMethod.Excel),  0.0296, 1e-4)
+    areClose(tst3.percentile(0, PctMethod.Excel), 0.0296, 1e-4)
     areClose(tst3.percentile(35, PctMethod.Excel), 0.4555, 1e-4)
     areClose(tst3.percentile(100, PctMethod.Excel), 0.8840, 1e-4)
   }

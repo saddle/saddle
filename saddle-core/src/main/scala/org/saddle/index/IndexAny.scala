@@ -1,19 +1,18 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.index
 
 import scala.{specialized => spec}
@@ -25,13 +24,14 @@ import vec.VecImpl
 import locator.Locator
 
 /**
- * An implementation of [[org.saddle.Index]] generic in type T for which there is an Ordering[T]
- * and a ST[T] available in the implicit context.
- */
+  * An implementation of [[org.saddle.Index]] generic in type T for which there is an Ordering[T]
+  * and a ST[T] available in the implicit context.
+  */
 class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   val scalarTag = keys.scalarTag
 
-  private lazy val (lmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
+  private lazy val (lmap, IndexProperties(contiguous, monotonic)) =
+    IndexImpl.keys2map(this)
 
   protected def locator: Locator[T] = lmap
 
@@ -42,11 +42,15 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   // get the key at the position specified
   def raw(idx: Int): T = keys.raw(idx)
 
-  def take(locs: Array[Int]): Index[T] = Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
+  def take(locs: Array[Int]): Index[T] =
+    Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
 
-  def without(locs: Array[Int]): Index[T] = Index(array.remove(keys.toArray, locs))
+  def without(locs: Array[Int]): Index[T] =
+    Index(array.remove(keys.toArray, locs))
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[T, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](
+      x: Index[B]
+  )(implicit wd: Promoter[T, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[T, B, C](toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
@@ -126,15 +130,16 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   /**Default equality does an iterative, element-wise equality check of all values. */
   override def equals(o: Any): Boolean = {
     o match {
-      case rv: IndexInt => (this eq rv) || (this.length == rv.length) && {
-        var i = 0
-        var eq = true
-        while(eq && i < this.length) {
-          eq &&= raw(i) == rv.raw(i)
-          i += 1
+      case rv: IndexInt =>
+        (this eq rv) || (this.length == rv.length) && {
+          var i = 0
+          var eq = true
+          while (eq && i < this.length) {
+            eq &&= raw(i) == rv.raw(i)
+            i += 1
+          }
+          eq
         }
-        eq
-      }
       case _ => super.equals(o)
     }
   }

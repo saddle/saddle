@@ -1,27 +1,27 @@
 package org.saddle.stats
 
 /**
- * Mediator is an auxiliary class for O(N log k) rolling median. It is inspired by
- * AShelly's C99 implementation, which is (c) 2011 ashelly.myopenid.com and licensed
- * under the MIT license: http://www.opensource.org/licenses/mit-license
- *
- * Reference:
- *   http://stackoverflow.com/questions/5527437/rolling-median-in-c-turlach-implementation
- */
+  * Mediator is an auxiliary class for O(N log k) rolling median. It is inspired by
+  * AShelly's C99 implementation, which is (c) 2011 ashelly.myopenid.com and licensed
+  * under the MIT license: http://www.opensource.org/licenses/mit-license
+  *
+  * Reference:
+  *   http://stackoverflow.com/questions/5527437/rolling-median-in-c-turlach-implementation
+  */
 class Mediator(winSz: Int) {
   require(winSz > 0, "Window length must be > 0!")
 
   // auxiliary data
-  private val data = Array.ofDim[Double](winSz)   // circular buffer of values
-  private val loc = Array.ofDim[Int](winSz)       // ith value's location within heap array
-  private val heap = Array.ofDim[Int](winSz)      // orders data array into [max heap] :: median :: [min heap]
+  private val data = Array.ofDim[Double](winSz) // circular buffer of values
+  private val loc = Array.ofDim[Int](winSz) // ith value's location within heap array
+  private val heap = Array.ofDim[Int](winSz) // orders data array into [max heap] :: median :: [min heap]
   private val sawNa = Array.ofDim[Boolean](winSz) // circular buffer of na markers
-  private var idx = 0                             // position in circular buffer
-  private var naIdx = 0                           // position in circular buffer
-  private var minCt = 0                           // # items in minheap
-  private var maxCt = 0                           // # items in maxheap
-  private var totCt = 0                           // # items in data
-  private var nanCt = 0                           // count of NA's in current window
+  private var idx = 0 // position in circular buffer
+  private var naIdx = 0 // position in circular buffer
+  private var minCt = 0 // # items in minheap
+  private var maxCt = 0 // # items in maxheap
+  private var totCt = 0 // # items in data
+  private var nanCt = 0 // count of NA's in current window
 
   // heap array contains indexes of data array giving a max-mid-min heap structure centered at hMid:
   //   index: [0           ...            hMid           ...      winSz-1]
@@ -33,7 +33,7 @@ class Mediator(winSz: Int) {
   //   (a) size(minheap) <= size(maxheap)
   //   (b) size(minheap) >= size(maxheap) - 1
 
-  private val hMid = winSz / 2   // heap(hMid) = x s.t. data(x) holds mid (between max/min heaps)
+  private val hMid = winSz / 2 // heap(hMid) = x s.t. data(x) holds mid (between max/min heaps)
 
   // loc array is a reverse lookup for data into the heap, eg:
   //   loc(n) = -2  ==>  data(n) is maxheap child1
@@ -49,7 +49,7 @@ class Mediator(winSz: Int) {
   def median: Double = {
     val v = data(heap(hMid))
     if ((totCt & 1) == 0)
-      (v + data(heap(hMid-1))) / 2.0
+      (v + data(heap(hMid - 1))) / 2.0
     else
       v
   }
@@ -61,8 +61,7 @@ class Mediator(winSz: Int) {
       // observing na
       sawNa(naIdx) = true
       if (!oldNa) nanCt += 1
-    }
-    else {
+    } else {
       // observing real value
       sawNa(naIdx) = false
       if (oldNa) nanCt -= 1
@@ -87,22 +86,19 @@ class Mediator(winSz: Int) {
     if (totCt > 0) {
       if (totCt == 1) {
         // don't need to do anything
-      }
-      else if (p > 0) {
+      } else if (p > 0) {
         // item is in minheap
         swap(p, minCt)
         minCt -= 1
         minSortDown(p)
         if (minCt < maxCt - 1) maxToMin()
-      }
-      else if (p < 0) {
+      } else if (p < 0) {
         // item is in maxheap
         swap(-maxCt, p)
         maxCt -= 1
         maxSortDown(p)
         if (maxCt < minCt) minToMax()
-      }
-      else {
+      } else {
         // item is mid
         if (maxCt > minCt) {
           // swap head of maxheap with mid
@@ -111,8 +107,7 @@ class Mediator(winSz: Int) {
           swap(-maxCt, -1)
           maxCt -= 1
           maxSortDown(-1)
-        }
-        else {
+        } else {
           // swap head of minheap with mid
           swap(0, 1)
           // drop head of minheap
@@ -156,7 +151,9 @@ class Mediator(winSz: Int) {
   private def minSortDown(iIn: Int) {
     var i = iIn * 2
     while (i <= minCt) {
-      if (i < minCt && isless(i+1, i)) { i += 1 }
+      if (i < minCt && isless(i + 1, i)) {
+        i += 1
+      }
       if (!cas(i, i / 2))
         i = minCt + 1 // break
       else
@@ -168,9 +165,11 @@ class Mediator(winSz: Int) {
   private def maxSortDown(iIn: Int) {
     var i = iIn * 2
     while (i >= -maxCt) {
-      if (i > -maxCt && isless(i, i-1)) { i -= 1 }
-      if (!cas(i/2, i))
-        i = -(maxCt+1) // break
+      if (i > -maxCt && isless(i, i - 1)) {
+        i -= 1
+      }
+      if (!cas(i / 2, i))
+        i = -(maxCt + 1) // break
       else
         i *= 2
     }
@@ -194,18 +193,22 @@ class Mediator(winSz: Int) {
 
   // rebalance toward maxheap
   private def minToMax() {
-    maxCt += 1                      // make room on maxheap
-    swap(minCt, -maxCt)             // swap element from minheap
+    maxCt += 1 // make room on maxheap
+    swap(minCt, -maxCt) // swap element from minheap
     minCt -= 1
-    if (maxSortUp(-maxCt) && (minCt != 0) && cas(1, 0)) { minSortDown(1) }
+    if (maxSortUp(-maxCt) && (minCt != 0) && cas(1, 0)) {
+      minSortDown(1)
+    }
   }
 
   // rebalance toward minheap
   private def maxToMin() {
-    minCt += 1                      // make room on minheap
-    swap(-maxCt, minCt)             // swap element from maxheap
-    maxCt -=1
-    if (minSortUp(minCt) && cas(0, -1)) { maxSortDown(-1) }
+    minCt += 1 // make room on minheap
+    swap(-maxCt, minCt) // swap element from maxheap
+    maxCt -= 1
+    if (minSortUp(minCt) && cas(0, -1)) {
+      maxSortDown(-1)
+    }
   }
 
   private def insert(v: Double) {
@@ -219,8 +222,7 @@ class Mediator(winSz: Int) {
     if (totCt == 0) {
       loc(idx) = 0
       heap(hMid) = idx
-    }
-    else {
+    } else {
       if (totCt < winSz) {
         // room in buffer
         if (maxCt > minCt) {
@@ -228,37 +230,51 @@ class Mediator(winSz: Int) {
           minCt += 1
           loc(idx) = minCt
           heap(hMid + minCt) = idx
-          if (minSortUp(minCt) && cas(0, -1)) { maxSortDown(-1) }
-        }
-        else {
+          if (minSortUp(minCt) && cas(0, -1)) {
+            maxSortDown(-1)
+          }
+        } else {
           // add to maxheap
           maxCt += 1
           loc(idx) = -maxCt
           heap(hMid - maxCt) = idx
-          if (maxSortUp(-maxCt) && (minCt != 0) && cas(1, 0)) { minSortDown(1) }
+          if (maxSortUp(-maxCt) && (minCt != 0) && cas(1, 0)) {
+            minSortDown(1)
+          }
         }
-      }
-      else {
+      } else {
         // overwriting old value
         var reSort = true
         val p = loc(idx)
 
         if (p > 0) {
           // new item was inserted in minheap
-          if (minCt < (winSz - 1)/2) { minCt += 1 }
-          else if (v > old) { minSortDown(p); reSort = false }
-          if (reSort && minSortUp(p) && cas(0, -1)) { maxSortDown(-1) }
-        }
-        else if (p < 0) {
+          if (minCt < (winSz - 1) / 2) {
+            minCt += 1
+          } else if (v > old) {
+            minSortDown(p); reSort = false
+          }
+          if (reSort && minSortUp(p) && cas(0, -1)) {
+            maxSortDown(-1)
+          }
+        } else if (p < 0) {
           // new item was inserted in maxheap
-          if (maxCt < winSz / 2) { maxCt += 1 }
-          else if (v < old) { maxSortDown(p); reSort = false }
-          if (reSort && maxSortUp(p) && (minCt != 0) && cas(1, 0)) { minSortDown(1) }
-        }
-        else {
+          if (maxCt < winSz / 2) {
+            maxCt += 1
+          } else if (v < old) {
+            maxSortDown(p); reSort = false
+          }
+          if (reSort && maxSortUp(p) && (minCt != 0) && cas(1, 0)) {
+            minSortDown(1)
+          }
+        } else {
           // new item was inserted at median
-          if ( (maxCt != 0) && maxSortUp(-1)) { maxSortDown(-1) }
-          if ( (minCt != 0) && minSortUp(1) ) { minSortDown(1)  }
+          if ((maxCt != 0) && maxSortUp(-1)) {
+            maxSortDown(-1)
+          }
+          if ((minCt != 0) && minSortUp(1)) {
+            minSortDown(1)
+          }
         }
       }
     }
@@ -310,7 +326,11 @@ class Mediator(winSz: Int) {
     for (i <- 0 until winSz) {
       val star1 = if (i == idx) "*" else " "
       val star2 = if (i == naIdx) " *" else "  "
-      println("%s%3d|%12.6f|%12d|%12d |%5s%s|" format(star1, i, data(i), heap(i), loc(i), sawNa(i), star2))
+      println(
+        "%s%3d|%12.6f|%12d|%12d |%5s%s|" format (star1, i, data(i), heap(i), loc(
+          i
+        ), sawNa(i), star2)
+      )
     }
     println("-----------------------------------------------------")
   }

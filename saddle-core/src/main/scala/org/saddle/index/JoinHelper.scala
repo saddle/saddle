@@ -1,37 +1,41 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.index
 
 import org.saddle.array
 
 /**
- * JoinHelper takes a factorized representation of a left and right index (ie, the
- * label identifiers are integers).
- *
- * Applying the class will return a left and right indexer each of whose length is
- * equal to the length of the joint index, and each of whose ith entry indicates the
- * location within the original corresponding (left/right) index which contributes to
- * the ith entry of the joint index.
- *
- * Also see [[org.saddle.array.take]] for more info
- */
+  * JoinHelper takes a factorized representation of a left and right index (ie, the
+  * label identifiers are integers).
+  *
+  * Applying the class will return a left and right indexer each of whose length is
+  * equal to the length of the joint index, and each of whose ith entry indicates the
+  * location within the original corresponding (left/right) index which contributes to
+  * the ith entry of the joint index.
+  *
+  * Also see [[org.saddle.array.take]] for more info
+  */
 private[saddle] object JoinHelper {
 
-  def apply(leftLabels: Array[Int], rightLabels: Array[Int], max_groups: Int, how: JoinType): JoinResult = {
+  def apply(
+      leftLabels: Array[Int],
+      rightLabels: Array[Int],
+      max_groups: Int,
+      how: JoinType
+  ): JoinResult = {
     val (marker, counter) = how match {
       case InnerJoin => (ijMarker, ijCounter)
       case OuterJoin => (ojMarker, ojCounter)
@@ -76,17 +80,20 @@ private[saddle] object JoinHelper {
       i += 1
     }
 
-    JoinResult(applyUnsorter(lUnsorter, lLabels), applyUnsorter(rUnsorter, rLabels))
+    JoinResult(
+      applyUnsorter(lUnsorter, lLabels),
+      applyUnsorter(rUnsorter, rLabels)
+    )
   }
 
   // Calculates mapping of factor label to count seen in labels array
-  private def labelCount(labels: Array[Int], numFactors: Int): Array[Int]= {
+  private def labelCount(labels: Array[Int], numFactors: Int): Array[Int] = {
     val n = labels.length
 
     // Create vector of factor counts seen in labels array, saving location 0 for N/A
     val counts = Array.ofDim[Int](numFactors + 1)
     var i = 0
-    while(i < n) {
+    while (i < n) {
       counts(labels(i) + 1) += 1
       i += 1
     }
@@ -96,7 +103,11 @@ private[saddle] object JoinHelper {
 
   // Calculate permutation from sorted(labels) -> labels, so we can recover an array of factor labels
   // in the originally provided order.
-  private def unsorter(labels: Array[Int], counts: Array[Int], numFactors: Int): Array[Int] = {
+  private def unsorter(
+      labels: Array[Int],
+      counts: Array[Int],
+      numFactors: Int
+  ): Array[Int] = {
     val n = labels.length
 
     // calculate running sum of label counts
@@ -104,7 +115,7 @@ private[saddle] object JoinHelper {
     //   label array (in factor-ascending order)
     val where = Array.ofDim[Int](numFactors + 1)
     var i = 1
-    while(i < numFactors + 1) {
+    while (i < numFactors + 1) {
       where(i) = where(i - 1) + counts(i - 1)
       i += 1
     }
@@ -113,9 +124,9 @@ private[saddle] object JoinHelper {
     // to a position in the original label array.
     val permuter = Array.ofDim[Int](n)
     i = 0
-    while(i < n) {
-      val w = labels(i) + 1    // ith factor label
-      permuter(where(w)) = i   // permuter[loc in sorted array] = i
+    while (i < n) {
+      val w = labels(i) + 1 // ith factor label
+      permuter(where(w)) = i // permuter[loc in sorted array] = i
       where(w) += 1
       i += 1
     }
@@ -123,8 +134,11 @@ private[saddle] object JoinHelper {
     permuter
   }
 
-  private def applyUnsorter(unsorter: Array[Int], labels: Array[Int]): Array[Int] = {
-    if(unsorter.length > 0)
+  private def applyUnsorter(
+      unsorter: Array[Int],
+      labels: Array[Int]
+  ): Array[Int] = {
+    if (unsorter.length > 0)
       array.take(unsorter, labels, -1)
     else {
       val ll = labels.length
@@ -144,7 +158,15 @@ private[saddle] object JoinHelper {
   // Output: new join position
   // Effect: updates label arrays
   private trait LabelMarker {
-    def apply(lLabels: Array[Int], rLabels: Array[Int], lc: Int, rc: Int, lpos: Int, rpos: Int, pos: Int): Int
+    def apply(
+        lLabels: Array[Int],
+        rLabels: Array[Int],
+        lc: Int,
+        rc: Int,
+        lpos: Int,
+        rpos: Int,
+        pos: Int
+    ): Int
   }
 
   // Input:  L/R count of current label
@@ -159,15 +181,25 @@ private[saddle] object JoinHelper {
   }
 
   private object ojCounter extends JoinCounter {
-    def apply(lc: Int, rc: Int, count: Int): Int = if (rc > 0 && lc > 0) count + lc * rc else count + lc + rc
+    def apply(lc: Int, rc: Int, count: Int): Int =
+      if (rc > 0 && lc > 0) count + lc * rc else count + lc + rc
   }
 
   private object ljCounter extends JoinCounter {
-    def apply(lc: Int, rc: Int, count: Int): Int = if (rc > 0) count + lc * rc else count + lc
+    def apply(lc: Int, rc: Int, count: Int): Int =
+      if (rc > 0) count + lc * rc else count + lc
   }
 
   private object ijMarker extends LabelMarker {
-    def apply(lLabels: Array[Int], rLabels: Array[Int], lc: Int, rc: Int, lpos: Int, rpos: Int, pos: Int): Int = {
+    def apply(
+        lLabels: Array[Int],
+        rLabels: Array[Int],
+        lc: Int,
+        rc: Int,
+        lpos: Int,
+        rpos: Int,
+        pos: Int
+    ): Int = {
       if (rc > 0 && lc > 0) {
         var j = 0
         while (j < lc) {
@@ -186,7 +218,15 @@ private[saddle] object JoinHelper {
   }
 
   private object ojMarker extends LabelMarker {
-    def apply(lLabels: Array[Int], rLabels: Array[Int], lc: Int, rc: Int, lpos: Int, rpos: Int, pos: Int): Int = {
+    def apply(
+        lLabels: Array[Int],
+        rLabels: Array[Int],
+        lc: Int,
+        rc: Int,
+        lpos: Int,
+        rpos: Int,
+        pos: Int
+    ): Int = {
       if (rc == 0) {
         var j = 0
         while (j < lc) {
@@ -195,8 +235,7 @@ private[saddle] object JoinHelper {
           j += 1
         }
         pos + lc
-      }
-      else if (lc == 0) {
+      } else if (lc == 0) {
         var j = 0
         while (j < rc) {
           lLabels(pos + j) = -1
@@ -204,8 +243,7 @@ private[saddle] object JoinHelper {
           j += 1
         }
         pos + rc
-      }
-      else {
+      } else {
         var j = 0
         while (j < lc) {
           val offset = pos + j * rc
@@ -223,7 +261,15 @@ private[saddle] object JoinHelper {
   }
 
   private object ljMarker extends LabelMarker {
-    def apply(lLabels: Array[Int], rLabels: Array[Int], lc: Int, rc: Int, lpos: Int, rpos: Int, pos: Int): Int = {
+    def apply(
+        lLabels: Array[Int],
+        rLabels: Array[Int],
+        lc: Int,
+        rc: Int,
+        lpos: Int,
+        rpos: Int,
+        pos: Int
+    ): Int = {
       if (rc == 0) {
         var j = 0
         while (j < lc) {
@@ -232,8 +278,7 @@ private[saddle] object JoinHelper {
           j += 1
         }
         pos + lc
-      }
-      else {
+      } else {
         var j = 0
         while (j < lc) {
           val offset = pos + j * rc

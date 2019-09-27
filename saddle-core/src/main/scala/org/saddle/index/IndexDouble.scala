@@ -1,19 +1,18 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.index
 
 import scala.{specialized => spec}
@@ -26,12 +25,13 @@ import locator.Locator
 import org.saddle.scalar.ScalarTagDouble
 
 /**
- * Index with double keys
- */
+  * Index with double keys
+  */
 class IndexDouble(keys: Vec[Double]) extends Index[Double] {
   val scalarTag = ScalarTagDouble
 
-  private lazy val (kmap, IndexProperties(contiguous, monotonic)) = IndexImpl.keys2map(this)
+  private lazy val (kmap, IndexProperties(contiguous, monotonic)) =
+    IndexImpl.keys2map(this)
 
   protected def locator: Locator[Double] = kmap
 
@@ -42,11 +42,15 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
   // get the key at the position specified
   def raw(idx: Int): Double = keys.raw(idx)
 
-  def take(locs: Array[Int]): Index[Double] = Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
+  def take(locs: Array[Int]): Index[Double] =
+    Index(array.take(keys.toArray, locs, IndexImpl.sentinelErr))
 
-  def without(locs: Array[Int]): Index[Double] = Index(array.remove(keys.toArray, locs))
+  def without(locs: Array[Int]): Index[Double] =
+    Index(array.remove(keys.toArray, locs))
 
-  def concat[B, C](x: Index[B])(implicit wd: Promoter[Double, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
+  def concat[B, C](
+      x: Index[B]
+  )(implicit wd: Promoter[Double, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
     Index(util.Concat.append[Double, B, C](toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
@@ -102,7 +106,9 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
       -(binarySearch(keys.toArray, t) + 1)
   }
 
-  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](f: Double => B): Index[B] =
+  def map[@spec(Boolean, Int, Long, Double) B: ST: ORD](
+      f: Double => B
+  ): Index[B] =
     Index(VecImpl.map(keys)(f).toArray)
 
   def toArray: Array[Double] = keys.toArray
@@ -110,15 +116,16 @@ class IndexDouble(keys: Vec[Double]) extends Index[Double] {
   /** Default equality does an iterative, element-wise equality check of all values. */
   override def equals(o: Any): Boolean = {
     o match {
-      case rv: IndexDouble => (this eq rv) || (this.length == rv.length) && {
-        var i = 0
-        var eq = true
-        while(eq && i < this.length) {
-          eq &&= raw(i) == rv.raw(i)
-          i += 1
+      case rv: IndexDouble =>
+        (this eq rv) || (this.length == rv.length) && {
+          var i = 0
+          var eq = true
+          while (eq && i < this.length) {
+            eq &&= raw(i) == rv.raw(i)
+            i += 1
+          }
+          eq
         }
-        eq
-      }
       case _ => super.equals(o)
     }
   }

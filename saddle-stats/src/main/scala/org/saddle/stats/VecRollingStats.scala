@@ -1,19 +1,18 @@
 /**
- * Copyright (c) 2013 Saddle Development Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+  * Copyright (c) 2013 Saddle Development Team
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
  **/
-
 package org.saddle.stats
 
 import scala.{specialized => spec}
@@ -22,41 +21,47 @@ import ops._
 import org.saddle.scalar._
 
 /**
- * Rolling statistical methods made available on numeric Vec objects via enrichment.
- * These methods scan over the Vec and compute values over a specified historical
- * window.
- */
-class VecRollingStats[@spec(Int, Long, Double) A: ST: Vec2Stats: AddOp: SubOp: NUM](v: Vec[A]) {
+  * Rolling statistical methods made available on numeric Vec objects via enrichment.
+  * These methods scan over the Vec and compute values over a specified historical
+  * window.
+  */
+class VecRollingStats[
+    @spec(Int, Long, Double) A: ST: Vec2Stats: AddOp: SubOp: NUM
+](v: Vec[A]) {
+
   /**
-   * Rolling count; compute count of number of elements in Vec over a sliding window, ignoring
-   * any NA values.
-   * @param winSz Size of the sliding window
-   */
+    * Rolling count; compute count of number of elements in Vec over a sliding window, ignoring
+    * any NA values.
+    * @param winSz Size of the sliding window
+    */
   def rollingCount(winSz: Int): Vec[Int] = v.rolling(winSz, new RollingCount[A])
 
   /**
-   * Rolling sum; compute sum of elements in Vec over a sliding window, ignoring any NA
-   * values.
-   * @param winSz Size of the sliding window
-   */
+    * Rolling sum; compute sum of elements in Vec over a sliding window, ignoring any NA
+    * values.
+    * @param winSz Size of the sliding window
+    */
   def rollingSum(winSz: Int): Vec[A] = v.rolling(winSz, new RollingSum[A])
 
   /**
-   * Rolling mean; compute mean of elements in Vec over a sliding window, ignoring any NA
-   * values.
-   * @param winSz Size of the sliding window
-   */
-  def rollingMean(winSz: Int): Vec[Double] = v.rolling(winSz, new RollingMean[A])
+    * Rolling mean; compute mean of elements in Vec over a sliding window, ignoring any NA
+    * values.
+    * @param winSz Size of the sliding window
+    */
+  def rollingMean(winSz: Int): Vec[Double] =
+    v.rolling(winSz, new RollingMean[A])
 
   /**
-   * Rolling median; compute median of elements in Vec over a sliding window, ignoring any NA
-   * values.
-   * @param winSz Size of the sliding window
-   */
-  def rollingMedian(winSz: Int): Vec[Double] = new RollingMedian[A](winSz, v).evaluate
+    * Rolling median; compute median of elements in Vec over a sliding window, ignoring any NA
+    * values.
+    * @param winSz Size of the sliding window
+    */
+  def rollingMedian(winSz: Int): Vec[Double] =
+    new RollingMedian[A](winSz, v).evaluate
 }
 
-class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Int] {
+class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM]
+    extends Function1[Vec[A], Int] {
   var i = 0
   var s = 0
   val sa = implicitly[ST[A]]
@@ -67,8 +72,7 @@ class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Funct
       s = v.count
       i += 1
       if (v.length > 0) p = v.first
-    }
-    else {
+    } else {
       if (!p.isNA) s -= 1
       if (!v.last.isNA) s += 1
       p = v.first
@@ -77,7 +81,8 @@ class RollingCount[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Funct
   }
 }
 
-class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] extends Function1[Vec[A], A] {
+class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM]
+    extends Function1[Vec[A], A] {
   var i = 0
   val sa = implicitly[ST[A]]
   val add = implicitly[AddOp[A]]
@@ -90,8 +95,7 @@ class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] e
       s = v.sum
       i += 1
       if (v.length > 0) p = v.first
-    }
-    else {
+    } else {
       if (!p.isNA) s = sub(s, p.get)
       if (!v.last.isNA) s = add(s, v.last.get)
       p = v.first
@@ -100,7 +104,8 @@ class RollingSum[@spec(Int, Long, Double) A: ST: AddOp: SubOp: Vec2Stats: NUM] e
   }
 }
 
-class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Function1[Vec[A], Double] {
+class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM]
+    extends Function1[Vec[A], Double] {
   var i = 0
   var s = 0d
   var c = 0
@@ -113,8 +118,7 @@ class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Functi
       c = v.count
       i += 1
       if (v.length > 0) p = v.first
-    }
-    else {
+    } else {
       if (!p.isNA) {
         s -= sa.toDouble(p.get)
         c -= 1
@@ -129,7 +133,10 @@ class RollingMean[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM] extends Functi
   }
 }
 
-class RollingMedian[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM](winSz:Int, origv: Vec[A]) {
+class RollingMedian[@spec(Int, Long, Double) A: ST: Vec2Stats: NUM](
+    winSz: Int,
+    origv: Vec[A]
+) {
   val sa = implicitly[ST[A]]
 
   val len = origv.length

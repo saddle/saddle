@@ -17,6 +17,7 @@ trait VecLinalgOps {
   def linalg = this
 
   def vv(other: Vec[Double])(
-      implicit op: VecBinOp[Vec[Double], Double]): Double = op(self, other)
+      implicit op: VecBinOp[Vec[Double], Double]
+  ): Double = op(self, other)
 
 }
