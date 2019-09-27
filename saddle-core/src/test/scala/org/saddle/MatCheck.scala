@@ -208,6 +208,44 @@ class MatCheck extends Specification with ScalaCheck {
          ma.contents.map((v: Double) => math.round(v * 100) / 100d) must_== ma.roundTo(2).contents
        }
      }
+     "isEmpty works" in {
+       forAll { (ma: Mat[Double]) =>
+         ma.isEmpty must_== (ma.toArray.isEmpty || ma.numCols == 0 || ma.numRows == 0)
+       }
+     }
+     "at works" in {
+       forAll { (ma: Mat[Double], i:Int) =>
+         ma.length == 0 || i < 0 || ma.length <= i || ma.at(i).isNA || ma.at(i).get == ma.raw(i)
+       }
+     }
+     "at works" in {
+       val m = Mat(Vec(1,2,3),Vec(4,5,6),Vec(7,8,9))
+       m.at(Array(1,2),Array(0,1)) must_== Mat(Vec(2,3),Vec(5,6))
+     }
+     "at works" in {
+       val m = Mat(Vec(1,2,3),Vec(4,5,6),Vec(7,8,9))
+       m.at(1-> *,0-> *) must_== Mat(Vec(2,3),Vec(5,6),Vec(8,9))
+     }
+     "at works" in {
+       val m = Mat(Vec(1,2,3),Vec(4,5,6),Vec(7,8,9))
+       m.at(Array(0,1,2),2) must_== Vec(7,8,9)
+     }
+     "at works" in {
+       val m = Mat(Vec(1,2,3),Vec(4,5,6),Vec(7,8,9))
+       m.at(2,Array(0,1,2)) must_== Vec(3,6,9)
+     }
+     "cols works" in {
+      forAll { (ma: Mat[Double], i:Int) =>
+        ma.length == 0 || i < 0 || ma.numCols <= i || ma.cols(Vector(i)) == Vector(ma.cols()(i))
+      }
+     }
+     "rows works" in {
+      forAll { (ma: Mat[Double], i:Int) =>
+        ma.length == 0 || i < 0 || ma.numRows <= i || ma.rows(Vector(i)) == Vector(ma.rows()(i))
+      }
+     }
+
+     
 
      "cov works" in {
        forAll { (ma: Mat[Double]) =>
