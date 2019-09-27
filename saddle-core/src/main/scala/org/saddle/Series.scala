@@ -217,6 +217,7 @@ class Series[X: ST: ORD, T: ST](
    * @param keys Array of keys
    */
   def apply(keys: Array[X]): Series[X, T] = take(index(keys))
+  def apply(keys: Vec[X]): Series[X, T] = take(index(keys.toArray))
 
   /**
    * Extract a Series corresponding to those keys provided. Returns a new Series

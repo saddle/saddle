@@ -33,7 +33,109 @@ class SeriesCheck extends Specification with ScalaCheck {
         (s must_== Series(s.toVec)) and (s must_== s)
       }
     }
+    "dropNA works" in {
+      forAll { (s: Series[Int, Double]) =>
+        (s.dropNA must_== s.toSeq.filterNot(_._2.isNaN).toSeries) and  
+        (s.dropNA.toVec.toSeq.count(_.isNaN) must_== 0)
+      }
+    }
 
+    "mask works" in {
+      forAll { (s: Series[Int,Double]) =>
+        if (s.length > 0) {
+          val m = s.index.toVec.map(_ % 2 == 0)
+          val masked = s.mask(m)
+          m.toSeq.zipWithIndex.forall{ case (b,idx) =>
+            if (b) masked.at(idx).isNA else true
+          }
+        } else true
+      }
+    }
+    "mask works" in {
+      forAll { (s: Series[Int,Double]) =>
+        if (s.length > 0) {
+          val m = s.index.toVec.map(_ % 2 == 0)
+          val masked = s.maskIx(_ %2 == 0)
+          m.toSeq.zipWithIndex.forall{ case (b,idx) =>
+            if (b) masked.at(idx).isNA else true
+          }
+        } else true
+      }
+    }
+    "mask works" in {
+      forAll { (s: Series[Int,Double]) =>
+        if (s.length > 0) {
+          val m = s.values.map(_.toInt % 2 == 0)
+          val masked = s.mask(_.toInt % 2 == 0)
+          m.toSeq.zipWithIndex.forall{ case (b,idx) =>
+            if (b) masked.at(idx).isNA else true
+          }
+        } else true
+      }
+    }
+
+    "filterIx works" in {
+      forAll { (s: Series[Int,Double]) =>
+        val evens = s.filterIx(_ % 2 == 0)
+        evens must_== s.toSeq.filter(_._1 %2 == 0).toSeries
+      }
+    } 
+
+    "find works" in {
+      forAll { (s: Series[Int,Double]) =>
+        s(s.find(_.toInt %2 == 0)) must_== s.filter(_.toInt %2 == 0)
+      }
+    } 
+    "findKey works" in {
+      forAll { (s: Series[Int,Double]) =>
+        s.findKey(_.toInt %2 == 0) must_== s.toSeq.filterNot(_._2.isNaN).filter(_._2.toInt%2==0).map(_._1).toIndex
+      }
+    } 
+    "findOne works" in {
+      forAll { (s: Series[Int,Double]) =>
+        s.findOne(_.toInt %2 == 0) must_== s.toVec.toSeq.zipWithIndex.filterNot(_._1.isNaN).filter(_._1.toInt%2==0).map(_._2).headOption.getOrElse(-1)
+      }
+    } 
+    "findOneKey works" in {
+      forAll { (s: Series[Int,Double]) =>
+        (s.findOneKey(_.toInt %2 == 0):Option[Int]) must_== s.toSeq.filterNot(_._2.isNaN).filter(_._2.toInt%2==0).map(_._1).headOption
+      }
+    } 
+    "minKey works" in {
+      forAll { (s: Series[Int,Double]) =>
+        s.minKey.toOption must_== s.toSeq.filterNot(_._2.isNaN).sortBy(_._2).headOption.map(_._1)
+      }
+    } 
+    "maxKey works" in {
+      forAll { (s: Series[Int,Double]) =>
+        s.maxKey.toOption must_== s.toSeq.filterNot(_._2.isNaN).sortBy(_._2*(-1)).headOption.map(_._1)
+      }
+    } 
+    "contains works" in {
+      forAll { (s: Series[Int,Double], elem:Int) =>
+        s.contains(elem) must_== s.index.toSeq.contains(elem)
+      }
+    } 
+    "exists works" in {
+      forAll { (s: Series[Int,Double]) =>
+        s.exists(_.toInt %2==0) must_== s.toVec.dropNA.toSeq.exists(_.toInt %2==0)
+      }
+    } 
+    "mapValues" in {
+      Series(1,2,3,4).mapValues(_*2) must_== Series(2,4,6,8)
+    }
+    "scanLeft" in {
+      Series(1,2,3,4).scanLeft(0)(_+_) must_== Series(1,3,6,10)
+    }
+    "joinMap" in {
+      Series(1,na.to[Int],3,4).joinMap(Series(1,2,na.to[Int],4))(_ + _) must_== Series(2,na.to[Int],na.to[Int],8)
+    }
+    "sorted" in {
+      forAll { (s: Series[Int,Double]) =>
+        (s.sorted.dropNA must_== s.toSeq.sortBy(_._2).toSeries.dropNA) and 
+        (Series(1,na.to[Int],2).sorted must_== Series(1->na.to[Int],0->1,2->2))
+      }
+    }
     "take works" in {
       forAll { (s: Series[Int, Double]) =>
          (s.length > 0) ==> {

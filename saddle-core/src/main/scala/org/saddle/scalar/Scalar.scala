@@ -27,6 +27,10 @@ import java.util.NoSuchElementException
 sealed abstract class Scalar[+T] {
   def isNA: Boolean
   def get: T
+  def toOption = if (isNA) None else Some(get)
+
+  def isDefined = !isNA 
+  def isEmpty = isNA
 
   @inline final def map[B: ST](f: T => B): Scalar[B] =
     if (isNA) NA else Value(f(get))
@@ -85,6 +89,7 @@ object Scalar {
 case class Value[@specialized(Boolean, Int, Double, Float, Long) +T : ST](el: T) extends Scalar[T] {
   def isNA = implicitly[ST[T]].isMissing(el)
   def get = el
+  
 
   override def toString = el.toString
 }
