@@ -31,6 +31,12 @@ class FrameCheck extends Specification with ScalaCheck {
       }
     }
 
+    "squeeze" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.squeeze must_== f.toColSeq.filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA)).toFrame
+      }
+    }
+
     "frame sortedRowsBy" in {
       forAll { (f: Frame[Int, Int, Double]) =>
         if (f.numCols > 0) {

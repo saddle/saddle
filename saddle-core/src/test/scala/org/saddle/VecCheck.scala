@@ -350,6 +350,12 @@ class VecCheck extends Specification with ScalaCheck {
       }
     }
 
+    "flatMap works" in {
+      forAll { (v: Vec[Double]) =>
+        v.flatMap(v => Vec(v,v)) must_== v.toSeq.filterNot(_.isNaN).flatMap(v => List(v,v)).toVec
+      }
+    }
+
     "without works" in {
       forAll { (v: Vec[Double]) =>
         (v.length > 0) ==> {

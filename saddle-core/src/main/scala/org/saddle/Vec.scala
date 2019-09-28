@@ -294,6 +294,8 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
 
   /**
     * Maps a function over elements of the Vec and flattens the result.
+    * 
+    * NAs are ignored and `f` is never called on a NA
     */
   def flatMap[@spec(Boolean, Int, Long, Double) B: ST](f: T => Vec[B]): Vec[B]
 

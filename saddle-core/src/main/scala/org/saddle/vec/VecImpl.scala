@@ -357,34 +357,6 @@ private[saddle] object VecImpl {
     Vec(buf.toArray)
   }
 
-  def pad[@spec(Boolean, Int, Long, Double) A: ST](
-      vec: Vec[A],
-      atMost: Int = 0
-  ): Vec[A] = {
-    if (vec.length == 0 || vec.length == 1)
-      vec
-    else {
-      val lim = if (atMost > 0) atMost else vec.length
-      val sa = implicitly[ST[A]]
-      val buf = array.empty[A](vec.length)
-      buf(0) = vec.raw(0)
-      var i = 1
-      var c = lim
-      while (i < vec.length) {
-        val v: A = vec.raw(i)
-        if (sa.notMissing(v)) {
-          buf(i) = v
-          c = lim
-        } else {
-          if (c > 0) buf(i) = buf(i - 1) else buf(i) = v
-          c -= 1
-        }
-        i += 1
-      }
-      Vec(buf)
-    }
-  }
-
   def vecfillNA[@spec(Boolean, Int, Long, Double) A: ST](
       vec: Vec[A]
   )(f: (Int) => A): Vec[A] = {
