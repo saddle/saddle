@@ -271,6 +271,17 @@ package object saddle {
     }
   }
 
+  implicit class SeqToFrame2[RX: ST: ORD, CX: ST: ORD, T: ST](
+      s: Seq[(CX,Series[RX,T])]
+  ) {
+    def toFrame : Frame[RX,CX,T] = Frame(s:_*)
+  }
+
+  implicit class PrimitiveToScalar[@specialized (Boolean, Int, Long, Float, Double) T](p: T)(implicit st: ST[T]) {
+    def toScalar = org.saddle.scalar.Scalar(p)
+    def isNA = st.isMissing(p)
+  }
+
   /**
     * Constant used in string byte-level manipulation
     */
