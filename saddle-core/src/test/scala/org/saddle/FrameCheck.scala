@@ -30,16 +30,99 @@ class FrameCheck extends Specification with ScalaCheck {
         (f must_== f.col(*)) and (f must_== f)
       }
     }
+    "frame equality" in {
+      Frame.empty[Int,Int,Double] must_== Frame.empty[Int,Int,Double]
+    }
+
+    "numCols and toColSeq" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.toColSeq.size must_== f.numCols
+      }
+    }
+
+    "numRows and toRowSet" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.toRowSeq.size must_== f.numRows
+      }
+    }
+
+    "isEmpty" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.isEmpty == (f.numCols == 0 || f.numRows == 0)
+      }
+    }
+
+    "transpose" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        val tr = f.T
+        tr.numCols == f.numRows &&
+        tr.numRows == f.numCols &&
+        tr.colIx == f.rowIx &&
+        tr.rowIx == f.colIx &&
+        tr.toMat == f.toMat.T
+      }
+    }
+
+    "col" in {
+      forAll { (f: Frame[Int, Int, Double], cx: Seq[Int]) =>
+        f.col(cx: _*) must_== cx
+          .flatMap(c => f.toColSeq.find(v => v._1 == c))
+          .toFrame
+      }
+    }
+    "row" in {
+      forAll { (f: Frame[Int, Int, Double], rx: Seq[Int]) =>
+        (f.row(rx: _*).rowIx must_== rx
+          .flatMap(c => f.toRowSeq.find(v => v._1 == c))
+          .toFrame.T.rowIx) and
+        (f.row(rx: _*).colIx must_== f.colIx)
+        
+      }
+    }
+    "colAt" in {
+      forAll { (f: Frame[Int, Int, Double], cx: Seq[Int]) =>
+        f.colAt(cx.filter(c => c >= 0 && c < f.numCols):_*) must_== cx
+          .flatMap(c => if (c >= f.numCols || c < 0) Nil else List(f.toColSeq(c)))
+          .toFrame
+      }
+    }
+    
+    "col" in {
+      Frame(1 -> Series(1 -> 1, 2 -> 2), 2 -> Series(1 -> 3, 2 -> 4))
+        .col(2, 2) must_==
+        Frame(2 -> Series(1 -> 3, 2 -> 4), 2 -> Series(1 -> 3, 2 -> 4))
+    }
+    "colSliceBy" in {
+      Frame(
+        1 -> Series(1 -> 1, 2 -> 2),
+        2 -> Series(1 -> 3, 2 -> 4),
+        3 -> Series(1 -> 5, 2 -> 6)
+      ).colSliceBy(1, 2) must_==
+        Frame(1 -> Series(1 -> 1, 2 -> 2), 2 -> Series(1 -> 3, 2 -> 4))
+    }
+    "colAt slice" in {
+      Frame(
+        1 -> Series(1 -> 1, 2 -> 2),
+        2 -> Series(1 -> 3, 2 -> 4),
+        3 -> Series(1 -> 5, 2 -> 6)
+      ).colAt(0 -> 1) must_==
+        Frame(1 -> Series(1 -> 1, 2 -> 2), 2 -> Series(1 -> 3, 2 -> 4))
+    }
 
     "squeeze" in {
       forAll { (f: Frame[Int, Int, Double]) =>
-        f.squeeze must_== f.toColSeq.filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA)).toFrame
+        f.squeeze must_== f.toColSeq
+          .filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA))
+          .toFrame
       }
     }
 
     "rsqueeze" in {
       forAll { (f: Frame[Int, Int, Double]) =>
-        f.rsqueeze must_== f.T.toColSeq.filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA)).toFrame.T
+        f.rsqueeze must_== f.T.toColSeq
+          .filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA))
+          .toFrame
+          .T
       }
     }
 
