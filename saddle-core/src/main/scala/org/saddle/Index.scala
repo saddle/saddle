@@ -36,6 +36,10 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
     */
   def length: Int
 
+  def isEmpty = length <= 0 
+  
+  def nonEmpty = length > 0
+
   /**
     * A [[org.saddle.scalar.ScalarTag]] representing the kind of Scalar
     * found in this index.
