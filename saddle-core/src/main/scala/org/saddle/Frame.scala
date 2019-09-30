@@ -257,6 +257,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
   /**
     * Split Frame into two frames at column key k
     * @param k Key at which to split Frame
+    * `k` is included in the right Frame
+    * [1,2,3,4] split at 2 yields [1] and [2,3,4]
     */
   def colSplitBy(k: CX): (Frame[RX, CX, T], Frame[RX, CX, T]) =
     colSplitAt(colIx.lsearch(k))

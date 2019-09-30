@@ -21,6 +21,100 @@ import org.specs2.mutable.Specification
   * Specs for a Frame
   */
 class FrameSpec extends Specification {
+
+  val testFrame = Frame(
+    1 -> Series(1 -> "1,1", 2 -> "2,1", 4 -> "4,1", 5 -> "5,1"),
+    2 -> Series(1 -> "1,2", 2 -> "2,2", 4 -> "4,2", 5 -> "5,2"),
+    3 -> Series(1 -> "1,3", 2 -> "2,2", 4 -> null, 5 -> "5,5"),
+    5 -> Series(1 -> "1,5", 2 -> "2,5", 4 -> "4,4", 5 -> "5,5"),
+  )
+  "colSplitBy" in {
+    val (left,right) = testFrame.colSplitBy(0)
+    (right must_== testFrame) and (left must_== Frame.empty[Int,Int,String])
+  }
+  "colSplitBy" in {
+    val (left,right) = testFrame.colSplitBy(1)
+    
+    (right must_== testFrame) and (left must_== Frame.empty[Int,Int,String])
+  }
+  "colSplitBy" in {
+    val (left,right) = testFrame.colSplitBy(2)
+    (left must_== testFrame.col(1)) and (right must_== testFrame.col(2,3,5))
+  }
+  "row" in {
+    val slice = testFrame.row(2->5)
+    slice must_== testFrame.row(2,4,5)
+  }
+  "rowSliceBy" in {
+    val slice = testFrame.rowSliceBy(-1,0)
+    slice.numRows must_== 0
+  }
+  "rowSliceBy" in {
+    val slice = testFrame.rowSliceBy(3,5)
+    slice must_== testFrame.row(4,5)
+  }
+  "rowAt" in {
+    testFrame.rowAt(0,1,2) must_== testFrame.row(1,2,4)
+  }
+  "rowAt" in {
+    testFrame.rowAt(0 -> 2) must_== testFrame.row(1,2,4)
+  }
+  "colSplitBy" in {
+    val (left,right) = testFrame.colSplitBy(0)
+    (right must_== testFrame) and (left must_== Frame.empty[Int,Int,String])
+  }
+  "colSplitBy" in {
+    val (left,right) = testFrame.colSplitBy(1)
+    
+    (right must_== testFrame) and (left must_== Frame.empty[Int,Int,String])
+  }
+  "colSplitBy" in {
+    val (left,right) = testFrame.colSplitBy(2)
+    (left must_== testFrame.col(1)) and (right must_== testFrame.col(2,3,5))
+  }
+  "rowSplitBy" in {
+    val (left,right) = testFrame.rowSplitBy(0)
+    (right must_== testFrame) and (left.numRows must_== 0)
+  }
+  "rowSplitBy" in {
+    val (left,right) = testFrame.rowSplitBy(1)
+    
+    (right must_== testFrame) and (left.numRows must_== 0)
+  }
+  "rowSplitBy" in {
+    val (left,right) = testFrame.rowSplitBy(2)
+    (left must_== testFrame.row(1)) and (right must_== testFrame.row(2,4,5))
+  }
+  "raw" in {
+    testFrame.raw(2,3) must_== "4,4"
+  }
+  "reindex" in {
+    testFrame.reindex(cix=Index(3,2,5,1),rix= Index(4,2,5,1)) must_== 
+    Frame(
+      3 -> Series(4 -> null  ,2 -> "2,2",5 -> "5,5",1 -> "1,3"   ),
+      2 -> Series(4 -> "4,2" ,2 -> "2,2",5 -> "5,2",1 -> "1,2"   ),
+      5 -> Series(4 -> "4,4" ,2 -> "2,5",5 -> "5,5",1 -> "1,5"   ),
+      1 -> Series(4 -> "4,1" ,2 -> "2,1",5 -> "5,1",1 -> "1,1"   ),
+    )
+  }
+  "mapRowIndex" in {
+    (testFrame.mapRowIndex(_*2).rowIx must_== testFrame.rowIx.map(_*2)) and 
+    (testFrame.mapRowIndex(_*2).toMat must_== testFrame.toMat)
+  }
+  "mapColIndex" in {
+    (testFrame.mapColIndex(_*2).colIx must_== testFrame.colIx.map(_*2)) and 
+    (testFrame.mapColIndex(_*2).toMat must_== testFrame.toMat)
+  }
+  "head" in {
+    testFrame.head(2) must_== testFrame.toRowSeq.take(2).toFrame.T
+  }
+  "headCol" in {
+    testFrame.headCol(2) must_== testFrame.toColSeq.take(2).toFrame
+  }
+  "firstCol" in {
+    testFrame.firstCol(3) must_== Series(1 -> "1,3", 2 -> "2,2", 4 -> null, 5 -> "5,5")
+  }
+
   "Seq[(A,B,C)] converts to a Frame" in {
     Seq((1, 2, 3)).toFrame must_== Frame(1 -> Series(2 -> 3)).T
   }
