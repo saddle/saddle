@@ -31,7 +31,7 @@ class FrameCheck extends Specification with ScalaCheck {
       }
     }
     "frame equality" in {
-      Frame.empty[Int,Int,Double] must_== Frame.empty[Int,Int,Double]
+      Frame.empty[Int, Int, Double] must_== Frame.empty[Int, Int, Double]
     }
 
     "numCols and toColSeq" in {
@@ -74,19 +74,25 @@ class FrameCheck extends Specification with ScalaCheck {
       forAll { (f: Frame[Int, Int, Double], rx: Seq[Int]) =>
         (f.row(rx: _*).rowIx must_== rx
           .flatMap(c => f.toRowSeq.find(v => v._1 == c))
-          .toFrame.T.rowIx) and
-        (f.row(rx: _*).colIx must_== f.colIx)
-        
+          .toFrame
+          .T
+          .rowIx) and
+          (f.row(rx: _*).colIx must_== f.colIx)
+
       }
     }
     "colAt" in {
       forAll { (f: Frame[Int, Int, Double], cx: Seq[Int]) =>
-        f.colAt(cx.filter(c => c >= 0 && c < f.numCols):_*) must_== cx
-          .flatMap(c => if (c >= f.numCols || c < 0) Nil else List(f.toColSeq(c)))
+        f.colAt(cx.filter(c => c >= 0 && c < f.numCols): _*) must_== cx
+          .flatMap(
+            c =>
+              if (c >= f.numCols || c < 0) Nil
+              else List(f.toColSeq(c))
+          )
           .toFrame
       }
     }
-    
+
     "col" in {
       Frame(1 -> Series(1 -> 1, 2 -> 2), 2 -> Series(1 -> 3, 2 -> 4))
         .col(2, 2) must_==
