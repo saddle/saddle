@@ -1022,11 +1022,11 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @param f Function Series[X, T] => B to operate on sliding window
     * @tparam B Result type of function
     */
-  def rolling[B: ST](winSz: Int, f: Series[RX, T] => B): Frame[RX, CX, B] = {
+  def rolling[B: ST](windowSize: Int, f: Series[RX, T] => B): Frame[RX, CX, B] = {
     val tmp = values.map { v =>
-      Series(v, rowIx).rolling(winSz, f).values
+      Series(v, rowIx).rolling(windowSize, f).values
     }
-    Frame(tmp, rowIx.slice(winSz - 1, values.numRows), colIx)
+    Frame(tmp, rowIx.slice(windowSize - 1, values.numRows), colIx)
   }
 
   /**
@@ -1038,16 +1038,16 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @tparam B Result element type of Series
     */
   def rollingFtoS[B: ST](
-      winSz: Int,
+    windowSize: Int,
       f: Frame[RX, CX, T] => B
   ): Series[RX, B] = {
-    val buf = new Array[B](numRows - winSz + 1)
-    var i = winSz
+    val buf = new Array[B](numRows - windowSize + 1)
+    var i = windowSize
     while (i <= numRows) {
-      buf(i - winSz) = f(rowSlice(i - winSz, i))
+      buf(i - windowSize) = f(rowSlice(i - windowSize, i))
       i += 1
     }
-    Series(Vec(buf), rowIx.slice(winSz - 1, numRows))
+    Series(Vec(buf), rowIx.slice(windowSize - 1, numRows))
   }
 
   // ----------------------------------------

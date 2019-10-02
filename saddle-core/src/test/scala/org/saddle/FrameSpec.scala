@@ -25,8 +25,8 @@ class FrameSpec extends Specification {
   val testFrame = Frame(
     1 -> Series(1 -> "1,1", 2 -> "2,1", 4 -> "4,1", 5 -> "5,1"),
     2 -> Series(1 -> "1,2", 2 -> "2,2", 4 -> "4,2", 5 -> "5,2"),
-    3 -> Series(1 -> "1,3", 2 -> "2,2", 4 -> null, 5 -> "5,5"),
-    5 -> Series(1 -> "1,5", 2 -> "2,5", 4 -> "4,4", 5 -> "5,5")
+    3 -> Series(1 -> "1,3", 2 -> "2,3", 4 -> null, 5 -> "5,3"),
+    5 -> Series(1 -> "1,5", 2 -> "2,5", 4 -> "4,5", 5 -> "5,5")
   )
   "colSplitBy" in {
     val (left, right) = testFrame.colSplitBy(0)
@@ -86,14 +86,14 @@ class FrameSpec extends Specification {
     (left must_== testFrame.row(1)) and (right must_== testFrame.row(2, 4, 5))
   }
   "raw" in {
-    testFrame.raw(2, 3) must_== "4,4"
+    testFrame.raw(2, 3) must_== "4,5"
   }
   "reindex" in {
     testFrame.reindex(cix = Index(3, 2, 5, 1), rix = Index(4, 2, 5, 1)) must_==
       Frame(
-        3 -> Series(4 -> null, 2 -> "2,2", 5 -> "5,5", 1 -> "1,3"),
+        3 -> Series(4 -> null, 2 -> "2,3", 5 -> "5,3", 1 -> "1,3"),
         2 -> Series(4 -> "4,2", 2 -> "2,2", 5 -> "5,2", 1 -> "1,2"),
-        5 -> Series(4 -> "4,4", 2 -> "2,5", 5 -> "5,5", 1 -> "1,5"),
+        5 -> Series(4 -> "4,5", 2 -> "2,5", 5 -> "5,5", 1 -> "1,5"),
         1 -> Series(4 -> "4,1", 2 -> "2,1", 5 -> "5,1", 1 -> "1,1")
       )
   }
@@ -114,17 +114,17 @@ class FrameSpec extends Specification {
   "firstCol" in {
     testFrame.firstCol(3) must_== Series(
       1 -> "1,3",
-      2 -> "2,2",
+      2 -> "2,3",
       4 -> null,
-      5 -> "5,5"
+      5 -> "5,3"
     )
   }
   "apply" in {
     testFrame.apply(1 -> 4, 2 -> 5) must_==
       Frame(
         2 -> Series(1 -> "1,2", 2 -> "2,2", 4 -> "4,2"),
-        3 -> Series(1 -> "1,3", 2 -> "2,2", 4 -> null),
-        5 -> Series(1 -> "1,5", 2 -> "2,5", 4 -> "4,4")
+        3 -> Series(1 -> "1,3", 2 -> "2,3", 4 -> null),
+        5 -> Series(1 -> "1,5", 2 -> "2,5", 4 -> "4,5")
       )
   }
   "withRowIndex" in {
@@ -183,32 +183,66 @@ class FrameSpec extends Specification {
     testFrame.mask(_.startsWith("1")) must_== Frame(
       1 -> Series(1 -> null, 2 -> "2,1", 4 -> "4,1", 5 -> "5,1"),
       2 -> Series(1 -> null, 2 -> "2,2", 4 -> "4,2", 5 -> "5,2"),
-      3 -> Series(1 -> null, 2 -> "2,2", 4 -> null, 5 -> "5,5"),
-      5 -> Series(1 -> null, 2 -> "2,5", 4 -> "4,4", 5 -> "5,5")
+      3 -> Series(1 -> null, 2 -> "2,3", 4 -> null, 5 -> "5,3"),
+      5 -> Series(1 -> null, 2 -> "2,5", 4 -> "4,5", 5 -> "5,5")
     )
   }
   "mask" in {
     testFrame.mask(Vec(true, false, false, false)) must_== Frame(
       1 -> Series(1 -> null, 2 -> "2,1", 4 -> "4,1", 5 -> "5,1"),
       2 -> Series(1 -> null, 2 -> "2,2", 4 -> "4,2", 5 -> "5,2"),
-      3 -> Series(1 -> null, 2 -> "2,2", 4 -> null, 5 -> "5,5"),
-      5 -> Series(1 -> null, 2 -> "2,5", 4 -> "4,4", 5 -> "5,5")
+      3 -> Series(1 -> null, 2 -> "2,3", 4 -> null, 5 -> "5,3"),
+      5 -> Series(1 -> null, 2 -> "2,5", 4 -> "4,5", 5 -> "5,5")
     )
   }
   "joinMap" in {
     val testframe2 = Frame(
       1 -> Series(1 -> "1,1", 2 -> "2,1", 3 -> "3,1", 4 -> "4,1"),
       2 -> Series(1 -> "1,2", 2 -> "2,2", 3 -> "3,2", 4 -> "4,2"),
-      3 -> Series(1 -> "1,3", 2 -> "2,2", 3 -> null, 4 -> "4,3"),
+      3 -> Series(1 -> "1,3", 2 -> "2,3", 3 -> null, 4 -> "4,3"),
       4 -> Series(1 -> "1,4", 2 -> "2,4", 3 -> "3,3", 4 -> "4,4")
     )
     testFrame.joinMap(testframe2)(_ + _) must_==
       Frame(
         1 -> Series(1 -> "1,11,1", 2 -> "2,12,1", 4 -> "4,14,1", 5 -> null),
         2 -> Series(1 -> "1,21,2", 2 -> "2,22,2", 4 -> "4,24,2", 5 -> null),
-        3 -> Series(1 -> "1,31,3", 2 -> "2,22,2", 4 -> null, 5 -> null),
+        3 -> Series(1 -> "1,31,3", 2 -> "2,32,3", 4 -> null, 5 -> null),
         4 -> Series[Int, String](1 -> null, 2 -> null, 4 -> null, 5 -> null)
       )
+  }
+
+  "groupBy" in {
+    testFrame.groupBy.combine(_.toSeq.reduce(_+_)) must_== testFrame
+  }
+  "groupBy" in {
+    testFrame.groupBy(_%2).combine(_.toSeq.reduce(_+_)) must_== 
+    Frame(
+      0 -> Series(1 -> "2,14,1", 2 -> "2,24,2",3->"2,3null",5->"2,54,5"),
+      1 -> Series(1 -> "1,15,1", 2 -> "1,25,2",3->"1,35,3",5->"1,55,5")
+    ).T
+  }
+  "groupBy" in {
+    testFrame.groupBy(Index(1,0,0,1)).combine(_.toSeq.reduce(_+_)) must_== 
+    Frame(
+      0 -> Series(1 -> "2,14,1", 2 -> "2,24,2",3->"2,3null",5->"2,54,5"),
+      1 -> Series(1 -> "1,15,1", 2 -> "1,25,2",3->"1,35,3",5->"1,55,5")
+    ).T
+  }
+
+  "shift" in {
+    testFrame.shift(2) must_==Frame(
+      1 -> Series(1 -> null, 2 -> null, 4 -> "1,1", 5 -> "2,1"),
+      2 -> Series(1 -> null, 2 -> null, 4 -> "1,2", 5 -> "2,2"),
+      3 -> Series(1 -> null, 2 -> null, 4 -> "1,3", 5 -> "2,3"),
+      5 -> Series(1 -> null, 2 -> null, 4 -> "1,5", 5 -> "2,5")
+    )
+  }
+
+  "filterIx" in {
+    testFrame.filterIx(_%2==0) must_== testFrame.toColSeq.filter(_._1%2==0).toFrame
+  }
+  "rfilterIx" in {
+    testFrame.rfilterIx(_%2==0) must_== testFrame.toRowSeq.filter(_._1%2==0).toFrame.T
   }
 
   "Seq[(A,B,C)] converts to a Frame" in {
