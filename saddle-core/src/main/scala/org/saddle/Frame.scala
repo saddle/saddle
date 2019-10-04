@@ -1022,7 +1022,10 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @param f Function Series[X, T] => B to operate on sliding window
     * @tparam B Result type of function
     */
-  def rolling[B: ST](windowSize: Int, f: Series[RX, T] => B): Frame[RX, CX, B] = {
+  def rolling[B: ST](
+      windowSize: Int,
+      f: Series[RX, T] => B
+  ): Frame[RX, CX, B] = {
     val tmp = values.map { v =>
       Series(v, rowIx).rolling(windowSize, f).values
     }
@@ -1038,7 +1041,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @tparam B Result element type of Series
     */
   def rollingFtoS[B: ST](
-    windowSize: Int,
+      windowSize: Int,
       f: Frame[RX, CX, T] => B
   ): Series[RX, B] = {
     val buf = new Array[B](numRows - windowSize + 1)
