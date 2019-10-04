@@ -28,6 +28,13 @@ class FrameSpec extends Specification {
     3 -> Series(1 -> "1,3", 2 -> "2,3", 4 -> null, 5 -> "5,3"),
     5 -> Series(1 -> "1,5", 2 -> "2,5", 4 -> "4,5", 5 -> "5,5")
   )
+  "join" in {
+    val f2 = Frame(0 -> Series(1 -> "1,0", 2 -> "2,0", 4 -> "4,0", 5 -> 
+    "5,0"))
+    val joined = testFrame.joinPreserveColIx(f2) 
+    joined must_== Frame(testFrame.toColSeq ++ f2.toColSeq:_*)
+  }
+
   "colSplitBy" in {
     val (left, right) = testFrame.colSplitBy(0)
     (right must_== testFrame) and (left must_== Frame.empty[Int, Int, String])
