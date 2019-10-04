@@ -11,6 +11,18 @@ class VV1Suite extends FunSuite {
   }
 
 }
+class VecSuite extends FunSuite {
+  test("1x3") {
+    val m1 = Vec(1d, 2d, 3d)
+    assert(m1.sum == 6d)
+    assert(m1.mean == 2d)
+    assert(m1.sampleVariance == 1d)
+    assert(Vec(1d, 2d, 3d, 4d).sampleVariance == 1.6666666666666667)
+    assert(m1.pearson(Vec(2d, 3d, 5d)) == 0.9819805060619659)
+    assert(m1.sampleCovariance(Vec(2d, 3d, 5d)) == 1.5)
+  }
+
+}
 
 class MV1Suite extends FunSuite {
   test("1x3") {
