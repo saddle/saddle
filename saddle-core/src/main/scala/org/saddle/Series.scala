@@ -479,7 +479,7 @@ class Series[X: ST: ORD, T: ST](val values: Vec[T], val index: Index[X])
   /**
     * Return key corresponding to minimum value in series
     */
-  def minKey(implicit num: NUM[T], ord: Ordering[T]): Scalar[X] =
+  def minKey(implicit num: NUM[T], ord: ORD[T]): Scalar[X] =
     array.argmin(values.toArray) match {
       case -1   => NA
       case _ @i => index.at(i)
@@ -488,7 +488,7 @@ class Series[X: ST: ORD, T: ST](val values: Vec[T], val index: Index[X])
   /**
     * Return key corresponding to maximum value in series
     */
-  def maxKey(implicit num: NUM[T], ord: Ordering[T]): Scalar[X] =
+  def maxKey(implicit num: NUM[T], ord: ORD[T]): Scalar[X] =
     array.argmax(values.toArray) match {
       case -1   => NA
       case _ @i => index.at(i)

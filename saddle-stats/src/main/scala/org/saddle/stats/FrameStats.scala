@@ -25,7 +25,7 @@ import org.saddle._
   * @tparam CX Type of the column index elements
   * @tparam T Type of the elements of the frame
   */
-class FrameStats[RX, CX, T: ST](frame: Frame[RX, CX, T]) {
+class FrameStats[RX, CX, T: ST: NUM](frame: Frame[RX, CX, T]) {
   // --------------------------------------
   // helpful math ops
 
@@ -34,7 +34,7 @@ class FrameStats[RX, CX, T: ST](frame: Frame[RX, CX, T]) {
   /**
     * Sum of the elements of each column, ignoring NA values
     */
-  def sum(implicit na: NUM[T]): Series[CX, T] = frame.reduce(_.sum)
+  def sum: Series[CX, T] = frame.reduce(_.sum)
 
   /**
     * Count of the elements of each column, ignoring NA values
@@ -44,19 +44,19 @@ class FrameStats[RX, CX, T: ST](frame: Frame[RX, CX, T]) {
   /**
     * Min of the elements of each column, ignoring NA values
     */
-  def min(implicit ev: S2Stats): Series[CX, T] =
-    frame.reduce(_.min.getOrElse(implicitly[ST[T]].missing))
+  def min: Series[CX, T] =
+    frame.reduce(_.toVec.min.getOrElse(implicitly[ST[T]].missing))
 
   /**
     * Max of the elements of each column, ignoring NA values
     */
-  def max(implicit ev: S2Stats): Series[CX, T] =
-    frame.reduce(_.max.getOrElse(implicitly[ST[T]].missing))
+  def max: Series[CX, T] =
+    frame.reduce(_.toVec.max.getOrElse(implicitly[ST[T]].missing))
 
   /**
     * Product of the elements of each column, ignoring NA values
     */
-  def prod(implicit ev: S2Stats): Series[CX, T] = frame.reduce(_.prod)
+  def prod: Series[CX, T] = frame.reduce(_.toVec.prod)
 
   /**
     * Conditional count of the elements of each column, ignoring NA values

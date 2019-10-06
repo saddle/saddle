@@ -29,7 +29,9 @@ trait BinOpMat {
 
   // Binary element-wise operation on one Mat and one scalar
   final class MatSclrElemOp[
-      OP <: ScalarOp, @spec(Int, Long, Double) A, @spec(Int, Long, Double) B,
+      OP <: ScalarOp,
+      @spec(Int, Long, Double) A,
+      @spec(Int, Long, Double) B,
       @spec(Int, Long, Double) C: ST
   ](val op: BinOp[OP, A, B, C])
       extends BinOp[OP, Mat[A], B, Mat[C]] {
@@ -80,7 +82,9 @@ trait BinOpMat {
 
   // Binary element-wise operation on two Mats                                                              scala
   final class MatMatElemOp[
-      OP <: ScalarOp, @spec(Int, Long, Double) A, @spec(Int, Long, Double) B,
+      OP <: ScalarOp,
+      @spec(Int, Long, Double) A,
+      @spec(Int, Long, Double) B,
       @spec(Int, Long, Double) C: ST
   ](op: BinOp[OP, A, B, C])
       extends BinOp[OP, Mat[A], Mat[B], Mat[C]] {

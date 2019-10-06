@@ -8,7 +8,7 @@ package object stats {
   /**
     * Enrich a Frame to provide statistical methods
     */
-  implicit def frameToStats[RX, CX, T: ST](f: Frame[RX, CX, T]) =
+  implicit def frameToStats[RX, CX, T: ST: NUM](f: Frame[RX, CX, T]) =
     new FrameStats[RX, CX, T](f)
 
   // stats implicits

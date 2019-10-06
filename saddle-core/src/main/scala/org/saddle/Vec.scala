@@ -294,7 +294,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
 
   /**
     * Maps a function over elements of the Vec and flattens the result.
-    * 
+    *
     * NAs are ignored and `f` is never called on a NA
     */
   def flatMap[@spec(Boolean, Int, Long, Double) B: ST](f: T => Vec[B]): Vec[B]
@@ -482,17 +482,66 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
     */
   def toSeq: IndexedSeq[T]
 
+  /* Sum of numeric elements, ignoring NAs */
   def sum(implicit na: NUM[T], st: ST[T]): T
+
+  /* Min of numeric elements, ignoring NAs */
+  def min(implicit na: NUM[T], st: ST[T]): Scalar[T]
+
+  /* Max of numeric elements, ignoring NAs */
+  def max(implicit na: NUM[T], st: ST[T]): Scalar[T]
+
+  /* Count of elements, ignoring NAs */
   def count: Int
+
+  /* Min of elements passing the predicate, ignoring NAs */
   def countif(test: T => Boolean): Int
+
+  /**
+    * Product of all the values in the Vec, ignoring NA values
+    */
+  def prod(implicit na: NUM[T], st: ST[T]): T
+
+  /**
+    * Integer offset of the minimum element of the Vec, if one exists, or else -1
+    */
+  def argmin(implicit na: NUM[T], st: ST[T], ord: ORD[T]): Int
+
+  /**
+    * Integer offset of the minimum element of the Vec, if one exists, or else -1
+    */
+  def argmax(implicit na: NUM[T], st: ST[T], ord: ORD[T]): Int
+
+  /**
+    * Return the percentile of the values at a particular threshold, ignoring NA
+    * @param tile The percentile in [0, 100] at which to compute the threshold
+    * @param method The percentile method; one of [[org.saddle.stats.PctMethod]]
+    */
+  def percentile(tile: Double, method: PctMethod = PctMethod.NIST)(
+      implicit na: NUM[T]
+  ): Double
+
+  /**
+    * Return a Vec of ranks corresponding to a Vec of numeric values.
+    * @param tie Method with which to break ties; a [[org.saddle.stats.RankTie]]
+    * @param ascending Boolean, default true, whether to give lower values larger rank
+    */
+  def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true)(
+      implicit na: NUM[T]
+  ): Vec[Double]
 
   /**
     * Returns a Vec whose backing array has been copied
     */
   protected def copy: Vec[T]
 
-  private[saddle] def toArray: Array[T]
+  /* Returns an array containing the elements of the Vec
+   *
+   * The returned array may be shared with the original Vec
+   */
+  def toArray: Array[T]
 
+  /* Not necessarily copies */
   private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double]
 
   /**

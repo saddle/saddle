@@ -35,8 +35,8 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
     */
   def length: Int
 
-  def isEmpty = length <= 0 
-  
+  def isEmpty = length <= 0
+
   def nonEmpty = length > 0
 
   /**

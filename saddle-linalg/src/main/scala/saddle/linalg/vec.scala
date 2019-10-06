@@ -20,7 +20,7 @@ trait VecLinalgOps {
       implicit op: VecBinOp[Vec[Double], Double]
   ): Double = op(self, other)
 
-  def sum = {
+  def sum2 = {
     var s = 0d
     var i = 0
     val ar = self.toArray
@@ -32,8 +32,18 @@ trait VecLinalgOps {
     s
   }
 
-  def mean =
-    this.sum / self.length
+  def mean2 = {
+    val n = self.length
+    val ar = self.toArray
+    var xm = 0d
+    var i = 0
+    while (i < n) {
+      val x = ar(i)
+      xm += (x - xm) / (i + 1)
+      i += 1
+    }
+    xm
+  }
 
   def sampleVariance = {
     val n = self.length
@@ -52,15 +62,16 @@ trait VecLinalgOps {
   }
 
   def demeaned = {
-    val mean = this.mean
-    val ar = self.toArray.clone
+    val mean = this.mean2
+    val ar1 = self.toArray
+    val n = ar1.length
+    val ar2 = Array.ofDim[Double](n )
     var i = 0
-    val n = ar.length
     while (i < n) {
-      ar(i) = ar(i) - mean
+      ar2(i) = ar1(i) - mean
       i += 1
     }
-    Vec(ar)
+    Vec(ar2)
   }
 
   /* https://prod-ng.sandia.gov/techlib-noauth/access-control.cgi/2008/086212.pdf */

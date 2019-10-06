@@ -470,6 +470,26 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     */
   def toSeq: IndexedSeq[T] = toArray.toIndexedSeq
 
+  /* Min of numeric elements, ignoring NAs */
+  def min(implicit na: NUM[T], st: ST[T]): Scalar[T] =
+    if (count == 0) NA
+    else {
+      val res: T = VecImpl.filterFoldLeft(this)(st.notMissing)(st.inf)(
+        (x: T, y: T) => if (na.lt(x, y)) x else y
+      )
+      Scalar(res)
+    }
+
+  /* Max of numeric elements, ignoring NAs */
+  def max(implicit na: NUM[T], st: ST[T]): Scalar[T] =
+    if (count == 0) NA
+    else {
+      val res: T = VecImpl.filterFoldLeft(this)(st.notMissing)(st.negInf)(
+        (x: T, y: T) => if (na.gt(x, y)) x else y
+      )
+      Scalar(res)
+    }
+
   /** Sums up the elements of a numeric Vec
     *
     * NOTE: scalac only specialized correctly if using the method in VecImpl
@@ -479,6 +499,23 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     VecImpl.filterFoldLeft(this)(st.notMissing)(st.zero)(
       (a, b) => na.plus(a, b)
     )
+
+  def prod(implicit na: NUM[T], st: ST[T]): T =
+    VecImpl.filterFoldLeft(this)(st.notMissing)(st.one)(
+      (a, b) => na.times(a, b)
+    )
+
+  /**
+    * Integer offset of the minimum element of the Vec, if one exists, or else -1
+    */
+  def argmin(implicit na: NUM[T], st: ST[T], ord: ORD[T]): Int =
+    array.argmin(toArray)
+
+  /**
+    * Integer offset of the minimum element of the Vec, if one exists, or else -1
+    */
+  def argmax(implicit na: NUM[T], st: ST[T], ord: ORD[T]): Int =
+    array.argmax(toArray)
 
   /** Counts the number of non-NA elements
     */
@@ -497,15 +534,138 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   def countif(a: T): Int =
     VecImpl.filterFoldLeft(this)(t => t == a)(0)((a, _) => a + 1)
 
-  private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double] = {
-    val arr = toArray
-    val buf = new Array[Double](arr.length)
+  /**
+    * Return the percentile of the values at a particular threshold, ignoring NA
+    * @param tile The percentile in [0, 100] at which to compute the threshold
+    * @param method The percentile method; one of [[org.saddle.stats.PctMethod]]
+    *
+    * percentile function: see: http://en.wikipedia.org/wiki/Percentile
+    */
+  def percentile(tile: Double, method: PctMethod = PctMethod.NIST)(
+      implicit na: NUM[T]
+  ): Double = {
+    val vf = Vec(dropNA.toDoubleArray)
+    if (vf.length == 0 || tile < 0 || tile > 100)
+      ScalarTagDouble.missing
+    else {
+      val c = vf.length
+      if (c == 1) vf.raw(0)
+      else {
+        val n = method match {
+          case PctMethod.Excel => (tile / 100.0) * (c - 1.0) + 1.0
+          case PctMethod.NIST  => (tile / 100.0) * (c + 1.0)
+        }
+        val s = vf.sorted
+        val k = math.floor(n).toInt
+        val d = n - k
+        if (k <= 0) s.raw(0)
+        else if (k >= c) s.last
+        else s.raw(k - 1) + d * (s.raw(k) - s.raw(k - 1))
+      }
+    }
+  }
+
+  /**
+    * Return a Vec of ranks corresponding to a Vec of numeric values.
+    * @param tie Method with which to break ties; a [[org.saddle.stats.RankTie]]
+    * @param ascending Boolean, default true, whether to give lower values larger rank
+    */
+  def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true)(
+      implicit na: NUM[T]
+  ): Vec[Double] = {
+    _rank(copy.toDoubleArray, tie, ascending)
+  }
+
+  // destructive to argument
+  private def _rank(
+      v: Array[Double],
+      tie: RankTie,
+      ascending: Boolean
+  ): Vec[Double] = {
+    val sd = ScalarTagDouble
+
+    val nan =
+      if (ascending) Double.PositiveInfinity else Double.NegativeInfinity
+    val len = v.length
+
+    var k = 0
+    while (k < len) {
+      if (sd.isMissing(v(k))) v(k) = nan
+      k += 1
+    }
+
+    val srt =
+      if (ascending)
+        array.argsort(v)
+      else
+        array.reverse(array.argsort(v))
+
+    val dat = array.take(v, srt, 0.0)
+
     var i = 0
-    while (i < arr.length) {
-      buf(i) = scalarTag.toDouble(arr(i))
+    var s = 0.0 // summation
+    var d = 0 // duplicate counter
+    val res = array.empty[Double](len)
+    while (i < len) {
+      val v = dat(i)
+
+      s += (i + 1.0)
+      d += 1
+      if (v == nan)
+        res(srt(i)) = sd.missing
+      else if (i == len - 1 || math.abs(dat(i + 1) - v) > 1e-13) {
+        if (tie == RankTie.Avg) {
+          var j = i - d + 1
+          while (j < i + 1) {
+            res(srt(j)) = s / d
+            j += 1
+          }
+        } else if (tie == RankTie.Min) {
+          var j = i - d + 1
+          while (j < i + 1) {
+            res(srt(j)) = i - d + 2
+            j += 1
+          }
+        } else if (tie == RankTie.Max) {
+          var j = i - d + 1
+          while (j < i + 1) {
+            res(srt(j)) = i + 1
+            j += 1
+          }
+        } else if (tie == RankTie.Nat && ascending) {
+          var j = i - d + 1
+          while (j < i + 1) {
+            res(srt(j)) = j + 1
+            j += 1
+          }
+        } else {
+          var j = i - d + 1
+          while (j < i + 1) {
+            res(srt(j)) = 2 * i - j - d + 2
+            j += 1
+          }
+        }
+        s = 0.0
+        d = 0
+      }
       i += 1
     }
-    buf
+
+    Vec(res)
+  }
+
+  private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double] = {
+    if (scalarTag == ScalarTagDouble) toArray.asInstanceOf[Array[Double]]
+    else {
+      val arr = toArray
+      val buf = new Array[Double](arr.length)
+      var i = 0
+      while (i < arr.length) {
+        buf(i) = scalarTag.toDouble(arr(i))
+        i += 1
+      }
+      buf
+    }
   }
 
   /** Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values. */

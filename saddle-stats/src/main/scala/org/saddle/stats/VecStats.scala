@@ -20,113 +20,9 @@ import org.saddle._
 import org.saddle.scalar._
 
 /**
-  * Trait which specifies how to break a rank tie
-  */
-sealed trait RankTie
-
-object RankTie {
-
-  /**
-    * Take the average of the ranks for all ties
-    *
-    * {{{
-    *   Vec(3,6,6,4).rank(tie = stats.RankTie.Avg) == Vec[Double](1,3.5,3.5,2)
-    * }}}
-    */
-  object Avg extends RankTie
-
-  /**
-    * Take the minimum rank for all ties
-    *
-    * {{{
-    *   Vec(3,6,6,4).rank(tie = stats.RankTie.Min) == Vec[Double](1,3,3,2)
-    * }}}
-    */
-  object Min extends RankTie
-
-  /**
-    * Take the maximum rank for all ties
-    *
-    * {{{
-    *   Vec(3,6,6,4).rank(tie = stats.RankTie.Max) == Vec[Double](1,4,4,2)
-    * }}}
-    */
-  object Max extends RankTie
-
-  /**
-    * Take the rank according to natural (input) order
-    *
-    * {{{
-    *   Vec(3,6,6,4).rank(tie = stats.RankTie.Nat) == Vec[Double](1,3,4,2)
-    * }}}
-    */
-  object Nat extends RankTie
-}
-
-/**
-  * Trait which specifies what percentile method to use
-  */
-sealed trait PctMethod
-
-object PctMethod {
-
-  /**
-    * Take percentile as MS Excel does
-    */
-  object Excel extends PctMethod
-
-  /**
-    * Take percentile according to [[http://www.itl.nist.gov/div898/handbook/prc/section2/prc252.htm NIST]]
-    */
-  object NIST extends PctMethod
-}
-
-/**
   * Statistical methods made available on numeric Vec objects via enrichment.
   */
 trait VecStats[@spec(Int, Long, Double) A] {
-
-  /**
-    * Sum of the elements of the Vec, ignoring NA values
-    */
-  def sum: A
-
-  /**
-    * Count of the non-NA elements of the Vec
-    */
-  def count: Int
-
-  /**
-    * Minimum element of the Vec, if one exists, or else None
-    */
-  def min: Option[A]
-
-  /**
-    * Maximum element of the Vec, if one exists, or else None
-    */
-  def max: Option[A]
-
-  /**
-    * Integer offset of the minimum element of the Vec, if one exists, or else -1
-    */
-  def argmin: Int
-
-  /**
-    * Integer offset of the minimum element of the Vec, if one exists, or else -1
-    */
-  def argmax: Int
-
-  /**
-    * Product of all the values in the Vec, ignoring NA values
-    */
-  def prod: A
-
-  /**
-    * Counts the non-NA elements of the Vec subject to passing the
-    * predicate function
-    * @param test A function from A to Boolean
-    */
-  def countif(test: A => Boolean): Int
 
   /**
     * Return the sum of the natural log of each element, ignoring NA values
@@ -169,29 +65,15 @@ trait VecStats[@spec(Int, Long, Double) A] {
   def kurt: Double
 
   /**
-    * Return the percentile of the values at a particular threshold, ignoring NA
-    * @param tile The percentile in [0, 100] at which to compute the threshold
-    * @param method The percentile method; one of [[org.saddle.stats.PctMethod]]
-    */
-  def percentile(tile: Double, method: PctMethod = PctMethod.NIST): Double
-
-  /**
     * Return a copy of a numeric Vec with its values demeaned according to the
     * mean function
     */
   def demeaned: Vec[Double]
 
-  /**
-    * Return a Vec of ranks corresponding to a Vec of numeric values.
-    * @param tie Method with which to break ties; a [[org.saddle.stats.RankTie]]
-    * @param ascending Boolean, default true, whether to give lower values larger rank
-    */
-  def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true): Vec[Double]
-
   protected def _variance(r: Vec[A], subOp: (A, Double) => Double): Double = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
-    val c = count
+    val c = r.count
 
     if (c < 1)
       sd.missing
@@ -209,7 +91,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
   protected def _skew(r: Vec[A], subOp: (A, Double) => Double): Double = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
-    val c = count
+    val c = r.count
 
     if (c > 2) {
       val v: Double = variance
@@ -225,7 +107,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
   protected def _kurt(r: Vec[A], subOp: (A, Double) => Double): Double = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
-    val c: Double = count
+    val c: Double = r.count
 
     if (c > 3) {
       val vari = variance

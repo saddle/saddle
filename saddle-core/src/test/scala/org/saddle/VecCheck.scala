@@ -395,6 +395,35 @@ class VecCheck extends Specification with ScalaCheck {
       }
     }
 
+    "prod works" in {
+      forAll { (v: Vec[Double]) =>
+        v.prod must_== v.toSeq.filterNot(_.isNaN).foldLeft(1d)(_ * _)
+      }
+    }
+
+    "sum works" in {
+      forAll { (v: Vec[Double]) =>
+        v.sum must_== v.toSeq.filterNot(_.isNaN).foldLeft(0d)(_ + _)
+      }
+    }
+
+    "argmin works" in {
+      forAll { (v: Vec[Double]) =>
+        v.argmin must_== {
+          if (v.dropNA.toSeq.isEmpty) -1
+          else (v.toSeq.zipWithIndex.filterNot(_._1.isNaN).minBy(_._1)._2)
+        }
+      }
+    }
+    "argmax works" in {
+      forAll { (v: Vec[Double]) =>
+        v.argmax must_== {
+          if (v.dropNA.toSeq.isEmpty) -1
+          else (v.toSeq.zipWithIndex.filterNot(_._1.isNaN).maxBy(_._1)._2)
+        }
+      }
+    }
+
   }
 
 }

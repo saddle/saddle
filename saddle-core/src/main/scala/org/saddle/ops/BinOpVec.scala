@@ -29,7 +29,8 @@ trait BinOpVec {
 
   // Binary element-wise operation on one Vec and one scalar
   final class VecSclrElemOp[
-      OP <: ScalarOp, @spec(Boolean, Int, Long, Double) A,
+      OP <: ScalarOp,
+      @spec(Boolean, Int, Long, Double) A,
       @spec(Boolean, Int, Long, Double) B,
       @spec(Boolean, Int, Long, Double) C: ST
   ](val op: BinOp[OP, A, B, C])
@@ -117,7 +118,8 @@ trait BinOpVec {
 
   // Binary element-wise operation on two Vecs
   final class VecVecElemOp[
-      OP <: ScalarOp, @spec(Boolean, Int, Long, Double) A,
+      OP <: ScalarOp,
+      @spec(Boolean, Int, Long, Double) A,
       @spec(Boolean, Int, Long, Double) B,
       @spec(Boolean, Int, Long, Double) C: ST
   ](op: BinOp[OP, A, B, C])
@@ -269,7 +271,8 @@ trait BinOpVec {
   // Binary outer product of two vectors
 
   final class VecVecOuter[
-      @spec(Int, Long, Double) A, @spec(Int, Long, Double) B,
+      @spec(Int, Long, Double) A,
+      @spec(Int, Long, Double) B,
       @spec(Int, Long, Double) C: ST
   ](opmul: BinOp[Multiply, A, B, C])
       extends BinOp[OuterProd, Vec[A], Vec[B], Mat[C]] {
