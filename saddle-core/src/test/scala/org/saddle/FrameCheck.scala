@@ -30,8 +30,22 @@ class FrameCheck extends Specification with ScalaCheck {
         (f must_== f.col(*)) and (f must_== f)
       }
     }
-    "frame equality" in {
-      Frame.empty[Int, Int, Double] must_== Frame.empty[Int, Int, Double]
+    "frame equality - empty frame" in {
+      (Frame.empty[Int, Int, Double] must_== Frame.empty[Int, Int, Double]) and
+        (Frame.empty[Int, Int, Double] must_== List
+          .empty[(Int, Series[Int, Double])]
+          .toFrame) and
+        (Frame.empty[Int, Int, Double].T must_== Frame
+          .empty[Int, Int, Double]
+          .toColSeq
+          .toFrame
+          .T)
+    }
+
+    "frame equality - NA" in {
+      val f = Frame(0 -> Series[Int, Double](0 -> na.to[Double]))
+      val f2 = Frame(0 -> Series[Int, Double](0 -> na.to[Double]))
+      f must_== f2
     }
 
     "numCols and toColSeq" in {
@@ -182,6 +196,52 @@ class FrameCheck extends Specification with ScalaCheck {
     "Transpose must work for a string frame" in {
       val f = Frame(Vec("a", "b", "c"), Vec("d", "e", "f"))
       f.T must_== Frame(Vec("a", "d"), Vec("b", "e"), Vec("c", "f"))
+    }
+
+    "sum works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.sum must_== f.reduce(_.toVec.toSeq.filterNot(_.isNaN).sum)
+      }
+    }
+    "prod works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.prod must_== f.reduce(
+          _.toVec.toSeq.filterNot(_.isNaN).foldLeft(1d)(_ * _)
+        )
+      }
+    }
+    "count works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.count must_== f.reduce(
+          _.toVec.count
+        )
+      }
+    }
+    "min works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        val expected = f.reduce(
+          _.toVec.toSeq
+            .filterNot(_.isNaN)
+            .sorted
+            .headOption
+            .toScalar
+            .unbox
+        )
+        f.min must_== expected
+      }
+    }
+    "max works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.max must_== f.reduce(
+          _.toVec.toSeq
+            .filterNot(_.isNaN)
+            .sorted
+            .reverse
+            .headOption
+            .toScalar
+            .unbox
+        )
+      }
     }
 
   }

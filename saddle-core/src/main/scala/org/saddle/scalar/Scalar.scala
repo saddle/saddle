@@ -44,6 +44,13 @@ sealed abstract class Scalar[+T] {
 
 object Scalar {
 
+  implicit class UnboxD(s: Scalar[Double]) {
+    def unbox = scalarUnboxD(s)
+  }
+  implicit class UnboxF(s: Scalar[Float]) {
+    def unbox = scalarUnboxF(s)
+  }
+
   /** An Scalar factory which creates Value(x) when the argument is neither null nor an NA primitive;
     * otherwise produces NA.
     *
