@@ -15,6 +15,7 @@
  **/
 package org.saddle
 
+import scala.{specialized => spec}
 import util.Concat.Promoter
 import ops._
 import vec._
@@ -1001,7 +1002,7 @@ object Series extends BinOpSeries {
     * @tparam X Type of keys
     * @tparam T Type of values
     */
-  def empty[X: ST: ORD, T: ST] =
+  def empty[X: ST: ORD, @spec(Int, Long, Double) T: ST] =
     new Series[X, T](Vec.empty[T], Index.empty[X])
 
   /**
@@ -1011,7 +1012,10 @@ object Series extends BinOpSeries {
     * @tparam X Type of keys
     * @tparam T Type of values
     */
-  def apply[X: ST: ORD, T: ST](values: Vec[T], index: Index[X]): Series[X, T] =
+  def apply[X: ST: ORD, @spec(Int, Long, Double) T: ST](
+      values: Vec[T],
+      index: Index[X]
+  ): Series[X, T] =
     new Series[X, T](values, index)
 
   /**
@@ -1019,7 +1023,7 @@ object Series extends BinOpSeries {
     * @param values a Vec of values
     * @tparam T Type of values
     */
-  def apply[T: ST](values: Vec[T]): Series[Int, T] =
+  def apply[@spec(Int, Long, Double) T: ST](values: Vec[T]): Series[Int, T] =
     new Series[Int, T](values, new IndexIntRange(values.length))
 
   /**
@@ -1027,7 +1031,7 @@ object Series extends BinOpSeries {
     * @param values a sequence of values
     * @tparam T Type of values
     */
-  def apply[T: ST](values: T*): Series[Int, T] =
+  def apply[@spec(Int, Long, Double) T: ST](values: T*): Series[Int, T] =
     new Series[Int, T](Vec(values: _*), new IndexIntRange(values.length))
 
   /**
@@ -1036,7 +1040,9 @@ object Series extends BinOpSeries {
     * @tparam T Type of value
     * @tparam X Type of key
     */
-  def apply[X: ST: ORD, T: ST](values: (X, T)*): Series[X, T] =
+  def apply[X: ST: ORD, @spec(Int, Long, Double) T: ST](
+      values: (X, T)*
+  ): Series[X, T] =
     new Series[X, T](
       Vec(values.map(_._2).toArray),
       Index(values.map(_._1).toArray)

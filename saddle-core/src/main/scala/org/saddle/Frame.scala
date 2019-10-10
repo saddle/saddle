@@ -15,6 +15,7 @@
  **/
 package org.saddle
 
+import scala.{specialized => spec}
 import vec._
 import index._
 import groupby._
@@ -120,10 +121,12 @@ import org.saddle.mat.MatCols
   * @tparam CX The type of column keys
   * @tparam T The type of entries in the frame
   */
-class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
+class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     private[saddle] val values: MatCols[T],
     val rowIx: Index[RX],
-    val colIx: Index[CX]
+    val colIx: Index[CX],
+    private var cachedMat: Option[Mat[T]],
+    private var cachedRows: Option[MatCols[T]]
 ) extends NumericOps[Frame[RX, CX, T]] {
 
   require(values.numRows == rowIx.length, "Row index length is incorrect")
@@ -538,7 +541,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @tparam Y Type of elements of new Index
     */
   def setRowIndex[Y: ST: ORD](newIx: Index[Y]): Frame[Y, CX, T] =
-    Frame(values, newIx, colIx) withMat cachedMat
+    new Frame(values, newIx, colIx, cachedMat, cachedRows)
 
   /**
     * Create a new Frame using the current values but with the new row index. Positions
@@ -575,7 +578,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @tparam Y Result type of index, ie Index[Y]
     */
   def mapRowIndex[Y: ST: ORD](fn: RX => Y): Frame[Y, CX, T] =
-    Frame(values, rowIx.map(fn), colIx) withMat cachedMat
+    new Frame(values, rowIx.map(fn), colIx, cachedMat, cachedRows)
 
   /**
     * Create a new Frame using the current values but with the new col index. Positions
@@ -584,7 +587,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @tparam Y Type of elements of new Index
     */
   def setColIndex[Y: ST: ORD](newIx: Index[Y]): Frame[RX, Y, T] =
-    Frame(values, rowIx, newIx) withMat cachedMat
+    new Frame(values, rowIx, newIx, cachedMat, cachedRows)
 
   /**
     * Create a new Frame using the current values but with the new col index specified
@@ -612,21 +615,21 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     * @tparam Y Result type of index, ie Index[Y]
     */
   def mapColIndex[Y: ST: ORD](fn: CX => Y): Frame[RX, Y, T] =
-    Frame(values, rowIx, colIx.map(fn)) withMat cachedMat
+    new Frame(values, rowIx, colIx.map(fn), cachedMat, cachedRows)
 
   /**
     * Create a new Frame whose values are the same, but whose row index has been changed
     * to the bound [0, numRows - 1), as in an array.
     */
   def resetRowIndex: Frame[Int, CX, T] =
-    Frame(values, IndexIntRange(numRows), colIx) withMat cachedMat
+    new Frame(values, IndexIntRange(numRows), colIx, cachedMat, cachedRows)
 
   /**
     * Create a new Frame whose values are the same, but whose col index has been changed
     * to the bound [0, numCols - 1), as in an array.
     */
   def resetColIndex: Frame[RX, Int, T] =
-    Frame(values, rowIx, IndexIntRange(numCols)) withMat cachedMat
+    new Frame(values, rowIx, IndexIntRange(numCols), cachedMat, cachedRows)
 
   // ----------------------------------------
   // some helpful ops
@@ -1424,7 +1427,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     synchronized {
       if (cachedMat.isEmpty) {
         val m = Mat(values.numCols, values.numRows, st.concat(values)).T
-        withMat(Some(m))
+        cachedMat = Some(m)
       }
       cachedMat.get
     }
@@ -1482,7 +1485,9 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
     new Frame(
       new MatCols(values.map(v => v.where(predv))),
       Index(rowIx.toVec.where(predv)),
-      colIx
+      colIx,
+      None,
+      None
     )
   }
 
@@ -1622,11 +1627,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, T: ST](
 
   // ------------------------------------------------------
   // internal contiguous caching of row data for efficiency
-
-  private def withMat(m: Option[Mat[T]]): Frame[RX, CX, T] = {
-    cachedMat = m
-    this
-  }
 
   private def rows(): MatCols[T] = {
     if (cachedRows.isEmpty) {
@@ -1805,8 +1805,15 @@ object Frame extends BinOpFrame {
     * @tparam CX Type of col keys
     * @tparam T Type of values
     */
-  def empty[RX: ST: ORD, CX: ST: ORD, T: ST]: Frame[RX, CX, T] =
-    new Frame[RX, CX, T](MatCols.empty[T], Index.empty[RX], Index.empty[CX])
+  def empty[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST]
+      : Frame[RX, CX, T] =
+    new Frame[RX, CX, T](
+      MatCols.empty[T],
+      Index.empty[RX],
+      Index.empty[CX],
+      None,
+      None
+    )
 
   // --------------------------------
   // Construct using sequence of vectors
@@ -1814,7 +1821,9 @@ object Frame extends BinOpFrame {
   /**
     * Factory method to create a Frame from a sequence of Vec objects
     */
-  def apply[T: ST](values: Vec[T]*): Frame[Int, Int, T] =
+  def apply[@spec(Int, Long, Double) T: ST](
+      values: Vec[T]*
+  ): Frame[Int, Int, T] =
     if (values.isEmpty) empty[Int, Int, T]
     else {
       val asIdxSeq = values.toIndexedSeq
@@ -1829,20 +1838,20 @@ object Frame extends BinOpFrame {
     * Factory method to create a Frame from a sequence of Vec objects,
     * a row index, and a column index.
     */
-  def apply[RX: ST: ORD, CX: ST: ORD, T: ST](
+  def apply[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       values: Seq[Vec[T]],
       rowIx: Index[RX],
       colIx: Index[CX]
   ): Frame[RX, CX, T] =
     if (values.isEmpty) empty[RX, CX, T]
     else
-      new Frame[RX, CX, T](MatCols[T](values: _*), rowIx, colIx)
+      new Frame[RX, CX, T](MatCols[T](values: _*), rowIx, colIx, None, None)
 
   /**
     * Factory method to create a Frame from a sequence of Vec objects
     * and a column index.
     */
-  def apply[CX: ST: ORD, T: ST](
+  def apply[CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       values: Seq[Vec[T]],
       colIx: Index[CX]
   ): Frame[Int, CX, T] =
@@ -1856,7 +1865,9 @@ object Frame extends BinOpFrame {
     * Factory method to create a Frame from tuples whose first element is
     * the column label and the second is a Vec of values.
     */
-  def apply[CX: ST: ORD, T: ST](values: (CX, Vec[T])*): Frame[Int, CX, T] = {
+  def apply[CX: ST: ORD, @spec(Int, Long, Double) T: ST](
+      values: (CX, Vec[T])*
+  ): Frame[Int, CX, T] = {
     val asIdxSeq = values.map(_._2).toIndexedSeq
     val idx = Index(values.map(_._1).toArray)
     asIdxSeq.length match {
@@ -1964,8 +1975,12 @@ object Frame extends BinOpFrame {
     if (mat.length == 0)
       empty[RX, CX, T]
     else {
-      new Frame[RX, CX, T](MatCols(mat.cols(): _*), rowIx, colIx) withMat Some(
-        mat
+      new Frame[RX, CX, T](
+        MatCols(mat.cols(): _*),
+        rowIx,
+        colIx,
+        Some(mat),
+        None
       )
     }
 }
@@ -1982,7 +1997,13 @@ object Panel {
     * @tparam CX Type of col keys
     */
   def empty[RX: ST: ORD, CX: ST: ORD]: Frame[RX, CX, Any] =
-    new Frame[RX, CX, Any](MatCols.empty, Index.empty[RX], Index.empty[CX])
+    new Frame[RX, CX, Any](
+      MatCols.empty,
+      Index.empty[RX],
+      Index.empty[CX],
+      None,
+      None
+    )
 
   // --------------------------------
   // Construct using sequence of vectors

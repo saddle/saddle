@@ -15,6 +15,7 @@
  **/
 package org.saddle.mat
 
+import scala.{specialized => spec}
 import org.saddle._
 import org.saddle.scalar._
 
@@ -22,7 +23,8 @@ import org.saddle.scalar._
   * An IndexedSeq of Vecs which must all have the same length; a container for
   * 2D data for a Frame.
   */
-class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
+class MatCols[@spec(Int, Long, Double) A: ST](cols: IndexedSeq[Vec[A]])
+    extends IndexedSeq[Vec[A]] {
   require(
     cols.length < 2 || cols.forall(_.length == cols(0).length),
     "Vecs must all be the same length"
@@ -86,17 +88,20 @@ class MatCols[A: ST](cols: IndexedSeq[Vec[A]]) extends IndexedSeq[Vec[A]] {
 
 object MatCols {
 
-  def empty[A: ST]: MatCols[A] = apply(Array.empty[Vec[A]])
+  def empty[@spec(Int, Long, Double) A: ST]: MatCols[A] =
+    apply(Array.empty[Vec[A]])
 
-  def apply[A: ST](cols: Vec[A]*): MatCols[A] =
+  def apply[@spec(Int, Long, Double) A: ST](cols: Vec[A]*): MatCols[A] =
     new MatCols[A](cols.toIndexedSeq)
 
-  def apply[A: ST](cols: Array[Vec[A]]): MatCols[A] = new MatCols[A](cols)
+  def apply[@spec(Int, Long, Double) A: ST](cols: Array[Vec[A]]): MatCols[A] =
+    new MatCols[A](cols)
 
-  def apply[A: ST](mat: Mat[A]): MatCols[A] = new MatCols[A](mat.cols())
+  def apply[@spec(Int, Long, Double) A: ST](mat: Mat[A]): MatCols[A] =
+    new MatCols[A](mat.cols())
 
   // Logic to get string widths of columns in a sequence of vectors
-  private[saddle] def colLens[A: ST](
+  private[saddle] def colLens[@spec(Int, Long, Double) A: ST](
       cols: MatCols[A],
       numCols: Int,
       len: Int
