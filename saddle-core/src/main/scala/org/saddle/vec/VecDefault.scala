@@ -537,7 +537,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   /**
     * Return the percentile of the values at a particular threshold, ignoring NA
     * @param tile The percentile in [0, 100] at which to compute the threshold
-    * @param method The percentile method; one of [[org.saddle.stats.PctMethod]]
+    * @param method The percentile method; one of [[org.saddle.PctMethod]]
     *
     * percentile function: see: http://en.wikipedia.org/wiki/Percentile
     */
@@ -567,7 +567,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
 
   /**
     * Return a Vec of ranks corresponding to a Vec of numeric values.
-    * @param tie Method with which to break ties; a [[org.saddle.stats.RankTie]]
+    * @param tie Method with which to break ties; a [[org.saddle.RankTie]]
     * @param ascending Boolean, default true, whether to give lower values larger rank
     */
   def rank(tie: RankTie = RankTie.Avg, ascending: Boolean = true)(

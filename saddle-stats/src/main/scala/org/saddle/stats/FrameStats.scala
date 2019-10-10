@@ -32,33 +32,6 @@ class FrameStats[RX, CX, T: ST: NUM](frame: Frame[RX, CX, T]) {
   type S2Stats = Series2Stats[T]
 
   /**
-    * Sum of the elements of each column, ignoring NA values
-    */
-  def sum: Series[CX, T] = frame.reduce(_.sum)
-
-  /**
-    * Count of the elements of each column, ignoring NA values
-    */
-  def count: Series[CX, Int] = frame.reduce(_.count)
-
-  /**
-    * Min of the elements of each column, ignoring NA values
-    */
-  def min: Series[CX, T] =
-    frame.reduce(_.toVec.min.getOrElse(implicitly[ST[T]].missing))
-
-  /**
-    * Max of the elements of each column, ignoring NA values
-    */
-  def max: Series[CX, T] =
-    frame.reduce(_.toVec.max.getOrElse(implicitly[ST[T]].missing))
-
-  /**
-    * Product of the elements of each column, ignoring NA values
-    */
-  def prod: Series[CX, T] = frame.reduce(_.toVec.prod)
-
-  /**
     * Conditional count of the elements of each column, ignoring NA values
     * @param test Function predicate to utilize in count, T => Boolean
     */

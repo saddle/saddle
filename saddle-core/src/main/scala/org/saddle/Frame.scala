@@ -132,9 +132,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   require(values.numRows == rowIx.length, "Row index length is incorrect")
   require(values.numCols == colIx.length, "Col index length is incorrect")
 
-  private var cachedMat: Option[Mat[T]] = None
-  private var cachedRows: Option[MatCols[T]] = None
-
   /**
     * Number of rows in the Frame
     */
@@ -1791,6 +1788,33 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       (this eq f) || rowIx == f.rowIx && colIx == f.colIx && values == f.values
     case _ => false
   }
+
+  /**
+    * Sum of the elements of each column, ignoring NA values
+    */
+  def sum(implicit num: NUM[T]): Series[CX, T] = reduce(_.sum)
+
+  /**
+    * Count of the elements of each column, ignoring NA values
+    */
+  def count: Series[CX, Int] = reduce(_.count)
+
+  /**
+    * Min of the elements of each column, ignoring NA values
+    */
+  def min(implicit num: NUM[T]): Series[CX, T] =
+    reduce(_.toVec.min.getOrElse(implicitly[ST[T]].missing))
+
+  /**
+    * Max of the elements of each column, ignoring NA values
+    */
+  def max(implicit num: NUM[T]): Series[CX, T] =
+    reduce(_.toVec.max.getOrElse(implicitly[ST[T]].missing))
+
+  /**
+    * Product of the elements of each column, ignoring NA values
+    */
+  def prod(implicit num: NUM[T]): Series[CX, T] = reduce(_.toVec.prod)
 }
 
 object Frame extends BinOpFrame {

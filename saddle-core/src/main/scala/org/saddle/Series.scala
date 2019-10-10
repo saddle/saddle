@@ -97,8 +97,10 @@ import org.saddle.mat.MatCols
   * @tparam X Type of elements in the index, for which there must be an implicit Ordering and ST
   * @tparam T Type of elements in the values array, for which there must be an implicit ST
   */
-class Series[X: ST: ORD, T: ST](val values: Vec[T], val index: Index[X])
-    extends NumericOps[Series[X, T]] {
+class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
+    val values: Vec[T],
+    val index: Index[X]
+) extends NumericOps[Series[X, T]] {
 
   require(
     values.length == index.length,
@@ -949,8 +951,19 @@ class Series[X: ST: ORD, T: ST](val values: Vec[T], val index: Index[X])
 
   override def toString: String = stringify()
 
+  /* Sum of numeric elements, ignoring NAs */
   def sum(implicit na: NUM[T]): T = toVec.sum
+
+  /* Min of numeric elements, ignoring NAs */
+  def min(implicit na: NUM[T]): Scalar[T] = toVec.min
+
+  /* Max of numeric elements, ignoring NAs */
+  def max(implicit na: NUM[T]): Scalar[T] = toVec.max
+
+  /* Count of elements, ignoring NAs */
   def count: Int = toVec.count
+
+  /* Min of elements passing the predicate, ignoring NAs */
   def countif(test: T => Boolean): Int = toVec.countif(test)
 
   /**
