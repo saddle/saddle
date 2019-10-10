@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.saddle.io
+package org.saddle.csv
 
 import java.io.{OutputStream, BufferedOutputStream, FileOutputStream}
 
