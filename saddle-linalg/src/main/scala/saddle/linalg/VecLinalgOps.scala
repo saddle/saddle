@@ -64,6 +64,8 @@ trait VecLinalgOps {
     m / (n - 1)
   }
 
+  def sampleStandardDeviation = math.sqrt(sampleVariance)
+
   /* Subtracts the mean from each element. Does not filter out NAs */
   def demeaned = {
     val mean = this.mean2
