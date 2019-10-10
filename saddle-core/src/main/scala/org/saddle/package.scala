@@ -284,6 +284,15 @@ package object saddle {
     def isNA = st.isMissing(p)
   }
 
+  implicit class OptionToScalar[
+      @specialized(Boolean, Int, Long, Float, Double) T
+  ](p: Option[T])(implicit st: ST[T]) {
+    def toScalar = p match {
+      case None    => org.saddle.scalar.NA
+      case Some(v) => org.saddle.scalar.Scalar(v)
+    }
+  }
+
   /**
     * Constant used in string byte-level manipulation
     */
