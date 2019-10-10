@@ -185,6 +185,16 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   def apply(locs: Array[Int]): Vec[T]
 
   /**
+    * Slice a Vec at a sequence of locations, e.g.
+    *
+    * val v = Vec(1,2,3,4,5)
+    * v(Vec(1,3)) == Vec(2,4)
+    *
+    * @param locs locations at which to slice
+    */
+  def apply(locs: Vec[Int]): Vec[T]
+
+  /**
     * Slice a Vec at a bound of locations, e.g.
     *
     * val v = Vec(1,2,3,4,5)

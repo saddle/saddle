@@ -102,6 +102,8 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
 
   def takeRows(locs: Array[Int]): Mat[T] = MatImpl.takeRows(this, locs)
 
+  def takeRows(locs: Vec[Int]): Mat[T] = MatImpl.takeRows(this, locs.toArray)
+
   /**
     * Create Mat comprised of same values without the specified rows
     *

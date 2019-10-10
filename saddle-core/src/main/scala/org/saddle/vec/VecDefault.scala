@@ -301,6 +301,8 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     */
   def apply(locs: Int*): Vec[T] = take(locs.toArray)
 
+  def apply(locs: Vec[Int]): Vec[T] = take(locs.toArray)
+
   /**
     * Slice a Vec at a sequence of locations, e.g.
     *

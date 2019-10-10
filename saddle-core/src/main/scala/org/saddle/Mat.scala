@@ -186,6 +186,11 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     * Create Mat comprised of same values in specified rows
     */
   def takeRows(locs: Array[Int]): Mat[A]
+  
+  /**
+    * Create Mat comprised of same values in specified rows
+    */
+  def takeRows(locs: Vec[Int]): Mat[A]
 
   /**
     * Create Mat comprised of same values in specified rows
