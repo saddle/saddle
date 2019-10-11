@@ -49,11 +49,6 @@ class FrameStats[RX, CX, T: ST: NUM](frame: Frame[RX, CX, T]) {
   def mean(implicit ev: S2Stats): Series[CX, Double] = frame.reduce(_.mean)
 
   /**
-    * Median of each column
-    */
-  def median(implicit ev: S2Stats): Series[CX, Double] = frame.reduce(_.median)
-
-  /**
     * Geometric mean of each column
     */
   def geomean(implicit ev: S2Stats): Series[CX, Double] =

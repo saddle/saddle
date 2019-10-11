@@ -35,11 +35,6 @@ trait VecStats[@spec(Int, Long, Double) A] {
   def mean: Double
 
   /**
-    * Return the median of the values in the Vec, ignoring NA
-    */
-  def median: Double
-
-  /**
     * Return the geometric median of the values in the Vec, ignoring NA
     */
   def geomean: Double

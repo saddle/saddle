@@ -1806,6 +1806,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     reduce(_.toVec.min.getOrElse(implicitly[ST[T]].missing))
 
   /**
+    * Median of each column
+    */
+  def median(implicit num: NUM[T]): Series[CX, Double] =
+    reduce(_.toVec.median)
+
+  /**
     * Max of the elements of each column, ignoring NA values
     */
   def max(implicit num: NUM[T]): Series[CX, T] =

@@ -656,6 +656,66 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     Vec(res)
   }
 
+  def median(implicit n: NUM[T]) = _median(this)
+
+  protected def _median(r: Vec[T])(implicit n: NUM[T]): Double = {
+    val sd = ScalarTagDouble
+
+    def _arrCopyToDblArr(
+        r: Vec[T]
+    ): (Int, Array[Double]) = {
+      val arr = Array.ofDim[Double](r.length)
+      val sa = r.scalarTag
+      var i = 0
+      var j = 0
+      while (i < r.length) {
+        val v = sa.toDouble(r.raw(i))
+        if (v == v) {
+          arr(j) = v
+          j += 1
+        }
+        i += 1
+      }
+      (j, arr)
+    }
+
+    val (len, arr) = _arrCopyToDblArr(r)
+
+    if (len == 0)
+      sd.missing
+    else if (len % 2 != 0)
+      _kSmallest(arr, len, len / 2)
+    else
+      (_kSmallest(arr, len, len / 2) + _kSmallest(arr, len, len / 2 - 1)) / 2d
+  }
+
+  // Find k_th smallest element,taken from N.Worth via pandas python library
+  // (moments.pyx). Destructive to array input and not N/A friendly
+  private def _kSmallest(a: Array[Double], n: Int, k: Int): Double = {
+    var l = 0
+    var m = n - 1
+
+    while (l < m) {
+      val x = a(k)
+      var i = l
+      var j = m
+      while (i <= j) {
+        while (a(i) < x) i += 1
+        while (a(j) > x) j -= 1
+        if (i <= j) {
+          val t = a(i)
+          a(i) = a(j)
+          a(j) = t
+          i += 1
+          j -= 1
+        }
+      }
+      if (j < k) l = i
+      if (k < i) m = j
+    }
+    a(k)
+  }
+
   private[saddle] def toDoubleArray(implicit na: NUM[T]): Array[Double] = {
     if (scalarTag == ScalarTagDouble) toArray.asInstanceOf[Array[Double]]
     else {
