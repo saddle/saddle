@@ -21,10 +21,10 @@ jobs:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
       - name: github-pages
         run: |
-          sbt clean make-site
+          sbt clean makeSite
           cd target/site
           git init 
           git add . 
           git commit -m "update site"
-          git push --force https://pityka:${{secrets.GITHUB_TOKEN}}@github.com/pityka/ssle master:gh-pages
+          git push --force https://pityka:${{secrets.GITHUB_TOKEN}}@github.com/pityka/saddle master:gh-pages
           
