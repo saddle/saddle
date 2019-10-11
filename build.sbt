@@ -89,6 +89,7 @@ lazy val core = project
       "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"
     )
   )
+  .enablePlugins(SiteScaladocPlugin)
 
 lazy val time = project
   .in(file("saddle-time"))
@@ -136,6 +137,16 @@ lazy val root = (project in file("."))
   .settings(
     publishArtifact := false
   )
+  .settings(
+    siteSubdirName in ScalaUnidoc := "/",
+    addMappingsToSiteDir(
+      mappings in (ScalaUnidoc, packageDoc),
+      siteSubdirName in ScalaUnidoc
+    ),
+    git.remoteRepo := ""
+  )
+  .enablePlugins(ScalaUnidocPlugin)
+  .enablePlugins(GhpagesPlugin)
   .aggregate(core, time, stats, linalg)
 
 parallelExecution in ThisBuild := false

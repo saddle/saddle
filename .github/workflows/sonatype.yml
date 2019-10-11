@@ -1,7 +1,7 @@
 name: sonatype
 on:
   push:
-    # branches: [master]
+    branches: [master]
     tags: ["*"]
 jobs:
   publish:
@@ -19,3 +19,12 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      - name: github-pages
+        run: |
+          sbt clean make-site
+          cd target/site
+          git init 
+          git add . 
+          git commit -m "update site"
+          git push --force https://pityka:${{secrets.GITHUB_TOKEN}}@github.com/pityka/ssle master:gh-pages
+          

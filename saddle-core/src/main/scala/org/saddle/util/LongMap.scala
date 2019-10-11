@@ -15,13 +15,13 @@ package org.saddle.util
  * Modified to remove unneeded features
  */
 
-/** This class implements mutable maps with `Long` keys based on a hash table with open addressing.
+/** This class implements mutable maps with Long keys based on a hash table with open addressing.
   *
   *  Basic map operations on single entries, including `contains` and `get`,
-  *  are typically substantially faster with `LongMap` than [[HashMap]].  Methods
+  *  are typically substantially faster with `LongMap` than HashMap.  Methods
   *  that act on the whole map,  including `foreach` and `map` are not in
   *  general expected to be faster than with a generic map, save for those
-  *  that take particular advantage of the internal structure of the map:
+  *  that take particular advantage of  the internal structure of the map:
   *  `foreachKey`, `foreachValue`, `mapValuesNow`, and `transformValues`.
   *
   *  Maps with open addressing may become less efficient at lookup after
