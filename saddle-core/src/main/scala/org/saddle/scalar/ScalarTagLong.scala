@@ -16,7 +16,7 @@
 package org.saddle.scalar
 
 import org.saddle._
-import metal.mutable.Buffer
+import org.saddle.Buffer
 import org.saddle.index.IndexLong
 import org.saddle.locator.{LocatorLong, Locator}
 import org.saddle.array.Sorter

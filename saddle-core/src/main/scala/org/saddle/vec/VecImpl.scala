@@ -17,7 +17,7 @@ package org.saddle.vec
 
 import scala.{specialized => spec}
 import org.saddle._
-import metal.mutable.Buffer
+import org.saddle.Buffer
 
 // Specialized method implementations for code reuse in implementations of Vec; NA-safe
 private[saddle] object VecImpl {

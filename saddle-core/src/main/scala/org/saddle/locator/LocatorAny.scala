@@ -17,13 +17,12 @@ package org.saddle.locator
 
 import org.saddle._
 import org.saddle.ST
-import metal.mutable.{HashMap, Buffer}
-import metal.syntax._
+import org.saddle.Buffer
 
 class LocatorAny[T: ST](sz: Int = Locator.INIT_CAPACITY) extends Locator[T] {
   var keyOrder = new Buffer(new Array[T](sz), 0)
-  val map = HashMap.reservedSize[T, Int](sz)
-  val cts = HashMap.reservedSize[T, Int](sz)
+  val map = new scala.collection.mutable.HashMap[T, Int]
+  val cts = new scala.collection.mutable.HashMap[T, Int]
 
   def contains(key: T): Boolean = map.contains(key)
   def get(key: T): Int = map.get(key).getOrElse(-1)

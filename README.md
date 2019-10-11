@@ -71,6 +71,12 @@ the CONTRIBUTORS file.
 Code in the saddle-linalg/ folder is licensed under MIT and its copyright holder is
 Istvan Bartha. See the saddle-linalg/LICENSE file.
 
+Code in saddle-core/src/main/scala/org/saddle/util/LongMap.scala has different copyright terms,
+see its header.
+
+Code in saddle-core/src/main/scala/org/saddle/Buffer.scala has different copyright terms,
+see its header. 
+
 About the Copyright Holders
 ===========================
 

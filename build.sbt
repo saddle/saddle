@@ -40,9 +40,9 @@ lazy val commonSettings = Seq(
     "-Ywarn-unused:locals", // Warn if a local definition is unused.
     "-Ywarn-unused:params", // Warn if a value parameter is unused.
     "-Ywarn-unused:patvars", // Warn if a variable bound in a pattern is unused.
-    "-Ywarn-unused:privates", // Warn if a private member is unused.
+    "-Ywarn-unused:privates" // Warn if a private member is unused.
   ),
-  scalacOptions in (Compile, console) ~= (_ filterNot (_ == "-Xfatal-warnings")),
+  scalacOptions in (Compile, console) ~= (_ filterNot (_ == "-Xfatal-warnings"))
 ) ++ Seq(
   organization := "io.github.pityka",
   licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
@@ -85,8 +85,7 @@ lazy val core = project
   .settings(
     name := "saddle-core",
     libraryDependencies ++= Seq(
-      "org.scala-metal" %% "metal-core" % "0.16.0.0",
-      "org.scala-metal" %% "metal-library" % "0.16.0.0",
+      "org.typelevel" %% "spire" % "0.16.0",
       "org.apache.commons" % "commons-math" % "2.2" % "test",
       "org.specs2" %% "specs2-core" % "4.6.0" % "test",
       "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"

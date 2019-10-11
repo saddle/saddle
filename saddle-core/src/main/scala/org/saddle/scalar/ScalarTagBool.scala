@@ -19,7 +19,7 @@ import org.saddle._
 import org.saddle.index.IndexAny
 import org.saddle.locator.{LocatorBool, Locator}
 import org.saddle.array.Sorter
-import metal.mutable.Buffer
+import org.saddle.Buffer
 
 /**
   * Boolean ScalarTag

@@ -20,7 +20,7 @@ import scala.{specialized => spec}
 import org.saddle._
 import org.saddle.locator.Locator
 import org.saddle.array.Sorter
-import metal.mutable.Buffer
+import org.saddle.Buffer
 
 /**
   * Typeclass definition for scalar tags. A ScalarTag contains important meta-data regarding

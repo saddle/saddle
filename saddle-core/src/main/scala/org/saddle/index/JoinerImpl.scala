@@ -18,7 +18,7 @@ package org.saddle.index
 import scala.{specialized => spec}
 import org.saddle._
 import locator.Locator
-import metal.mutable.Buffer
+import org.saddle.Buffer
 
 /**
   * Concrete implementation of Joiner instance which is specialized on basic

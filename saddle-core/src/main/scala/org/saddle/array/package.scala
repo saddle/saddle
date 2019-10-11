@@ -17,7 +17,6 @@ package org.saddle
 
 import scala.{specialized => spec}
 import spire.random.rng.Well19937c
-import metal.mutable.{HashSet => MetalHashSet}
 
 /**
   * This package contains utilities for working with arrays that
@@ -519,12 +518,11 @@ package object array {
       arr: Array[T],
       locs: Array[Int]
   ): Array[T] = {
-    import metal.syntax._
-    val set = MetalHashSet.reservedSize[Int](locs.size)
+    val set = new util.IntMap
     var i = 0
     while (i < locs.length) {
       val loc = locs(i)
-      if (loc >= 0 && loc < arr.length) set += loc
+      if (loc >= 0 && loc < arr.length) set.update(loc, 0)
       i += 1
     }
 

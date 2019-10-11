@@ -2,13 +2,20 @@
 Saddle: Scala Data Library
 ==========================
 
-Saddle is distributed under the Apache License Version 2.0 (see LICENSE file).
+Saddle is distributed under the Apache License Version 2.0 (see LICENSE file), except where the 
+copyright header of the source file indicates otherwise. 
 
 Copyright
 =========
 
 Copyright (c) 2013 Novus Partners, Inc.
 Copyright (c) 2013 The Saddle Development Team
+Except when otherwise noted:
+- Code in saddle-core/src/main/scala/org/saddle/util/LongMap.scala has different copyright terms,
+see its header.
+- Code in saddle-core/src/main/scala/org/saddle/Buffer.scala has different copyright terms,
+see its header. This file has code distributed under MIT license. 
+
 
 All rights reserved.
 

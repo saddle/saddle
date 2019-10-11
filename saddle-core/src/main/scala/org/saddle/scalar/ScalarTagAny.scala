@@ -19,7 +19,7 @@ import org.saddle._
 import org.saddle.index.IndexAny
 import org.saddle.locator.{LocatorAny, Locator}
 import org.saddle.array.Sorter
-import metal.mutable.Buffer
+import org.saddle.Buffer
 
 class ScalarTagAny[T: CLM] extends ScalarTag[T] {
   def missing: T = null.asInstanceOf[T]

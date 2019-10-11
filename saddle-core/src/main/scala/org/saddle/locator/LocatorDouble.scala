@@ -15,15 +15,14 @@
  **/
 package org.saddle.locator
 
-import metal.mutable.{HashMap, Buffer}
-import metal.syntax._
-
+import org.saddle.Buffer
+import org.saddle.util.DoubleMap
 class LocatorDouble(sz: Int = Locator.INIT_CAPACITY) extends Locator[Double] {
   var keyOrder = new Buffer(new Array[Double](sz), 0)
-  val map = HashMap.reservedSize[Double, Int](sz)
-  val cts = HashMap.reservedSize[Double, Int](sz)
+  val map = new DoubleMap
+  val cts = new DoubleMap
 
-  def contains(key: Double): Boolean = map.contains(key)
+  def contains(key: Double): Boolean = map.get(key).isDefined
   def get(key: Double): Int = map.get(key).getOrElse(-1)
   def put(key: Double, value: Int) = if (!contains(key)) {
     map.update(key, value)
@@ -37,11 +36,10 @@ class LocatorDouble(sz: Int = Locator.INIT_CAPACITY) extends Locator[Double] {
   }
   def keys(): Array[Double] = keyOrder.toArray
   def counts(): Array[Int] = {
-    val iter = map.keys.iterator
     val res = Array.ofDim[Int](size)
     var i = 0
-    while (iter.hasNext) {
-      res(i) = count(iter.next)
+    map.foreachKey { key =>
+      res(i) = count(key)
       i += 1
     }
     res

@@ -15,13 +15,13 @@
  **/
 package org.saddle.locator
 
-import metal.mutable.{HashMap, Buffer}
-import metal.syntax._
+import org.saddle.Buffer
+import org.saddle.util.LongMap
 
 class LocatorLong(sz: Int = Locator.INIT_CAPACITY) extends Locator[Long] {
   var keyOrder = new Buffer(new Array[Long](sz), 0)
-  val map = HashMap.reservedSize[Long, Int](sz)
-  val cts = HashMap.reservedSize[Long, Int](sz)
+  val map = new LongMap
+  val cts = new LongMap
 
   def contains(key: Long): Boolean = map.contains(key)
   def get(key: Long): Int = map.get(key).getOrElse(-1)
@@ -37,11 +37,10 @@ class LocatorLong(sz: Int = Locator.INIT_CAPACITY) extends Locator[Long] {
   }
   def keys(): Array[Long] = keyOrder.toArray
   def counts(): Array[Int] = {
-    val iter = map.keys.iterator
     val res = Array.ofDim[Int](size)
     var i = 0
-    while (iter.hasNext) {
-      res(i) = count(iter.next)
+    map.foreachKey { key =>
+      res(i) = count(key)
       i += 1
     }
     res
