@@ -658,7 +658,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
 
   def median(implicit n: NUM[T]) = _median(this)
 
-  protected def _median(r: Vec[T])(implicit n: NUM[T]): Double = {
+  private def _median(r: Vec[T])(implicit n: NUM[T]): Double = {
     val sd = ScalarTagDouble
 
     def _arrCopyToDblArr(

@@ -25,6 +25,12 @@ class SeriesCheck extends Specification with ScalaCheck {
   "Series[Int, Double] Tests" in {
     implicit val ser = Arbitrary(SeriesArbitraries.seriesDoubleWithNA)
 
+    "median works" in {
+      forAll { (s: Series[Int, Double]) =>
+        (s.median must_== s.toVec.median) or (s.median.isNaN && s.toVec.median.isNaN)
+      }
+    }
+
     "series equality" in {
       forAll { (s: Series[Int, Double]) =>
         (s must_== Series(s.toVec)) and (s must_== s)

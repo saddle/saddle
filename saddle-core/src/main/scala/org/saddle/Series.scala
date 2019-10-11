@@ -954,6 +954,9 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
   /* Sum of numeric elements, ignoring NAs */
   def sum(implicit na: NUM[T]): T = toVec.sum
 
+  /* Median of numeric elements, ignoring NAs */
+  def median(implicit na: NUM[T]): Double = toVec.median
+
   /* Min of numeric elements, ignoring NAs */
   def min(implicit na: NUM[T]): Scalar[T] = toVec.min
 
