@@ -139,11 +139,16 @@ class FrameCheck extends Specification with ScalaCheck {
 
     "rsqueeze" in {
       forAll { (f: Frame[Int, Int, Double]) =>
-        f.rsqueeze must_== f.T.toColSeq
+        f.rsqueeze.toRowSeq must_== f.toRowSeq
           .filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA))
-          .toFrame
-          .T
       }
+    }
+
+    "rsqueeze" in {
+      val f = Frame(0 -> Series(0 -> Double.NaN))
+      f.rsqueeze.toRowSeq must_== f.toRowSeq
+        .filterNot(_._2.toVec.toSeq.forall(_.toScalar.isNA))
+
     }
 
     "frame sortedRowsBy" in {
