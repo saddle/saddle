@@ -46,7 +46,6 @@ lazy val commonSettings = Seq(
 ) ++ Seq(
   organization := "io.github.pityka",
   licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
-  // publishTo := sonatypePublishTo.value,
   pomExtra in Global := {
     <url>https://github.com/pityka/saddle</url>
       <scm>
@@ -75,8 +74,7 @@ lazy val commonSettings = Seq(
       </developers>
   },
   fork := true,
-  cancelable in Global := true,
-  resolvers += "bintray/denisrosset" at "https://dl.bintray.com/denisrosset/maven"
+  cancelable in Global := true
 )
 
 lazy val core = project
