@@ -1,6 +1,7 @@
 [![Build status](https://github.com/pityka/saddle/workflows/CI/badge.svg)](https://github.com/pityka/saddle/actions)
 [![codecov](https://codecov.io/gh/pityka/saddle/branch/master/graph/badge.svg)](https://codecov.io/gh/pityka/saddle)
 [![doc](https://img.shields.io/badge/api-scaladoc-green)](https://pityka.github.io/saddle/org/saddle/Frame.html)
+[![mavne](https://img.shields.io/maven-central/v/io.github.pityka/saddle-core_2.12.svg)](https://repo1.maven.org/maven2/io/github/pityka/saddle-core_2.12/)
 
 
 This repository is a fork of the original Saddle library which has seen no 
