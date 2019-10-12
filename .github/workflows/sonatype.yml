@@ -2,6 +2,7 @@ name: sonatype
 on:
   push:
     branches: [master]
+    tags: ["*"]
 jobs:
   publish:
     runs-on: ubuntu-latest
