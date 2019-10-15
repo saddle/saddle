@@ -29,7 +29,7 @@ Documentation
 
  - [Docs](http://saddle.github.io/doc/)
  - [Quick Start Guide](http://saddle.github.io/doc/quickstart.html)
- - [scaladoc](http://saddle.github.io/saddle/saddle-core/target/scala-2.9.2/api/#org.package)
+ - [scaladoc](https://pityka.github.io/saddle/org/saddle/Frame.html)
 
 License
 =======
