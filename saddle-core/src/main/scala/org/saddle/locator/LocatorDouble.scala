@@ -18,7 +18,7 @@ package org.saddle.locator
 import org.saddle.Buffer
 import org.saddle.util.DoubleMap
 class LocatorDouble(sz: Int = Locator.INIT_CAPACITY) extends Locator[Double] {
-  var keyOrder = new Buffer(new Array[Double](sz), 0)
+  val keyOrder = new Buffer(new Array[Double](sz), 0)
   val map = new DoubleMap
   val cts = new DoubleMap
 

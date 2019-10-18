@@ -19,7 +19,7 @@ import org.saddle.Buffer
 import org.saddle.util.IntMap
 
 class LocatorInt(sz: Int = Locator.INIT_CAPACITY) extends Locator[Int] {
-  var keyOrder = new Buffer(new Array[Int](sz), 0)
+  val keyOrder = new Buffer(new Array[Int](sz), 0)
   val map = new IntMap
   val cts = new IntMap
 
