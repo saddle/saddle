@@ -36,7 +36,7 @@
   </parameters>
  </check>
  <check level="warning" class="org.scalastyle.scalariform.UppercaseLChecker" enabled="true"></check>
- 
+ <check enabled="true" class="org.scalastyle.scalariform.ReturnChecker" level="warning"/>
 
 
  <check level="warning" class="org.scalastyle.file.NewLineAtEofChecker" enabled="true"></check>
