@@ -85,7 +85,7 @@ class IndexCheck extends Specification with ScalaCheck {
       } yield (v1, v2)
       forAll(gen) {
         case (v1, v2) =>
-          Index.make((v1, v2)).toSeq must_== (v1 zip v2)
+          Index.make((v1.toVector, v2.toVector)).toSeq must_== (v1 zip v2)
       }
     }
 
