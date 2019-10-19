@@ -423,7 +423,11 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
     * Pretty-printer for Mat, which simply outputs the result of stringify.
     * @param nrows Number of elements to display
     */
-  def print(nrows: Int = 8, ncols: Int = 8, stream: OutputStream = System.out) {
+  def print(
+      nrows: Int = 8,
+      ncols: Int = 8,
+      stream: OutputStream = System.out
+  ) = {
     stream.write(stringify(nrows, ncols).getBytes)
   }
 
