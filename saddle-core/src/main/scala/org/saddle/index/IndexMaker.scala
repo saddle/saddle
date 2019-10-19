@@ -72,7 +72,7 @@ object IndexMaker extends IndexMakerLowPriority {
   // -------------------------
   // Zip helpers
 
-  private def zip2V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD](
+  private[this] def zip2V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD](
       a: T[A],
       b: T[B]
   ): Index[(A, B)] = {
@@ -87,7 +87,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip2Vec[A: ST: ORD, B: ST: ORD](
+  private[this] def zip2Vec[A: ST: ORD, B: ST: ORD](
       a: Vec[A],
       b: Vec[B]
   ): Index[(A, B)] = {
@@ -102,7 +102,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip3V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD, C: ST: ORD](
+  private[this] def zip3V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD, C: ST: ORD](
       a: T[A],
       b: T[B],
       c: T[C]
@@ -121,7 +121,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip4V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD, C: ST: ORD, D: ST: ORD](
+  private[this] def zip4V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD, C: ST: ORD, D: ST: ORD](
       a: T[A],
       b: T[B],
       c: T[C],
@@ -141,7 +141,7 @@ object IndexMaker extends IndexMakerLowPriority {
     Index(arr)
   }
 
-  private def zip5V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD, C: ST: ORD, D: ST: ORD, E: ST: ORD](
+  private[this] def zip5V[T[K] <: IndexedSeq[K], A: ST: ORD, B: ST: ORD, C: ST: ORD, D: ST: ORD, E: ST: ORD](
       a: T[A],
       b: T[B],
       c: T[C],
