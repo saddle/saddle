@@ -16,7 +16,7 @@
 package org
 
 import scala.language.implicitConversions
-import org.saddle.index._
+import org.saddle.index.{SliceAll, Slice, SliceFrom, SliceTo}
 
 // some typeclass interfaces we'll alias
 import org.saddle.scalar.ScalarTag

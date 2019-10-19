@@ -16,7 +16,7 @@
 package org.saddle.vec
 
 import scala.{specialized => spec}
-import org.saddle._
+import org.saddle.{ST, Vec}
 import org.saddle.Buffer
 
 // Specialized method implementations for code reuse in implementations of Vec; NA-safe
@@ -241,7 +241,7 @@ private[saddle] object VecImpl {
 
   def foreach[@spec(Boolean, Int, Long, Double) A: ST](
       vec: Vec[A]
-  )(op: A => Unit) {
+  )(op: A => Unit) = {
     val sa = implicitly[ST[A]]
     var i = 0
     while (i < vec.length) {
@@ -253,7 +253,7 @@ private[saddle] object VecImpl {
 
   def forall[@spec(Boolean, Int, Long, Double) A: ST](
       vec: Vec[A]
-  )(pred: A => Boolean)(op: A => Unit) {
+  )(pred: A => Boolean)(op: A => Unit) = {
     val sa = implicitly[ST[A]]
     var i = 0
     while (i < vec.length) {

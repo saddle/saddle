@@ -15,7 +15,7 @@
  **/
 package org.saddle.csv
 
-import org.saddle._
+import org.saddle.{Frame, Vec}
 import collection.mutable.ArrayBuffer
 
 /**
@@ -65,7 +65,7 @@ object CsvParser {
     // set up buffers to store parsed data
     val bufdata = for { _ <- locs } yield new ArrayBuffer[String](1024)
 
-    def addToBuffer(s: String, buf: Int) {
+    def addToBuffer(s: String, buf: Int) = {
       bufdata(buf).append(s)
     }
 
@@ -96,7 +96,7 @@ object CsvParser {
       quoteChar: Char,
       separChar: Char,
       withQuote: Boolean
-  ) {
+  ) = {
 
     val quote = quoteChar
     val sep = separChar

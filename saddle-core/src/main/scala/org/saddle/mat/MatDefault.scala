@@ -16,8 +16,8 @@
 package org.saddle.mat
 
 import scala.{specialized => spec}
-import org.saddle._
-import org.saddle.scalar._
+import org.saddle.{Mat, Vec, ST, NUM, Frame, util}
+import org.saddle.scalar.{ScalarTag, Scalar}
 import org.saddle.index.Slice
 import org.saddle.index.IndexIntRange
 import java.io.OutputStream

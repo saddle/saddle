@@ -16,8 +16,8 @@
 package org.saddle.mat
 
 import scala.{specialized => spec}
-import org.saddle._
-import org.saddle.scalar._
+import org.saddle.{ST, Vec, array, Mat}
+import org.saddle.scalar.Scalar
 
 /**
   * An IndexedSeq of Vecs which must all have the same length; a container for

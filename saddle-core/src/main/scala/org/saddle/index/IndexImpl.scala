@@ -16,8 +16,8 @@
 package org.saddle.index
 
 import scala.{specialized => spec}
-import org.saddle._
-import locator.Locator
+import org.saddle.{ST, ORD, Index}
+import org.saddle.locator.Locator
 
 /**
   * Helper class for Index instances

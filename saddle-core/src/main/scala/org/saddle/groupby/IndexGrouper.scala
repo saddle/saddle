@@ -15,7 +15,7 @@
  **/
 package org.saddle.groupby
 
-import org.saddle._
+import org.saddle.{ST, ORD, Index, array}
 
 /**
   * Creates groups for each unique key in an index

@@ -17,7 +17,7 @@ package org.saddle.scalar
 
 import scala.reflect.ClassTag
 import scala.{specialized => spec}
-import org.saddle._
+import org.saddle.{CLM, ORD, NUM, Vec, Mat, Index, ST}
 import org.saddle.locator.Locator
 import org.saddle.array.Sorter
 import org.saddle.Buffer

@@ -16,8 +16,17 @@
 package org.saddle.util
 
 import scala.{specialized => spec}
-import org.saddle._
-import org.saddle.scalar._
+import org.saddle.{ST, array}
+import org.saddle.scalar.{
+  ScalarTagByte,
+  ScalarTagShort,
+  ScalarTagChar,
+  ScalarTagInt,
+  ScalarTagLong,
+  ScalarTagFloat,
+  ScalarTagDouble,
+  ScalarTagAny
+}
 
 /**
   * Machinery for concatenating arrays of differing types, with NA-handling

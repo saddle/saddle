@@ -16,8 +16,16 @@
 package org.saddle
 
 import scala.{specialized => spec, Array}
-import index._
-import scalar._
+import index.{
+  Slice,
+  Splitter,
+  Stacker,
+  ReIndexer,
+  JoinType,
+  LeftJoin,
+  IndexMaker
+}
+import scalar.{Scalar, NA, ScalarTag}
 import locator.Locator
 import util.Concat.Promoter
 import vec.VecImpl
@@ -533,7 +541,7 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
     * Pretty-printer for Index, which simply outputs the result of stringify.
     * @param len Number of elements to display
     */
-  def print(len: Int = 10, stream: OutputStream = System.out) {
+  def print(len: Int = 10, stream: OutputStream = System.out) = {
     stream.write(stringify(len).getBytes)
   }
 

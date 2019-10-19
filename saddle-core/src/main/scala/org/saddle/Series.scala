@@ -17,11 +17,11 @@ package org.saddle
 
 import scala.{specialized => spec}
 import util.Concat.Promoter
-import ops._
-import vec._
-import index._
-import groupby._
-import scalar._
+import ops.{NumericOps, BinOpSeries}
+import vec.VecImpl
+import org.saddle.index.{JoinType, LeftJoin, IndexIntRange, Slice, Splitter}
+import groupby.{SeriesGrouper, IndexGrouper}
+import scalar.{Scalar, NA}
 import java.io.OutputStream
 import org.saddle.mat.MatCols
 
@@ -897,7 +897,7 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
       val sz = isca.strList(index.raw(0)).size
 
       val prevRowLabels = Array.fill(sz)("")
-      def resetRowLabels(k: Int) {
+      def resetRowLabels(k: Int) = {
         for (i <- k until prevRowLabels.length) prevRowLabels(i) = ""
       }
 
@@ -936,7 +936,7 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
     * Pretty-printer for Series, which simply outputs the result of stringify.
     * @param len Number of elements to display
     */
-  def print(len: Int = 10, stream: OutputStream = System.out) {
+  def print(len: Int = 10, stream: OutputStream = System.out) = {
     stream.write(stringify(len).getBytes)
   }
 

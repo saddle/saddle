@@ -15,7 +15,7 @@
  **/
 package org.saddle.groupby
 
-import org.saddle._
+import org.saddle.{ST, ORD, Index, Series, Vec}
 
 /**
   * Helper class to do combine or transform after a groupBy

@@ -17,7 +17,7 @@ package org.saddle.ops
 
 import scala.{specialized => spec}
 
-import org.saddle._
+import org.saddle.{ST, Mat}
 
 /**
   * Provides concrete implementations of binary operations for [[org.saddle.Mat]]; these

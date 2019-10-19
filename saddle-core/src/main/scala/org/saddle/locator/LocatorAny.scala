@@ -15,7 +15,6 @@
  **/
 package org.saddle.locator
 
-import org.saddle._
 import org.saddle.ST
 import org.saddle.Buffer
 

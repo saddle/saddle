@@ -15,7 +15,7 @@
  **/
 package org.saddle.index
 
-import org.saddle._
+import org.saddle.Index
 import scala.{specialized => spec}
 
 /**

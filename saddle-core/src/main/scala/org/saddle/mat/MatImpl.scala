@@ -17,7 +17,7 @@ package org.saddle.mat
 
 import scala.Int
 import scala.{specialized => spec}
-import org.saddle._
+import org.saddle.{ST, Mat}
 
 /**
   * Houses specialized method implementations for code reuse in Mat subclasses

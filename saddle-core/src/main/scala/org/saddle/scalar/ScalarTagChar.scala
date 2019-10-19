@@ -15,7 +15,7 @@
  **/
 package org.saddle.scalar
 
-import org.saddle._
+import org.saddle.ORD
 import org.saddle.array.Sorter
 
 /**

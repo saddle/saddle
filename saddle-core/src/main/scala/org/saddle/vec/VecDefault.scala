@@ -17,9 +17,9 @@ package org.saddle.vec
 
 import scala.{specialized => spec}
 import org.saddle.util.Concat.Promoter
-import org.saddle.scalar._
+import org.saddle.scalar.{Scalar, NA, ScalarTagDouble}
 import org.saddle.ops.NumericOps
-import org.saddle._
+import org.saddle.{ST, Vec, array, NUM, util, ORD, PctMethod, RankTie}
 import org.saddle.index.Slice
 import org.saddle.index.IndexIntRange
 import java.io.OutputStream
@@ -786,7 +786,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * Pretty-printer for Vec, which simply outputs the result of stringify.
     * @param len Number of elements to display
     */
-  def print(len: Int = 10, stream: OutputStream = System.out) {
+  def print(len: Int = 10, stream: OutputStream = System.out) = {
     stream.write(stringify(len).getBytes)
   }
 

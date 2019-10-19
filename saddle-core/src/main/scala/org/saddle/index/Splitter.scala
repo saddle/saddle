@@ -15,7 +15,7 @@
  **/
 package org.saddle.index
 
-import org.saddle._
+import org.saddle.{Index, ST, ORD}
 
 /**
   * A Splitter operates on an input index whose elements have arity N, and yields the following

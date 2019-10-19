@@ -15,8 +15,8 @@
  **/
 package org.saddle.ops
 
-import org.saddle._
-import index._
+import org.saddle.{ST, Vec, Series, ORD}
+import org.saddle.index.OuterJoin
 
 /**
   * Provides concrete implementations of binary operations for [[org.saddle.Series]]; these

@@ -15,7 +15,7 @@
  **/
 package org.saddle.index
 
-import org.saddle._
+import org.saddle.{ST, ORD, Index}
 
 /**
   * A Stacker operates on two input Index instances and produces a new output Index

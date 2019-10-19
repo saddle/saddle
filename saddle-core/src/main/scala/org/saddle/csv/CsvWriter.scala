@@ -18,8 +18,8 @@ package org.saddle.csv
 
 import java.io.{OutputStream, BufferedOutputStream, FileOutputStream}
 
-import org.saddle._
-import scalar.ScalarTag
+import org.saddle.{UTF8, ST, ORD, Series, Frame}
+import org.saddle.scalar.ScalarTag
 import java.io.ByteArrayOutputStream
 
 /**
@@ -138,7 +138,7 @@ object CsvWriter {
         seq
     }
 
-    def writeHeader(rsm: ScalarTag[RX], csm: ScalarTag[CX]) {
+    def writeHeader(rsm: ScalarTag[RX], csm: ScalarTag[CX]) = {
       // get depth (number of levels) of row and column indexes
       val cDepth = csm.strList(frame.colIx.raw(0)).length
       val rDepth = rsm.strList(frame.rowIx.raw(0)).length
@@ -167,7 +167,7 @@ object CsvWriter {
       }
     }
 
-    def writeRows(rsm: ScalarTag[RX]) {
+    def writeRows(rsm: ScalarTag[RX]) = {
       // now write each row of the frame
       frame.toRowSeq.foreach {
         case (ridx, row) =>

@@ -17,10 +17,10 @@ package org.saddle
 
 import scala.{specialized => spec}
 
-import vec._
-import index._
-import ops._
-import scalar._
+import vec.VecDefault
+import index.Slice
+import ops.{BinOpVec, NumericOps}
+import scalar.{Scalar, ScalarTag}
 import util.Concat.Promoter
 
 import java.io.OutputStream
@@ -569,7 +569,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
     * Pretty-printer for Vec, which simply outputs the result of stringify.
     * @param len Number of elements to display
     */
-  def print(len: Int, stream: OutputStream)
+  def print(len: Int, stream: OutputStream): Unit
 
   /**
     * Rounds elements in the vec (which must be numeric) to

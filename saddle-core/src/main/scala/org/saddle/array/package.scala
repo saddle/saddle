@@ -600,7 +600,7 @@ package object array {
   /**
     * Fill array with value
     */
-  def fill[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], v: T) {
+  def fill[@spec(Boolean, Int, Long, Double) T: ST](arr: Array[T], v: T) = {
     var i = 0
     while (i < arr.length) {
       arr(i) = v

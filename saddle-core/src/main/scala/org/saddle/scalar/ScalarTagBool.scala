@@ -15,7 +15,7 @@
  **/
 package org.saddle.scalar
 
-import org.saddle._
+import org.saddle.{ORD, NUM, Vec, Mat, Index, array}
 import org.saddle.index.IndexAny
 import org.saddle.locator.{LocatorBool, Locator}
 import org.saddle.array.Sorter

@@ -1,6 +1,6 @@
 package org.saddle.linalg
 
-import org.saddle._
+import org.saddle.{Vec, Mat, array}
 
 class DPotrfException(i: Int) extends Exception(s"""|dpotrf error, info=$i
               |*  INFO    (output) INTEGER

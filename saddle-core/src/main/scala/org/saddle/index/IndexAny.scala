@@ -17,11 +17,11 @@ package org.saddle.index
 
 import scala.{specialized => spec}
 import annotation.tailrec
-import org.saddle._
-import util.Concat.Promoter
-import index.IndexImpl.IndexProperties
-import vec.VecImpl
-import locator.Locator
+import org.saddle.{ST, ORD, Vec, Index, array, util}
+import org.saddle.util.Concat.Promoter
+import org.saddle.index.IndexImpl.IndexProperties
+import org.saddle.vec.VecImpl
+import org.saddle.locator.Locator
 
 /**
   * An implementation of [[org.saddle.Index]] generic in type T for which there is an Ordering[T]

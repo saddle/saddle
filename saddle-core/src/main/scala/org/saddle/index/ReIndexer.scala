@@ -15,7 +15,7 @@
  **/
 package org.saddle.index
 
-import org.saddle._
+import org.saddle.Index
 
 /**
   * We often need to "reindex" one array/vec/series/frame so as to produce a new

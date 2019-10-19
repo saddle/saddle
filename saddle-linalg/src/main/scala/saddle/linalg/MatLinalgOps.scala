@@ -1,6 +1,6 @@
 package org.saddle.linalg
 
-import org.saddle._
+import org.saddle.{Vec, Mat}
 import annotation.implicitNotFound
 
 class MatPimp(val self: Mat[Double]) extends MatLinalgOps

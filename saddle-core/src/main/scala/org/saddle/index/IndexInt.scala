@@ -16,13 +16,13 @@
 package org.saddle.index
 
 import scala.{specialized => spec}
-import java.util.Arrays._
-import org.saddle._
-import util.Concat.Promoter
-import index.IndexImpl.IndexProperties
-import vec.VecImpl
-import locator.Locator
-import org.saddle.scalar._
+import java.util.Arrays.binarySearch
+import org.saddle.{Vec, Index, array, util, ST, ORD}
+import org.saddle.scalar.ScalarTagInt
+import org.saddle.util.Concat.Promoter
+import org.saddle.index.IndexImpl.IndexProperties
+import org.saddle.vec.VecImpl
+import org.saddle.locator.Locator
 
 /**
   * Index with integer keys

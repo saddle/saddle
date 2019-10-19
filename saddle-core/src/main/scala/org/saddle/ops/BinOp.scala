@@ -18,7 +18,7 @@ package org.saddle.ops
 import annotation.implicitNotFound
 
 import scala.{specialized => spec}
-import org.saddle._
+import org.saddle.ST
 
 /**
   * Concrete implementations of BinOp provide primitive-specialized support for performing

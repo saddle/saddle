@@ -17,7 +17,7 @@ package org.saddle.ops
 
 import scala.{specialized => spec}
 
-import org.saddle._
+import org.saddle.{ST, Vec, NUM, Mat}
 
 /**
   * Provides concrete implementations of binary operations for [[org.saddle.Vec]]; these

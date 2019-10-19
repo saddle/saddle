@@ -15,7 +15,6 @@
  **/
 package org.saddle.locator
 
-import org.saddle._
 import scala.{specialized => spec}
 import org.saddle.ST
 
@@ -62,7 +61,7 @@ trait Locator[@spec(Boolean, Int, Long, Double) T] {
     * @param key Key to put into map
     * @param value Value to associate with key
     */
-  def put(key: T, value: Int)
+  def put(key: T, value: Int): Unit
 
   /**
     * Return the number of times the key was entered into the map

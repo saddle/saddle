@@ -18,7 +18,7 @@ package org.saddle.index
 import scala.language.higherKinds
 import scala.language.reflectiveCalls
 
-import org.saddle._
+import org.saddle.{Index, ST, ORD, Vec}
 
 /**
   * An IndexMaker takes some input of type I and returns an Index whose

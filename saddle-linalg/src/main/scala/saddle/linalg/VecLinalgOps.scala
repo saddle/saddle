@@ -1,6 +1,6 @@
 package org.saddle.linalg
 
-import org.saddle._
+import org.saddle.Vec
 import annotation.implicitNotFound
 
 class VecPimp(val self: Vec[Double]) extends VecLinalgOps

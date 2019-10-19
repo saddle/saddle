@@ -16,8 +16,8 @@
 package org.saddle.index
 
 import scala.{specialized => spec}
-import org.saddle._
-import locator.Locator
+import org.saddle.{ST, ORD, Vec, Index, array}
+import org.saddle.locator.Locator
 import org.saddle.Buffer
 
 /**
@@ -176,7 +176,7 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD]
         v2: Int,
         v3: T,
         loc: Int
-    )
+    ): Unit
   }
 
   private object TNoOp extends TripleArrayStore {
@@ -188,7 +188,7 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD]
         v2: Int,
         v3: T,
         loc: Int
-    ) {}
+    ) = {}
   }
 
   private object TStore extends TripleArrayStore {
@@ -200,7 +200,7 @@ class JoinerImpl[@spec(Boolean, Int, Long, Double) T: ST: ORD]
         v2: Int,
         v3: T,
         loc: Int
-    ) {
+    ) = {
       ar1(loc) = v1
       ar2(loc) = v2
       ar3(loc) = v3

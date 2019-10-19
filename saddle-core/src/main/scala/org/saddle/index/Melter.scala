@@ -15,7 +15,7 @@
  **/
 package org.saddle.index
 
-import org.saddle._
+import org.saddle.{ST, ORD}
 
 /**
   * A Melter operates on a Tuple,,N,, and a Tuple,,M,, and produces a Tuple,,N+M,, which is

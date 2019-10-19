@@ -16,10 +16,20 @@
 package org.saddle
 
 import scala.{specialized => spec}
-import vec._
-import index._
-import groupby._
-import ops._
+import org.saddle.vec.VecImpl
+import org.saddle.index.{
+  JoinType,
+  LeftJoin,
+  OuterJoin,
+  IndexIntRange,
+  Slice,
+  RightJoin,
+  Melter,
+  Stacker,
+  Splitter
+}
+import org.saddle.groupby.{FrameGrouper, IndexGrouper}
+import org.saddle.ops.{NumericOps, BinOpFrame}
 import util.Concat.Promoter
 import scalar.Scalar
 import java.io.OutputStream
@@ -1590,8 +1600,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     */
   def rsqueeze: Frame[RX, CX, T] = rfilter(s => !VecImpl.isAllNA(s.toVec))
 
-  // todo: describe
-
   // --------------------------------------
   // for iterating over rows/cols/elements
 
@@ -1723,7 +1731,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
 
       val prevRowLabels =
         Array.fill(rowIx.scalarTag.strList(rowIx.raw(0)).size)("")
-      def resetRowLabels(k: Int) {
+      def resetRowLabels(k: Int) = {
         for (i <- k until prevRowLabels.length) prevRowLabels(i) = ""
       }
 
@@ -1776,7 +1784,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       nrows: Int = 10,
       ncols: Int = 10,
       stream: OutputStream = System.out
-  ) {
+  ): Unit = {
     stream.write(stringify(nrows, ncols).getBytes)
   }
 

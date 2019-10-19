@@ -15,7 +15,7 @@
  **/
 package org.saddle.scalar
 
-import org.saddle._
+import org.saddle.{ST, ORD}
 import java.util.NoSuchElementException
 
 /**
@@ -37,7 +37,7 @@ sealed abstract class Scalar[+T] {
   @inline final def flatMap[B](f: T => Scalar[B]): Scalar[B] =
     if (isNA) NA else f(this.get)
 
-  @inline final def foreach[U](f: T => U) {
+  @inline final def foreach[U](f: T => U): Unit = {
     if (!isNA) f(this.get)
   }
 }

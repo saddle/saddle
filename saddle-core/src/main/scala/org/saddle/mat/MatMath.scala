@@ -16,7 +16,7 @@
 package org.saddle.mat
 
 import scala.{specialized => spec}
-import org.saddle._
+import org.saddle.{Mat, ST}
 
 /**
   * Matrix mathematical helper routines.
@@ -82,7 +82,7 @@ object MatMath {
   }
 
   // demeans matrix columns, helper function to cov()
-  private def demean(m: Array[Double], rows: Int, cols: Int) {
+  private def demean(m: Array[Double], rows: Int, cols: Int): Unit = {
     // for each row
     var i = 0
     while (i < rows) {
@@ -161,7 +161,7 @@ object MatMath {
       inC: Int,
       in: Array[S],
       out: Array[S]
-  ) {
+  ) = {
     val XOVER = 60
 
     var r = 0
@@ -198,7 +198,7 @@ object MatMath {
   private[saddle] def squareTranspose[@spec(Int, Long, Double) S: ST](
       sz: Int,
       out: Array[S]
-  ) {
+  ) = {
     val csz = sz
     val rsz = sz
 
