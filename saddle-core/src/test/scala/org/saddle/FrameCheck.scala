@@ -249,6 +249,24 @@ class FrameCheck extends Specification with ScalaCheck {
       }
     }
 
+    "mapRows works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.mapRows((rowIx, row) => row + rowIx)
+          .toRowSeq
+          .map { case (rowIx, row) => (rowIx, row - rowIx) }
+          .toFrame
+          .T must_== f
+      }
+    }
+    "mapCols works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.mapCols((ix, col) => col + ix)
+          .toColSeq
+          .map { case (ix, col) => (ix, col - ix) }
+          .toFrame must_== f
+      }
+    }
+
   }
 
 }

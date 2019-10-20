@@ -588,6 +588,29 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     new Frame(values, rowIx.map(fn), colIx, cachedMat, cachedRows)
 
   /**
+    * Map a function over the rows, resulting in a new Frame
+    *
+    * @param fn The function (RX,Vec[T]) => Vec[Y] with which to map
+    * @tparam Y Result type of mapped value
+    */
+  def mapRows[Y: ST](fn: (RX,Vec[T]) => Vec[Y]): Frame[RX, CX, Y] =
+    toRowSeq.map{ case (rix,row) => 
+      val mappedVec = fn(rix,row.toVec)
+      (rix,Series(row.index, mappedVec))
+    }.toFrame.T
+  /**
+    * Map a function over the columns, resulting in a new Frame
+    *
+    * @param fn The function (CX,Vec[T]) => Vec[Y] with which to map
+    * @tparam Y Result type of mapped value
+    */
+  def mapCols[Y: ST](fn: (CX,Vec[T]) => Vec[Y]): Frame[RX, CX, Y] =
+    toColSeq.map{ case (cix,col) => 
+      val mappedVec = fn(cix,col.toVec)
+      (cix,Series(col.index, mappedVec))
+    }.toFrame
+
+  /**
     * Create a new Frame using the current values but with the new col index. Positions
     * of the values do not change. Length of new index must be equal to number of cols.
     * @param newIx A new Index
