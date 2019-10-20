@@ -19,6 +19,13 @@ import org.specs2.mutable.Specification
 
 class SeriesSpec extends Specification {
 
+  "Factory methods work" in {
+    Series(Vec(1, 2, 3), Index("a", "b", "c")) must_== Series(
+      Index("a", "b", "c"),
+      Vec(1, 2, 3)
+    )
+  }
+
   "Seq[(A,B)] converts to Series" in {
     Seq(1 -> 2).toSeries must_== Series(1 -> 2)
   }

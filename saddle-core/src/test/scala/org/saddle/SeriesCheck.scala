@@ -31,6 +31,12 @@ class SeriesCheck extends Specification with ScalaCheck {
       }
     }
 
+    "mapVec works" in {
+      forAll { (s: Series[Int, Double]) =>
+        s.mapVec(_ * 2).mapVec(_ / 2) must_== s
+      }
+    }
+
     "series equality" in {
       forAll { (s: Series[Int, Double]) =>
         (s must_== Series(s.toVec)) and (s must_== s)

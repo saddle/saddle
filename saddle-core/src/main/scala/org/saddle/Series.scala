@@ -281,6 +281,17 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
     Series(values, index.map(fn))
 
   /**
+    * Map a function over the contents, resulting in a new Series
+    *
+    * @param fn The function T => Y with which to map
+    * @tparam Y Result type of index, ie Index[Y]
+    */
+  def mapVec[@spec(Boolean, Int, Long, Double) Y: ST](
+      fn: Vec[T] => Vec[Y]
+  ): Series[X, Y] =
+    Series(fn(values), index)
+
+  /**
     * Concatenate two Series instances together whose indexes share the same type of
     * element, and where there exists some way to join the values of the Series. For
     * instance, Series[X, Double] `concat` Series[X, Int] will promote Int to Double as
@@ -1031,6 +1042,19 @@ object Series extends BinOpSeries {
   def apply[X: ST: ORD, @spec(Int, Long, Double) T: ST](
       values: Vec[T],
       index: Index[X]
+  ): Series[X, T] =
+    new Series[X, T](values, index)
+
+  /**
+    * Factory method to create a Series from a Vec and an Index
+    * @param index an index of keys
+    * @param values a Vec of values
+    * @tparam X Type of keys
+    * @tparam T Type of values
+    */
+  def apply[X: ST: ORD, @spec(Int, Long, Double) T: ST](
+      index: Index[X],
+      values: Vec[T]
   ): Series[X, T] =
     new Series[X, T](values, index)
 
