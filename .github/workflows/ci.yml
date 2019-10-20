@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: olafurpg/setup-scala@v2
     - name: Compile
-      run: sbt clean coverage test coverageAggregate codacyCoverage
+      run: sbt clean coverage test coverageAggregate
       env:
         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
     - name: Codecov
