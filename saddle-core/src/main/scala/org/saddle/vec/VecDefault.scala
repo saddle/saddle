@@ -832,4 +832,24 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     }
     Vec(ar)
   }
+
+  /**
+    * Returns a Vec with the first `i` elements
+    */
+  def takeLeft(i: Int) = take(array.range(0, math.min(i, length)))
+
+  /**
+    * Returns a Vec with the last `i` elements
+    */
+  def takeRight(i: Int) = take(array.range(math.max(0, length - i), length))
+
+  /**
+    * Returns a Vec with the first `i` elements removed
+    */
+  def dropLeft(i: Int) = take(array.range(math.min(i, length), length))
+
+  /**
+    * Returns a Vec with the last `i` elements removed
+    */
+  def dropRight(i: Int) = take(array.range(0, math.max(0, length - i)))
 }

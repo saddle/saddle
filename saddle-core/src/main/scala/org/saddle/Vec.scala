@@ -251,6 +251,26 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   def take(locs: Array[Int]): Vec[T]
 
   /**
+    * Returns a Vec with the first `i` elements
+    */
+  def takeLeft(i: Int): Vec[T]
+
+  /**
+    * Returns a Vec with the last `i` elements
+    */
+  def takeRight(i: Int): Vec[T]
+
+  /**
+    * Returns a Vec with the first `i` elements removed
+    */
+  def dropLeft(i: Int): Vec[T]
+
+  /**
+    * Returns a Vec with the last `i` elements removed
+    */
+  def dropRight(i: Int): Vec[T]
+
+  /**
     * The complement of the take operation; slice out
     * elements NOT specified in list.
     *

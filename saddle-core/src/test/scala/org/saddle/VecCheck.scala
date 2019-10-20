@@ -29,6 +29,27 @@ class VecCheck extends Specification with ScalaCheck {
   "Double Vec Tests" in {
     implicit val vec = Arbitrary(VecArbitraries.vecDoubleWithNA)
 
+    "takeLeft" in {
+      forAll { (v: Vec[Double]) =>
+        v.takeLeft(5) must_== v.toSeq.take(5).toVec
+      }
+    }
+    "takeRight" in {
+      forAll { (v: Vec[Double]) =>
+        v.takeRight(5) must_== v.toSeq.takeRight(5).toVec
+      }
+    }
+    "dropLeft" in {
+      forAll { (v: Vec[Double]) =>
+        v.dropLeft(5) must_== v.toSeq.drop(5).toVec
+      }
+    }
+    "dropRight" in {
+      forAll { (v: Vec[Double]) =>
+        v.dropRight(5) must_== v.toSeq.dropRight(5).toVec
+      }
+    }
+
     "vectors equality" in {
       forAll { (v: Vec[Double]) =>
         (v must_== Vec(v.contents)) and (v must_== v)
