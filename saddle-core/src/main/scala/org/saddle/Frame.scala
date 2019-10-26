@@ -966,12 +966,18 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   // concatenate two frames together (vertically), must have same number of columns
 
   /**
-    * Concatenate two Frame instances together (vertically) whose indexes share the same type
+    * Concatenate the Frame instances together (vertically, i.e. concatenate as lists of rows)
+    * whose indexes share the same type
     * of elements, and where there exists some way to join the values of the Frames. For
     * instance, Frame[X, Y, Double] `concat` Frame[X, Y, Int] will promote Int to Double as
     * a result of the implicit existence of a Promoter[Double, Int, Double] instance.
     * The resulting row index will simply be the concatenation of the input row indexes, and
     * the column index will be the joint index (with join type specified as argument).
+    * 
+    * |A1 A2|  concat |B1 B2|  =  |A1 A2|
+    * |A3 A4|         |B3 B4|     |A3 A4|
+    *                             |B1 B2|
+    *                             |B3 B4|
     *
     * @param other  Frame[RX, CX, U] to concat
     * @param pro Implicit evidence of Promoter
@@ -1500,12 +1506,38 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   ): Frame[RX, SX, U] = T.transform(f).T
 
   /**
-    * See concat; operates row-wise
+    * See concat; operates row-wise.
+    * Concetanates two Frames by concatenating their lists of columns
+    * |A1 A2| rconcat |B1 B2|  =  |A1 A2 B1 B2|
+    * |A3 A4|         |B3 B4|     |A3 A4 B3 B4|
     */
   def rconcat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
       implicit wd1: Promoter[T, U, V],
       md: ST[V]
   ): Frame[RX, CX, V] = T.concat(other.T, how).T
+
+  /**
+    * Same as rconcat. Concatenates two Frames by concatenating their lists of columns
+    * |A1 A2| rconcat |B1 B2|  =  |A1 A2 B1 B2|
+    * |A3 A4|         |B3 B4|     |A3 A4 B3 B4|
+    */
+  def cbind[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
+      implicit wd1: Promoter[T, U, V],
+      md: ST[V]
+  ): Frame[RX, CX, V] = T.concat(other.T, how).T
+
+  /**
+    * Same as concat. Concatenates two Frames by concatenating their lists of rows
+    * |A1 A2|  concat |B1 B2|  =  |A1 A2|
+    * |A3 A4|         |B3 B4|     |A3 A4|
+    *                             |B1 B2|
+    *                             |B3 B4| 
+    */
+  def rbind[U, V](
+      other: Frame[RX, CX, U],
+      how: JoinType = OuterJoin
+  )(implicit pro: Promoter[T, U, V], md: ST[V]): Frame[RX, CX, V] =
+    this.concat(other, how)
 
   /**
     * See where; operates row-wise

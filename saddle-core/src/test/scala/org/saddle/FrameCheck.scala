@@ -266,6 +266,28 @@ class FrameCheck extends Specification with ScalaCheck {
           .toFrame must_== f
       }
     }
+    "concat works" in {
+      forAll { (f1: Frame[Int, Int, Double], f2: Frame[Int, Int, Double]) =>
+        (f1.concat(f2) must_== Frame(f1.toRowSeq ++ f2.toRowSeq: _*).T) and
+          (f1.concat(f2).numRows must_== f1.numRows + f2.numRows)
+      }
+    }
+    "rbind works" in {
+      forAll { (f1: Frame[Int, Int, Double], f2: Frame[Int, Int, Double]) =>
+        f1.concat(f2) must_== f1.rbind(f2)
+      }
+    }
+    "rconcat works" in {
+      forAll { (f1: Frame[Int, Int, Double], f2: Frame[Int, Int, Double]) =>
+        (f1.rconcat(f2) must_== Frame(f1.toColSeq ++ f2.toColSeq: _*)) and
+          (f1.rconcat(f2).numCols == (f1.numCols + f2.numCols))
+      }
+    }
+    "cbind works" in {
+      forAll { (f1: Frame[Int, Int, Double], f2: Frame[Int, Int, Double]) =>
+        f1.rconcat(f2) must_== f1.cbind(f2)
+      }
+    }
 
   }
 
