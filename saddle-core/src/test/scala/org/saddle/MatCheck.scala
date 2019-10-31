@@ -330,14 +330,19 @@ class MatCheck extends Specification with ScalaCheck {
         (m.numRows > 0 && m.numCols > 0) ==> {
           val cl = m.copy
           m.mutateSetLowerTriangle(3.0)
-          if (m.numRows == 1 || m.numCols == 1) cl must_== m
-          else
+          val lower =
             (for {
               i <- 0 until math.min(m.numRows, m.numCols)
               j <- 0 until i
             } yield m.raw(i, j)).toSeq.distinct must_== Seq.fill(
               if (math.min(m.numRows, m.numCols) < 2) 0 else 1
             )(3d)
+          val upper = for {
+            i <- 0 until math.min(m.numRows, m.numCols)
+            j <- i until math.min(m.numRows, m.numCols)
+          } yield m.raw(i, j) == cl.raw(i, j)
+
+          lower and upper.forall(identity)
         }
       }
     }
@@ -346,14 +351,18 @@ class MatCheck extends Specification with ScalaCheck {
         (m.numRows > 0 && m.numCols > 0) ==> {
           val cl = m.copy
           m.mutateSetUpperTriangle(3.0)
-          if (m.numRows == 1 || m.numCols == 1) cl must_== m
-          else
+          val upper =
             (for {
-              i <- 1 until math.min(m.numRows, m.numCols)
-              j <- i until math.min(m.numRows, m.numCols)
+              i <- 0 until math.min(m.numRows, m.numCols)
+              j <- (i + 1) until math.min(m.numRows, m.numCols)
             } yield m.raw(i, j)).toSeq.distinct must_== Seq.fill(
               if (math.min(m.numRows, m.numCols) < 2) 0 else 1
             )(3d)
+          val lower = for {
+            i <- 0 until math.min(m.numRows, m.numCols)
+            j <- 0 to i
+          } yield m.raw(i, j) == cl.raw(i, j)
+          upper and lower.forall(identity)
         }
       }
     }

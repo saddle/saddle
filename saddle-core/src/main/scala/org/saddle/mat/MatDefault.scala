@@ -466,11 +466,10 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
     }
   }
   def mutateSetLowerTriangle(v: T): Unit = {
-    val n = math.min(numCols, numRows)
     var i = 0
     var j = 0
-    while (i < n) {
-      while (j < i) {
+    while (i < numRows) {
+      while (j < math.min(i, numCols)) {
         values(i * numCols + j) = v
         j += 1
       }
@@ -479,16 +478,15 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
     }
   }
   def mutateSetUpperTriangle(v: T): Unit = {
-    val n = math.min(numCols, numRows)
     var i = 0
     var j = i + 1
-    while (i < n) {
-      while (j < n) {
+    while (i < numRows) {
+      while (j < numCols) {
         values(i * numCols + j) = v
         j += 1
       }
-      j = i + 1
       i += 1
+      j = i + 1
     }
   }
 
