@@ -459,6 +459,24 @@ class CholeskySuite extends FunSuite {
   }
 
 }
+class SolvePDSuite extends FunSuite {
+  test("2x2") {
+    val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
+      .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
+    val chol = a.choleskyLower.get
+    val rhs = Vec(1d, 2d)
+    assert(
+      chol
+        .solvePDTransposed(Mat(rhs).T)
+        .get
+        .T
+        .toVec
+        .roundTo(2) == (a.invertPD.get mv rhs).roundTo(2)
+    )
+
+  }
+
+}
 
 class DeterminantPDSuite extends FunSuite {
   test("2x2") {

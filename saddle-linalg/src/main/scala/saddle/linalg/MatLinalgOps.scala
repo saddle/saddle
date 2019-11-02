@@ -268,4 +268,20 @@ trait MatLinalgOps {
     Mat(self.numRows, self.numCols, ar)
   }
 
+  /** Solves A x X = B for X when A is PD and self is the Cholesky decomposition
+    * The matrix this is called on must be the lower Cholesky factor
+    * @param rhsT matrix B'
+    * @return t(X)
+    */
+  def solvePDTransposed(rhsT: Mat[Double]) = {
+    // A X = B
+    // L L' X = B
+    // L' X = Y  <- 2nd solve this for X
+    // L Y = B <- 1st solve this for Y
+    self
+      .solveLowerTriangularForTransposed(rhsT)
+      .flatMap(self.T.solveUpperTriangularForTransposed)
+
+  }
+
 }
