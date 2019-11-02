@@ -220,23 +220,4 @@ object CsvParser {
     result.toArray
   }
 
-  def parseInt(s: String) =
-    try {
-      s.toInt
-    } catch { case _: NumberFormatException => Int.MinValue }
-
-  def parseLong(s: String) =
-    try {
-      s.toLong
-    } catch { case _: NumberFormatException => Long.MinValue }
-
-  def parseFloat(s: String) =
-    try {
-      s.toFloat
-    } catch { case _: NumberFormatException => Float.NaN }
-
-  def parseDouble(s: String) =
-    try {
-      s.toDouble
-    } catch { case _: NumberFormatException => Double.NaN }
 }

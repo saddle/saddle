@@ -29,6 +29,11 @@ object ScalarTagDouble extends ScalarTag[Double] {
   def isMissing(v: Double): Boolean = (v != v)
   def notMissing(v: Double): Boolean = (v == v)
 
+  override def parse(s: String) =
+    try {
+      s.toDouble
+    } catch { case _: NumberFormatException => Double.NaN }
+
   // note, consider N/A's equal
   def compare(x: Double, y: Double)(implicit ev: ORD[Double]) =
     if (x == y) 0 else if (x > y) 1 else if (x < y) -1 else 0

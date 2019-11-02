@@ -17,7 +17,7 @@ package org.saddle.csv
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import org.saddle.{na, Index, Vec, Frame}
+import org.saddle.{na, Index, Vec, Frame, ST}
 
 class CsvCheck extends Specification with ScalaCheck {
   "csv string parsing and writing works" in {
@@ -73,7 +73,7 @@ class CsvCheck extends Specification with ScalaCheck {
       .parse(src)
       .withColIndex(0)
       .resetRowIndex
-      .mapValues(CsvParser.parseInt)
+      .mapValues(implicitly[ST[Int]].parse)
     val expect = Frame(Vec(1, 4, 7), Vec(2, 5, 8), Vec(3, na.to[Int], 9))
       .setColIndex(Index("a", "b,c,d", "e"))
 

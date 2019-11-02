@@ -56,5 +56,7 @@ object ScalarTagBool extends ScalarTag[Boolean] {
   def concat(arrs: IndexedSeq[Vec[Boolean]]): Vec[Boolean] =
     Vec(array.flatten(arrs.map(_.toArray)))
 
+  def parse(s: String) = s.toBoolean
+
   override def toString = "ScalarTagBool"
 }

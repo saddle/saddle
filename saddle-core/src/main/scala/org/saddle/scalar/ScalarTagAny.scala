@@ -26,6 +26,14 @@ class ScalarTagAny[T: CLM] extends ScalarTag[T] {
   def isMissing(v: T): Boolean = v == null
   def notMissing(v: T): Boolean = v != null
 
+  private[this] val string = implicitly[CLM[T]] == implicitly[CLM[String]]
+  def parse(s: String): T =
+    if (string) s.asInstanceOf[T]
+    else
+      throw new RuntimeException(
+        "parsing arbitrary types during runtime is not implemented"
+      )
+
   def compare(x: T, y: T)(implicit ev: ORD[T]): Int =
     if (x == null && y == null) 0
     else if (x == null) -1

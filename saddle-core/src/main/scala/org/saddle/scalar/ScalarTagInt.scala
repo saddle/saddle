@@ -29,6 +29,11 @@ object ScalarTagInt extends ScalarTag[Int] {
   def isMissing(v: Int): Boolean = v == Int.MinValue
   def notMissing(v: Int): Boolean = v != Int.MinValue
 
+  override def parse(s: String) =
+    try {
+      s.toInt
+    } catch { case _: NumberFormatException => Int.MinValue }
+
   def compare(x: Int, y: Int)(implicit ev: ORD[Int]) =
     if (x == y) 0 else if (x > y) 1 else -1
 

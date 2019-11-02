@@ -22,6 +22,7 @@ import org.saddle.array.Sorter
   * Char ScalarTag
   */
 object ScalarTagChar extends ScalarTagAny[Char] {
+  override def parse(s: String) = s.head
   override def makeSorter(implicit ord: ORD[Char]): Sorter[Char] =
     Sorter.charSorter
 }

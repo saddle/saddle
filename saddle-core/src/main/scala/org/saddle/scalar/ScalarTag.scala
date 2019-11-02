@@ -38,6 +38,8 @@ trait ScalarTag[@spec(Boolean, Int, Long, Float, Double) T]
   def isMissing(t: T): Boolean
   def notMissing(t: T): Boolean
 
+  def parse(s: String): T
+
   def isTuple: Boolean = false
   def isDouble: Boolean = false
 
