@@ -551,15 +551,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     new Frame(values, newIx, colIx, cachedMat, cachedRows)
 
   /**
-    * Create a new Frame using the current values but with the new row index. Positions
-    * of the values do not change. Length of new index must be equal to number of rows.
-    * @param newIx A new Index
-    * @tparam Y Type of elements of new Index
-    */
-  def setRowIndex[Y: ST: ORD](newIx: Array[Y]): Frame[Y, CX, T] =
-    setRowIndex(Index(newIx))
-
-  /**
     * Create a new Frame using the current values but with the new row index specified
     * by the column at a particular offset, and with that column removed from the frame
     * data body.

@@ -44,7 +44,7 @@ class FrameGrouper[Z: ST: ORD, X: ST: ORD, Y: ST: ORD, T: ST](
 
   def combine[U: ST](fn: (Z, Vec[T]) => U): Frame[Z, Y, U] =
     Frame(frame.values.map(SeriesGrouper.combine(ix, keys, _, fn)): _*)
-      .setRowIndex(keys)
+      .setRowIndex(Index(keys))
       .setColIndex(frame.colIx)
 
   // less powerful combine, ignores group key
