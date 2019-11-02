@@ -256,4 +256,16 @@ trait MatLinalgOps {
   ): Option[Mat[Double]] =
     op(self, rightHandSide)
 
+  def scalarOp(multiply: Double = 1d, add: Double = 0d) = {
+    val n = self.length
+    val ar = Array.ofDim[Double](n)
+    val src = self.toArray
+    var i = 0
+    while (i < n) {
+      ar(i) = src(i) * multiply + add
+      i += 1
+    }
+    Mat(self.numRows, self.numCols, ar)
+  }
+
 }

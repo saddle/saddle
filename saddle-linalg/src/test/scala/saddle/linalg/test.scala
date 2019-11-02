@@ -440,6 +440,13 @@ class RowColSums extends FunSuite {
   }
 
 }
+class ScalarSuite extends FunSuite {
+  test("2x3") {
+    val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
+    assert(x.scalarOp(multiply = 2d, add = 1d) == x * 2 + 1)
+  }
+
+}
 
 class CholeskySuite extends FunSuite {
   test("2x2") {
