@@ -130,13 +130,13 @@ import org.saddle.mat.MatCols
   * @tparam CX The type of column keys
   * @tparam T The type of entries in the frame
   */
-class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
+class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T](
     private[saddle] val values: MatCols[T],
     val rowIx: Index[RX],
     val colIx: Index[CX],
-    private var cachedMat: Option[Mat[T]],
-    private var cachedRows: Option[MatCols[T]]
-) extends NumericOps[Frame[RX, CX, T]] {
+    private var cachedMat: Option[Mat[T]]
+)(implicit st: ST[T])
+    extends NumericOps[Frame[RX, CX, T]] {
 
   require(values.numRows == rowIx.length, "Row index length is incorrect")
   require(values.numCols == colIx.length, "Col index length is incorrect")
@@ -159,7 +159,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   /**
     * The transpose of the frame (swapping the axes)
     */
-  def T: Frame[CX, RX, T] = Frame(rows(), colIx, rowIx)
+  def T: Frame[CX, RX, T] =
+    Frame(MatCols(toMat.rows(): _*), colIx, rowIx)
 
   // ---------------------------------------------------------------
   // extract columns by associated key(s); ignore non-existent keys
@@ -326,7 +327,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * Access frame row at a particular integer offset
     * @param loc integer offset
     */
-  def rowAt(loc: Int): Series[CX, T] = Series(rows()(loc), colIx)
+  def rowAt(loc: Int): Series[CX, T] = Series(values.rowAt(loc), colIx)
 
   /**
     * Access frame rows at a particular integer offsets
@@ -547,7 +548,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @tparam Y Type of elements of new Index
     */
   def setRowIndex[Y: ST: ORD](newIx: Index[Y]): Frame[Y, CX, T] =
-    new Frame(values, newIx, colIx, cachedMat, cachedRows)
+    new Frame(values, newIx, colIx, cachedMat)
 
   /**
     * Create a new Frame using the current values but with the new row index specified
@@ -575,7 +576,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @tparam Y Result type of index, ie Index[Y]
     */
   def mapRowIndex[Y: ST: ORD](fn: RX => Y): Frame[Y, CX, T] =
-    new Frame(values, rowIx.map(fn), colIx, cachedMat, cachedRows)
+    new Frame(values, rowIx.map(fn), colIx, cachedMat)
 
   /**
     * Map a function over the rows, resulting in a new Frame
@@ -613,7 +614,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @tparam Y Type of elements of new Index
     */
   def setColIndex[Y: ST: ORD](newIx: Index[Y]): Frame[RX, Y, T] =
-    new Frame(values, rowIx, newIx, cachedMat, cachedRows)
+    new Frame(values, rowIx, newIx, cachedMat)
 
   /**
     * Create a new Frame using the current values but with the new col index specified
@@ -641,21 +642,21 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @tparam Y Result type of index, ie Index[Y]
     */
   def mapColIndex[Y: ST: ORD](fn: CX => Y): Frame[RX, Y, T] =
-    new Frame(values, rowIx, colIx.map(fn), cachedMat, cachedRows)
+    new Frame(values, rowIx, colIx.map(fn), cachedMat)
 
   /**
     * Create a new Frame whose values are the same, but whose row index has been changed
     * to the bound [0, numRows - 1), as in an array.
     */
   def resetRowIndex: Frame[Int, CX, T] =
-    new Frame(values, IndexIntRange(numRows), colIx, cachedMat, cachedRows)
+    new Frame(values, IndexIntRange(numRows), colIx, cachedMat)
 
   /**
     * Create a new Frame whose values are the same, but whose col index has been changed
     * to the bound [0, numCols - 1), as in an array.
     */
   def resetColIndex: Frame[RX, Int, T] =
-    new Frame(values, rowIx, IndexIntRange(numCols), cachedMat, cachedRows)
+    new Frame(values, rowIx, IndexIntRange(numCols), cachedMat)
 
   // ----------------------------------------
   // some helpful ops
@@ -979,17 +980,15 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       how: JoinType = OuterJoin
   ): Frame[RX, CX, T] = {
 
-    val ixc = colIx.join(other.colIx, how)
+    val reindexer = colIx.join(other.colIx, how)
 
-    val lft = ixc.lTake.map(x => values.take(x)) getOrElse values
-    val rgt = ixc.rTake.map(x => other.values.take(x)) getOrElse other.values
+    val left = reindexer.lTake.map(x => values.take(x)) getOrElse values
+    val right = reindexer.rTake.map(x => other.values.take(x)) getOrElse other.values
 
-    val mfn = (v: Vec[T], u: Vec[T]) => v concat u
-    val zpp = lft zip rgt
-    val dat = zpp.map { case (top, bot) => mfn(top, bot) }
-    val idx = rowIx concat other.rowIx
+    val data = (left zip right).map { case (top, bot) => top concat bot }
+    val rowIdx = rowIx concat other.rowIx
 
-    Frame(dat, idx, ixc.index)
+    Frame(data, rowIdx, reindexer.index)
   }
 
   /**
@@ -1092,13 +1091,21 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   // joining
 
   /**
-    * Perform a join with another Series[RX, T] according to the row index. The `how`
-    * argument dictates how the join is to be performed:
-    *
-    *   - Left [[org.saddle.index.LeftJoin]]
-    *   - Right [[org.saddle.index.RightJoin]]
-    *   - Inner [[org.saddle.index.InnerJoin]]
-    *   - Outer [[org.saddle.index.OuterJoin]]
+    * Same as `addCol`, but preserve the column index, adding the specified index value,
+    * `newColIx` as an index for the `other` Series.
+    */
+  def addCol(
+      other: Series[RX, T],
+      newColIx: CX,
+      how: JoinType = OuterJoin
+  ): Frame[RX, CX, T] = {
+    val resultingFrame = addCol(other, how)
+    val newColIndex = colIx.concat(Index(newColIx))
+    resultingFrame.setColIndex(newColIndex)
+  }
+
+  /**
+    * Add a new column. Resets column index
     *
     * The result is a Frame whose row index is the result of the join, and whose column
     * index has been reset to [0, numcols], and whose values are sourced from the original
@@ -1107,9 +1114,9 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @param other Series to join with
     * @param how How to perform the join
     */
-  def joinS(
+  def addCol(
       other: Series[RX, T],
-      how: JoinType = LeftJoin
+      how: JoinType
   ): Frame[RX, Int, T] = {
     val indexer = rowIx.join(other.index, how)
     val lft = indexer.lTake.map { loc =>
@@ -1119,138 +1126,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       other.values.take(loc)
     } getOrElse other.values
     Frame(lft :+ rgt, indexer.index, IndexIntRange(colIx.length + 1))
-  }
-
-  /**
-    * Same as `joinS`, but preserve the column index, adding the specified index value,
-    * `newColIx` as an index for the `other` Series.
-    */
-  def joinSPreserveColIx(
-      other: Series[RX, T],
-      how: JoinType = LeftJoin,
-      newColIx: CX
-  ): Frame[RX, CX, T] = {
-    val resultingFrame = joinS(other, how)
-    val newColIndex = colIx.concat(Index(newColIx))
-    resultingFrame.setColIndex(newColIndex)
-  }
-
-  def addCol(
-      other: Series[RX, T],
-      newColIx: CX,
-      how: JoinType = LeftJoin
-  ): Frame[RX, CX, T] = joinSPreserveColIx(other, how, newColIx)
-
-  /**
-    * Perform a join with another Frame[RX, CX, T] according to the row index. The `how`
-    * argument dictates how the join is to be performed:
-    *
-    *   - Left [[org.saddle.index.LeftJoin]]
-    *   - Right [[org.saddle.index.RightJoin]]
-    *   - Inner [[org.saddle.index.InnerJoin]]
-    *   - Outer [[org.saddle.index.OuterJoin]]
-    *
-    * The result is a Frame whose row index is the result of the join, and whose column
-    * index has been reset to [0, M + N), where M is the number of columns in the left
-    * frame and N in the right, and whose values are sourced from the original Frames.
-    *
-    * @param other Frame to join with
-    * @param how How to perform the join
-    */
-  def join(
-      other: Frame[RX, _, T],
-      how: JoinType = LeftJoin
-  ): Frame[RX, Int, T] = {
-    val indexer = rowIx.join(other.rowIx, how)
-    val lft = indexer.lTake.map { loc =>
-      values.map(_.take(loc))
-    } getOrElse values
-    val rgt = indexer.rTake.map { loc =>
-      other.values.map(_.take(loc))
-    } getOrElse other.values
-    Frame(
-      lft ++ rgt,
-      indexer.index,
-      IndexIntRange(colIx.length + other.colIx.length)
-    )
-  }
-
-  /**
-    *  Same as `join`, but preserves column index
-    */
-  def joinPreserveColIx(
-      other: Frame[RX, CX, T],
-      how: JoinType = LeftJoin
-  ): Frame[RX, CX, T] = {
-    val resultingFrame = join(other, how)
-    val newColIndex = colIx.concat(other.colIx)
-    resultingFrame.setColIndex(newColIndex)
-  }
-
-  /**
-    * Same as joinS, but the values of Series to join with may be of type Any, so that the
-    * resulting Frame may be heterogeneous in its column types.
-    */
-  def joinAnyS(
-      other: Series[RX, _],
-      how: JoinType = LeftJoin
-  ): Frame[RX, Int, Any] = {
-    val indexer = rowIx.join(other.index, how)
-    val lft = indexer.lTake.map { loc =>
-      values.map(_.take(loc))
-    } getOrElse values
-    val rgt = indexer.rTake.map { loc =>
-      other.values.take(loc)
-    } getOrElse other.values
-    Panel(lft :+ rgt, indexer.index, IndexIntRange(colIx.length + 1))
-  }
-
-  /**
-    * Same as `joinAnyS`, but preserve the column index, adding the specified index value,
-    * `newColIx` as an index for the `other` Series.
-    */
-  def joinAnySPreserveColIx(
-      other: Series[RX, _],
-      how: JoinType = LeftJoin,
-      newColIx: CX
-  ): Frame[RX, CX, Any] = {
-    val resultingFrame = joinAnyS(other, how)
-    val newColIndex = colIx.concat(Index(newColIx))
-    resultingFrame.setColIndex(newColIndex)
-  }
-
-  /**
-    * Same as join, but the values of Frame to join with may be of type Any, so that the
-    * resulting Frame may be heterogeneous in its column types.
-    */
-  def joinAny(
-      other: Frame[RX, _, _],
-      how: JoinType = LeftJoin
-  ): Frame[RX, Int, Any] = {
-    val indexer = rowIx.join(other.rowIx, how)
-    val lft = indexer.lTake.map { loc =>
-      values.map(_.take(loc))
-    } getOrElse values
-    val rgt = indexer.rTake.map { loc =>
-      other.values.map(_.take(loc))
-    } getOrElse other.values
-    Panel(
-      lft ++ rgt,
-      indexer.index,
-      IndexIntRange(colIx.length + other.colIx.length)
-    )
-  }
-
-  /**
-    *  Same as `joinAny`, but preserves column index
-    */
-  def joinAnyPreserveColIx(
-      other: Frame[RX, CX, _],
-      how: JoinType = LeftJoin
-  ): Frame[RX, CX, Any] = {
-    val resultingFrame = joinAny(other, how)
-    val newColIndex = colIx.concat(other.colIx)
-    resultingFrame.setColIndex(newColIndex)
   }
 
   /**
@@ -1455,7 +1330,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * information)
     */
   def toMat: Mat[T] = {
-    val st = implicitly[ST[T]]
     synchronized {
       if (cachedMat.isEmpty) {
         val m = Mat(values.numCols, values.numRows, st.concat(values)).T
@@ -1471,29 +1345,52 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   /**
     * See mask; operates row-wise
     */
-  def rmask(f: T => Boolean): Frame[RX, CX, T] = T.mask(f).T
-
-  /**
-    * See mask; operates row-wise
-    */
-  def rmask(b: Vec[Boolean]): Frame[RX, CX, T] = T.mask(b).T
+  def rmask(b: Vec[Boolean]): Frame[RX, CX, T] = {
+    val missing = {
+      val arr = array.empty[T](numRows)
+      array.fill(arr, st.missing)
+      Vec(arr)
+    }
+    Frame(values.zipWithIndex.map {
+      case (v, idx) =>
+        if (b.raw(idx)) missing else v
+    }, rowIx, colIx)
+  }
 
   /**
     * See mapVec; operates row-wise
     */
-  def rmapVec[U: ST](f: Vec[T] => Vec[U]) = T.mapVec(f).T
+  def rmapVec[U: ST](f: Vec[T] => Vec[U]): Frame[RX, CX, U] = {
+    val vecs = 0 until numRows map { i =>
+      f(values.rowAt(i))
+    }
+
+    Frame(vecs, colIx, rowIx).T
+  }
 
   /**
     * See reduce; operates row-wise
     */
-  def rreduce[U: ST](f: Series[CX, T] => U): Series[RX, U] = T.reduce(f)
+  def rreduce[U: ST](f: Series[CX, T] => U): Series[RX, U] = {
+    val vec = 0 until numRows map { i =>
+      f(Series(values.rowAt(i), colIx))
+    } toVec
+
+    Series(vec, rowIx)
+  }
 
   /**
     * See transform; operates row-wise
     */
   def rtransform[U: ST, SX: ST: ORD](
       f: Series[CX, T] => Series[SX, U]
-  ): Frame[RX, SX, U] = T.transform(f).T
+  ): Frame[RX, SX, U] = {
+    val transformed = 0 until numRows map { i =>
+      f(Series(values.rowAt(i), colIx))
+    }
+
+    Frame(transformed, rowIx).T
+  }
 
   /**
     * See concat; operates row-wise.
@@ -1504,7 +1401,17 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   def rconcat(
       other: Frame[RX, CX, T],
       how: JoinType = OuterJoin
-  ): Frame[RX, CX, T] = T.concat(other.T, how).T
+  ): Frame[RX, CX, T] = {
+    val reindexer = rowIx.join(other.rowIx, how)
+
+    val left = reindexer.lTake.map(x => values.takeRows(x)) getOrElse values
+    val right = reindexer.rTake.map(x => other.values.takeRows(x)) getOrElse other.values
+
+    val data = left ++ right
+    val colIdx = colIx concat other.colIx
+
+    Frame(data, reindexer.index, colIdx)
+  }
 
   /**
     * Same as rconcat. Concatenates two Frames by concatenating their lists of columns
@@ -1514,7 +1421,7 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   def cbind(
       other: Frame[RX, CX, T],
       how: JoinType = OuterJoin
-  ): Frame[RX, CX, T] = T.concat(other.T, how).T
+  ): Frame[RX, CX, T] = rconcat(other, how)
 
   /**
     * Same as concat. Concatenates two Frames by concatenating their lists of rows
@@ -1544,7 +1451,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
       new MatCols(values.map(v => v.where(predv))),
       Index(rowIx.toVec.where(predv)),
       colIx,
-      None,
       None
     )
   }
@@ -1570,76 +1476,35 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
   def rfilterAt(pred: Int => Boolean) = rwhere(vec.range(0, numRows).map(pred))
 
   /**
-    * See joinS; operates row-wise
+    * See addCol, operates row-wise.
     */
-  def rjoinS(
-      other: Series[CX, T],
-      how: JoinType = LeftJoin
-  ): Frame[Int, CX, T] = T.joinS(other, how).T
-
-  /**
-    * See joinSPreserveColIx; operates row-wise
-    */
-  def rjoinSPreserveRowIx(
-      other: Series[CX, T],
-      how: JoinType = LeftJoin,
-      newRowIx: RX
-  ): Frame[RX, CX, T] = T.joinSPreserveColIx(other, how, newRowIx).T
-
   def addRow(
       other: Series[CX, T],
       newRowIx: RX,
-      how: JoinType = LeftJoin
-  ): Frame[RX, CX, T] = rjoinSPreserveRowIx(other, how, newRowIx)
+      how: JoinType = OuterJoin
+  ): Frame[RX, CX, T] = {
+    val resultingFrame = addRow(other, how)
+    val newRowIndex = rowIx.concat(Index(newRowIx))
+    resultingFrame.setRowIndex(newRowIndex)
+  }
 
   /**
-    * See join; operates row-wise
+    * See addRow; operates row-wise.
     */
-  def rjoin(
-      other: Frame[_, CX, T],
-      how: JoinType = LeftJoin
-  ): Frame[Int, CX, T] = T.join(other.T, how).T
+  def addRow(
+      other: Series[CX, T],
+      how: JoinType
+  ): Frame[Int, CX, T] = {
+    val indexer = colIx.join(other.index, how)
 
-  /**
-    * See joinPreserveColIx; operates row-wise
-    */
-  def rjoinPreserveRowIx(
-      other: Frame[RX, CX, T],
-      how: JoinType = LeftJoin
-  ): Frame[RX, CX, T] = T.joinPreserveColIx(other.T, how).T
-
-  /**
-    * See joinAnyS; operates row-wise
-    */
-  def rjoinAnyS(
-      other: Series[CX, _],
-      how: JoinType = LeftJoin
-  ): Frame[Int, CX, Any] = T.joinAnyS(other, how).T
-
-  /**
-    * See joinAnySPreserveColIx; operates row-wise
-    */
-  def rjoinAnySPreserveRowIx(
-      other: Series[CX, _],
-      how: JoinType = LeftJoin,
-      newRowIx: RX
-  ): Frame[RX, CX, Any] = T.joinAnySPreserveColIx(other, how, newRowIx).T
-
-  /**
-    * See joinAny; operates row-wise
-    */
-  def rjoinAny(
-      other: Frame[_, CX, _],
-      how: JoinType = LeftJoin
-  ): Frame[Int, CX, Any] = T.joinAny(other.T, how).T
-
-  /**
-    * See joinAnyPreserveColIx; operates row-wise
-    */
-  def rjoinAnyPreserveRowIx(
-      other: Frame[RX, CX, _],
-      how: JoinType = LeftJoin
-  ): Frame[RX, CX, Any] = T.joinAnyPreserveColIx(other.T, how).T
+    val rgt = indexer.rTake.map { loc =>
+      other.values.take(loc)
+    } getOrElse other.values
+    val lft = indexer.lTake.map { loc =>
+      values.take(loc)
+    } getOrElse values
+    Frame(lft.appendRow(rgt), IndexIntRange(rowIx.length + 1), indexer.index)
+  }
 
   /**
     * See dropNA; operates row-wise
@@ -1683,13 +1548,6 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
 
   // ------------------------------------------------------
   // internal contiguous caching of row data for efficiency
-
-  private def rows(): MatCols[T] = {
-    if (cachedRows.isEmpty) {
-      cachedRows = Some(MatCols(toMat.rows(): _*))
-    }
-    cachedRows.get
-  }
 
   // --------------------------------------
   // pretty-printing
@@ -1900,7 +1758,6 @@ object Frame extends BinOpFrame {
       MatCols.empty[T],
       Index.empty[RX],
       Index.empty[CX],
-      None,
       None
     )
 
@@ -1934,7 +1791,7 @@ object Frame extends BinOpFrame {
   ): Frame[RX, CX, T] =
     if (values.isEmpty) empty[RX, CX, T]
     else
-      new Frame[RX, CX, T](MatCols[T](values: _*), rowIx, colIx, None, None)
+      new Frame[RX, CX, T](MatCols[T](values: _*), rowIx, colIx, None)
 
   /**
     * Factory method to create a Frame from a sequence of Vec objects
@@ -1990,7 +1847,7 @@ object Frame extends BinOpFrame {
           asIdxSeq(0).index,
           Index(Array(0))
         )
-        val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
+        val temp = asIdxSeq.tail.foldLeft(init)(_.addCol(_, OuterJoin))
         Frame(temp.values, temp.rowIx, IndexIntRange(temp.numCols))
       }
     }
@@ -2011,7 +1868,7 @@ object Frame extends BinOpFrame {
       case 1 => Frame(asIdxSeq.map(_.values), asIdxSeq(0).index, colIx)
       case _ => {
         val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(0))
-        val temp = values.tail.foldLeft(init)(_.joinS(_, OuterJoin))
+        val temp = values.tail.foldLeft(init)(_.addCol(_, OuterJoin))
         Frame(temp.values, temp.rowIx, colIx)
       }
     }
@@ -2034,7 +1891,7 @@ object Frame extends BinOpFrame {
       case _ => {
         val init =
           Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
-        val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
+        val temp = asIdxSeq.tail.foldLeft(init)(_.addCol(_, OuterJoin))
         Frame(temp.values, temp.rowIx, idx)
       }
     }
@@ -2068,8 +1925,7 @@ object Frame extends BinOpFrame {
         MatCols(mat.cols(): _*),
         rowIx,
         colIx,
-        Some(mat),
-        None
+        Some(mat)
       )
     }
 }
@@ -2090,7 +1946,6 @@ object Panel {
       MatCols.empty,
       Index.empty[RX],
       Index.empty[CX],
-      None,
       None
     )
 
@@ -2177,7 +2032,7 @@ object Panel {
       case _ => {
         val init =
           Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
-        val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
+        val temp = asIdxSeq.tail.foldLeft(init)(_.addCol(_, OuterJoin))
         Frame(temp.values, temp.rowIx, IndexIntRange(temp.numCols))
       }
     }
@@ -2198,7 +2053,7 @@ object Panel {
       case 1 => Frame(asIdxSeq.map(_.values), asIdxSeq(0).index, colIx)
       case _ => {
         val init = Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(0))
-        val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
+        val temp = asIdxSeq.tail.foldLeft(init)(_.addCol(_, OuterJoin))
         Frame(temp.values, temp.rowIx, colIx)
       }
     }
@@ -2221,7 +2076,7 @@ object Panel {
       case _ => {
         val init =
           Frame(Seq(asIdxSeq(0).values), asIdxSeq(0).index, Index(Array(0)))
-        val temp = asIdxSeq.tail.foldLeft(init)(_.joinS(_, OuterJoin))
+        val temp = asIdxSeq.tail.foldLeft(init)(_.addCol(_, OuterJoin))
         Frame(temp.values, temp.rowIx, idx)
       }
     }

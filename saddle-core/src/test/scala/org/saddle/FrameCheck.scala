@@ -203,6 +203,11 @@ class FrameCheck extends Specification with ScalaCheck {
       f.T must_== Frame(Vec("a", "d"), Vec("b", "e"), Vec("c", "f"))
     }
 
+    "rreduce works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.sum must_== f.T.rreduce(_.toVec.toSeq.filterNot(_.isNaN).sum)
+      }
+    }
     "sum works" in {
       forAll { (f: Frame[Int, Int, Double]) =>
         f.sum must_== f.reduce(_.toVec.toSeq.filterNot(_.isNaN).sum)

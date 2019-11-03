@@ -23,12 +23,34 @@ import org.saddle.scalar.Scalar
   * An IndexedSeq of Vecs which must all have the same length; a container for
   * 2D data for a Frame.
   */
-class MatCols[@spec(Int, Long, Double) A: ST](cols: IndexedSeq[Vec[A]])
-    extends IndexedSeq[Vec[A]] {
+private[saddle] class MatCols[@spec(Int, Long, Double) A](
+    private val cols: IndexedSeq[Vec[A]]
+)(
+    implicit st: ST[A]
+) extends IndexedSeq[Vec[A]] {
   require(
     cols.length < 2 || cols.forall(_.length == cols(0).length),
     "Vecs must all be the same length"
   )
+
+  def rowAt(j: Int): Vec[A] = {
+    val n = numCols
+    val ar = array.empty(n)
+    var i = 0
+    while (i < n) {
+      ar(i) = cols(i).raw(j)
+      i += 1
+    }
+    Vec(ar)
+  }
+
+  def appendRow(v: Vec[A]) =
+    new MatCols(cols.zipWithIndex.map {
+      case (col, i) =>
+        col.concat(v.apply(i))
+    })
+
+  def ++(other: MatCols[A]) = new MatCols(cols ++ other.cols)
 
   def scalarTag = implicitly[ST[A]]
 
@@ -65,6 +87,24 @@ class MatCols[@spec(Int, Long, Double) A: ST](cols: IndexedSeq[Vec[A]])
       i += 1
     }
     MatCols(res)
+  }
+
+  def takeRows(locs: Array[Int]): MatCols[A] = {
+    val missing = st.missing
+    new MatCols(cols.map { col =>
+      val n = locs.length
+      val res = Array.ofDim[A](n)
+      var i = 0
+      while (i < n) {
+        val idx = locs(i)
+        if (idx == -1)
+          res(i) = missing
+        else
+          res(i) = col.raw(idx)
+        i += 1
+      }
+      Vec(res)
+    })
   }
 
   // take all vectors except those at points in loc

@@ -16,6 +16,7 @@
 package org.saddle
 
 import org.specs2.mutable.Specification
+import org.saddle.index.InnerJoin
 
 /**
   * Specs for a Frame
@@ -38,7 +39,7 @@ class FrameSpec extends Specification {
           "5,0"
       )
     )
-    val joined = testFrame.joinPreserveColIx(f2)
+    val joined = testFrame.cbind(f2)
     joined must_== Frame(testFrame.toColSeq ++ f2.toColSeq: _*)
   }
 
@@ -209,6 +210,10 @@ class FrameSpec extends Specification {
       5 -> Series(1 -> null, 2 -> "2,5", 4 -> "4,5", 5 -> "5,5")
     )
   }
+  "rmask" in {
+    val b = Vec(true, false, false, false)
+    testFrame.T.rmask(b).T must_== testFrame.mask(b)
+  }
   "joinMap" in {
     val testframe2 = Frame(
       1 -> Series(1 -> "1,1", 2 -> "2,1", 3 -> "3,1", 4 -> "4,1"),
@@ -282,7 +287,7 @@ class FrameSpec extends Specification {
     Frame(
       1 -> Series(1 -> 1, 2 -> 2, 3 -> 3),
       2 -> Series(1 -> 4, 2 -> 5, 3 -> 6)
-    ).addRow(Series(3, 4, 5), 2) must_==
+    ).addRow(Series(3, 4, 5), 2, InnerJoin) must_==
       Frame(
         1 -> Series(1 -> 1, 2 -> 2, 3 -> 3, 2 -> 4),
         2 -> Series(1 -> 4, 2 -> 5, 3 -> 6, 2 -> 5)
@@ -292,7 +297,7 @@ class FrameSpec extends Specification {
     Frame(
       1 -> Series(1 -> 1, 2 -> 2, 3 -> 3),
       2 -> Series(1 -> 4, 2 -> 5, 3 -> 6)
-    ).addCol(Series(7, 8, 9, 10), 2) must_==
+    ).addCol(Series(7, 8, 9, 10), 2, InnerJoin) must_==
       Frame(
         1 -> Series(1 -> 1, 2 -> 2, 3 -> 3),
         2 -> Series(1 -> 4, 2 -> 5, 3 -> 6),

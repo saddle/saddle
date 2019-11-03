@@ -794,31 +794,8 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
       other: Frame[X, _, T],
       how: JoinType = LeftJoin
   ): Frame[X, Int, T] = {
-    val tmpFrame = other.joinS(this, how)
+    val tmpFrame = other.addCol(this, how)
     Frame(
-      tmpFrame.values.last +: tmpFrame.values
-        .slice(0, tmpFrame.values.length - 1),
-      tmpFrame.rowIx,
-      IndexIntRange(other.colIx.length + 1)
-    )
-  }
-
-  /**
-    * Perform a (heterogeneous) join with a Frame[X, _, _] according to its row index.
-    * The values of the other Frame do not need to have the same type. The result is
-    * a Frame whose row index is the result of the join, and whose column index is
-    * [0, N), corresponding to the number of columns of the frame plus 1, and whose
-    * values are sourced from the original Series and Frame.
-    *
-    * @param other Frame[X, Any, Any]
-    * @param how How to perform the join
-    */
-  def hjoinF(
-      other: Frame[X, _, _],
-      how: JoinType = LeftJoin
-  ): Frame[X, Int, Any] = {
-    val tmpFrame = other.joinAnyS(this, how)
-    Panel(
       tmpFrame.values.last +: tmpFrame.values
         .slice(0, tmpFrame.values.length - 1),
       tmpFrame.rowIx,
