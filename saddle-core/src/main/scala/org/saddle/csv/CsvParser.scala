@@ -67,32 +67,36 @@ object CsvParser {
       fieldSeparator: Char = ',',
       quoteChar: Char = '"',
       recordSeparator: String = "\r\n",
-      bufferSize: Int = 8192
+      bufferSize: Int = 8192,
+      maxLines: Long = Long.MaxValue
   ): Either[String, Frame[Int, Int, String]] =
     parseFromIterator(
       source.grouped(bufferSize).map(_.toArray),
       cols,
       fieldSeparator,
       quoteChar,
-      recordSeparator
+      recordSeparator,
+      maxLines
     )
 
   /**
     * Parse CSV files according to RFC 4180
     *
     * @param cols The column offsets to parse (if empty, parse everything)
-    * @param separChar The separator; default is comma
+    * @param fieldSeparator The separator; default is comma
     * @param quoteChar Within matching quotes, treat separChar as normal char;
     *                  default is double-quote
-    * @param withQuote If true, do not strip quote character from quoted fields
+    * @param recordSeparator Record separator (line ending)
     * @param source The csv data source to operate on
+    * @param maxLines The maximum number of records that will be read from the file. Includes header.
     */
   def parseFromIterator(
       source: Iterator[Array[Char]],
       cols: Seq[Int] = Nil,
       fieldSeparator: Char = ',',
       quoteChar: Char = '"',
-      recordSeparator: String = "\r\n"
+      recordSeparator: String = "\r\n",
+      maxLines: Long = Long.MaxValue
   ): Either[String, Frame[Int, Int, String]] =
     if (fieldSeparator == quoteChar)
       Left("Separator character and quote character cannot be the same")
@@ -100,7 +104,8 @@ object CsvParser {
       Left(
         s"Record separator must have 1 or 2 characters. ${recordSeparator.toCharArray.map(_.toByte).deep}"
       )
-    else if (source.isEmpty) Right(Frame.empty[Int, Int, String])
+    else if (source.isEmpty || maxLines == 0)
+      Right(Frame.empty[Int, Int, String])
     else {
 
       val data = new DataBuffer(source, Array.empty, 0, false)
@@ -154,7 +159,7 @@ object CsvParser {
           quoteChar,
           fieldSeparator,
           recordSeparator.toCharArray,
-          Long.MaxValue
+          maxLines - 1
         )
 
         if (errorMessage.nonEmpty) Left(errorMessage)
@@ -193,6 +198,7 @@ object CsvParser {
     var lineIdx = 0L
     var error = false
     var errorMessage = ""
+
     val CR = recordSeparator.head
     val LF =
       if (recordSeparator.size == 2) recordSeparator.last

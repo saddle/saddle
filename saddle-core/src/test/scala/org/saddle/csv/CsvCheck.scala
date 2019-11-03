@@ -62,6 +62,44 @@ class CsvCheck extends Specification with ScalaCheck {
     ).setColIndex(Index("a", "b,c,d", "e"))
     frame must_== expect
   }
+  "csv string parsing works, two lines" in {
+    val data =
+      s"""a,"b,c,d",e${crlf}1,25,36,${crlf}4,55,"6"${crlf}5,9,38${crlf}7,"8","9",   """
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser
+        .parse(src, bufferSize = 2, maxLines = 2)
+        .right
+        .get
+        .withColIndex(0)
+        .resetRowIndex
+    val expect = Frame(
+      Vec("1"),
+      Vec("25"),
+      Vec("36")
+    ).setColIndex(Index("a", "b,c,d", "e"))
+    frame must_== expect
+  }
+  "csv string parsing works, take first line" in {
+    val data =
+      s"""a,"b,c,d",e${crlf}1,25,36,${crlf}4,55,"6"${crlf}5,9,38${crlf}7,"8","9",   """
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser
+        .parse(src, bufferSize = 2, maxLines = 1)
+        .right
+        .get
+        .withColIndex(0)
+        .resetRowIndex
+    val expect = Frame(
+      Vec.empty[Double],
+      Vec.empty[Double],
+      Vec.empty[Double]
+    ).setColIndex(Index("a", "b,c,d", "e"))
+    frame must_== expect
+  }
   "csv string parsing works with LF line endings" in {
     val data =
       s"""a,"b,c,d",e${lf}1,25,36,${lf}4,55,"6"${lf}5,9,38${lf}7,"8","9",   """
