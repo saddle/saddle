@@ -17,14 +17,66 @@ package org.saddle.csv
 
 import org.saddle.{Frame, Vec}
 import collection.mutable.ArrayBuffer
+import scala.annotation.tailrec
+import scala.io.Source
+import org.saddle.Buffer
 
 /**
   * Csv parsing utilities
   */
 object CsvParser {
 
+  private class DataBuffer(
+      data: Iterator[Array[Char]],
+      var buffer: Array[Char],
+      var position: Int,
+      var save: Boolean
+  ) {
+    @tailrec
+    private def fillBuffer: Boolean = {
+      if (!data.hasNext) false
+      else {
+        if (!save) {
+          buffer = data.next
+          position = 0
+        } else {
+          buffer = buffer ++ data.next
+        }
+        if (buffer.length > position) true
+        else fillBuffer
+      }
+    }
+    @inline def hasNext = position < buffer.length || fillBuffer
+
+    @inline def next =
+      if (position < buffer.length) {
+        val c = buffer(position)
+        position += 1
+        c
+      } else {
+        fillBuffer
+        val c = buffer(position)
+        position += 1
+        c
+      }
+  }
+
+  def parse(
+      source: Source,
+      cols: Seq[Int] = Nil,
+      separChar: Char = ',',
+      quoteChar: Char = '"',
+      bufferSize: Int = 8192
+  ): Frame[Int, Int, String] =
+    parseFromIterator(
+      source.grouped(bufferSize).map(_.toArray),
+      cols,
+      separChar,
+      quoteChar
+    )
+
   /**
-    * Another parse function.
+    * Parse CSV files according to RFC 4180
     *
     * @param cols The column offsets to parse (if empty, parse everything)
     * @param separChar The separator; default is comma
@@ -33,12 +85,11 @@ object CsvParser {
     * @param withQuote If true, do not strip quote character from quoted fields
     * @param source The csv data source to operate on
     */
-  def parse(
-      source: Iterator[String],
+  def parseFromIterator(
+      source: Iterator[Array[Char]],
       cols: Seq[Int] = Nil,
       separChar: Char = ',',
-      quoteChar: Char = '"',
-      withQuote: Boolean = false
+      quoteChar: Char = '"'
   ): Frame[Int, Int, String] = {
 
     require(
@@ -50,23 +101,39 @@ object CsvParser {
       sys.error("No data to parse")
     }
 
+    val data = new DataBuffer(source, Array.empty, 0, false)
+
     // sorted, unique column locations to parse
     var locs = Set(cols: _*).toArray[Int].sorted
 
     // parse first line
     val firstLine = {
-      val line = source.next
-      extractAllFields(line, quoteChar, separChar, withQuote)
+      val buffer = new ArrayBuffer[String](1024)
+      val callback = (s: String, _: Int) => {
+        buffer.append(s)
+      }
+      extractFields(
+        data,
+        callback,
+        Array.empty,
+        quoteChar,
+        separChar,
+        1
+      )
+      buffer.toArray
     }
-
     // what column locations to extract
     if (locs.length == 0) locs = (0 until firstLine.length).toArray
 
     // set up buffers to store parsed data
-    val bufdata = for { _ <- locs } yield new ArrayBuffer[String](1024)
+    val bufdata = for { _ <- locs } yield new Buffer[String](
+      Array.ofDim[String](1024),
+      0
+    )
 
     def addToBuffer(s: String, buf: Int) = {
-      bufdata(buf).append(s)
+      import scala.Predef.{wrapRefArray => _}
+      bufdata(buf).+=(s)
     }
 
     // first line is either header, or needs to be processed
@@ -74,13 +141,7 @@ object CsvParser {
     fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
 
     // parse remaining rows
-    var str: String = null
-    var nln: Int = 0
-    while (source.hasNext) {
-      str = source.next
-      extractFields(str, addToBuffer, locs, quoteChar, separChar, withQuote)
-      nln += 1
-    }
+    extractFields(data, addToBuffer, locs, quoteChar, separChar, Long.MaxValue)
 
     val columns = bufdata map { b =>
       Vec(b.toArray)
@@ -90,134 +151,169 @@ object CsvParser {
   }
 
   private def extractFields(
-      line: String,
+      data: DataBuffer,
       callback: (String, Int) => Unit,
       locs: Array[Int],
       quoteChar: Char,
       separChar: Char,
-      withQuote: Boolean
+      maxLines: Long
   ) = {
 
-    val quote = quoteChar
-    val sep = separChar
-    val stripQuote = !withQuote
+    // 0 - init
+    // 1 - non-escaped data
+    // 2 - quoted data
+    // 3 - quote in quoted data
+    // 4 - CR in init
+    // 5 - CR in data
+    // 6 - CR in quote
+    var state = 0
 
-    var inQ = false // whether our scan is between quotes
-
-    var curFld = 0 // current field of parse
-    var curBeg = 0 // offset of start of current field in line
-    var curEnd = 0 // current character we're on in line
+    var curField = 0 // current field of parse
+    var curBegin = 0 // offset of start of current field in line
     var locIdx = 0 // current location within locs array
-    var inQoff = 0 // offset if there is a quote character to strip
+    var lineIdx = 0L
+    val CR = '\r'
+    val LF = '\n'
 
-    val carr = line.toCharArray // line as character array
-    val slen = carr.length // length of line
+    val allFields = locs.isEmpty
 
-    while (curEnd < slen && locIdx < locs.length) {
-      val chr = carr(curEnd) // get current character
-
-      if (chr == quote) { // handle a quote
-        if (stripQuote) {
-          if (inQ)
-            inQoff = 1 // we're exiting a quoted field
-          else
-            curBeg = curEnd + 1 // we're starting a quoted field
-        }
-        inQ = !inQ
+    @inline def emit(offset: Int) = {
+      if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
+        callback(
+          String
+            .valueOf(data.buffer, curBegin, data.position - offset - curBegin),
+          locIdx
+        )
+        locIdx += 1
       }
+    }
 
-      if (!inQ && chr == sep) { // we're not in quoted field & we hit a separator
-        if (curFld == locs(locIdx)) { // we want this field
-          callback(
-            String.valueOf(carr, curBeg, curEnd - curBeg - inQoff),
-            locIdx
+    @inline def close() = {
+      curField += 1
+      data.save = false
+    }
+    @inline def open(offset: Int) = {
+      curBegin = data.position - offset
+      data.save = true
+    }
+
+    @inline def newline() = {
+      if (locIdx < locs.size) {
+        throw new RuntimeException(
+          s"Incomplete line $lineIdx. Expected ${locs.size} fields, got $locIdx"
+        )
+      }
+      lineIdx += 1
+      locIdx = 0
+      curField = 0
+    }
+
+    while (data.hasNext && lineIdx < maxLines) {
+      val chr = data.next
+      if (state == 0) { // init
+        if (chr == separChar) {
+          if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
+            callback("", locIdx)
+            locIdx += 1
+          }
+          curField += 1
+        } else if (chr == quoteChar) {
+          state = 2
+          open(0)
+        } else if (chr == CR) {
+          state = 4
+        } else {
+          state = 1
+          open(1)
+        }
+      } else if (state == 1) { // data
+        if (chr == separChar) {
+          emit(1)
+          close()
+          state = 0
+        } else if (chr == quoteChar)
+          throw new RuntimeException("quote must not occur in unquoted fiedl")
+        else if (chr == CR) {
+          state = 5
+        }
+      } else if (state == 2) { //quoted data
+        if (chr == quoteChar) {
+          state = 3
+        }
+      } else if (state == 3) { // quote in quoted data
+        if (chr == quoteChar) {
+          state = 2
+        } else if (chr == separChar) {
+          emit(2)
+          close()
+          state = 0
+        } else if (chr == CR) {
+          state = 6
+        } else
+          throw new RuntimeException(
+            "quotes in quoted field must be escaped by doubling them"
           )
+      } else if (state == 4) { // CR in init
+        if (chr == LF) {
+          emit(2)
+          close()
+          state = 0
+          newline()
+        } else if (chr == separChar) {
+          callback("\r", locIdx)
           locIdx += 1
+          curField += 1
+          state = 0
+        } else if (chr == quoteChar) {
+          throw new RuntimeException("invalid quote")
+        } else if (chr == CR) {
+          state = 5
+          open(2)
+        } else {
+          state = 1
+          open(2)
         }
-        inQoff = 0
-        curBeg = curEnd + 1 // start a new field
-        curFld += 1
-      }
-
-      curEnd += 1 // move forward a character
-    }
-
-    // handle a final field which may/not be terminated with separChar
-    if (locIdx < locs.length && curFld == locs(locIdx) && curBeg < slen) {
-      inQoff = if (carr(curEnd - 1) == quote && stripQuote) 1 else 0
-      callback(String.valueOf(carr, curBeg, curEnd - curBeg - inQoff), locIdx)
-      locIdx += 1
-    }
-
-    // handle a missing value following final separator
-    if (locIdx == locs.length - 1 && curBeg == slen) {
-      callback("", locIdx)
-      locIdx += 1
-    }
-
-    // if we didn't scan a field for all requested locations, throw an error
-    if (locIdx < locs.length) {
-      throw new ArrayIndexOutOfBoundsException(
-        """Unable to read column %d in line:
-          | ------------
-          | %s
-          | ------------""".stripMargin.format(locs(locIdx), line)
-      )
-    }
-  }
-
-  private def extractAllFields(
-      line: String,
-      quoteChar: Char,
-      separChar: Char,
-      withQuote: Boolean
-  ): Array[String] = {
-    val quote = quoteChar
-    val sep = separChar
-    val stripQuote = !withQuote
-
-    val result = ArrayBuffer[String]()
-
-    var inQ = false // whether our scan is between quotes
-
-    var curFld = 0 // current field of parse
-    var curBeg = 0 // offset of start of current field in line
-    var curEnd = 0 // current character we're on in line
-    var inQoff = 0 // offset if there is a quote character to strip
-
-    val carr = line.toCharArray // line as character array
-    val slen = carr.length // length of line
-
-    while (curEnd < slen) {
-      val chr = carr(curEnd) // get current character
-
-      if (chr == quote) { // handle a quote
-        if (stripQuote) {
-          if (inQ)
-            inQoff = 1 // we're exiting a quoted field
-          else
-            curBeg = curEnd + 1 // we're starting a quoted field
+      } else if (state == 5) { // CR in data
+        if (chr == LF) {
+          emit(2)
+          close()
+          state = 0
+          newline()
+        } else if (chr == separChar) {
+          emit(1)
+          close()
+          state = 0
+        } else if (chr == quoteChar) {
+          throw new RuntimeException("invalid quote")
+        } else if (chr == CR) {
+          state = 5
+        } else {
+          state = 1
         }
-        inQ = !inQ
+      } else if (state == 6) { // CR in quote
+        if (chr == LF) {
+          emit(3)
+          close()
+          state = 0
+          newline()
+        } else {
+          throw new RuntimeException("Closing quote followed by data")
+        }
       }
-
-      if (!inQ && chr == sep) { // we're not in quoted field & we hit a separator
-        result += String.valueOf(carr, curBeg, curEnd - curBeg - inQoff)
-        inQoff = 0
-        curBeg = curEnd + 1 // start a new field
-        curFld += 1
-      }
-
-      curEnd += 1 // move forward a character
     }
 
-    // handle final field, may/not be terminated with separChar
-    if (curBeg < slen) {
-      inQoff = if (carr(curEnd - 1) == quote && stripQuote) 1 else 0
-      result += String.valueOf(carr, curBeg, curEnd - curBeg - inQoff)
+    if (state == 1 || state == 3) {
+      if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
+        callback(
+          String.valueOf(data.buffer, curBegin, data.position - curBegin),
+          locIdx
+        )
+        locIdx += 1
+      }
+    } else if (state == 2) {
+      throw new RuntimeException("Unclosed quote")
     }
 
-    result.toArray
   }
 
 }

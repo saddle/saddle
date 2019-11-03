@@ -125,7 +125,7 @@ object CsvWriter {
       settings: CsvSettings = new CsvSettings()
   ) = {
 
-    val newLine = "\n".getBytes(settings.encoding)
+    val newLine = "\r\n".getBytes(settings.encoding)
 
     val separ = settings.separChar.toString
     val quote = settings.quoteChar.toString
