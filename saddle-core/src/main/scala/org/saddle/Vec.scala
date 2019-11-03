@@ -547,6 +547,11 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   def median(implicit na: NUM[T]): Double
 
   /**
+    * Return the mean of the values in the Vec, ignoring NA
+    */
+  def mean(implicit na: NUM[T]): Double
+
+  /**
     * Return the percentile of the values at a particular threshold, ignoring NA
     * @param tile The percentile in [0, 100] at which to compute the threshold
     * @param method The percentile method; one of [[org.saddle.PctMethod]]

@@ -44,11 +44,6 @@ class FrameStats[RX, CX, T: ST: NUM](frame: Frame[RX, CX, T]) {
   def logsum(implicit ev: S2Stats): Series[CX, Double] = frame.reduce(_.logsum)
 
   /**
-    * Sample mean of each column
-    */
-  def mean(implicit ev: S2Stats): Series[CX, Double] = frame.reduce(_.mean)
-
-  /**
     * Geometric mean of each column
     */
   def geomean(implicit ev: S2Stats): Series[CX, Double] =

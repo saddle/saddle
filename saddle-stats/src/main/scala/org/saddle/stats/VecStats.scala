@@ -30,11 +30,6 @@ trait VecStats[@spec(Int, Long, Double) A] {
   def logsum: Double
 
   /**
-    * Return the mean (average) of the values in the Vec, ignoring NA
-    */
-  def mean: Double
-
-  /**
     * Return the geometric median of the values in the Vec, ignoring NA
     */
   def geomean: Double
@@ -65,7 +60,9 @@ trait VecStats[@spec(Int, Long, Double) A] {
     */
   def demeaned: Vec[Double]
 
-  protected def _variance(r: Vec[A], subOp: (A, Double) => Double): Double = {
+  protected def _variance(r: Vec[A], subOp: (A, Double) => Double)(
+      implicit num: NUM[A]
+  ): Double = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
     val c = r.count
@@ -75,7 +72,7 @@ trait VecStats[@spec(Int, Long, Double) A] {
     else if (c == 1)
       0.0
     else {
-      val m: Double = mean
+      val m: Double = r.mean
       r.filterFoldLeft(sa.notMissing)(0d) { (x, y) =>
         val tmp = subOp(y, m)
         x + tmp * tmp / (c - 1.0)
@@ -83,14 +80,16 @@ trait VecStats[@spec(Int, Long, Double) A] {
     }
   }
 
-  protected def _skew(r: Vec[A], subOp: (A, Double) => Double): Double = {
+  protected def _skew(r: Vec[A], subOp: (A, Double) => Double)(
+      implicit num: NUM[A]
+  ): Double = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
     val c = r.count
 
     if (c > 2) {
       val v: Double = variance
-      val m: Double = mean
+      val m: Double = r.mean
       val coef = c / ((c - 1) * (c - 2) * v * math.sqrt(v))
       r.filterFoldLeft(sa.notMissing)(0d) { (x, y) =>
         val tmp = subOp(y, m)
@@ -99,14 +98,16 @@ trait VecStats[@spec(Int, Long, Double) A] {
     } else sd.missing
   }
 
-  protected def _kurt(r: Vec[A], subOp: (A, Double) => Double): Double = {
+  protected def _kurt(r: Vec[A], subOp: (A, Double) => Double)(
+      implicit num: NUM[A]
+  ): Double = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
     val c: Double = r.count
 
     if (c > 3) {
       val vari = variance
-      val m: Double = mean
+      val m: Double = r.mean
       val acacc = r.filterFoldLeft(sa.notMissing)(0d) { (x, y) =>
         val tmp = subOp(y, m)
         x + (tmp * tmp * tmp * tmp) / (vari * vari)
@@ -120,11 +121,13 @@ trait VecStats[@spec(Int, Long, Double) A] {
   protected def _demeaned(
       r: Vec[A],
       subOp: (A, Double) => Double
+  )(
+      implicit num: NUM[A]
   ): Vec[Double] = {
     val sa = r.scalarTag
     val sd = ScalarTagDouble
 
-    val mn = mean
+    val mn = r.mean
     val ar = Array.ofDim[Double](r.length)
     var i = 0
     while (i < r.length) {

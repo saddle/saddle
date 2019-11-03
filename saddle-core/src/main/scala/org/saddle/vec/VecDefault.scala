@@ -652,6 +652,8 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     Vec(res)
   }
 
+  def mean(implicit n: NUM[T]): Double = n.toDouble(sum) / count.toDouble
+
   def median(implicit n: NUM[T]) = _median(this)
 
   private def _median(r: Vec[T])(implicit n: NUM[T]): Double = {

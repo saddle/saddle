@@ -1729,6 +1729,12 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T](
     reduce(_.toVec.median)
 
   /**
+    * Mean of each column
+    */
+  def mean(implicit num: NUM[T]): Series[CX, Double] =
+    reduce(_.toVec.mean)
+
+  /**
     * Max of the elements of each column, ignoring NA values
     */
   def max(implicit num: NUM[T]): Series[CX, T] =
