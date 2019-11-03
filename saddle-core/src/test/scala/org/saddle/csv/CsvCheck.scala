@@ -56,16 +56,40 @@ class CsvCheck extends Specification with ScalaCheck {
   }
   "csv string parsing works with double quotes and quoted CRLF and unquoted CR" in {
     val data =
-      s"""a,"b,""c"",d",e${crlf}1,25${'\r'}1,${'\r'}${'\r'}${'\r'}36,${crlf}4,5${'\r'}${'\r'}5,"6${crlf}1"${crlf}5,9,38${crlf}7,"8${'\r'}1","9",   """
+      s"""a,"b,""c"",d",e${crlf}1,25${'\r'}1,${'\r'}${'\r'}${'\r'}36,${crlf}4,5${'\r'}${'\r'}5,"6${crlf}1"${crlf}5,  ,38${crlf}7,"8${'\r'}1","9",   """
 
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
     val expect = Frame(
       Vec("1", "4", "5", "7"),
-      Vec(s"25${'\r'}1", s"5${'\r'}${'\r'}5", "9", s"8${'\r'}1"),
+      Vec(s"25${'\r'}1", s"5${'\r'}${'\r'}5", "  ", s"8${'\r'}1"),
       Vec(s"${'\r'}${'\r'}${'\r'}36", s"6${crlf}1", "38", "9")
     ).setColIndex(Index("a", """b,""c"",d""", "e"))
+    frame must_== expect
+  }
+  "quoted empty string" in {
+    val data =
+      s"""""${crlf}1"""
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+    val expect = Frame(
+      Vec("1")
+    ).setColIndex(Index(""))
+    frame must_== expect
+  }
+  "quoted empty string 2" in {
+    val data =
+      s"""1${crlf}"""""
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+    val expect = Frame(
+      Vec("")
+    ).setColIndex(Index("1"))
     frame must_== expect
   }
 

@@ -302,14 +302,10 @@ object CsvParser {
       }
     }
 
-    if (state == 1 || state == 3) {
-      if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
-        callback(
-          String.valueOf(data.buffer, curBegin, data.position - curBegin),
-          locIdx
-        )
-        locIdx += 1
-      }
+    if (state == 1) {
+      emit(0)
+    } else if (state == 3) {
+      emit(1)
     } else if (state == 2) {
       throw new RuntimeException("Unclosed quote")
     }
