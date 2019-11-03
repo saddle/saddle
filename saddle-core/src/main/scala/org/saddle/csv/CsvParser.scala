@@ -64,15 +64,17 @@ object CsvParser {
   def parse(
       source: Source,
       cols: Seq[Int] = Nil,
-      separChar: Char = ',',
+      fieldSeparator: Char = ',',
       quoteChar: Char = '"',
+      recordSeparator: String = "\r\n",
       bufferSize: Int = 8192
   ): Frame[Int, Int, String] =
     parseFromIterator(
       source.grouped(bufferSize).map(_.toArray),
       cols,
-      separChar,
-      quoteChar
+      fieldSeparator,
+      quoteChar,
+      recordSeparator
     )
 
   /**
@@ -88,13 +90,19 @@ object CsvParser {
   def parseFromIterator(
       source: Iterator[Array[Char]],
       cols: Seq[Int] = Nil,
-      separChar: Char = ',',
-      quoteChar: Char = '"'
+      fieldSeparator: Char = ',',
+      quoteChar: Char = '"',
+      recordSeparator: String = "\r\n"
   ): Frame[Int, Int, String] = {
 
     require(
-      separChar != quoteChar,
+      fieldSeparator != quoteChar,
       "Separator character and quote character cannot be the same"
+    )
+
+    require(
+      recordSeparator.size == 1 || recordSeparator.size == 2,
+      s"Record separator must have 1 or 2 characters. ${recordSeparator.toCharArray.map(_.toByte).deep}"
     )
 
     if (source.isEmpty) {
@@ -117,7 +125,8 @@ object CsvParser {
         callback,
         Array.empty,
         quoteChar,
-        separChar,
+        fieldSeparator,
+        recordSeparator.toCharArray,
         1
       )
       buffer.toArray
@@ -141,7 +150,15 @@ object CsvParser {
     fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
 
     // parse remaining rows
-    extractFields(data, addToBuffer, locs, quoteChar, separChar, Long.MaxValue)
+    extractFields(
+      data,
+      addToBuffer,
+      locs,
+      quoteChar,
+      fieldSeparator,
+      recordSeparator.toCharArray,
+      Long.MaxValue
+    )
 
     val columns = bufdata map { b =>
       Vec(b.toArray)
@@ -156,6 +173,7 @@ object CsvParser {
       locs: Array[Int],
       quoteChar: Char,
       separChar: Char,
+      recordSeparator: Array[Char],
       maxLines: Long
   ) = {
 
@@ -172,8 +190,11 @@ object CsvParser {
     var curBegin = 0 // offset of start of current field in line
     var locIdx = 0 // current location within locs array
     var lineIdx = 0L
-    val CR = '\r'
-    val LF = '\n'
+    val CR = recordSeparator.head
+    val LF =
+      if (recordSeparator.size == 2) recordSeparator.last
+      else recordSeparator.head
+    val singleRecordSeparator = recordSeparator.size == 1
 
     val allFields = locs.isEmpty
 
@@ -210,18 +231,23 @@ object CsvParser {
 
     while (data.hasNext && lineIdx < maxLines) {
       val chr = data.next
+      // println(s"$chr $state ${data.save}")
       if (state == 0) { // init
         if (chr == separChar) {
-          if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
-            callback("", locIdx)
-            locIdx += 1
-          }
-          curField += 1
+          emit(1)
+          close()
         } else if (chr == quoteChar) {
           state = 2
           open(0)
         } else if (chr == CR) {
-          state = 4
+          if (singleRecordSeparator) {
+            emit(1)
+            close()
+            newline()
+          } else {
+            state = 4
+            open(1)
+          }
         } else {
           state = 1
           open(1)
@@ -234,7 +260,14 @@ object CsvParser {
         } else if (chr == quoteChar)
           throw new RuntimeException("quote must not occur in unquoted fiedl")
         else if (chr == CR) {
-          state = 5
+          if (singleRecordSeparator) {
+            emit(1)
+            close()
+            state = 0
+            newline()
+          } else {
+            state = 5
+          }
         }
       } else if (state == 2) { //quoted data
         if (chr == quoteChar) {
@@ -248,7 +281,14 @@ object CsvParser {
           close()
           state = 0
         } else if (chr == CR) {
-          state = 6
+          if (singleRecordSeparator) {
+            emit(2)
+            close()
+            state = 0
+            newline()
+          } else {
+            state = 6
+          }
         } else
           throw new RuntimeException(
             "quotes in quoted field must be escaped by doubling them"
@@ -260,7 +300,7 @@ object CsvParser {
           state = 0
           newline()
         } else if (chr == separChar) {
-          callback("\r", locIdx)
+          callback(s"$CR", locIdx)
           locIdx += 1
           curField += 1
           state = 0
@@ -268,10 +308,8 @@ object CsvParser {
           throw new RuntimeException("invalid quote")
         } else if (chr == CR) {
           state = 5
-          open(2)
         } else {
           state = 1
-          open(2)
         }
       } else if (state == 5) { // CR in data
         if (chr == LF) {

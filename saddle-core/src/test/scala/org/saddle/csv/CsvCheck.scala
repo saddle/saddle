@@ -17,10 +17,11 @@ package org.saddle.csv
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import org.saddle.{Index, Vec, Frame, ST, na}
+import org.saddle.{Index, Vec, Frame, na, ST}
 
 class CsvCheck extends Specification with ScalaCheck {
   val crlf = "\r\n"
+  val lf = "\n"
   "csv string parsing and writing works" in {
 
     val expect = Frame(
@@ -54,9 +55,26 @@ class CsvCheck extends Specification with ScalaCheck {
     ).setColIndex(Index("a", "b,c,d", "e"))
     frame must_== expect
   }
+  "csv string parsing works with LF line endings" in {
+    val data =
+      s"""a,"b,c,d",e${lf}1,25,36,${lf}4,55,"6"${lf}5,9,38${lf}7,"8","9",   """
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser
+        .parse(src, bufferSize = 2, recordSeparator = lf)
+        .withColIndex(0)
+        .resetRowIndex
+    val expect = Frame(
+      Vec("1", "4", "5", "7"),
+      Vec("25", "55", "9", "8"),
+      Vec("36", "6", "38", "9")
+    ).setColIndex(Index("a", "b,c,d", "e"))
+    frame must_== expect
+  }
   "csv string parsing works with double quotes and quoted CRLF and unquoted CR" in {
     val data =
-      s"""a,"b,""c"",d",e${crlf}1,25${'\r'}1,${'\r'}${'\r'}${'\r'}36,${crlf}4,5${'\r'}${'\r'}5,"6${crlf}1"${crlf}5,  ,38${crlf}7,"8${'\r'}1","9",   """
+      s""","b,""c"",d",e${crlf}1,25${'\r'}1,${'\r'}${'\r'}${'\r'}36,${crlf}4,5${'\r'}${'\r'}5,"6${crlf}1"${crlf}5,  ,38${crlf}7,"8${'\r'}1","",   """
 
     val src = scala.io.Source.fromString(data)
     val frame =
@@ -64,8 +82,27 @@ class CsvCheck extends Specification with ScalaCheck {
     val expect = Frame(
       Vec("1", "4", "5", "7"),
       Vec(s"25${'\r'}1", s"5${'\r'}${'\r'}5", "  ", s"8${'\r'}1"),
-      Vec(s"${'\r'}${'\r'}${'\r'}36", s"6${crlf}1", "38", "9")
-    ).setColIndex(Index("a", """b,""c"",d""", "e"))
+      Vec(s"${'\r'}${'\r'}${'\r'}36", s"6${crlf}1", "38", "")
+    ).setColIndex(Index("", """b,""c"",d""", "e"))
+    frame must_== expect
+  }
+  "csv string parsing works with double quotes and quoted CRLF and unquoted CR with LF line endings" in {
+    val data =
+      s""","b,""c"",d",e${lf}1,25${'\r'}1,${'\r'}${'\r'}${'\r'}36,${lf}4,5${'\r'}${'\r'}5,"6${lf}1"${lf}5,  ,38${lf}7,"8${'\r'}1","9",   """
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser
+        .parse(src, bufferSize = 2, recordSeparator = lf)
+        .withColIndex(0)
+        .resetRowIndex
+
+    val expect = Frame(
+      Vec("1", "4", "5", "7"),
+      Vec(s"25${'\r'}1", s"5${'\r'}${'\r'}5", "  ", s"8${'\r'}1"),
+      Vec(s"${'\r'}${'\r'}${'\r'}36", s"6${lf}1", "38", "9")
+    ).setColIndex(Index("", """b,""c"",d""", "e"))
+
     frame must_== expect
   }
   "quoted empty string" in {
@@ -75,6 +112,21 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+    val expect = Frame(
+      Vec("1")
+    ).setColIndex(Index(""))
+    frame must_== expect
+  }
+  "quoted empty string with LF line ending" in {
+    val data =
+      s"""""${lf}1"""
+
+    val src = scala.io.Source.fromString(data)
+    val frame =
+      CsvParser
+        .parse(src, bufferSize = 2, recordSeparator = lf)
+        .withColIndex(0)
+        .resetRowIndex
     val expect = Frame(
       Vec("1")
     ).setColIndex(Index(""))
