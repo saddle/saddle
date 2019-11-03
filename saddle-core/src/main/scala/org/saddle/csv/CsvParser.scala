@@ -68,7 +68,7 @@ object CsvParser {
       quoteChar: Char = '"',
       recordSeparator: String = "\r\n",
       bufferSize: Int = 8192
-  ): Frame[Int, Int, String] =
+  ): Either[String, Frame[Int, Int, String]] =
     parseFromIterator(
       source.grouped(bufferSize).map(_.toArray),
       cols,
@@ -93,79 +93,80 @@ object CsvParser {
       fieldSeparator: Char = ',',
       quoteChar: Char = '"',
       recordSeparator: String = "\r\n"
-  ): Frame[Int, Int, String] = {
-
-    require(
-      fieldSeparator != quoteChar,
-      "Separator character and quote character cannot be the same"
-    )
-
-    require(
-      recordSeparator.size == 1 || recordSeparator.size == 2,
-      s"Record separator must have 1 or 2 characters. ${recordSeparator.toCharArray.map(_.toByte).deep}"
-    )
-
-    if (source.isEmpty) {
-      sys.error("No data to parse")
-    }
-
-    val data = new DataBuffer(source, Array.empty, 0, false)
-
-    // sorted, unique column locations to parse
-    var locs = Set(cols: _*).toArray[Int].sorted
-
-    // parse first line
-    val firstLine = {
-      val buffer = new ArrayBuffer[String](1024)
-      val callback = (s: String, _: Int) => {
-        buffer.append(s)
-      }
-      extractFields(
-        data,
-        callback,
-        Array.empty,
-        quoteChar,
-        fieldSeparator,
-        recordSeparator.toCharArray,
-        1
+  ): Either[String, Frame[Int, Int, String]] =
+    if (fieldSeparator == quoteChar)
+      Left("Separator character and quote character cannot be the same")
+    else if (recordSeparator.size != 1 && recordSeparator.size != 2)
+      Left(
+        s"Record separator must have 1 or 2 characters. ${recordSeparator.toCharArray.map(_.toByte).deep}"
       )
-      buffer.toArray
+    else if (source.isEmpty) Right(Frame.empty[Int, Int, String])
+    else {
+
+      val data = new DataBuffer(source, Array.empty, 0, false)
+
+      // sorted, unique column locations to parse
+      var locs = Set(cols: _*).toArray[Int].sorted
+
+      // parse first line
+      val (firstLine, errorMessage) = {
+        val buffer = new ArrayBuffer[String](1024)
+        val callback = (s: String, _: Int) => {
+          buffer.append(s)
+        }
+        val errorMessage = extractFields(
+          data,
+          callback,
+          Array.empty,
+          quoteChar,
+          fieldSeparator,
+          recordSeparator.toCharArray,
+          1
+        )
+        (buffer.toArray, errorMessage)
+      }
+
+      if (errorMessage.nonEmpty) Left(errorMessage)
+      else {
+        // what column locations to extract
+        if (locs.length == 0) locs = (0 until firstLine.length).toArray
+
+        // set up buffers to store parsed data
+        val bufdata = for { _ <- locs } yield new Buffer[String](
+          Array.ofDim[String](1024),
+          0
+        )
+
+        def addToBuffer(s: String, buf: Int) = {
+          import scala.Predef.{wrapRefArray => _}
+          bufdata(buf).+=(s)
+        }
+
+        // first line is either header, or needs to be processed
+        val fields = Vec(firstLine).take(locs)
+        fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
+
+        // parse remaining rows
+        val errorMessage = extractFields(
+          data,
+          addToBuffer,
+          locs,
+          quoteChar,
+          fieldSeparator,
+          recordSeparator.toCharArray,
+          Long.MaxValue
+        )
+
+        if (errorMessage.nonEmpty) Left(errorMessage)
+        else {
+          val columns = bufdata map { b =>
+            Vec(b.toArray)
+          }
+
+          Right(Frame(columns: _*))
+        }
+      }
     }
-    // what column locations to extract
-    if (locs.length == 0) locs = (0 until firstLine.length).toArray
-
-    // set up buffers to store parsed data
-    val bufdata = for { _ <- locs } yield new Buffer[String](
-      Array.ofDim[String](1024),
-      0
-    )
-
-    def addToBuffer(s: String, buf: Int) = {
-      import scala.Predef.{wrapRefArray => _}
-      bufdata(buf).+=(s)
-    }
-
-    // first line is either header, or needs to be processed
-    val fields = Vec(firstLine).take(locs)
-    fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
-
-    // parse remaining rows
-    extractFields(
-      data,
-      addToBuffer,
-      locs,
-      quoteChar,
-      fieldSeparator,
-      recordSeparator.toCharArray,
-      Long.MaxValue
-    )
-
-    val columns = bufdata map { b =>
-      Vec(b.toArray)
-    }
-
-    Frame(columns: _*)
-  }
 
   private def extractFields(
       data: DataBuffer,
@@ -187,9 +188,11 @@ object CsvParser {
     var state = 0
 
     var curField = 0 // current field of parse
-    var curBegin = 0 // offset of start of current field in line
+    var curBegin = 0 // offset of start of current field in buffer
     var locIdx = 0 // current location within locs array
     var lineIdx = 0L
+    var error = false
+    var errorMessage = ""
     val CR = recordSeparator.head
     val LF =
       if (recordSeparator.size == 2) recordSeparator.last
@@ -197,6 +200,11 @@ object CsvParser {
     val singleRecordSeparator = recordSeparator.size == 1
 
     val allFields = locs.isEmpty
+
+    @inline def fail(str: String) = {
+      error = true
+      errorMessage = str + s".. line=$lineIdx, field=$curField"
+    }
 
     @inline def emit(offset: Int) = {
       if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
@@ -220,7 +228,7 @@ object CsvParser {
 
     @inline def newline() = {
       if (locIdx < locs.size) {
-        throw new RuntimeException(
+        fail(
           s"Incomplete line $lineIdx. Expected ${locs.size} fields, got $locIdx"
         )
       }
@@ -229,9 +237,8 @@ object CsvParser {
       curField = 0
     }
 
-    while (data.hasNext && lineIdx < maxLines) {
+    while (data.hasNext && lineIdx < maxLines && !error) {
       val chr = data.next
-      // println(s"$chr $state ${data.save}")
       if (state == 0) { // init
         if (chr == separChar) {
           emit(1)
@@ -257,9 +264,9 @@ object CsvParser {
           emit(1)
           close()
           state = 0
-        } else if (chr == quoteChar)
-          throw new RuntimeException("quote must not occur in unquoted fiedl")
-        else if (chr == CR) {
+        } else if (chr == quoteChar) {
+          fail("quote must not occur in unquoted field")
+        } else if (chr == CR) {
           if (singleRecordSeparator) {
             emit(1)
             close()
@@ -289,10 +296,11 @@ object CsvParser {
           } else {
             state = 6
           }
-        } else
-          throw new RuntimeException(
+        } else {
+          fail(
             "quotes in quoted field must be escaped by doubling them"
           )
+        }
       } else if (state == 4) { // CR in init
         if (chr == LF) {
           emit(2)
@@ -305,7 +313,7 @@ object CsvParser {
           curField += 1
           state = 0
         } else if (chr == quoteChar) {
-          throw new RuntimeException("invalid quote")
+          fail("invalid quote")
         } else if (chr == CR) {
           state = 5
         } else {
@@ -322,7 +330,7 @@ object CsvParser {
           close()
           state = 0
         } else if (chr == quoteChar) {
-          throw new RuntimeException("invalid quote")
+          fail("invalid quote")
         } else if (chr == CR) {
           state = 5
         } else {
@@ -335,7 +343,7 @@ object CsvParser {
           state = 0
           newline()
         } else {
-          throw new RuntimeException("Closing quote followed by data")
+          fail("Closing quote followed by data")
         }
       }
     }
@@ -345,8 +353,10 @@ object CsvParser {
     } else if (state == 3) {
       emit(1)
     } else if (state == 2) {
-      throw new RuntimeException("Unclosed quote")
+      fail("Unclosed quote")
     }
+
+    errorMessage
 
   }
 

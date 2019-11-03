@@ -35,6 +35,8 @@ class CsvCheck extends Specification with ScalaCheck {
         scala.io.Source
           .fromString(new String(CsvWriter.writeFrameToArray(expect)))
       )
+      .right
+      .get
       .withColIndex(0)
       .withRowIndex(0)
       .mapRowIndex(_.toInt))
@@ -47,7 +49,12 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
     val frame =
-      CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+      CsvParser
+        .parse(src, bufferSize = 2)
+        .right
+        .get
+        .withColIndex(0)
+        .resetRowIndex
     val expect = Frame(
       Vec("1", "4", "5", "7"),
       Vec("25", "55", "9", "8"),
@@ -63,6 +70,8 @@ class CsvCheck extends Specification with ScalaCheck {
     val frame =
       CsvParser
         .parse(src, bufferSize = 2, recordSeparator = lf)
+        .right
+        .get
         .withColIndex(0)
         .resetRowIndex
     val expect = Frame(
@@ -78,7 +87,12 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
     val frame =
-      CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+      CsvParser
+        .parse(src, bufferSize = 2)
+        .right
+        .get
+        .withColIndex(0)
+        .resetRowIndex
     val expect = Frame(
       Vec("1", "4", "5", "7"),
       Vec(s"25${'\r'}1", s"5${'\r'}${'\r'}5", "  ", s"8${'\r'}1"),
@@ -94,6 +108,8 @@ class CsvCheck extends Specification with ScalaCheck {
     val frame =
       CsvParser
         .parse(src, bufferSize = 2, recordSeparator = lf)
+        .right
+        .get
         .withColIndex(0)
         .resetRowIndex
 
@@ -111,7 +127,12 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
     val frame =
-      CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+      CsvParser
+        .parse(src, bufferSize = 2)
+        .right
+        .get
+        .withColIndex(0)
+        .resetRowIndex
     val expect = Frame(
       Vec("1")
     ).setColIndex(Index(""))
@@ -125,6 +146,8 @@ class CsvCheck extends Specification with ScalaCheck {
     val frame =
       CsvParser
         .parse(src, bufferSize = 2, recordSeparator = lf)
+        .right
+        .get
         .withColIndex(0)
         .resetRowIndex
     val expect = Frame(
@@ -138,7 +161,12 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
     val frame =
-      CsvParser.parse(src, bufferSize = 2).withColIndex(0).resetRowIndex
+      CsvParser
+        .parse(src, bufferSize = 2)
+        .right
+        .get
+        .withColIndex(0)
+        .resetRowIndex
     val expect = Frame(
       Vec("")
     ).setColIndex(Index("1"))
@@ -153,6 +181,8 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val frame = CsvParser
       .parse(src)
+      .right
+      .get
       .withColIndex(0)
       .resetRowIndex
       .mapValues(implicitly[ST[Int]].parse)
@@ -167,7 +197,29 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
 
-    CsvParser.parse(src) must throwAn[RuntimeException]
+    CsvParser.parse(src) must_== Left(
+      "Incomplete line 1. Expected 3 fields, got 2.. line=1, field=2"
+    )
+  }
+  "csv fails on bad quoting" in {
+    val data =
+      s""""a"a""".stripMargin
+
+    val src = scala.io.Source.fromString(data)
+
+    CsvParser.parse(src) must_== Left(
+      "quotes in quoted field must be escaped by doubling them.. line=0, field=0"
+    )
+  }
+  "csv fails on unclosed quoting" in {
+    val data =
+      s""""aa""".stripMargin
+
+    val src = scala.io.Source.fromString(data)
+
+    CsvParser.parse(src) must_== Left(
+      "Unclosed quote.. line=0, field=0"
+    )
   }
 
   "csv parsing still works when final field is empty" in {
