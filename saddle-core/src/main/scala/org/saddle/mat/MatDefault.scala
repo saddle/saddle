@@ -387,8 +387,6 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
     val buf = new StringBuilder()
     buf.append("[%d x %d]\n".format(numRows, numCols))
 
-    implicit val st = scalarTag
-
     val maxStrLen = (a: Int, b: String) => a.max(b.length)
     val maxColLen = (c: Vec[T]) =>
       (c.head(halfr) concat c.tail(halfr))

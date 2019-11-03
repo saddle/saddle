@@ -16,7 +16,6 @@
 package org.saddle
 
 import scala.{specialized => spec}
-import util.Concat.Promoter
 import ops.{NumericOps, BinOpSeries}
 import vec.VecImpl
 import org.saddle.index.{JoinType, LeftJoin, IndexIntRange, Slice, Splitter}
@@ -304,9 +303,9 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @tparam U type of other Series Values
     * @tparam V type of resulting Series values
     */
-  def concat[U, V](
-      other: Series[X, U]
-  )(implicit pro: Promoter[T, U, V], md: ST[V]): Series[X, V] =
+  def concat(
+      other: Series[X, T]
+  ): Series[X, T] =
     Series(values concat other.values, index concat other.index)
 
   /**

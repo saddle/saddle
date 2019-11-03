@@ -20,9 +20,7 @@ import org.saddle.scalar._
 
 import org.joda.time._
 import scala.{specialized => spec}
-import util.Concat.Promoter
 import org.saddle.time._
-import org.saddle.util.Concat.Promoter
 
 /**
   * A compact native int representation of posix times at millisecond resolution which
@@ -59,13 +57,6 @@ class VecTime(
   // specialized concatenation
   def concat(x: VecTime) =
     vl2vt(Vec(util.Concat.append(times.toArray, x.times.toArray)))
-
-  // general concatenation
-  override def concat[
-      @spec(Boolean, Int, Long, Double) B,
-      @spec(Boolean, Int, Long, Double) C
-  ](v: Vec[B])(implicit wd: Promoter[DateTime, B, C], mc: ST[C]) =
-    Vec(util.Concat.append[DateTime, B, C](toArray, v.toArray))
 
   override def unary_-()(implicit num: NUM[DateTime]) =
     sys.error("Cannot negate VecTime")

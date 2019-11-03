@@ -16,7 +16,6 @@
 package org.saddle.vec
 
 import scala.{specialized => spec}
-import org.saddle.util.Concat.Promoter
 import org.saddle.scalar.{Scalar, NA, ScalarTagDouble}
 import org.saddle.ops.NumericOps
 import org.saddle.{ST, Vec, array, NUM, util, ORD, PctMethod, RankTie}
@@ -131,11 +130,8 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * @tparam B type of other Vec elements
     * @tparam C type of resulting Vec elements
     */
-  def concat[
-      @spec(Boolean, Int, Long, Double) B,
-      @spec(Boolean, Int, Long, Double) C
-  ](v: Vec[B])(implicit wd: Promoter[T, B, C], mc: ST[C]): Vec[C] =
-    Vec(util.Concat.append[T, B, C](toArray, v.toArray))
+  def concat(v: Vec[T]): Vec[T] =
+    Vec(util.Concat.append(toArray, v.toArray))
 
   /**
     * Left fold over the elements of the Vec, as in scala collections library
@@ -760,8 +756,6 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     val half = len / 2
 
     val buf = new StringBuilder()
-
-    implicit val st = scalarTag
 
     val maxf = (a: Int, b: String) => math.max(a, b.length)
 

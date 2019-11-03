@@ -19,7 +19,6 @@ import scala.{specialized => spec}
 import java.util.Arrays.binarySearch
 import org.saddle.{Vec, Index, array, util, ST, ORD}
 import org.saddle.scalar.ScalarTagInt
-import org.saddle.util.Concat.Promoter
 import org.saddle.index.IndexImpl.IndexProperties
 import org.saddle.vec.VecImpl
 import org.saddle.locator.Locator
@@ -48,10 +47,10 @@ class IndexInt(keys: Vec[Int]) extends Index[Int] {
   def without(locs: Array[Int]): Index[Int] =
     Index(array.remove(keys.toArray, locs))
 
-  def concat[B, C](
-      x: Index[B]
-  )(implicit wd: Promoter[Int, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
-    Index(util.Concat.append[Int, B, C](toArray, x.toArray))
+  def concat(
+      x: Index[Int]
+  ): Index[Int] =
+    Index(util.Concat.append(toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
 

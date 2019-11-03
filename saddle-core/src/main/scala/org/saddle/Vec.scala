@@ -21,7 +21,6 @@ import vec.VecDefault
 import index.Slice
 import ops.{BinOpVec, NumericOps}
 import scalar.{Scalar, ScalarTag}
-import util.Concat.Promoter
 
 import java.io.OutputStream
 
@@ -306,7 +305,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
     * @tparam B type of other Vec elements
     * @tparam C type of resulting Vec elements
     */
-  def concat[B, C](v: Vec[B])(implicit wd: Promoter[T, B, C], mc: ST[C]): Vec[C]
+  def concat(v: Vec[T]): Vec[T]
 
   /**
     * Additive inverse of Vec with numeric elements

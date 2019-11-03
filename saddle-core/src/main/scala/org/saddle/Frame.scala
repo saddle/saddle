@@ -30,7 +30,6 @@ import org.saddle.index.{
 }
 import org.saddle.groupby.{FrameGrouper, IndexGrouper}
 import org.saddle.ops.{NumericOps, BinOpFrame}
-import util.Concat.Promoter
 import scalar.Scalar
 import java.io.OutputStream
 import org.saddle.mat.MatCols
@@ -975,17 +974,17 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * @tparam U type of other Frame values
     * @tparam V type of resulting Frame values
     */
-  def concat[U, V](
-      other: Frame[RX, CX, U],
+  def concat(
+      other: Frame[RX, CX, T],
       how: JoinType = OuterJoin
-  )(implicit pro: Promoter[T, U, V], md: ST[V]): Frame[RX, CX, V] = {
+  ): Frame[RX, CX, T] = {
 
     val ixc = colIx.join(other.colIx, how)
 
     val lft = ixc.lTake.map(x => values.take(x)) getOrElse values
     val rgt = ixc.rTake.map(x => other.values.take(x)) getOrElse other.values
 
-    val mfn = (v: Vec[T], u: Vec[U]) => v concat u
+    val mfn = (v: Vec[T], u: Vec[T]) => v concat u
     val zpp = lft zip rgt
     val dat = zpp.map { case (top, bot) => mfn(top, bot) }
     val idx = rowIx concat other.rowIx
@@ -1502,20 +1501,20 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     * A1 A2 rconcat B1 B2  =  A1 A2 B1 B2
     * A3 A4         B3 B4     A3 A4 B3 B4
     */
-  def rconcat[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
-      implicit wd1: Promoter[T, U, V],
-      md: ST[V]
-  ): Frame[RX, CX, V] = T.concat(other.T, how).T
+  def rconcat(
+      other: Frame[RX, CX, T],
+      how: JoinType = OuterJoin
+  ): Frame[RX, CX, T] = T.concat(other.T, how).T
 
   /**
     * Same as rconcat. Concatenates two Frames by concatenating their lists of columns
     * A1 A2 rconcat B1 B2  =  A1 A2 B1 B2
     * A3 A4         B3 B4     A3 A4 B3 B4
     */
-  def cbind[U, V](other: Frame[RX, CX, U], how: JoinType = OuterJoin)(
-      implicit wd1: Promoter[T, U, V],
-      md: ST[V]
-  ): Frame[RX, CX, V] = T.concat(other.T, how).T
+  def cbind(
+      other: Frame[RX, CX, T],
+      how: JoinType = OuterJoin
+  ): Frame[RX, CX, T] = T.concat(other.T, how).T
 
   /**
     * Same as concat. Concatenates two Frames by concatenating their lists of rows
@@ -1524,10 +1523,10 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T: ST](
     *                         B1 B2
     *                         B3 B4
     */
-  def rbind[U, V](
-      other: Frame[RX, CX, U],
+  def rbind(
+      other: Frame[RX, CX, T],
       how: JoinType = OuterJoin
-  )(implicit pro: Promoter[T, U, V], md: ST[V]): Frame[RX, CX, V] =
+  ): Frame[RX, CX, T] =
     this.concat(other, how)
 
   /**

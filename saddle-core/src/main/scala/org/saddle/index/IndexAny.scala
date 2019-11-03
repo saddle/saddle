@@ -18,7 +18,6 @@ package org.saddle.index
 import scala.{specialized => spec}
 import annotation.tailrec
 import org.saddle.{ST, ORD, Vec, Index, array, util}
-import org.saddle.util.Concat.Promoter
 import org.saddle.index.IndexImpl.IndexProperties
 import org.saddle.vec.VecImpl
 import org.saddle.locator.Locator
@@ -48,10 +47,10 @@ class IndexAny[T: ST: ORD](keys: Vec[T]) extends Index[T] {
   def without(locs: Array[Int]): Index[T] =
     Index(array.remove(keys.toArray, locs))
 
-  def concat[B, C](
-      x: Index[B]
-  )(implicit wd: Promoter[T, B, C], mc: ST[C], oc: ORD[C]): Index[C] =
-    Index(util.Concat.append[T, B, C](toArray, x.toArray))
+  def concat(
+      x: Index[T]
+  ): Index[T] =
+    Index(util.Concat.append(toArray, x.toArray))
 
   def isMonotonic: Boolean = monotonic
 
