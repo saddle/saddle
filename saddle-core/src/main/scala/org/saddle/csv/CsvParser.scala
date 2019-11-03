@@ -15,11 +15,13 @@
  **/
 package org.saddle.csv
 
-import org.saddle.{Frame, Vec}
+import org.saddle.{Frame, Vec, ST}
+import org.saddle.Index
 import collection.mutable.ArrayBuffer
 import scala.annotation.tailrec
 import scala.io.Source
 import org.saddle.Buffer
+import scala.{specialized => spec}
 
 /**
   * Csv parsing utilities
@@ -61,7 +63,7 @@ object CsvParser {
       }
   }
 
-  def parse(
+  def parse[@spec(Int, Double, Long, Float) T](
       source: Source,
       cols: Seq[Int] = Nil,
       fieldSeparator: Char = ',',
@@ -69,7 +71,7 @@ object CsvParser {
       recordSeparator: String = "\r\n",
       bufferSize: Int = 8192,
       maxLines: Long = Long.MaxValue
-  ): Either[String, Frame[Int, Int, String]] =
+  )(implicit st: ST[T]): Either[String, Frame[Int, Int, T]] =
     parseFromIterator(
       source.grouped(bufferSize).map(_.toArray),
       cols,
@@ -77,7 +79,26 @@ object CsvParser {
       quoteChar,
       recordSeparator,
       maxLines
-    )
+    ).map(_._1)
+
+  def parseHeader[@spec(Int, Double, Long, Float) T](
+      source: Source,
+      cols: Seq[Int] = Nil,
+      fieldSeparator: Char = ',',
+      quoteChar: Char = '"',
+      recordSeparator: String = "\r\n",
+      bufferSize: Int = 8192,
+      maxLines: Long = Long.MaxValue
+  )(implicit st: ST[T]): Either[String, Frame[Int, String, T]] =
+    parseFromIterator(
+      source.grouped(bufferSize).map(_.toArray),
+      cols,
+      fieldSeparator,
+      quoteChar,
+      recordSeparator,
+      maxLines,
+      header = true
+    ).map { case (frame, colIndex) => frame.setColIndex(colIndex.get) }
 
   /**
     * Parse CSV files according to RFC 4180
@@ -89,15 +110,19 @@ object CsvParser {
     * @param recordSeparator Record separator (line ending)
     * @param source The csv data source to operate on
     * @param maxLines The maximum number of records that will be read from the file. Includes header.
+    * @param header indicates whether the first line should be set aside
     */
-  def parseFromIterator(
+  def parseFromIterator[@spec(Int, Double, Long, Float) T](
       source: Iterator[Array[Char]],
       cols: Seq[Int] = Nil,
       fieldSeparator: Char = ',',
       quoteChar: Char = '"',
       recordSeparator: String = "\r\n",
-      maxLines: Long = Long.MaxValue
-  ): Either[String, Frame[Int, Int, String]] =
+      maxLines: Long = Long.MaxValue,
+      header: Boolean = false
+  )(
+      implicit st: ST[T]
+  ): Either[String, (Frame[Int, Int, T], Option[Index[String]])] =
     if (fieldSeparator == quoteChar)
       Left("Separator character and quote character cannot be the same")
     else if (recordSeparator.size != 1 && recordSeparator.size != 2)
@@ -105,7 +130,7 @@ object CsvParser {
         s"Record separator must have 1 or 2 characters. ${recordSeparator.toCharArray.map(_.toByte).deep}"
       )
     else if (source.isEmpty || maxLines == 0)
-      Right(Frame.empty[Int, Int, String])
+      Right((Frame.empty[Int, Int, T], None))
     else {
 
       val data = new DataBuffer(source, Array.empty, 0, false)
@@ -137,19 +162,23 @@ object CsvParser {
         if (locs.length == 0) locs = (0 until firstLine.length).toArray
 
         // set up buffers to store parsed data
-        val bufdata = for { _ <- locs } yield new Buffer[String](
-          Array.ofDim[String](1024),
+        val bufdata = for { _ <- locs } yield new Buffer[T](
+          Array.ofDim[T](1024),
           0
         )
 
         def addToBuffer(s: String, buf: Int) = {
           import scala.Predef.{wrapRefArray => _}
-          bufdata(buf).+=(s)
+          bufdata(buf).+=(st.parse(s))
         }
 
-        // first line is either header, or needs to be processed
         val fields = Vec(firstLine).take(locs)
-        fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
+        val colIndex = if (header) {
+          Some(Index(fields))
+        } else {
+          fields.toSeq.zipWithIndex.map { case (s, i) => addToBuffer(s, i) }
+          None
+        }
 
         // parse remaining rows
         val errorMessage = extractFields(
@@ -168,7 +197,7 @@ object CsvParser {
             Vec(b.toArray)
           }
 
-          Right(Frame(columns: _*))
+          Right((Frame(columns: _*), colIndex))
         }
       }
     }
