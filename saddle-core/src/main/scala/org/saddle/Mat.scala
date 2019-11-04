@@ -166,6 +166,32 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
 
   /**
+    * Maps a function over each row in the matrix
+    * f must return a Vec with numCols elements
+    */
+  def mapRows[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[A], Int) => Vec[B]
+  ): Mat[B]
+
+  /** In place mutate rows of the matrix */
+  def mutateRows[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[A], Int) => Vec[A]
+  ): Unit
+
+  /**
+    * Maps a function over each col in the matrix
+    * f must return a Vec with numRows elements
+    */
+  def mapCols[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[A], Int) => Vec[B]
+  ): Mat[B]
+
+  /** In place mutate cols of the matrix */
+  def mutateCols[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[A], Int) => Vec[A]
+  ): Unit
+
+  /**
     * Changes the shape of matrix without changing the underlying data
     *
     * Backing array will be shared between the two instances!

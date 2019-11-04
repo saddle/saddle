@@ -44,6 +44,36 @@ class MatCheck extends Specification with ScalaCheck {
         res.contents must_== exp
       }
     }
+    "map rows works" in {
+      forAll { (m: Mat[Double]) =>
+        val res = m.mapRows((v, i) => v + i)
+        val exp = m.rows.zipWithIndex.map(v => v._1 + v._2).toMat.T
+        res must_== exp
+      }
+    }
+    "mutate rows works" in {
+      forAll { (m: Mat[Double]) =>
+        val res = m.copy
+        res.mutateRows[Double]((v, i) => v + i)
+        val exp = m.rows.zipWithIndex.map(v => v._1 + v._2).toMat.T
+        res must_== exp
+      }
+    }
+    "map cols works" in {
+      forAll { (m: Mat[Double]) =>
+        val res = m.mapCols((v, i) => v + i)
+        val exp = m.cols.zipWithIndex.map(v => v._1 + v._2).toMat
+        res must_== exp
+      }
+    }
+    "mutate cols works" in {
+      forAll { (m: Mat[Double]) =>
+        val res = m.copy
+        res.mutateCols[Double]((v, i) => v + i)
+        val exp = m.cols.zipWithIndex.map(v => v._1 + v._2).toMat
+        res must_== exp
+      }
+    }
 
     "reshape works" in {
       forAll { (m: Mat[Double]) =>

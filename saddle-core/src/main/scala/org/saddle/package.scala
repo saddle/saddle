@@ -205,6 +205,12 @@ package object saddle {
     def toVec: Vec[T] = Vec(s)
   }
 
+  implicit class SeqToMat[T: ST](
+      s: Seq[Vec[T]]
+  ) {
+    def toMat = Mat(s: _*)
+  }
+
   /**
     * Augments Seq with a toIndex method that returns a new Index instance.
     *

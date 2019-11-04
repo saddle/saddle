@@ -437,7 +437,7 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
     */
   def toFrame = Frame(this)
 
-  def mutateSetCell(r: Int, c: Int, v: T): Unit = {
+  @inline def mutateSetCell(r: Int, c: Int, v: T): Unit = {
     values(r * numCols + c) = v
   }
   def mutateSetRow(r: Int, v: T): Unit = {
@@ -485,6 +485,76 @@ class MatDefault[@spec(Boolean, Int, Long, Double) T](
       }
       i += 1
       j = i + 1
+    }
+  }
+
+  /**
+    * Maps a function over each row in the matrix
+    * f must return a Vec with numCols elements
+    */
+  def mapRows[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[B]
+  ): Mat[B] = {
+    val cpy = Array.ofDim[B](numRows * numCols)
+    var i = 0
+    while (i < numRows) {
+      val v = f(row(i), i).toArray
+      System.arraycopy(v, 0, cpy, i * numCols, v.length)
+      i += 1
+    }
+    Mat(numRows, numCols, cpy)
+  }
+
+  /** In place mutate rows of the matrix */
+  def mutateRows[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[T]
+  ): Unit = {
+    val ar = toArray
+    var i = 0
+    while (i < numRows) {
+      val v = f(row(i), i).toArray
+      System.arraycopy(v, 0, ar, i * numCols, v.length)
+      i += 1
+    }
+
+  }
+
+  /**
+    * Maps a function over each col in the matrix
+    * f must return a Vec with numRows elements
+    */
+  def mapCols[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[B]
+  ): Mat[B] = {
+    val cpy = Mat(numRows, numCols, Array.ofDim[B](numRows * numCols))
+    var i = 0
+    var j = 0
+    while (i < numCols) {
+      val v = f(col(i), i).toArray
+      j = 0
+      while (j < numRows) {
+        cpy.mutateSetCell(j, i, v(j))
+        j += 1
+      }
+      i += 1
+    }
+    cpy
+  }
+
+  /** In place mutate cols of the matrix */
+  def mutateCols[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[T]
+  ): Unit = {
+    var i = 0
+    var j = 0
+    while (i < numCols) {
+      val v = f(col(i), i).toArray
+      j = 0
+      while (j < numRows) {
+        mutateSetCell(j, i, v(j))
+        j += 1
+      }
+      i += 1
     }
   }
 
