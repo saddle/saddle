@@ -127,6 +127,18 @@ lazy val linalg = project
   )
   .dependsOn(core)
 
+lazy val binary = project
+  .in(file("saddle-binary"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "saddle-binary",
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %% "ujson" % "0.8.0",
+      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+    )
+  )
+  .dependsOn(core)
+
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
