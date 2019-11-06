@@ -51,7 +51,7 @@ via code repository commit messages. The copyright to the entirety of the code
 base is shared among the Saddle Development Team, comprised of the developers
 who have made such contributions.
 
-The copyright and license of each file shall read as follows (except under saddle-linalg/):
+The copyright and license of each file shall read as follows:
 
 > Copyright (c) 2013-2015 Saddle Development Team
 >
@@ -71,9 +71,6 @@ The copyright and license of each file shall read as follows (except under saddl
 Individual contributors may, if they so desire, append their names to
 the CONTRIBUTORS file.
 
-Code in the saddle-linalg/ folder is licensed under MIT and its copyright holder is
-Istvan Bartha. See the saddle-linalg/LICENSE file.
-
 Code in saddle-core/src/main/scala/org/saddle/util/LongMap.scala has different copyright terms,
 see its header.
 
@@ -89,5 +86,7 @@ released by Novus under this license in 2013. Adam Klein is lead
 developer. Saddle was inspired by earlier prototypes developed by 
 Chris Lewis, Cheng Peng, & David Cru. Saddle was also inspired by 
 previous work with [pandas](http://pandas.pydata.org/ "pandas"), a 
-data analysis library written in Python.
+data analysis library written in Python. 
+
+Code in the saddle-linalg/ folder is contributed by Istvan Bartha.
 
