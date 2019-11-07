@@ -36,6 +36,29 @@ class IndexCheck extends Specification with ScalaCheck {
         }
       }
     }
+    "distinct works - int" in {
+      forAll { (ix: Index[Int]) =>
+        ix.distinct must_== ix.toSeq.distinct.toIndex
+      }
+    }
+    "distinct works - long " in {
+      forAll { (ix: Index[Int]) =>
+        ix.map(_.toLong)
+          .distinct must_== ix.map(_.toLong).toSeq.distinct.toIndex
+      }
+    }
+    "distinct works - double " in {
+      forAll { (ix: Index[Int]) =>
+        ix.map(_.toDouble)
+          .distinct must_== ix.map(_.toDouble).toSeq.distinct.toIndex
+      }
+    }
+    "distinct works - string " in {
+      forAll { (ix: Index[Int]) =>
+        ix.map(_.toString)
+          .distinct must_== ix.map(_.toString).toSeq.distinct.toIndex
+      }
+    }
 
     "without works" in {
       forAll { (ix: Index[Int]) =>
