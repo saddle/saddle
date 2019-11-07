@@ -37,6 +37,13 @@ class SeriesCheck extends Specification with ScalaCheck {
       }
     }
 
+    "distinct works" in {
+      forAll { (s: Series[Int, Double]) =>
+        (s.distinctIx.index.toSeq must_== s.toSeq.map(_._1).distinct) and
+          (s.distinctIx.values must_== s(s.index.toSeq.distinct: _*).values)
+      }
+    }
+
     "series equality" in {
       forAll { (s: Series[Int, Double]) =>
         (s must_== Series(s.toVec)) and (s must_== s)

@@ -126,6 +126,11 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
     */
   def take(locs: Array[Int]): Index[T]
 
+  /** Return the index of distinct values. Keeps order of first occurences. */
+  def distinct(implicit st: ST[T], ord: ORD[T]): Index[T] = {
+    Index(Vec(locator.keys))
+  }
+
   /**
     * Complement of the take method; return a new Index whose values are those
     * which do not occur at the specified locations.

@@ -65,6 +65,11 @@ class FrameCheck extends Specification with ScalaCheck {
         f.isEmpty == (f.numCols == 0 || f.numRows == 0)
       }
     }
+    "rmapvec" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.rmapVec(_ * 2) == f.T.mapVec(_ * 2).T
+      }
+    }
 
     "transpose" in {
       forAll { (f: Frame[Int, Int, Double]) =>
@@ -202,7 +207,22 @@ class FrameCheck extends Specification with ScalaCheck {
       val f = Frame(Vec("a", "b", "c"), Vec("d", "e", "f"))
       f.T must_== Frame(Vec("a", "d"), Vec("b", "e"), Vec("c", "f"))
     }
-
+    "distinct works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.distinct must_== {
+          val d = f.toColSeq.map(_._1).distinct
+          f.col(d: _*)
+        }
+      }
+    }
+    "rdistinct works" in {
+      forAll { (f: Frame[Int, Int, Double]) =>
+        f.rdistinct must_== {
+          val d = f.toRowSeq.map(_._1).distinct
+          f.row(d: _*)
+        }
+      }
+    }
     "rreduce works" in {
       forAll { (f: Frame[Int, Int, Double]) =>
         f.sum must_== f.T.rreduce(_.toVec.toSeq.filterNot(_.isNaN).sum)

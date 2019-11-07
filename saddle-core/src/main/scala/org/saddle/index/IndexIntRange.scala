@@ -94,6 +94,8 @@ class IndexIntRange(val length: Int, val from: Int = 0) extends Index[Int] {
   // find the last location whereby an insertion would maintain a sorted index
   def rsearch(t: Int) = math.min(math.max(0, from + t + 1), from + length)
 
+  override def distinct(implicit st: ST[Int], ord: ORD[Int]) = this
+
   // slice at array locations, [from, until)
   def slice(from: Int, until: Int, stride: Int) =
     if (stride == 1)

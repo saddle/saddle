@@ -1436,6 +1436,15 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T](
   ): Frame[RX, CX, T] =
     this.concat(other, how)
 
+  def distinct = {
+    val newColIx = colIx.distinct
+    col(newColIx.toArray)
+  }
+  def rdistinct = {
+    val newRowIx = rowIx.distinct
+    row(newRowIx.toArray)
+  }
+
   /**
     * See where; operates row-wise
     */
