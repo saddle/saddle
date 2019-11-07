@@ -650,9 +650,12 @@ package object array {
     *
     * @param arr Array to sort
     */
-  def argsort[T: ST: ORD](arr: Array[T]): Array[Int] =
-    implicitly[ST[T]].makeSorter.argSorted(arr)
-  def argsort[T: ST: ORD](vec: Vec[T]): Array[Int] = argsort(vec.toArray)
+  def argsort[@spec(Double, Long, Int, Float) T: ORD](
+      arr: Array[T]
+  )(implicit st: ST[T]): Array[Int] =
+    st.makeSorter.argSorted(arr)
+    
+  def argsort[@spec(Double, Long, Int, Float) T: ST: ORD](vec: Vec[T]): Array[Int] = argsort(vec.toArray)
 
   /**
     * Stable sort of array argument (not destructive), using radix sort
