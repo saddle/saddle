@@ -166,6 +166,6 @@ lazy val root = (project in file("."))
   )
   .enablePlugins(ScalaUnidocPlugin)
   .enablePlugins(GhpagesPlugin)
-  .aggregate(core, time, stats, linalg, binary)
+  .aggregate(core, time, stats, linalg, binary, circe)
 
 parallelExecution in ThisBuild := false
