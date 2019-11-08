@@ -1436,10 +1436,17 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T](
   ): Frame[RX, CX, T] =
     this.concat(other, how)
 
+  /** Return the frame with the first occurence of each column key.
+    * Rows are not changed.
+    */
   def distinct = {
     val newColIx = colIx.distinct
     col(newColIx.toArray)
   }
+
+  /** Return the series with the first occurence of each row key.
+    * Columns are not changed.
+    */
   def rdistinct = {
     val newRowIx = rowIx.distinct
     row(newRowIx.toArray)

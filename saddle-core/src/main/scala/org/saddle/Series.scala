@@ -397,6 +397,8 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
     */
   def hasNA: Boolean = toVec.hasNA
 
+  /** Return the series with the first occurence of each key
+   */
   def distinctIx: Series[X, T] = {
     val nix = index.distinct
     val offset = index(nix.toVec.toArray)
