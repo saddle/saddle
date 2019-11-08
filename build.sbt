@@ -78,7 +78,7 @@ lazy val core = project
   .settings(
     name := "saddle-core",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "spire" % "0.16.0",
+      "org.typelevel" %% "spire" % "0.17.0-M1",
       "org.apache.commons" % "commons-math" % "2.2" % "test",
       "org.specs2" %% "specs2-core" % "4.6.0" % "test",
       "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"
