@@ -139,6 +139,18 @@ lazy val binary = project
   )
   .dependsOn(core)
 
+lazy val circe = project
+  .in(file("saddle-circe"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "saddle-circe",
+    libraryDependencies ++= Seq(
+      "io.circe" %% "circe-core" % "0.12.3",
+      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+    )
+  )
+  .dependsOn(core)
+
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
