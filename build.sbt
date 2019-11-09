@@ -84,7 +84,6 @@ lazy val core = project
       "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"
     )
   )
-  .enablePlugins(SiteScaladocPlugin)
 
 lazy val time = project
   .in(file("saddle-time"))
@@ -151,21 +150,28 @@ lazy val circe = project
   )
   .dependsOn(core)
 
+lazy val docs = project
+  .in(file("saddle-docs"))
+  .dependsOn(core, linalg, circe, binary)
+  .settings(
+    moduleName := "saddle-docs",
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    ),
+    target in (ScalaUnidoc, unidoc) := (baseDirectory in LocalRootProject).value / "website" / "static" / "api",
+    cleanFiles += (target in (ScalaUnidoc, unidoc)).value
+  )
+  .enablePlugins(MdocPlugin, DocusaurusPlugin, ScalaUnidocPlugin)
+
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
     publishArtifact := false
   )
   .settings(
-    siteSubdirName in ScalaUnidoc := "/",
-    addMappingsToSiteDir(
-      mappings in (ScalaUnidoc, packageDoc),
-      siteSubdirName in ScalaUnidoc
-    ),
     git.remoteRepo := ""
   )
   .enablePlugins(ScalaUnidocPlugin)
-  .enablePlugins(GhpagesPlugin)
   .aggregate(core, time, stats, linalg, binary, circe)
 
 parallelExecution in ThisBuild := false

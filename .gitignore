@@ -9,3 +9,6 @@ target/
 .metals/
 .bloop/
 TODO
+website/public/
+website/static/api
+_gen/

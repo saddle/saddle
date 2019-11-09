@@ -1,0 +1,47 @@
+languageCode = "en-us"
+title = "SADDLE"
+baseURL = "https://pityka.github.io/saddle"
+themesDir = "themes"
+theme = "hugo-whisper-theme"
+
+contentDir = "../saddle-docs/target/mdoc"
+
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsStyle = "monokai"
+pygmentsUseClasses = false
+
+# Controls how many words are printed in the content summary on the docs homepage.
+# See https://gohugo.io/content-management/summaries/
+summaryLength = 0
+
+[[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+[[menu.main]]
+    name = "Docs"
+    url = "/docs/"
+    weight = 2
+
+[[menu.main]]
+    name = "API"
+    url = "/api/"
+    weight = 3
+
+[params]
+  # homepage_button_link = '/docs'
+  # homepage_intro = 'Whisper is a documentation theme built with Hugo. The design and functionality is intentionally minimal.'
+
+  ## You can enable to add anchor links to header elements
+  # enable_anchor_link = true
+
+  [params.homepage_meta_tags]
+    meta_description = "SADDLE scala data library"
+
+  [params.logo]
+      # mobile = "/images/logo-mobile.svg"
+      # standard  = "/images/logo.svg"
+
+
