@@ -154,6 +154,7 @@ lazy val docs = project
   .in(file("saddle-docs"))
   .dependsOn(core, linalg, circe, binary)
   .settings(
+    publishArtifact := false,
     moduleName := "saddle-docs",
     mdocVariables := Map(
       "VERSION" -> version.value
