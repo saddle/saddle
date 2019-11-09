@@ -161,7 +161,7 @@ lazy val docs = project
     target in (ScalaUnidoc, unidoc) := (baseDirectory in LocalRootProject).value / "website" / "static" / "api",
     cleanFiles += (target in (ScalaUnidoc, unidoc)).value
   )
-  .enablePlugins(MdocPlugin, DocusaurusPlugin, ScalaUnidocPlugin)
+  .enablePlugins(MdocPlugin, ScalaUnidocPlugin)
 
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
@@ -171,7 +171,6 @@ lazy val root = (project in file("."))
   .settings(
     git.remoteRepo := ""
   )
-  .enablePlugins(ScalaUnidocPlugin)
-  .aggregate(core, time, stats, linalg, binary, circe)
+  .aggregate(core, time, stats, linalg, binary, circe, docs)
 
 parallelExecution in ThisBuild := false
