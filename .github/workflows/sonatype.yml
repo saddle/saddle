@@ -13,23 +13,26 @@ jobs:
       - uses: peaceiris/actions-hugo@v2.2.2
         with: 
           hugo-version: '0.59.1'
-      - name: Publish
-        run: |
-          git ls-remote --get-url origin
-          sbt test ci-release
-        env:
-          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-          PGP_SECRET: ${{ secrets.PGP_SECRET }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      # - name: Publish
+      #   run: |
+      #     git ls-remote --get-url origin
+      #     sbt test ci-release
+      #   env:
+      #     PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      #     PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      #     SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      #     SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
       - name: github-pages
         run: |
           sbt clean docs/mdoc docs/unidoc
           cd website
           ls
           hugo env
+          hugo config 
+          hugo --config.toml config 
+
           pwd
-          hugo --debug
+          hugo --debug --config config.toml
           cd public
           git init 
           git config user.name "bot"
