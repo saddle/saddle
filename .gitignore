@@ -5,7 +5,6 @@ saddle.sublime-workspace
 project/target/
 target/
 !*api*
-**/*html
 .metals/
 .bloop/
 TODO
