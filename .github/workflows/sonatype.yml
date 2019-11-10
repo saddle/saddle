@@ -30,7 +30,7 @@ jobs:
           ls
           hugo env
           hugo config 
-          hugo --config.toml config 
+          hugo --config config.toml config 
           pwd
           hugo --debug --config config.toml
           cd public
