@@ -29,6 +29,7 @@ jobs:
           cd website
           hugo
           cd public
+          touch .nojekyll
           git init 
           git config user.name "bot"
           git config user.email "saddle-bot@users.noreply.github.com"
