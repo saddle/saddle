@@ -13,6 +13,7 @@ jobs:
       - uses: peaceiris/actions-hugo@v2.2.2
         with: 
           hugo-version: '0.59.1'
+          extended: true
       # - name: Publish
       #   run: |
       #     git ls-remote --get-url origin
@@ -30,7 +31,6 @@ jobs:
           hugo env
           hugo config 
           hugo --config.toml config 
-
           pwd
           hugo --debug --config config.toml
           cd public
