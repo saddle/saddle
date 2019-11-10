@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: olafurpg/setup-scala@v2
-      - uses: olafurpg/setup-gpg@v2
+      # - uses: olafurpg/setup-gpg@v2
       - uses: peaceiris/actions-hugo@v2.2.2
         with: 
           hugo-version: '0.59.1'
@@ -32,7 +32,7 @@ jobs:
           hugo config 
           hugo --config config.toml config 
           pwd
-          hugo --debug --config config.toml
+          hugo --debug --config config.toml --themesDir $PWD/themes
           cd public
           git init 
           git config user.name "bot"
