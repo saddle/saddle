@@ -32,6 +32,7 @@ jobs:
           hugo config 
           hugo --config config.toml config 
           pwd
+          find themes
           hugo --debug --config config.toml --themesDir $PWD/themes --verbose
           cd public
           git init 
