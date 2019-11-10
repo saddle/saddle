@@ -1,3 +1,5 @@
+lazy val scalaTestVersion = "3.0.8"
+
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.10",
   parallelExecution in Test := false,
@@ -121,7 +123,7 @@ lazy val linalg = project
     libraryDependencies ++= Seq(
       "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly (),
       "net.sourceforge.f2j" % "arpack_combined_all" % "0.1",
-      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+      "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
     )
   )
   .dependsOn(core)
@@ -133,7 +135,7 @@ lazy val binary = project
     name := "saddle-binary",
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "ujson" % "0.8.0",
-      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+      "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
     )
   )
   .dependsOn(core)
@@ -145,7 +147,7 @@ lazy val circe = project
     name := "saddle-circe",
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-core" % "0.12.3",
-      "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+      "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
     )
   )
   .dependsOn(core)
