@@ -97,6 +97,7 @@ package object saddle {
     * }}}
     */
   implicit def pair2Slice[T](p: (T, T)) = Slice(p._1, p._2)
+  implicit def any2Slice[T](p: T) = Slice(p, p)
 
   /**
     * Syntactic sugar, allow '* -> ' to generate an (inclusive) index slice, open on left

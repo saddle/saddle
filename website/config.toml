@@ -35,7 +35,7 @@ summaryLength = 0
   # homepage_intro = 'Whisper is a documentation theme built with Hugo. The design and functionality is intentionally minimal.'
 
   ## You can enable to add anchor links to header elements
-  # enable_anchor_link = true
+  enable_anchor_link = true
 
   [params.homepage_meta_tags]
     meta_description = "SADDLE scala data library"
