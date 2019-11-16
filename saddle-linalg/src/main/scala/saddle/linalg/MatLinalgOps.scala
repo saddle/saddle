@@ -283,6 +283,19 @@ trait MatLinalgOps {
     Mat(self.numRows, self.numCols, ar)
   }
 
+  def addDiagonalMatrix(other: Vec[Double]) = {
+    val l = math.min(self.numRows, self.numCols)
+    assert(l == other.length)
+    val cpy = self.copy.toArray
+    val src = other.toArray
+    var i = 0
+    while (i < l) {
+      cpy(i * self.numCols + i) += src(i)
+      i += 1
+    }
+    Mat(self.numRows, self.numCols, cpy)
+  }
+
   /** Solves A x X = B for X when A is PD and self is the Cholesky decomposition
     * The matrix this is called on must be the lower Cholesky factor
     * @param rhsT matrix B'
