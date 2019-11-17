@@ -31,6 +31,12 @@ class MatCheck extends Specification with ScalaCheck {
   "Double Mat Tests" in {
     implicit val arbMat = Arbitrary(MatArbitraries.matDouble)
 
+    "broadcast works" in {
+      val m1 = Mat(Vec(1, 2, 3)).T
+      val m2 = Mat(Vec(10, 20, 30))
+      val m3 = Mat(Vec(11, 21, 31), Vec(12, 22, 32), Vec(13, 23, 33))
+      (m1 + m2) must_== m3
+    }
     "equality works" in {
       forAll { (m: Mat[Double]) =>
         (m must_== Mat(m.numRows, m.numCols, m.toArray)) and (m must_== m)

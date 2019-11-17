@@ -81,7 +81,14 @@ trait BinOpMat {
 
   // ***************
 
-  // Binary element-wise operation on two Mats                                                              scala
+  /**Binary element-wise operation on two Mats
+    *
+    * Broadcasts according to the following rules (same as numpy).
+    * If any of the pairs of dimensions are the same, or one of the pair is size 1, then
+    * the dimensions are compatible.
+    * If the compatible dimension is size 1, then it is virtually expanded to match the size of the
+    * corresponding dimension of the other operand.
+    */
   final class MatMatElemOp[
       OP <: ScalarOp,
       @spec(Int, Long, Double) A,
@@ -90,22 +97,45 @@ trait BinOpMat {
   ](op: BinOp[OP, A, B, C])
       extends BinOp[OP, Mat[A], Mat[B], Mat[C]] {
 
-    def apply(v1: Mat[A], v2: Mat[B]) = {
-      require(
-        v1.numRows == v2.numRows && v1.numCols == v2.numCols,
-        "Mats must have the same size!"
-      )
-      val sz = v1.length
-      val ar = new Array[C](sz)
-      var i = 0
-      val v1a = v1.toArray
-      val v2a = v2.toArray
-      while (i < sz) {
-        ar(i) = op(v1a(i), v2a(i))
-        i += 1
-      }
-      Mat(v1.numRows, v1.numCols, ar)
-    }
+    def apply(v1: Mat[A], v2: Mat[B]) =
+      if (v1.numRows == v2.numRows && v1.numCols == v2.numCols) {
+        val sz = v1.length
+        val ar = new Array[C](sz)
+        var i = 0
+        val v1a = v1.toArray
+        val v2a = v2.toArray
+        while (i < sz) {
+          ar(i) = op(v1a(i), v2a(i))
+          i += 1
+        }
+        Mat(v1.numRows, v1.numCols, ar)
+      } else if ((v1.numRows == v2.numRows || v1.numRows == 1 || v2.numRows == 1) &&
+                 (v1.numCols == v2.numCols || v1.numCols == 1 || v2.numCols == 1)) {
+        //   Broadcasting
+        val nR = math.max(v1.numRows, v2.numRows)
+        val nC = math.max(v1.numCols, v2.numCols)
+        val nR1 = v1.numRows
+        val nR2 = v2.numRows
+        val nC1 = v1.numCols
+        val nC2 = v2.numCols
+        val v1a = v1.toArray
+        val v2a = v2.toArray
+        val sz = nR * nC
+        val ar = new Array[C](sz)
+        var i = 0
+        while (i < sz) {
+          val r = i / nC
+          val c = i % nC
+          val r1 = if (nR1 == 1) 0 else r
+          val r2 = if (nR2 == 1) 0 else r
+          val c1 = if (nC1 == 1) 0 else c
+          val c2 = if (nC2 == 1) 0 else c
+          ar(i) = op(v1a(r1 * nC1 + c1), v2a(r2 * nC2 + c2))
+          i += 1
+        }
+        Mat(nR, nC, ar)
+      } else throw new RuntimeException("Mats must have compatible size!")
+
   }
 
   // concrete implementations
