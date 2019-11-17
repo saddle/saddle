@@ -16,11 +16,11 @@
 package org.saddle
 
 import scalar.{Scalar, ScalarTag}
-import ops.{BinOpMat, NumericOps}
+import ops.{BinOpMat, NumericOps, _}
 import scala.{specialized => spec}
 import java.io.OutputStream
-import org.saddle.index.Slice
-import org.saddle.mat.MatDefault
+import org.saddle.index.{Slice, IndexIntRange}
+import org.saddle.mat.{MatImpl, MatMath}
 
 /**
   * `Mat` is an immutable container for 2D homogeneous data (a "matrix"). It is
@@ -60,45 +60,31 @@ import org.saddle.mat.MatDefault
   *
   * @tparam A Type of elements within the Mat
   */
-trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
-  def scalarTag: ScalarTag[A]
+class Mat[@spec(Boolean, Int, Long, Double) T](
+    r: Int,
+    c: Int,
+    values: Array[T],
+    val scalarTag: ScalarTag[T]
+) extends NumericOps[Mat[T]] {
+  implicit private[this] def st = scalarTag
 
-  /**
-    * Returns number of rows in the matrix shape
-    *
-    */
-  def numRows: Int
+  def numRows = r
 
-  /**
-    * Returns number of columns in the matrix shape
-    *
-    */
-  def numCols: Int
+  def numCols = c
 
-  /**
-    * Returns total number of entries in the matrix
+  /** Returns the backing array of this Mat
+    * Mutations to this array are visible to this Mat
     *
+    * Elements are laid out in row-major order
     */
-  def length: Int
-
-  /**
-    * Returns true if rows == cols
-    *
-    */
-  def isSquare: Boolean
-
-  /**
-    * Returns true if the matrix is empty
-    *
-    */
-  def isEmpty: Boolean
+  def toArray = values
 
   /**
     * Return unboxed value of matrix at an offset from zero in row-major order
     *
     * @param i index
     */
-  def raw(i: Int): A
+  def raw(i: Int): T = values(i)
 
   /**
     * Return unboxed value of matrix at row/column
@@ -106,250 +92,309 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     * @param r row index
     * @param c col index
     */
-  def raw(r: Int, c: Int): A
+  def raw(r: Int, c: Int): T = values(r * numCols + c)
 
   /**
-    * Return scalar value of matrix at offset from zero in row-major order
+    * Concatenate all rows into a single row-wise Vec instance
     *
-    * @param i index
+    * Underlying array is shared between the two instances
     */
-  def at(i: Int): Scalar[A]
-
-  /**
-    * Return scalar value of Mat at at row/column
-    * @param r row index
-    * @param c col index
-    */
-  def at(r: Int, c: Int): Scalar[A]
-
-  /**
-    * Access a slice of the Mat by integer offsets
-    * @param r Array of row offsets
-    * @param c Array of col offsets
-    */
-  def at(r: Array[Int], c: Array[Int]): Mat[A]
-
-  /**
-    * Access a slice of the Mat by integer offsets
-    * @param r Array of row offsets
-    * @param c Integer col offset
-    */
-  def at(r: Array[Int], c: Int): Vec[A]
-
-  /**
-    * Access a slice of the Mat by integer offsets
-    * @param r Integer row offset
-    * @param c Array of col offsets
-    */
-  def at(r: Int, c: Array[Int]): Vec[A]
-
-  /**
-    * Access a slice of the Mat by Slice parameters
-    * @param r Slice to apply to rows
-    * @param c Slice to apply to cols
-    */
-  def at(r: Slice[Int], c: Slice[Int]): Mat[A]
+  def toVec = scalarTag.makeVec(toArray)
 
   /**
     * Returns (a copy of) the contents of matrix as a single array in
     * row-major order
     *
     */
-  def contents: Array[A]
-
-  // Must implement specialized methods using non-specialized subclasses as workaround to
-  // https://issues.scala-lang.org/browse/SI-5281
+  def contents: Array[T] = values.clone()
 
   /**
-    * Maps a function over each element in the matrix
+    * Makes a copy of this Mat
+    *
     */
-  def map[@spec(Boolean, Int, Long, Double) B: ST](f: A => B): Mat[B]
+  def copy: Mat[T] = new Mat(r, c, values.clone, scalarTag)
+
+  def map[@spec(Boolean, Int, Long, Double) B: ST](f: (T) => B): Mat[B] =
+    MatImpl.map(this)(f)
+
+  // Cache the transpose: it's much faster to transpose and slice a continuous
+  // bound than to take large strides, especially on large matrices where it
+  // seems to eject cache lines on each stride (something like 10x slowdown)
+  lazy val cachedT = {
+    val arrT = values.clone()
+
+    if (this.isSquare)
+      MatMath.squareTranspose(numCols, arrT)
+    else
+      MatMath.blockTranspose(numRows, numCols, this.toArray, arrT)
+
+    new Mat(numCols, numRows, arrT, scalarTag)
+  }
+
+  def transpose = cachedT
+
+  def T = transpose
+
+  def takeRows(locs: Array[Int]): Mat[T] = MatImpl.takeRows(this, locs)
+
+  def takeRows(locs: Vec[Int]): Mat[T] = MatImpl.takeRows(this, locs.toArray)
 
   /**
-    * Maps a function over each row in the matrix
-    * f must return a Vec with numCols elements
+    * Create Mat comprised of same values without the specified rows
+    *
+    * @param locs Row locations to exclude
     */
-  def mapRows[@spec(Boolean, Int, Long, Double) B: ST](
-      f: (Vec[A], Int) => Vec[B]
-  ): Mat[B]
-
-  /** In place mutate rows of the matrix */
-  def mutateRows[@spec(Boolean, Int, Long, Double) B: ST](
-      f: (Vec[A], Int) => Vec[A]
-  ): Unit
-
-  /**
-    * Maps a function over each col in the matrix
-    * f must return a Vec with numRows elements
-    */
-  def mapCols[@spec(Boolean, Int, Long, Double) B: ST](
-      f: (Vec[A], Int) => Vec[B]
-  ): Mat[B]
-
-  /** In place mutate cols of the matrix */
-  def mutateCols[@spec(Boolean, Int, Long, Double) B: ST](
-      f: (Vec[A], Int) => Vec[A]
-  ): Unit
+  def withoutRows(locs: Array[Int]): Mat[T] = MatImpl.withoutRows(this, locs)
 
   /**
     * Changes the shape of matrix without changing the underlying data
     *
     * Backing array will be shared between the two instances!
     */
-  def reshape(r: Int, c: Int): Mat[A]
+  def reshape(r: Int, c: Int): Mat[T] = new Mat(r, c, values, scalarTag)
+
+  private[saddle] def toDoubleArray(implicit ev: NUM[T]): Array[Double] = {
+    val arr = Array.ofDim[Double](values.length)
+    var i = 0
+    val n = arr.length
+    while (i < n) {
+      arr(i) = scalarTag.toDouble(values(i))
+      i += 1
+    }
+    arr
+  }
+
+  /** Row-by-row equality check of all values. */
+  override def equals(o: Any): Boolean = o match {
+    case rv: Mat[_] =>
+      (this eq rv) || this.numRows == rv.numRows && this.numCols == rv.numCols && {
+        var i = 0
+        var eq = true
+        while (eq && i < length) {
+          eq &&= (raw(i) == rv.raw(i) || this.scalarTag
+            .isMissing(raw(i)) && rv.scalarTag.isMissing(rv.raw(i)))
+          i += 1
+        }
+        eq
+      }
+    case _ => super.equals(o)
+  }
 
   /**
-    * Transpose of original matrix
+    * Returns total number of entries in the matrix
+    *
     */
-  def transpose: Mat[A]
+  def length: Int = numRows * numCols
 
   /**
-    * Transpose of original matrix
+    * Returns true if rows == cols
+    *
     */
-  def T: Mat[A]
+  def isSquare: Boolean = numCols == numRows
+
+  /**
+    * Returns true if the matrix is empty
+    *
+    */
+  def isEmpty: Boolean = length == 0
+
+  /**
+    * Return scalar value of matrix at offset from zero in row-major order
+    *
+    * @param i index
+    */
+  def at(i: Int): Scalar[T] =
+    Scalar(raw(i))(scalarTag)
+
+  /**
+    * Return scalar value of Mat at at row/column
+    * @param r row index
+    * @param c col index
+    */
+  def at(r: Int, c: Int): Scalar[T] = {
+    Scalar(raw(r, c))(scalarTag)
+  }
+
+  /**
+    * Access a slice of the Mat by integer offsets
+    * @param r Array of row offsets
+    * @param c Array of col offsets
+    */
+  def at(r: Array[Int], c: Array[Int]): Mat[T] = {
+    row(r).col(c)
+  }
+
+  /**
+    * Access a slice of the Mat by integer offsets
+    * @param r Array of row offsets
+    * @param c Integer col offset
+    */
+  def at(r: Array[Int], c: Int): Vec[T] = {
+    row(r).col(c)
+  }
+
+  /**
+    * Access a slice of the Mat by integer offsets
+    * @param r Integer row offset
+    * @param c Array of col offsets
+    */
+  def at(r: Int, c: Array[Int]): Vec[T] = {
+    col(c).row(r)
+  }
+
+  /**
+    * Access a slice of the Mat by Slice parameters
+    * @param r Slice to apply to rows
+    * @param c Slice to apply to cols
+    */
+  def at(r: Slice[Int], c: Slice[Int]): Mat[T] =
+    row(r).col(c)
 
   /**
     * Create Mat comprised of same values in specified rows
     */
-  def takeRows(locs: Array[Int]): Mat[A]
-
-  /**
-    * Create Mat comprised of same values in specified rows
-    */
-  def takeRows(locs: Vec[Int]): Mat[A]
-
-  /**
-    * Create Mat comprised of same values in specified rows
-    */
-  def takeRows(locs: Int*): Mat[A]
+  def takeRows(locs: Int*): Mat[T] = takeRows(locs.toArray)
 
   /**
     * Create Mat comprised of same values in specified columns
     */
-  def takeCols(locs: Array[Int]): Mat[A]
+  def takeCols(locs: Array[Int]): Mat[T] = T.takeRows(locs).T
 
   /**
     * Create Mat comprised of same values in specified columns
     */
-  def takeCols(locs: Int*): Mat[A]
+  def takeCols(locs: Int*): Mat[T] = takeCols(locs.toArray)
 
   /**
     * Create Mat comprised of same values without the specified rows
     *
     * @param locs Row locations to exclude
     */
-  def withoutRows(locs: Array[Int]): Mat[A]
-
-  /**
-    * Create Mat comprised of same values without the specified rows
-    *
-    * @param locs Row locations to exclude
-    */
-  def withoutRows(locs: Int*): Mat[A]
+  def withoutRows(locs: Int*): Mat[T] = withoutRows(locs.toArray)
 
   /**
     * Create Mat comprised of same values without the specified columns
     *
     * @param locs Col locations to exclude
     */
-  def withoutCols(locs: Array[Int]): Mat[A]
+  def withoutCols(locs: Array[Int]): Mat[T] = T.withoutRows(locs).T
 
   /**
     * Create Mat comprised of same values without the specified columns
     *
     * @param locs Col locations to exclude
     */
-  def withoutCols(locs: Int*): Mat[A]
+  def withoutCols(locs: Int*): Mat[T] = withoutCols(locs.toArray)
 
   /**
     * Yields row indices where row has some NA value
     */
-  def rowsWithNA: Set[Int]
+  def rowsWithNA: Set[Int] = {
+    val builder = Set.newBuilder[Int]
+    var i = 0
+    while (i < numRows) {
+      if (row(i).hasNA) builder += i
+      i += 1
+    }
+    builder.result()
+  }
 
   /**
     * Yields column indices where column has some NA value
     */
-  def colsWithNA: Set[Int]
+  def colsWithNA: Set[Int] = T.rowsWithNA
 
   /**
     * Yields a matrix without those rows that have NA
     */
-  def dropRowsWithNA: Mat[A]
+  def dropRowsWithNA: Mat[T] = withoutRows(rowsWithNA.toArray)
 
   /**
     * Yields a matrix without those cols that have NA
     */
-  def dropColsWithNA: Mat[A]
+  def dropColsWithNA: Mat[T] = withoutCols(colsWithNA.toArray)
 
   /**
     * Returns a specific column of the Mat as a Vec
     *
     * @param c Column index
     */
-  def col(c: Int): Vec[A]
+  def col(c: Int): Vec[T] = {
+    assert(c >= 0 && c < numCols, "Array index %d out of bounds" format c)
+    flattenT.slice(c * numRows, (c + 1) * numRows)
+  }
 
   /**
     * Access Mat columns at a particular integer offsets
     * @param locs a sequence of integer offsets
     */
-  def col(locs: Int*): Mat[A]
+  def col(locs: Int*): Mat[T] = takeCols(locs.toArray)
 
   /**
     * Access Mat columns at a particular integer offsets
     * @param locs an array of integer offsets
     */
-  def col(locs: Array[Int]): Mat[A]
+  def col(locs: Array[Int]): Mat[T] = takeCols(locs)
 
   /**
     * Access mat columns specified by a slice
     * @param slice a slice specifier
     */
-  def col(slice: Slice[Int]): Mat[A]
+  def col(slice: Slice[Int]): Mat[T] = {
+    val (a, b) = slice(IndexIntRange(numCols))
+    takeCols(a until b toArray)
+  }
 
   /**
     * Returns columns of Mat as an indexed sequence of Vec instances
     */
-  def cols(): IndexedSeq[Vec[A]]
+  def cols(): IndexedSeq[Vec[T]] = Range(0, numCols).map(col)
 
   /**
     * Returns columns of Mat as an indexed sequence of Vec instances
     */
-  def cols(seq: IndexedSeq[Int]): IndexedSeq[Vec[A]]
+  def cols(seq: IndexedSeq[Int]): IndexedSeq[Vec[T]] = seq.map(col)
 
   /**
     * Returns a specific row of the Mat as a Vec
     *
     * @param r Row index
     */
-  def row(r: Int): Vec[A]
+  def row(r: Int): Vec[T] = {
+    assert(r >= 0 && r < numRows, "Array index %d out of bounds" format r)
+    toVec.slice(r * numCols, (r + 1) * numCols)
+  }
 
   /**
     * Access Mat rows at a particular integer offsets
     * @param locs a sequence of integer offsets
     */
-  def row(locs: Int*): Mat[A]
+  def row(locs: Int*): Mat[T] = takeRows(locs.toArray)
 
   /**
     * Access Mat rows at a particular integer offsets
     * @param locs an array of integer offsets
     */
-  def row(locs: Array[Int]): Mat[A]
+  def row(locs: Array[Int]): Mat[T] = takeRows(locs)
 
   /**
     * Access Mat rows specified by a slice
     * @param slice a slice specifier
     */
-  def row(slice: Slice[Int]): Mat[A]
+  def row(slice: Slice[Int]): Mat[T] = {
+    val (a, b) = slice(IndexIntRange(numCols))
+    takeRows(a until b toArray)
+  }
 
   /**
     * Returns rows of matrix as an indexed sequence of Vec instances
     */
-  def rows(): IndexedSeq[Vec[A]]
+  def rows(): IndexedSeq[Vec[T]] = Range(0, numRows).map(row)
 
   /**
     * Returns rows of matrix as an indexed sequence of Vec instances
     */
-  def rows(seq: IndexedSeq[Int]): IndexedSeq[Vec[A]]
+  def rows(seq: IndexedSeq[Int]): IndexedSeq[Vec[T]] = seq.map(row)
 
   /**
     * Rounds elements in the matrix (which must be numeric) to
@@ -357,38 +402,55 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
     *
     * @param sig Significance level to round to (e.g., 2 decimal places)
     */
-  def roundTo(sig: Int = 2)(implicit ev: NUM[A]): Mat[Double]
+  def roundTo(sig: Int = 2)(implicit ev: NUM[T]): Mat[Double] = {
+    val pwr = math.pow(10, sig)
+    val rounder = (x: T) => math.round(scalarTag.toDouble(x) * pwr) / pwr
+    map(rounder)
+  }
 
-  /**
-    * Concatenate all rows into a single row-wise Vec instance
-    *
-    * Underlying array is shared between the two instances
-    */
-  def toVec: Vec[A]
-
-  /**
-    * Makes a copy of this Mat
-    *
-    */
-  def copy: Mat[A]
-
-  /** Returns the backing array of this Mat
-    * Mutations to this array are visible to this Mat
-    *
-    * Elements are laid out in row-major order
-    * Constant time operation
-    */
-  def toArray: Array[A]
-
-  // use with caution, may not return copy
-  private[saddle] def toDoubleArray(implicit ev: NUM[A]): Array[Double]
+  private def flattenT: Vec[T] = T.toVec
 
   /**
     * Creates a string representation of Mat
     * @param nrows Max number of rows to include
     * @param ncols Max number of cols to include
     */
-  def stringify(nrows: Int = 8, ncols: Int = 8): String
+  def stringify(nrows: Int = 8, ncols: Int = 8): String = {
+    val halfr = nrows / 2
+    val halfc = ncols / 2
+
+    val buf = new StringBuilder()
+    buf.append("[%d x %d]\n".format(numRows, numCols))
+
+    val maxStrLen = (a: Int, b: String) => a.max(b.length)
+    val maxColLen = (c: Vec[T]) =>
+      (c.head(halfr) concat c.tail(halfr))
+        .map(scalarTag.show(_))
+        .foldLeft(0)(maxStrLen)
+    val colIdx = util.grab(Range(0, numCols), halfc)
+    val lenSeq = colIdx.map { c =>
+      c -> maxColLen(col(c))
+    }
+    val lenMap = lenSeq.toMap.withDefault(_ => 1)
+
+    // function to build a row
+    def createRow(r: Int) = {
+      val buf = new StringBuilder()
+      val strFn = (col: Int) => {
+        val l = lenMap(col)
+        "%" + { if (l > 0) l else 1 } + "s " format scalarTag.show(raw(r, col))
+      }
+      buf.append(util.buildStr(ncols, numCols, strFn))
+      buf.append("\n")
+      buf.toString()
+    }
+
+    // build all rows
+    buf.append(util.buildStr(nrows, numRows, createRow, "...\n"))
+    buf.toString()
+  }
+
+  override def toString = stringify()
 
   /**
     * Pretty-printer for Mat, which simply outputs the result of stringify.
@@ -398,19 +460,142 @@ trait Mat[@spec(Boolean, Int, Long, Double) A] extends NumericOps[Mat[A]] {
       nrows: Int = 8,
       ncols: Int = 8,
       stream: OutputStream = System.out
-  ): Unit
+  ) = {
+    stream.write(stringify(nrows, ncols).getBytes)
+  }
 
-  def toFrame: Frame[Int, Int, A]
+  /** Default hashcode is simple rolling prime multiplication of sums of hashcodes for all values. */
+  override def hashCode(): Int = toVec.foldLeft(1)(_ * 31 + _.hashCode())
 
-  def mutateSetCell(r: Int, c: Int, v: A): Unit
-  def mutateSetRow(r: Int, v: A): Unit
-  def mutateSetColumn(c: Int, v: A): Unit
-  def mutateSetDiagonal(v: A): Unit
-  def mutateSetUpperTriangle(v: A): Unit
-  def mutateSetLowerTriangle(v: A): Unit
+  /**
+    * Converst to Frame
+    */
+  def toFrame = Frame(this)
+
+  @inline def mutateSetCell(r: Int, c: Int, v: T): Unit = {
+    values(r * numCols + c) = v
+  }
+  def mutateSetRow(r: Int, v: T): Unit = {
+    var i = 0
+    val rr = r * numCols
+    while (i < numCols) {
+      values(rr + i) = v
+      i += 1
+    }
+  }
+  def mutateSetColumn(c: Int, v: T): Unit = {
+    var i = 0
+    while (i < numRows) {
+      values(i * numCols + c) = v
+      i += 1
+    }
+  }
+  def mutateSetDiagonal(v: T): Unit = {
+    val n = math.min(numCols, numRows)
+    var i = 0
+    while (i < n) {
+      values(i * numCols + i) = v
+      i += 1
+    }
+  }
+  def mutateSetLowerTriangle(v: T): Unit = {
+    var i = 0
+    var j = 0
+    while (i < numRows) {
+      while (j < math.min(i, numCols)) {
+        values(i * numCols + j) = v
+        j += 1
+      }
+      j = 0
+      i += 1
+    }
+  }
+  def mutateSetUpperTriangle(v: T): Unit = {
+    var i = 0
+    var j = i + 1
+    while (i < numRows) {
+      while (j < numCols) {
+        values(i * numCols + j) = v
+        j += 1
+      }
+      i += 1
+      j = i + 1
+    }
+  }
+
+  /**
+    * Maps a function over each row in the matrix
+    * f must return a Vec with numCols elements
+    */
+  def mapRows[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[B]
+  ): Mat[B] = {
+    val cpy = Array.ofDim[B](numRows * numCols)
+    var i = 0
+    while (i < numRows) {
+      val v = f(row(i), i).toArray
+      System.arraycopy(v, 0, cpy, i * numCols, v.length)
+      i += 1
+    }
+    Mat(numRows, numCols, cpy)
+  }
+
+  /** In place mutate rows of the matrix */
+  def mutateRows[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[T]
+  ): Unit = {
+    val ar = toArray
+    var i = 0
+    while (i < numRows) {
+      val v = f(row(i), i).toArray
+      System.arraycopy(v, 0, ar, i * numCols, v.length)
+      i += 1
+    }
+
+  }
+
+  /**
+    * Maps a function over each col in the matrix
+    * f must return a Vec with numRows elements
+    */
+  def mapCols[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[B]
+  ): Mat[B] = {
+    val cpy = Mat(numRows, numCols, Array.ofDim[B](numRows * numCols))
+    var i = 0
+    var j = 0
+    while (i < numCols) {
+      val v = f(col(i), i).toArray
+      j = 0
+      while (j < numRows) {
+        cpy.mutateSetCell(j, i, v(j))
+        j += 1
+      }
+      i += 1
+    }
+    cpy
+  }
+
+  /** In place mutate cols of the matrix */
+  def mutateCols[@spec(Boolean, Int, Long, Double) B: ST](
+      f: (Vec[T], Int) => Vec[T]
+  ): Unit = {
+    var i = 0
+    var j = 0
+    while (i < numCols) {
+      val v = f(col(i), i).toArray
+      j = 0
+      while (j < numRows) {
+        mutateSetCell(j, i, v(j))
+        j += 1
+      }
+      i += 1
+    }
+  }
+
 }
 
-object Mat extends BinOpMat {
+object Mat extends BinOpMat with BinOpMatInPlace {
 
   /**
     * Factory method to create a new Mat from raw materials
@@ -424,16 +609,16 @@ object Mat extends BinOpMat {
       cols: Int,
       arr: Array[T]
   )(implicit st: ST[T]): Mat[T] =
-    if (rows == 0 || cols == 0) new MatDefault(0, 0, Array.empty[T], st)
-    else new MatDefault(rows, cols, arr, st)
+    if (rows == 0 || cols == 0) new Mat(0, 0, Array.empty[T], st)
+    else new Mat(rows, cols, arr, st)
 
   def apply[@spec(Boolean, Int, Long, Double) T](
       rows: Int,
       cols: Int,
       vec: Vec[T]
   )(implicit st: ST[T]): Mat[T] =
-    if (rows == 0 || cols == 0) new MatDefault(0, 0, Array.empty[T], st)
-    else new MatDefault(rows, cols, vec.toArray, st)
+    if (rows == 0 || cols == 0) new Mat(0, 0, Array.empty[T], st)
+    else new Mat(rows, cols, vec.toArray, st)
 
   /**
     * Factory method to create an empty Mat

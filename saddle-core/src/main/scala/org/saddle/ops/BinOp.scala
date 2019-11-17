@@ -18,7 +18,12 @@ package org.saddle.ops
 import annotation.implicitNotFound
 
 import scala.{specialized => spec}
-import org.saddle.ST
+import org.saddle.scalar.{
+  ScalarTagDouble => stD,
+  ScalarTagLong => stL,
+  ScalarTagInt => stI,
+  ScalarTagBool => stB
+}
 
 /**
   * Concrete implementations of BinOp provide primitive-specialized support for performing
@@ -55,6 +60,14 @@ trait BinOp[
   def apply(a: X, b: Y): Z
 }
 
+trait BinOpInPlace[
+    O <: OpType,
+    @spec(Boolean, Int, Long, Double) -X,
+    @spec(Boolean, Int, Long, Double) -Y
+] {
+  def apply(a: X, b: Y): Unit
+}
+
 /**
   * Contains implementations of primitive binary ops that are NA-aware
   *
@@ -64,170 +77,381 @@ trait BinOp[
   * Note scala.Function2 is not specialized on Boolean inputs, only output
   */
 object BinOp {
-  private final class BinOpImpl[
-      O <: OpType,
-      @spec(Int, Long, Double) Q: ST,
-      @spec(Int, Long, Double) R: ST,
-      @spec(Boolean, Int, Long, Double) S: ST
-  ](f: (Q, R) => S)
-      extends BinOp[O, Q, R, S] {
-    val sq = implicitly[ST[Q]]
-    val sr = implicitly[ST[R]]
-    val ss = implicitly[ST[S]]
-    def apply(a: Q, b: R) =
-      if (sq.isMissing(a) || sr.isMissing(b)) ss.missing else f(a, b)
-  }
-
-  private final class BinOpImplDL[O <: OpType, @spec(Int, Long) R: ST](
-      f: (Double, R) => Double
-  ) extends BinOp[O, Double, R, Double] {
-    val sc = implicitly[ST[R]]
-    def apply(a: Double, b: R) = if (sc.isMissing(b)) Double.NaN else f(a, b)
-  }
-
-  private final class BinOpImplLD[O <: OpType, @spec(Int, Long) Q: ST](
-      f: (Q, Double) => Double
-  ) extends BinOp[O, Q, Double, Double] {
-    val sc = implicitly[ST[Q]]
-    def apply(a: Q, b: Double) = if (sc.isMissing(a)) Double.NaN else f(a, b)
-  }
-
-  private final class BinOpImplDD[O <: OpType](f: (Double, Double) => Double)
-      extends BinOp[O, Double, Double, Double] {
-    def apply(a: Double, b: Double) = f(a, b)
-  }
-
   // ********************************************************
   // ** Concrete implementations necessary for specialization
   // ********************************************************
 
-  // (x, y) => Double ops
+  // (D,D) => D
 
-  type BDDD[T <: OpType] = BinOp[T, Double, Double, Double]
-  implicit val powDD: BDDD[Power] =
-    new BinOpImplDD[Power]((x, y) => math.pow(x, y))
-  implicit val modDD: BDDD[Mod] = new BinOpImplDD[Mod](_ % _)
-  implicit val addDD: BDDD[Add] = new BinOpImplDD[Add](_ + _)
-  implicit val mulDD: BDDD[Multiply] = new BinOpImplDD[Multiply](_ * _)
-  implicit val divDD: BDDD[Divide] = new BinOpImplDD[Divide](_ / _)
-  implicit val subDD: BDDD[Subtract] = new BinOpImplDD[Subtract](_ - _)
+  implicit val powDD = new BinOp[Power, Double, Double, Double] {
+    def apply(a: Double, b: Double): Double =
+      if (stD.isMissing(a) || stD.isMissing(b)) stD.missing
+      else math.pow(a, b)
+  }
+  implicit val modDD = new BinOp[Mod, Double, Double, Double] {
+    def apply(a: Double, b: Double): Double =
+      if (stD.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a % b
+  }
+  implicit val addDD = new BinOp[Add, Double, Double, Double] {
+    def apply(a: Double, b: Double): Double =
+      if (stD.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a + b
+  }
+  implicit val mulDD = new BinOp[Multiply, Double, Double, Double] {
+    def apply(a: Double, b: Double): Double =
+      if (stD.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a * b
+  }
+  implicit val divDD = new BinOp[Divide, Double, Double, Double] {
+    def apply(a: Double, b: Double): Double =
+      if (stD.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a / b
+  }
+  implicit val subDD = new BinOp[Subtract, Double, Double, Double] {
+    def apply(a: Double, b: Double): Double =
+      if (stD.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a - b
+  }
 
-  type BDLD[T <: OpType] = BinOp[T, Double, Long, Double]
-  implicit val powDL: BDLD[Power] =
-    new BinOpImplDL[Power, Long]((x, y) => math.pow(x, y))
-  implicit val modDL: BDLD[Mod] = new BinOpImplDL[Mod, Long](_ % _)
-  implicit val addDL: BDLD[Add] = new BinOpImplDL[Add, Long](_ + _)
-  implicit val mulDL: BDLD[Multiply] = new BinOpImplDL[Multiply, Long](_ * _)
-  implicit val divDL: BDLD[Divide] = new BinOpImplDL[Divide, Long](_ / _)
-  implicit val subDL: BDLD[Subtract] = new BinOpImplDL[Subtract, Long](_ - _)
+  // (D,L) => D
 
-  type BLDD[T <: OpType] = BinOp[T, Long, Double, Double]
-  implicit val powLD: BLDD[Power] =
-    new BinOpImplLD[Power, Long]((x, y) => math.pow(x, y))
-  implicit val modLD: BLDD[Mod] = new BinOpImplLD[Mod, Long](_ % _)
-  implicit val addLD: BLDD[Add] = new BinOpImplLD[Add, Long](_ + _)
-  implicit val mulLD: BLDD[Multiply] = new BinOpImplLD[Multiply, Long](_ * _)
-  implicit val divLD: BLDD[Divide] = new BinOpImplLD[Divide, Long](_ / _)
-  implicit val subLD: BLDD[Subtract] = new BinOpImplLD[Subtract, Long](_ - _)
+  implicit val powDL = new BinOp[Power, Double, Long, Double] {
+    def apply(a: Double, b: Long): Double =
+      if (stD.isMissing(a) || stL.isMissing(b)) stD.missing
+      else math.pow(a, b)
+  }
+  implicit val modDL = new BinOp[Mod, Double, Long, Double] {
+    def apply(a: Double, b: Long): Double =
+      if (stD.isMissing(a) || stL.isMissing(b)) stD.missing
+      else a % b
+  }
+  implicit val addDL = new BinOp[Add, Double, Long, Double] {
+    def apply(a: Double, b: Long): Double =
+      if (stD.isMissing(a) || stL.isMissing(b)) stD.missing
+      else a + b
+  }
+  implicit val mulDL = new BinOp[Multiply, Double, Long, Double] {
+    def apply(a: Double, b: Long): Double =
+      if (stD.isMissing(a) || stL.isMissing(b)) stD.missing
+      else a * b
+  }
+  implicit val divDL = new BinOp[Divide, Double, Long, Double] {
+    def apply(a: Double, b: Long): Double =
+      if (stD.isMissing(a) || stL.isMissing(b)) stD.missing
+      else a / b
+  }
+  implicit val subDL = new BinOp[Subtract, Double, Long, Double] {
+    def apply(a: Double, b: Long): Double =
+      if (stD.isMissing(a) || stL.isMissing(b)) stD.missing
+      else a - b
+  }
 
-  type BIDD[T <: OpType] = BinOp[T, Int, Double, Double]
-  implicit val powDI: BIDD[Power] =
-    new BinOpImplLD[Power, Int]((x, y) => math.pow(x, y))
-  implicit val modDI: BIDD[Mod] = new BinOpImplLD[Mod, Int](_ % _)
-  implicit val addDI: BIDD[Add] = new BinOpImplLD[Add, Int](_ + _)
-  implicit val mulDI: BIDD[Multiply] = new BinOpImplLD[Multiply, Int](_ * _)
-  implicit val divDI: BIDD[Divide] = new BinOpImplLD[Divide, Int](_ / _)
-  implicit val subDI: BIDD[Subtract] = new BinOpImplLD[Subtract, Int](_ - _)
+  // (L,D) => D
 
-  type BDID[T <: OpType] = BinOp[T, Double, Int, Double]
-  implicit val powID: BDID[Power] =
-    new BinOpImplDL[Power, Int]((x, y) => math.pow(x, y))
-  implicit val modID: BDID[Mod] = new BinOpImplDL[Mod, Int](_ % _)
-  implicit val addID: BDID[Add] = new BinOpImplDL[Add, Int](_ + _)
-  implicit val mulID: BDID[Multiply] = new BinOpImplDL[Multiply, Int](_ * _)
-  implicit val divID: BDID[Divide] = new BinOpImplDL[Divide, Int](_ / _)
-  implicit val subID: BDID[Subtract] = new BinOpImplDL[Subtract, Int](_ - _)
+  implicit val powLD = new BinOp[Power, Long, Double, Double] {
+    def apply(a: Long, b: Double): Double =
+      if (stL.isMissing(a) || stD.isMissing(b)) stD.missing
+      else math.pow(a, b)
+  }
+  implicit val modLD = new BinOp[Mod, Long, Double, Double] {
+    def apply(a: Long, b: Double): Double =
+      if (stL.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a % b
+  }
+  implicit val addLD = new BinOp[Add, Long, Double, Double] {
+    def apply(a: Long, b: Double): Double =
+      if (stL.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a + b
+  }
+  implicit val mulLD = new BinOp[Multiply, Long, Double, Double] {
+    def apply(a: Long, b: Double): Double =
+      if (stL.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a * b
+  }
+  implicit val divLD = new BinOp[Divide, Long, Double, Double] {
+    def apply(a: Long, b: Double): Double =
+      if (stL.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a / b
+  }
+  implicit val subLD = new BinOp[Subtract, Long, Double, Double] {
+    def apply(a: Long, b: Double): Double =
+      if (stL.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a - b
+  }
 
-  // (x, y) => Long ops
+  // (I,D) => D
 
-  type BLLL[T <: OpType] = BinOp[T, Long, Long, Long]
-  implicit val powLL: BLLL[Power] =
-    new BinOpImpl[Power, Long, Long, Long]((x, y) => math.pow(x, y).toLong)
-  implicit val modLL: BLLL[Mod] = new BinOpImpl[Mod, Long, Long, Long](_ % _)
-  implicit val addLL: BLLL[Add] = new BinOpImpl[Add, Long, Long, Long](_ + _)
-  implicit val mulLL: BLLL[Multiply] =
-    new BinOpImpl[Multiply, Long, Long, Long](_ * _)
-  implicit val divLL: BLLL[Divide] =
-    new BinOpImpl[Divide, Long, Long, Long](_ / _)
-  implicit val subLL: BLLL[Subtract] =
-    new BinOpImpl[Subtract, Long, Long, Long](_ - _)
-  implicit val andLL: BLLL[BitAnd] =
-    new BinOpImpl[BitAnd, Long, Long, Long](_ & _)
-  implicit val orLL: BLLL[BitOr] = new BinOpImpl[BitOr, Long, Long, Long](_ | _)
-  implicit val xorLL: BLLL[BitXor] =
-    new BinOpImpl[BitXor, Long, Long, Long](_ ^ _)
+  implicit val powID = new BinOp[Power, Int, Double, Double] {
+    def apply(a: Int, b: Double): Double =
+      if (stI.isMissing(a) || stD.isMissing(b)) stD.missing
+      else math.pow(a, b)
+  }
+  implicit val modID = new BinOp[Mod, Int, Double, Double] {
+    def apply(a: Int, b: Double): Double =
+      if (stI.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a % b
+  }
+  implicit val addID = new BinOp[Add, Int, Double, Double] {
+    def apply(a: Int, b: Double): Double =
+      if (stI.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a + b
+  }
+  implicit val mulID = new BinOp[Multiply, Int, Double, Double] {
+    def apply(a: Int, b: Double): Double =
+      if (stI.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a * b
+  }
+  implicit val divID = new BinOp[Divide, Int, Double, Double] {
+    def apply(a: Int, b: Double): Double =
+      if (stI.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a / b
+  }
+  implicit val subID = new BinOp[Subtract, Int, Double, Double] {
+    def apply(a: Int, b: Double): Double =
+      if (stI.isMissing(a) || stD.isMissing(b)) stD.missing
+      else a - b
+  }
 
-  type BILL[T <: OpType] = BinOp[T, Int, Long, Long]
-  implicit val powLI: BLIL[Power] =
-    new BinOpImpl[Power, Long, Int, Long]((x, y) => math.pow(x, y).toLong)
-  implicit val modLI: BLIL[Mod] = new BinOpImpl[Mod, Long, Int, Long](_ % _)
-  implicit val addLI: BLIL[Add] = new BinOpImpl[Add, Long, Int, Long](_ + _)
-  implicit val mulLI: BLIL[Multiply] =
-    new BinOpImpl[Multiply, Long, Int, Long](_ * _)
-  implicit val divLI: BLIL[Divide] =
-    new BinOpImpl[Divide, Long, Int, Long](_ / _)
-  implicit val subLI: BLIL[Subtract] =
-    new BinOpImpl[Subtract, Long, Int, Long](_ - _)
-  implicit val andLI: BLIL[BitAnd] =
-    new BinOpImpl[BitAnd, Long, Int, Long](_ & _)
-  implicit val orLI: BLIL[BitOr] = new BinOpImpl[BitOr, Long, Int, Long](_ | _)
-  implicit val xorLI: BLIL[BitXor] =
-    new BinOpImpl[BitXor, Long, Int, Long](_ ^ _)
-  implicit val shlLI: BLIL[BitShl] =
-    new BinOpImpl[BitShl, Long, Int, Long](_ << _)
-  implicit val shrLI: BLIL[BitShr] =
-    new BinOpImpl[BitShr, Long, Int, Long](_ >> _)
-  implicit val ushLI: BLIL[BitUShr] =
-    new BinOpImpl[BitUShr, Long, Int, Long](_ >>> _)
+  // (D,I) => D
 
-  type BLIL[T <: OpType] = BinOp[T, Long, Int, Long]
-  implicit val powIL: BILL[Power] =
-    new BinOpImpl[Power, Int, Long, Long]((x, y) => math.pow(x, y).toLong)
-  implicit val modIL: BILL[Mod] = new BinOpImpl[Mod, Int, Long, Long](_ % _)
-  implicit val addIL: BILL[Add] = new BinOpImpl[Add, Int, Long, Long](_ + _)
-  implicit val mulIL: BILL[Multiply] =
-    new BinOpImpl[Multiply, Int, Long, Long](_ * _)
-  implicit val divIL: BILL[Divide] =
-    new BinOpImpl[Divide, Int, Long, Long](_ / _)
-  implicit val subIL: BILL[Subtract] =
-    new BinOpImpl[Subtract, Int, Long, Long](_ - _)
-  implicit val andIL: BILL[BitAnd] =
-    new BinOpImpl[BitAnd, Int, Long, Long](_ & _)
-  implicit val orIL: BILL[BitOr] = new BinOpImpl[BitOr, Int, Long, Long](_ | _)
-  implicit val xorIL: BILL[BitXor] =
-    new BinOpImpl[BitXor, Int, Long, Long](_ ^ _)
+  implicit val powDI = new BinOp[Power, Double, Int, Double] {
+    def apply(a: Double, b: Int): Double =
+      if (stD.isMissing(a) || stI.isMissing(b)) stD.missing
+      else math.pow(a, b)
+  }
+  implicit val modDI = new BinOp[Mod, Double, Int, Double] {
+    def apply(a: Double, b: Int): Double =
+      if (stD.isMissing(a) || stI.isMissing(b)) stD.missing
+      else a % b
+  }
+  implicit val addDI = new BinOp[Add, Double, Int, Double] {
+    def apply(a: Double, b: Int): Double =
+      if (stD.isMissing(a) || stI.isMissing(b)) stD.missing
+      else a + b
+  }
+  implicit val mulDI = new BinOp[Multiply, Double, Int, Double] {
+    def apply(a: Double, b: Int): Double =
+      if (stD.isMissing(a) || stI.isMissing(b)) stD.missing
+      else a * b
+  }
+  implicit val divDI = new BinOp[Divide, Double, Int, Double] {
+    def apply(a: Double, b: Int): Double =
+      if (stD.isMissing(a) || stI.isMissing(b)) stD.missing
+      else a / b
+  }
+  implicit val subDI = new BinOp[Subtract, Double, Int, Double] {
+    def apply(a: Double, b: Int): Double =
+      if (stD.isMissing(a) || stI.isMissing(b)) stD.missing
+      else a - b
+  }
 
-  // (x, y) => Int ops
+  // (L,L) => L
 
-  type BIII[T <: OpType] = BinOp[T, Int, Int, Int]
-  implicit val powII: BIII[Power] =
-    new BinOpImpl[Power, Int, Int, Int]((x, y) => math.pow(x, y).toInt)
-  implicit val modII: BIII[Mod] = new BinOpImpl[Mod, Int, Int, Int](_ % _)
-  implicit val addII: BIII[Add] = new BinOpImpl[Add, Int, Int, Int](_ + _)
-  implicit val mulII: BIII[Multiply] =
-    new BinOpImpl[Multiply, Int, Int, Int](_ * _)
-  implicit val divII: BIII[Divide] = new BinOpImpl[Divide, Int, Int, Int](_ / _)
-  implicit val subII: BIII[Subtract] =
-    new BinOpImpl[Subtract, Int, Int, Int](_ - _)
-  implicit val andII: BIII[BitAnd] = new BinOpImpl[BitAnd, Int, Int, Int](_ & _)
-  implicit val orII: BIII[BitOr] = new BinOpImpl[BitOr, Int, Int, Int](_ | _)
-  implicit val xorII: BIII[BitXor] = new BinOpImpl[BitXor, Int, Int, Int](_ ^ _)
-  implicit val shlII: BIII[BitShl] =
-    new BinOpImpl[BitShl, Int, Int, Int](_ << _)
-  implicit val shrII: BIII[BitShr] =
-    new BinOpImpl[BitShr, Int, Int, Int](_ >> _)
-  implicit val ushII: BIII[BitUShr] =
-    new BinOpImpl[BitUShr, Int, Int, Int](_ >>> _)
+  implicit val powLL = new BinOp[Power, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else math.pow(a, b).toLong
+  }
+  implicit val modLL = new BinOp[Mod, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a % b
+  }
+  implicit val addLL = new BinOp[Add, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a + b
+  }
+  implicit val mulLL = new BinOp[Multiply, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a * b
+  }
+  implicit val divLL = new BinOp[Divide, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a / b
+  }
+  implicit val subLL = new BinOp[Subtract, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a - b
+  }
+  implicit val andLL = new BinOp[BitAnd, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a & b
+  }
+  implicit val orLL = new BinOp[BitOr, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a | b
+  }
+  implicit val xorLL = new BinOp[BitXor, Long, Long, Long] {
+    def apply(a: Long, b: Long): Long =
+      if (stL.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a ^ b
+  }
+
+  // (I,L) => L
+
+  implicit val powIL = new BinOp[Power, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else math.pow(a, b).toLong
+  }
+  implicit val modIL = new BinOp[Mod, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a % b
+  }
+  implicit val addIL = new BinOp[Add, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a + b
+  }
+  implicit val mulIL = new BinOp[Multiply, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a * b
+  }
+  implicit val divIL = new BinOp[Divide, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a / b
+  }
+  implicit val subIL = new BinOp[Subtract, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a - b
+  }
+  implicit val andIL = new BinOp[BitAnd, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a & b
+  }
+  implicit val orIL = new BinOp[BitOr, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a | b
+  }
+  implicit val xorIL = new BinOp[BitXor, Int, Long, Long] {
+    def apply(a: Int, b: Long): Long =
+      if (stI.isMissing(a) || stL.isMissing(b)) stL.missing
+      else a ^ b
+  }
+
+  // (L,I) => L
+
+  implicit val powLI = new BinOp[Power, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else math.pow(a, b).toLong
+  }
+  implicit val modLI = new BinOp[Mod, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a % b
+  }
+  implicit val addLI = new BinOp[Add, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a + b
+  }
+  implicit val mulLI = new BinOp[Multiply, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a * b
+  }
+  implicit val divLI = new BinOp[Divide, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a / b
+  }
+  implicit val subLI = new BinOp[Subtract, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a - b
+  }
+  implicit val andLI = new BinOp[BitAnd, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a & b
+  }
+  implicit val orLI = new BinOp[BitOr, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a | b
+  }
+  implicit val xorLI = new BinOp[BitXor, Long, Int, Long] {
+    def apply(a: Long, b: Int): Long =
+      if (stL.isMissing(a) || stI.isMissing(b)) stL.missing
+      else a ^ b
+  }
+
+  // (I,I) => I
+
+  implicit val powII = new BinOp[Power, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else math.pow(a, b).toInt
+  }
+  implicit val modII = new BinOp[Mod, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a % b
+  }
+  implicit val addII = new BinOp[Add, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a + b
+  }
+  implicit val mulII = new BinOp[Multiply, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a * b
+  }
+  implicit val divII = new BinOp[Divide, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a / b
+  }
+  implicit val subII = new BinOp[Subtract, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a - b
+  }
+  implicit val andII = new BinOp[BitAnd, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a & b
+  }
+  implicit val orII = new BinOp[BitOr, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a | b
+  }
+  implicit val xorII = new BinOp[BitXor, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a ^ b
+  }
+  implicit val shlII = new BinOp[BitShl, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a << b
+  }
+  implicit val shrII = new BinOp[BitShr, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a >> b
+  }
+  implicit val ushrII = new BinOp[BitUShr, Int, Int, Int] {
+    def apply(a: Int, b: Int): Int =
+      if (stI.isMissing(a) || stI.isMissing(b)) stI.missing
+      else a >>> b
+  }
 
   // (Bool, Bool) => Bool ops
 
@@ -243,129 +467,344 @@ object BinOp {
 
   /* comparisons ops */
 
-  implicit val gtDD: BinOp[GtOp, Double, Double, Boolean] =
-    new BinOpImpl[GtOp, Double, Double, Boolean](_ > _)
-  implicit val gtDL: BinOp[GtOp, Double, Long, Boolean] =
-    new BinOpImpl[GtOp, Double, Long, Boolean](_ > _)
-  implicit val gtDI: BinOp[GtOp, Double, Int, Boolean] =
-    new BinOpImpl[GtOp, Double, Int, Boolean](_ > _)
-  implicit val gtLD: BinOp[GtOp, Long, Double, Boolean] =
-    new BinOpImpl[GtOp, Long, Double, Boolean](_ > _)
-  implicit val gtLL: BinOp[GtOp, Long, Long, Boolean] =
-    new BinOpImpl[GtOp, Long, Long, Boolean](_ > _)
-  implicit val gtLI: BinOp[GtOp, Long, Int, Boolean] =
-    new BinOpImpl[GtOp, Long, Int, Boolean](_ > _)
-  implicit val gtID: BinOp[GtOp, Int, Double, Boolean] =
-    new BinOpImpl[GtOp, Int, Double, Boolean](_ > _)
-  implicit val gtIL: BinOp[GtOp, Int, Long, Boolean] =
-    new BinOpImpl[GtOp, Int, Long, Boolean](_ > _)
-  implicit val gtII: BinOp[GtOp, Int, Int, Boolean] =
-    new BinOpImpl[GtOp, Int, Int, Boolean](_ > _)
-  implicit val gtBB: BinOp[GtOp, Boolean, Boolean, Boolean] =
-    new BinOpImpl[GtOp, Boolean, Boolean, Boolean](_ > _)
+  // >
+  implicit val gtDD =
+    new BinOp[GtOp, Double, Double, Boolean] {
+      def apply(a: Double, b: Double) =
+        if (stD.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtDL =
+    new BinOp[GtOp, Double, Long, Boolean] {
+      def apply(a: Double, b: Long) =
+        if (stD.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtDI =
+    new BinOp[GtOp, Double, Int, Boolean] {
+      def apply(a: Double, b: Int) =
+        if (stD.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtLD =
+    new BinOp[GtOp, Long, Double, Boolean] {
+      def apply(a: Long, b: Double) =
+        if (stL.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtLL =
+    new BinOp[GtOp, Long, Long, Boolean] {
+      def apply(a: Long, b: Long) =
+        if (stL.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtLI =
+    new BinOp[GtOp, Long, Int, Boolean] {
+      def apply(a: Long, b: Int) =
+        if (stL.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtID =
+    new BinOp[GtOp, Int, Double, Boolean] {
+      def apply(a: Int, b: Double) =
+        if (stI.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtII =
+    new BinOp[GtOp, Int, Int, Boolean] {
+      def apply(a: Int, b: Int) =
+        if (stI.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a > b)
+    }
+  implicit val gtBB =
+    new BinOp[GtOp, Boolean, Boolean, Boolean] {
+      def apply(a: Boolean, b: Boolean) =
+        if (stB.isMissing(a) || stB.isMissing(b)) stB.missing
+        else (a > b)
+    }
 
-  implicit val ltDD: BinOp[LtOp, Double, Double, Boolean] =
-    new BinOpImpl[LtOp, Double, Double, Boolean](_ < _)
-  implicit val ltDL: BinOp[LtOp, Double, Long, Boolean] =
-    new BinOpImpl[LtOp, Double, Long, Boolean](_ < _)
-  implicit val ltDI: BinOp[LtOp, Double, Int, Boolean] =
-    new BinOpImpl[LtOp, Double, Int, Boolean](_ < _)
-  implicit val ltLD: BinOp[LtOp, Long, Double, Boolean] =
-    new BinOpImpl[LtOp, Long, Double, Boolean](_ < _)
-  implicit val ltLL: BinOp[LtOp, Long, Long, Boolean] =
-    new BinOpImpl[LtOp, Long, Long, Boolean](_ < _)
-  implicit val ltLI: BinOp[LtOp, Long, Int, Boolean] =
-    new BinOpImpl[LtOp, Long, Int, Boolean](_ < _)
-  implicit val ltID: BinOp[LtOp, Int, Double, Boolean] =
-    new BinOpImpl[LtOp, Int, Double, Boolean](_ < _)
-  implicit val ltIL: BinOp[LtOp, Int, Long, Boolean] =
-    new BinOpImpl[LtOp, Int, Long, Boolean](_ < _)
-  implicit val ltII: BinOp[LtOp, Int, Int, Boolean] =
-    new BinOpImpl[LtOp, Int, Int, Boolean](_ < _)
-  implicit val ltBB: BinOp[LtOp, Boolean, Boolean, Boolean] =
-    new BinOpImpl[LtOp, Boolean, Boolean, Boolean](_ < _)
+  // <
 
-  implicit val eqDD: BinOp[EqOp, Double, Double, Boolean] =
-    new BinOpImpl[EqOp, Double, Double, Boolean](_ == _)
-  implicit val eqDL: BinOp[EqOp, Double, Long, Boolean] =
-    new BinOpImpl[EqOp, Double, Long, Boolean](_ == _)
-  implicit val eqDI: BinOp[EqOp, Double, Int, Boolean] =
-    new BinOpImpl[EqOp, Double, Int, Boolean](_ == _)
-  implicit val eqLD: BinOp[EqOp, Long, Double, Boolean] =
-    new BinOpImpl[EqOp, Long, Double, Boolean](_ == _)
-  implicit val eqLL: BinOp[EqOp, Long, Long, Boolean] =
-    new BinOpImpl[EqOp, Long, Long, Boolean](_ == _)
-  implicit val eqLI: BinOp[EqOp, Long, Int, Boolean] =
-    new BinOpImpl[EqOp, Long, Int, Boolean](_ == _)
-  implicit val eqID: BinOp[EqOp, Int, Double, Boolean] =
-    new BinOpImpl[EqOp, Int, Double, Boolean](_ == _)
-  implicit val eqIL: BinOp[EqOp, Int, Long, Boolean] =
-    new BinOpImpl[EqOp, Int, Long, Boolean](_ == _)
-  implicit val eqII: BinOp[EqOp, Int, Int, Boolean] =
-    new BinOpImpl[EqOp, Int, Int, Boolean](_ == _)
-  implicit val eqBB: BinOp[EqOp, Boolean, Boolean, Boolean] =
-    new BinOpImpl[EqOp, Boolean, Boolean, Boolean](_ == _)
+  implicit val ltDD =
+    new BinOp[LtOp, Double, Double, Boolean] {
+      def apply(a: Double, b: Double) =
+        if (stD.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltDL =
+    new BinOp[LtOp, Double, Long, Boolean] {
+      def apply(a: Double, b: Long) =
+        if (stD.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltDI =
+    new BinOp[LtOp, Double, Int, Boolean] {
+      def apply(a: Double, b: Int) =
+        if (stD.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltLD =
+    new BinOp[LtOp, Long, Double, Boolean] {
+      def apply(a: Long, b: Double) =
+        if (stL.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltLL =
+    new BinOp[LtOp, Long, Long, Boolean] {
+      def apply(a: Long, b: Long) =
+        if (stL.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltLI =
+    new BinOp[LtOp, Long, Int, Boolean] {
+      def apply(a: Long, b: Int) =
+        if (stL.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltID =
+    new BinOp[LtOp, Int, Double, Boolean] {
+      def apply(a: Int, b: Double) =
+        if (stI.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltII =
+    new BinOp[LtOp, Int, Int, Boolean] {
+      def apply(a: Int, b: Int) =
+        if (stI.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a < b)
+    }
+  implicit val ltBB =
+    new BinOp[LtOp, Boolean, Boolean, Boolean] {
+      def apply(a: Boolean, b: Boolean) =
+        if (stB.isMissing(a) || stB.isMissing(b)) stB.missing
+        else (a < b)
+    }
 
-  implicit val neqDD: BinOp[NeqOp, Double, Double, Boolean] =
-    new BinOpImpl[NeqOp, Double, Double, Boolean](_ != _)
-  implicit val neqDL: BinOp[NeqOp, Double, Long, Boolean] =
-    new BinOpImpl[NeqOp, Double, Long, Boolean](_ != _)
-  implicit val neqDI: BinOp[NeqOp, Double, Int, Boolean] =
-    new BinOpImpl[NeqOp, Double, Int, Boolean](_ != _)
-  implicit val neqLD: BinOp[NeqOp, Long, Double, Boolean] =
-    new BinOpImpl[NeqOp, Long, Double, Boolean](_ != _)
-  implicit val neqLL: BinOp[NeqOp, Long, Long, Boolean] =
-    new BinOpImpl[NeqOp, Long, Long, Boolean](_ != _)
-  implicit val neqLI: BinOp[NeqOp, Long, Int, Boolean] =
-    new BinOpImpl[NeqOp, Long, Int, Boolean](_ != _)
-  implicit val neqID: BinOp[NeqOp, Int, Double, Boolean] =
-    new BinOpImpl[NeqOp, Int, Double, Boolean](_ != _)
-  implicit val neqIL: BinOp[NeqOp, Int, Long, Boolean] =
-    new BinOpImpl[NeqOp, Int, Long, Boolean](_ != _)
-  implicit val neqII: BinOp[NeqOp, Int, Int, Boolean] =
-    new BinOpImpl[NeqOp, Int, Int, Boolean](_ != _)
-  implicit val neqBB: BinOp[NeqOp, Boolean, Boolean, Boolean] =
-    new BinOpImpl[NeqOp, Boolean, Boolean, Boolean](_ != _)
+  // ==
 
-  implicit val gteDD: BinOp[GteOp, Double, Double, Boolean] =
-    new BinOpImpl[GteOp, Double, Double, Boolean](_ >= _)
-  implicit val gteDL: BinOp[GteOp, Double, Long, Boolean] =
-    new BinOpImpl[GteOp, Double, Long, Boolean](_ >= _)
-  implicit val gteDI: BinOp[GteOp, Double, Int, Boolean] =
-    new BinOpImpl[GteOp, Double, Int, Boolean](_ >= _)
-  implicit val gteLD: BinOp[GteOp, Long, Double, Boolean] =
-    new BinOpImpl[GteOp, Long, Double, Boolean](_ >= _)
-  implicit val gteLL: BinOp[GteOp, Long, Long, Boolean] =
-    new BinOpImpl[GteOp, Long, Long, Boolean](_ >= _)
-  implicit val gteLI: BinOp[GteOp, Long, Int, Boolean] =
-    new BinOpImpl[GteOp, Long, Int, Boolean](_ >= _)
-  implicit val gteID: BinOp[GteOp, Int, Double, Boolean] =
-    new BinOpImpl[GteOp, Int, Double, Boolean](_ >= _)
-  implicit val gteIL: BinOp[GteOp, Int, Long, Boolean] =
-    new BinOpImpl[GteOp, Int, Long, Boolean](_ >= _)
-  implicit val gteII: BinOp[GteOp, Int, Int, Boolean] =
-    new BinOpImpl[GteOp, Int, Int, Boolean](_ >= _)
-  implicit val gteBB: BinOp[GteOp, Boolean, Boolean, Boolean] =
-    new BinOpImpl[GteOp, Boolean, Boolean, Boolean](_ >= _)
+  implicit val eqDD =
+    new BinOp[EqOp, Double, Double, Boolean] {
+      def apply(a: Double, b: Double) =
+        if (stD.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqDL =
+    new BinOp[EqOp, Double, Long, Boolean] {
+      def apply(a: Double, b: Long) =
+        if (stD.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqDI =
+    new BinOp[EqOp, Double, Int, Boolean] {
+      def apply(a: Double, b: Int) =
+        if (stD.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqLD =
+    new BinOp[EqOp, Long, Double, Boolean] {
+      def apply(a: Long, b: Double) =
+        if (stL.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqLL =
+    new BinOp[EqOp, Long, Long, Boolean] {
+      def apply(a: Long, b: Long) =
+        if (stL.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqLI =
+    new BinOp[EqOp, Long, Int, Boolean] {
+      def apply(a: Long, b: Int) =
+        if (stL.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqID =
+    new BinOp[EqOp, Int, Double, Boolean] {
+      def apply(a: Int, b: Double) =
+        if (stI.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqII =
+    new BinOp[EqOp, Int, Int, Boolean] {
+      def apply(a: Int, b: Int) =
+        if (stI.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a == b)
+    }
+  implicit val eqBB =
+    new BinOp[EqOp, Boolean, Boolean, Boolean] {
+      def apply(a: Boolean, b: Boolean) =
+        if (stB.isMissing(a) || stB.isMissing(b)) stB.missing
+        else (a == b)
+    }
 
-  implicit val lteDD: BinOp[LteOp, Double, Double, Boolean] =
-    new BinOpImpl[LteOp, Double, Double, Boolean](_ <= _)
-  implicit val lteDL: BinOp[LteOp, Double, Long, Boolean] =
-    new BinOpImpl[LteOp, Double, Long, Boolean](_ <= _)
-  implicit val lteDI: BinOp[LteOp, Double, Int, Boolean] =
-    new BinOpImpl[LteOp, Double, Int, Boolean](_ <= _)
-  implicit val lteLD: BinOp[LteOp, Long, Double, Boolean] =
-    new BinOpImpl[LteOp, Long, Double, Boolean](_ <= _)
-  implicit val lteLL: BinOp[LteOp, Long, Long, Boolean] =
-    new BinOpImpl[LteOp, Long, Long, Boolean](_ <= _)
-  implicit val lteLI: BinOp[LteOp, Long, Int, Boolean] =
-    new BinOpImpl[LteOp, Long, Int, Boolean](_ <= _)
-  implicit val lteID: BinOp[LteOp, Int, Double, Boolean] =
-    new BinOpImpl[LteOp, Int, Double, Boolean](_ <= _)
-  implicit val lteIL: BinOp[LteOp, Int, Long, Boolean] =
-    new BinOpImpl[LteOp, Int, Long, Boolean](_ <= _)
-  implicit val lteII: BinOp[LteOp, Int, Int, Boolean] =
-    new BinOpImpl[LteOp, Int, Int, Boolean](_ <= _)
-  implicit val lteBB: BinOp[LteOp, Boolean, Boolean, Boolean] =
-    new BinOpImpl[LteOp, Boolean, Boolean, Boolean](_ <= _)
+  // !=
+
+  implicit val neqDD =
+    new BinOp[NeqOp, Double, Double, Boolean] {
+      def apply(a: Double, b: Double) =
+        if (stD.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqDL =
+    new BinOp[NeqOp, Double, Long, Boolean] {
+      def apply(a: Double, b: Long) =
+        if (stD.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqDI =
+    new BinOp[NeqOp, Double, Int, Boolean] {
+      def apply(a: Double, b: Int) =
+        if (stD.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqLD =
+    new BinOp[NeqOp, Long, Double, Boolean] {
+      def apply(a: Long, b: Double) =
+        if (stL.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqLL =
+    new BinOp[NeqOp, Long, Long, Boolean] {
+      def apply(a: Long, b: Long) =
+        if (stL.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqLI =
+    new BinOp[NeqOp, Long, Int, Boolean] {
+      def apply(a: Long, b: Int) =
+        if (stL.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqID =
+    new BinOp[NeqOp, Int, Double, Boolean] {
+      def apply(a: Int, b: Double) =
+        if (stI.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqII =
+    new BinOp[NeqOp, Int, Int, Boolean] {
+      def apply(a: Int, b: Int) =
+        if (stI.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a != b)
+    }
+  implicit val neqBB =
+    new BinOp[NeqOp, Boolean, Boolean, Boolean] {
+      def apply(a: Boolean, b: Boolean) =
+        if (stB.isMissing(a) || stB.isMissing(b)) stB.missing
+        else (a != b)
+    }
+
+  // >=
+
+  implicit val gteDD =
+    new BinOp[GteOp, Double, Double, Boolean] {
+      def apply(a: Double, b: Double) =
+        if (stD.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteDL =
+    new BinOp[GteOp, Double, Long, Boolean] {
+      def apply(a: Double, b: Long) =
+        if (stD.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteDI =
+    new BinOp[GteOp, Double, Int, Boolean] {
+      def apply(a: Double, b: Int) =
+        if (stD.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteLD =
+    new BinOp[GteOp, Long, Double, Boolean] {
+      def apply(a: Long, b: Double) =
+        if (stL.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteLL =
+    new BinOp[GteOp, Long, Long, Boolean] {
+      def apply(a: Long, b: Long) =
+        if (stL.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteLI =
+    new BinOp[GteOp, Long, Int, Boolean] {
+      def apply(a: Long, b: Int) =
+        if (stL.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteID =
+    new BinOp[GteOp, Int, Double, Boolean] {
+      def apply(a: Int, b: Double) =
+        if (stI.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteII =
+    new BinOp[GteOp, Int, Int, Boolean] {
+      def apply(a: Int, b: Int) =
+        if (stI.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+  implicit val gteBB =
+    new BinOp[GteOp, Boolean, Boolean, Boolean] {
+      def apply(a: Boolean, b: Boolean) =
+        if (stB.isMissing(a) || stB.isMissing(b)) stB.missing
+        else (a >= b)
+    }
+
+  // <=
+
+  implicit val lteDD =
+    new BinOp[LteOp, Double, Double, Boolean] {
+      def apply(a: Double, b: Double) =
+        if (stD.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteDL =
+    new BinOp[LteOp, Double, Long, Boolean] {
+      def apply(a: Double, b: Long) =
+        if (stD.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteDI =
+    new BinOp[LteOp, Double, Int, Boolean] {
+      def apply(a: Double, b: Int) =
+        if (stD.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteLD =
+    new BinOp[LteOp, Long, Double, Boolean] {
+      def apply(a: Long, b: Double) =
+        if (stL.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteLL =
+    new BinOp[LteOp, Long, Long, Boolean] {
+      def apply(a: Long, b: Long) =
+        if (stL.isMissing(a) || stL.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteLI =
+    new BinOp[LteOp, Long, Int, Boolean] {
+      def apply(a: Long, b: Int) =
+        if (stL.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteID =
+    new BinOp[LteOp, Int, Double, Boolean] {
+      def apply(a: Int, b: Double) =
+        if (stI.isMissing(a) || stD.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteII =
+    new BinOp[LteOp, Int, Int, Boolean] {
+      def apply(a: Int, b: Int) =
+        if (stI.isMissing(a) || stI.isMissing(b)) stB.missing
+        else (a <= b)
+    }
+  implicit val lteBB =
+    new BinOp[LteOp, Boolean, Boolean, Boolean] {
+      def apply(a: Boolean, b: Boolean) =
+        if (stB.isMissing(a) || stB.isMissing(b)) stB.missing
+        else (a <= b)
+    }
 }

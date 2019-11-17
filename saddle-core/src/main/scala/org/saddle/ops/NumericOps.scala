@@ -280,4 +280,31 @@ trait NumericOps[+This] { repr: This =>
   def outer[B, That](other: B)(
       implicit op: BinOp[OuterProd, This, B, That]
   ): That = op(repr, other)
+
+  // In place operations
+
+  def +=[B](
+      other: B
+  )(implicit op: BinOpInPlace[Add, This, B]): Unit =
+    op(this, other)
+  def -=[B](
+      other: B
+  )(implicit op: BinOpInPlace[Subtract, This, B]): Unit =
+    op(this, other)
+  def *=[B](
+      other: B
+  )(implicit op: BinOpInPlace[Multiply, This, B]): Unit =
+    op(this, other)
+  def /=[B](
+      other: B
+  )(implicit op: BinOpInPlace[Divide, This, B]): Unit =
+    op(this, other)
+  def %=[B](
+      other: B
+  )(implicit op: BinOpInPlace[Mod, This, B]): Unit =
+    op(this, other)
+  def **=[B](
+      other: B
+  )(implicit op: BinOpInPlace[Power, This, B]): Unit =
+    op(this, other)
 }

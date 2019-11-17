@@ -38,9 +38,10 @@ trait BinOpMat {
     def apply(v1: Mat[A], v2: B) = {
       val sz = v1.length
       val ar = new Array[C](sz)
+      val v1a = v1.toArray
       var i = 0
       while (i < sz) {
-        ar(i) = op(v1.raw(i), v2)
+        ar(i) = op(v1a(i), v2)
         i += 1
       }
       Mat(v1.numRows, v1.numCols, ar)
@@ -97,8 +98,10 @@ trait BinOpMat {
       val sz = v1.length
       val ar = new Array[C](sz)
       var i = 0
+      val v1a = v1.toArray
+      val v2a = v2.toArray
       while (i < sz) {
-        ar(i) = op(v1.raw(i), v2.raw(i))
+        ar(i) = op(v1a(i), v2a(i))
         i += 1
       }
       Mat(v1.numRows, v1.numCols, ar)
@@ -135,5 +138,98 @@ trait BinOpMat {
   implicit def MatMatElemOpIII[Op <: ScalarOp](
       implicit op: BinOp[Op, Int, Int, Int]
   ) = new MatMatElemOp[Op, Int, Int, Int](op)
+
+}
+
+trait BinOpMatInPlace {
+  // ***************
+
+  // Binary element-wise operation on one Mat and one scalar
+  final class MatSclrElemOpIp[
+      OP <: ScalarOp,
+      @spec(Int, Long, Double) A,
+      @spec(Int, Long, Double) B
+  ](val op: BinOp[OP, A, B, A])
+      extends BinOpInPlace[OP, Mat[A], B] {
+    def apply(v1: Mat[A], v2: B) = {
+      val sz = v1.length
+      val v1a = v1.toArray
+      var i = 0
+      while (i < sz) {
+        v1a(i) = op(v1a(i), v2)
+        i += 1
+      }
+    }
+  }
+
+  // concrete implementations
+  implicit def MatSclrElmOpIpDDD[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Double, Double]
+  ) = new MatSclrElemOpIp[Op, Double, Double](op)
+  implicit def MatSclrElmOpIpDLD[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Long, Double]
+  ) = new MatSclrElemOpIp[Op, Double, Long](op)
+  implicit def MatSclrElmOpIpDID[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Int, Double]
+  ) = new MatSclrElemOpIp[Op, Double, Int](op)
+
+  implicit def MatSclrElmOpIpLLL[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Long, Long]
+  ) = new MatSclrElemOpIp[Op, Long, Long](op)
+  implicit def MatSclrElmOpIpLIL[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Int, Long]
+  ) = new MatSclrElemOpIp[Op, Long, Int](op)
+
+  implicit def MatSclrElmOpIpIII[Op <: ScalarOp](
+      implicit op: BinOp[Op, Int, Int, Int]
+  ) = new MatSclrElemOpIp[Op, Int, Int](op)
+
+  // ***************
+
+  // Binary element-wise in place operation on two Mats                                                              scala
+  final class MatMatElemOpIp[
+      OP <: ScalarOp,
+      @spec(Int, Long, Double) A,
+      @spec(Int, Long, Double) B
+  ](op: BinOp[OP, A, B, A])
+      extends BinOpInPlace[OP, Mat[A], Mat[B]] {
+
+    def apply(v1: Mat[A], v2: Mat[B]) = {
+      require(
+        v1.numRows == v2.numRows && v1.numCols == v2.numCols,
+        "Mats must have the same size!"
+      )
+      val sz = v1.length
+      var i = 0
+      val v1a = v1.toArray
+      val v2a = v2.toArray
+      while (i < sz) {
+        v1a(i) = op(v1a(i), v2a(i))
+        i += 1
+      }
+    }
+  }
+
+  // concrete implementations
+  implicit def MatMatElemOpIpDDD[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Double, Double]
+  ) = new MatMatElemOpIp[Op, Double, Double](op)
+  implicit def MatMatElemOpIpDLD[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Long, Double]
+  ) = new MatMatElemOpIp[Op, Double, Long](op)
+  implicit def MatMatElemOpIpDID[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Int, Double]
+  ) = new MatMatElemOpIp[Op, Double, Int](op)
+
+  implicit def MatMatElemOpIpLLL[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Long, Long]
+  ) = new MatMatElemOpIp[Op, Long, Long](op)
+  implicit def MatMatElemOpIpLIL[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Int, Long]
+  ) = new MatMatElemOpIp[Op, Long, Int](op)
+
+  implicit def MatMatElemOpIpIII[Op <: ScalarOp](
+      implicit op: BinOp[Op, Int, Int, Int]
+  ) = new MatMatElemOpIp[Op, Int, Int](op)
 
 }
