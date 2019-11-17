@@ -22,11 +22,583 @@ import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
 import org.saddle.array._
 import org.saddle.framework._
+import org.saddle.scalar.{ScalarTagLong => stL, ScalarTagInt => stI}
 
 /**
   * Test Mat
   */
 class MatCheck extends Specification with ScalaCheck {
+
+  "Elementwise matrix operations with scalar (D,D) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m < b) must_== m.map(_ < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m <= b) must_== m.map(_ <= b)
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m > b) must_== m.map(_ > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m >= b) must_== m.map(_ >= b)
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m =? b) must_== m.map(_ == b)
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m <> b) must_== m.map(_ != b)
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (L,D) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m < b) must_== m.map(_ < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m <= b) must_== m.map(_ <= b)
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m > b) must_== m.map(_ > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m >= b) must_== m.map(_ >= b)
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m =? b) must_== m.map(_ == b)
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m <> b) must_== m.map(_ != b)
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (I,D) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m < b) must_== m.map(_ < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m <= b) must_== m.map(_ <= b)
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m > b) must_== m.map(_ > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m >= b) must_== m.map(_ >= b)
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m =? b) must_== m.map(_ == b)
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m <> b) must_== m.map(_ != b)
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (D,L) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m < b) must_== m.map(v => if (stL.isMissing(b)) false else v < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m <= b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v <= b
+        )
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m > b) must_== m.map(v => if (stL.isMissing(b)) false else v > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m >= b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v >= b
+        )
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m =? b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v == b
+        )
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m <> b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v != b
+        )
+      }
+    }
+  }
+
+  "Elementwise matrix operations with scalar (D,D) => D" in {
+    "op + works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m + b) must_== m.map(_ + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m - b) must_== m.map(_ - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m * b) must_== m.map(_ * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m / b) must_== m.map(_ / b)
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m % b) must_== m.map(_ % b)
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Double], b: Double) =>
+        (m ** b) must_== m.map(v => math.pow(v, b))
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (L,D) => D" in {
+    "op + works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m + b) must_== m.map(_ + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m - b) must_== m.map(_ - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m * b) must_== m.map(_ * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m / b) must_== m.map(_ / b)
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m % b) must_== m.map(_ % b)
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Long], b: Double) =>
+        (m ** b) must_== m.map(v => math.pow(v, b))
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (I,D) => D" in {
+    "op + works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m + b) must_== m.map(_ + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m - b) must_== m.map(_ - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m * b) must_== m.map(_ * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m / b) must_== m.map(_ / b)
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m % b) must_== m.map(_ % b)
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Int], b: Double) =>
+        (m ** b) must_== m.map(v => math.pow(v, b))
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (D,L) => D" in {
+    "op + works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m + b) must_== m.map(v => if (stL.isMissing(b)) Double.NaN else v + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m - b) must_== m.map(v => if (stL.isMissing(b)) Double.NaN else v - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m * b) must_== m.map(v => if (stL.isMissing(b)) Double.NaN else v * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m / b) must_== m.map(v => if (stL.isMissing(b)) Double.NaN else v / b)
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m % b) must_== m.map(v => if (stL.isMissing(b)) Double.NaN else v % b)
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Double], b: Long) =>
+        (m ** b) must_== m.map(
+          v => if (stL.isMissing(b)) Double.NaN else math.pow(v, b)
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (D,I) => D" in {
+    "op + works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m + b) must_== m.map(v => if (stI.isMissing(b)) Double.NaN else v + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m - b) must_== m.map(v => if (stI.isMissing(b)) Double.NaN else v - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m * b) must_== m.map(v => if (stI.isMissing(b)) Double.NaN else v * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m / b) must_== m.map(v => if (stI.isMissing(b)) Double.NaN else v / b)
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m % b) must_== m.map(v => if (stI.isMissing(b)) Double.NaN else v % b)
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m ** b) must_== m.map(
+          v => if (stI.isMissing(b)) Double.NaN else math.pow(v, b)
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (L,L) => L" in {
+    "op + works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m + b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m - b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m * b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (b != 0L) ==> {
+          (m / b) must_== m.map(
+            v => if (stL.isMissing(b)) stL.missing else v / b
+          )
+        }
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (b != 0L) ==> {
+          (m % b) must_== m.map(
+            v => if (stL.isMissing(b)) stL.missing else v % b
+          )
+        }
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m ** b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else math.pow(v, b).toLong
+        )
+      }
+    }
+    "op & works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m & b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else v & b
+        )
+      }
+    }
+    "op | works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m | b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else v | b
+        )
+      }
+    }
+    "op ^ works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m ^ b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else v ^ b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (L,I) => L" in {
+    "op + works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m + b) must_== m.map(v => if (stI.isMissing(b)) stL.missing else v + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m - b) must_== m.map(v => if (stI.isMissing(b)) stL.missing else v - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m * b) must_== m.map(v => if (stI.isMissing(b)) stL.missing else v * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (b != 0L) ==> {
+          (m / b) must_== m.map(
+            v => if (stI.isMissing(b)) stL.missing else v / b
+          )
+        }
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (b != 0L) ==> {
+          (m % b) must_== m.map(
+            v => if (stI.isMissing(b)) stL.missing else v % b
+          )
+        }
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m ** b) must_== m.map(
+          v => if (stI.isMissing(b)) stL.missing else math.pow(v, b).toLong
+        )
+      }
+    }
+    "op & works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m & b) must_== m.map(
+          v => if (stI.isMissing(b)) stL.missing else v & b
+        )
+      }
+    }
+    "op | works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m | b) must_== m.map(
+          v => if (stI.isMissing(b)) stL.missing else v | b
+        )
+      }
+    }
+    "op ^ works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m ^ b) must_== m.map(
+          v => if (stI.isMissing(b)) stL.missing else v ^ b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (I,L) => L" in {
+    "op + works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m + b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m - b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m * b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (b != 0L) ==> {
+          (m / b) must_== m.map(
+            v => if (stL.isMissing(b)) stL.missing else v / b
+          )
+        }
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (b != 0L) ==> {
+          (m % b) must_== m.map(
+            v => if (stL.isMissing(b)) stL.missing else v % b
+          )
+        }
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m ** b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else math.pow(v, b).toLong
+        )
+      }
+    }
+    "op & works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m & b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else v & b
+        )
+      }
+    }
+    "op | works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m | b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else v | b
+        )
+      }
+    }
+    "op ^ works" in {
+      forAll { (m: Mat[Int], b: Long) =>
+        (m ^ b) must_== m.map(
+          v => if (stL.isMissing(b)) stL.missing else v ^ b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (I,I) => I" in {
+    "op + works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m + b) must_== m.map(v => if (stI.isMissing(b)) stI.missing else v + b)
+      }
+    }
+    "op - works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m - b) must_== m.map(v => if (stI.isMissing(b)) stI.missing else v - b)
+      }
+    }
+    "op * works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m * b) must_== m.map(v => if (stI.isMissing(b)) stI.missing else v * b)
+      }
+    }
+    "op / works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (b != 0L) ==> {
+          (m / b) must_== m.map(
+            v => if (stI.isMissing(b)) stI.missing else v / b
+          )
+        }
+      }
+    }
+    "op % works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (b != 0L) ==> {
+          (m % b) must_== m.map(
+            v => if (stI.isMissing(b)) stI.missing else v % b
+          )
+        }
+      }
+    }
+    "op ** works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m ** b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else math.pow(v, b).toInt
+        )
+      }
+    }
+    "op & works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m & b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else v & b
+        )
+      }
+    }
+    "op | works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m | b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else v | b
+        )
+      }
+    }
+    "op ^ works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m ^ b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else v ^ b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (B,B) => B" in {
+    "op && works" in {
+      forAll { (m: Mat[Boolean], b: Boolean) =>
+        (m && b) must_== m.map(_ && b)
+      }
+    }
+    "op || works" in {
+      forAll { (m: Mat[Boolean], b: Boolean) =>
+        (m || b) must_== m.map(_ || b)
+      }
+    }
+    "op xor works" in {
+      forAll { (m: Mat[Boolean], b: Boolean) =>
+        (m xor b) must_== m.map(a => (a && b) || (!a && !b))
+      }
+    }
+  }
 
   "Double Mat Tests" in {
     implicit val arbMat = Arbitrary(MatArbitraries.matDouble)

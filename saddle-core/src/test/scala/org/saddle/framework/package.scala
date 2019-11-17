@@ -7,6 +7,9 @@ import scala.reflect.ClassTag
 package object framework {
   /* Implicit generators for factories needing Double and DateTime generation. */
   implicit def double = boundedDouble
+  implicit def long = Gen.choose(Long.MinValue, Long.MaxValue)
+  implicit def int = Gen.choose(Int.MinValue, Int.MaxValue)
+  implicit def bool = Gen.oneOf(true, false)
 
   /** Yield an arbitrary Double List of size 100 */
   implicit def arbList: Arbitrary[List[Double]] =

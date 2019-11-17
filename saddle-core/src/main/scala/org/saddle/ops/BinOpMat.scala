@@ -30,9 +30,9 @@ trait BinOpMat {
   // Binary element-wise operation on one Mat and one scalar
   final class MatSclrElemOp[
       OP <: ScalarOp,
-      @spec(Int, Long, Double) A,
-      @spec(Int, Long, Double) B,
-      @spec(Int, Long, Double) C: ST
+      @spec(Boolean, Int, Long, Double) A,
+      @spec(Boolean, Int, Long, Double) B,
+      @spec(Boolean, Int, Long, Double) C: ST
   ](val op: BinOp[OP, A, B, C])
       extends BinOp[OP, Mat[A], B, Mat[C]] {
     def apply(v1: Mat[A], v2: B) = {
@@ -78,6 +78,35 @@ trait BinOpMat {
   implicit def MatSclrElmOpIII[Op <: ScalarOp](
       implicit op: BinOp[Op, Int, Int, Int]
   ) = new MatSclrElemOp[Op, Int, Int, Int](op)
+
+  implicit def MatSclrElmOpBBB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Boolean, Boolean, Boolean]
+  ) = new MatSclrElemOp[Op, Boolean, Boolean, Boolean](op)
+
+  implicit def MatSclrElmOpDDB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Double, Boolean]
+  ) = new MatSclrElemOp[Op, Double, Double, Boolean](op)
+
+  implicit def MatSclrElmOpDLB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Long, Boolean]
+  ) = new MatSclrElemOp[Op, Double, Long, Boolean](op)
+
+  implicit def MatSclrElmOpLDB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Double, Boolean]
+  ) = new MatSclrElemOp[Op, Long, Double, Boolean](op)
+
+  implicit def MatSclrElmOpIDB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Int, Double, Boolean]
+  ) = new MatSclrElemOp[Op, Int, Double, Boolean](op)
+  implicit def MatSclrElmOpDIB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Int, Boolean]
+  ) = new MatSclrElemOp[Op, Double, Int, Boolean](op)
+  implicit def MatSclrElmOpIIB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Int, Int, Boolean]
+  ) = new MatSclrElemOp[Op, Int, Int, Boolean](op)
+  implicit def MatSclrElmOpLLB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Long, Boolean]
+  ) = new MatSclrElemOp[Op, Long, Long, Boolean](op)
 
   // ***************
 
