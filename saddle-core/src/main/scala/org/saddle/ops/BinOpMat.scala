@@ -224,20 +224,35 @@ trait BinOpMatInPlace {
   ](op: BinOp[OP, A, B, A])
       extends BinOpInPlace[OP, Mat[A], Mat[B]] {
 
-    def apply(v1: Mat[A], v2: Mat[B]) = {
-      require(
-        v1.numRows == v2.numRows && v1.numCols == v2.numCols,
-        "Mats must have the same size!"
-      )
-      val sz = v1.length
-      var i = 0
-      val v1a = v1.toArray
-      val v2a = v2.toArray
-      while (i < sz) {
-        v1a(i) = op(v1a(i), v2a(i))
-        i += 1
-      }
-    }
+    def apply(v1: Mat[A], v2: Mat[B]) =
+      if (v1.numRows == v2.numRows && v1.numCols == v2.numCols) {
+        val sz = v1.length
+        var i = 0
+        val v1a = v1.toArray
+        val v2a = v2.toArray
+        while (i < sz) {
+          v1a(i) = op(v1a(i), v2a(i))
+          i += 1
+        }
+      } else if ((v1.numRows == v2.numRows || v2.numRows == 1) &&
+                 (v1.numCols == v2.numCols || v2.numCols == 1)) {
+        //   Broadcasting
+        val nR2 = v2.numRows
+        val nC1 = v1.numCols
+        val nC2 = v2.numCols
+        val v1a = v1.toArray
+        val v2a = v2.toArray
+        val sz = v1a.size
+        var i = 0
+        while (i < sz) {
+          val r1 = i / nC1
+          val r2 = if (nR2 == 1) 0 else r1
+          val c1 = i % nC1
+          val c2 = if (nC2 == 1) 0 else c1
+          v1a(i) = op(v1a(r1 * nC1 + c1), v2a(r2 * nC2 + c2))
+          i += 1
+        }
+      } else throw new RuntimeException("Incompatible sizes")
   }
 
   // concrete implementations
