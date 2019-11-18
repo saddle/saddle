@@ -107,7 +107,9 @@ trait BinOpMat {
   implicit def MatSclrElmOpLLB[Op <: ScalarOp](
       implicit op: BinOp[Op, Long, Long, Boolean]
   ) = new MatSclrElemOp[Op, Long, Long, Boolean](op)
-
+  implicit def MatSclrElmOpLIB[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Int, Boolean]
+  ) = new MatSclrElemOp[Op, Long, Int, Boolean](op)
   // ***************
 
   /**Binary element-wise operation on two Mats

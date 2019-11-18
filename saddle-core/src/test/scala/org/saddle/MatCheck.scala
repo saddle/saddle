@@ -165,6 +165,166 @@ class MatCheck extends Specification with ScalaCheck {
       }
     }
   }
+  "Elementwise matrix operations with scalar (D,I) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m < b) must_== m.map(v => if (stI.isMissing(b)) false else v < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m <= b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v <= b
+        )
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m > b) must_== m.map(v => if (stI.isMissing(b)) false else v > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m >= b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v >= b
+        )
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m =? b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v == b
+        )
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        (m <> b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v != b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (L,L) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m < b) must_== m.map(v => if (stL.isMissing(b)) false else v < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m <= b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v <= b
+        )
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m > b) must_== m.map(v => if (stL.isMissing(b)) false else v > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m >= b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v >= b
+        )
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m =? b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v == b
+        )
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Long], b: Long) =>
+        (m <> b) must_== m.map(
+          v => if (stL.isMissing(b)) false else v != b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (I,I) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m < b) must_== m.map(v => if (stI.isMissing(b)) false else v < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m <= b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v <= b
+        )
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m > b) must_== m.map(v => if (stI.isMissing(b)) false else v > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m >= b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v >= b
+        )
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m =? b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v == b
+        )
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m <> b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v != b
+        )
+      }
+    }
+  }
+  "Elementwise matrix operations with scalar (L,I) => B" in {
+    "op < works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m < b) must_== m.map(v => if (stI.isMissing(b)) false else v < b)
+      }
+    }
+    "op <= works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m <= b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v <= b
+        )
+      }
+    }
+    "op > works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m > b) must_== m.map(v => if (stI.isMissing(b)) false else v > b)
+      }
+    }
+    "op >= works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m >= b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v >= b
+        )
+      }
+    }
+    "op == works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m =? b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v == b
+        )
+      }
+    }
+    "op <> works" in {
+      forAll { (m: Mat[Long], b: Int) =>
+        (m <> b) must_== m.map(
+          v => if (stI.isMissing(b)) false else v != b
+        )
+      }
+    }
+  }
 
   "Elementwise matrix operations with scalar (D,D) => D" in {
     "op + works" in {
@@ -581,6 +741,27 @@ class MatCheck extends Specification with ScalaCheck {
         )
       }
     }
+    "op << works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m << b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else v << b
+        )
+      }
+    }
+    "op >> works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m >> b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else v >> b
+        )
+      }
+    }
+    "op >>> works" in {
+      forAll { (m: Mat[Int], b: Int) =>
+        (m >>> b) must_== m.map(
+          v => if (stI.isMissing(b)) stI.missing else v >>> b
+        )
+      }
+    }
   }
   "Elementwise matrix operations with scalar (B,B) => B" in {
     "op && works" in {
@@ -602,7 +783,14 @@ class MatCheck extends Specification with ScalaCheck {
 
   "Double Mat Tests" in {
     implicit val arbMat = Arbitrary(MatArbitraries.matDouble)
-
+    "scalar operation in place works" in {
+      forAll { (m: Mat[Double], b: Int) =>
+        val m2 = m * b
+        val m1 = m.copy
+        m1 *= b
+        m1 must_== m2
+      }
+    }
     "broadcast in place works" in {
       val m1 = Mat(Vec(1, 2, 3), Vec(1, 2, 3), Vec(1, 2, 3)).T
       val m2 = Mat(Vec(10, 20, 30))
@@ -712,6 +900,19 @@ class MatCheck extends Specification with ScalaCheck {
           val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
           forAll(idx) { i =>
             val res = m.takeRows(i: _*)
+            res.numRows must_== i.size
+            val exp = for (j <- i) yield m.row(j)
+            res must_== Mat(exp: _*).T
+          }
+        }
+      }
+    }
+    "takeRows works - 2" in {
+      forAll { (m: Mat[Double]) =>
+        (m.numRows > 0) ==> {
+          val idx = Gen.listOfN(3, Gen.choose[Int](0, m.numRows - 1))
+          forAll(idx) { i =>
+            val res = m.takeRows(i.toVec)
             res.numRows must_== i.size
             val exp = for (j <- i) yield m.row(j)
             res must_== Mat(exp: _*).T
