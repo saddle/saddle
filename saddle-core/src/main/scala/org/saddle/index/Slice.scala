@@ -19,7 +19,7 @@ import org.saddle.Index
 
 /**
   * Slice provides a methodology so that when it is applied to an index,
-  * it produces an upper and lower integer offset at which to slice.
+  * it produces an lower (inclusive) and upper (exclusive) integer offset at which to slice.
   */
 trait Slice[+T] {
   def apply[U >: T](idx: Index[U]): (Int, Int)

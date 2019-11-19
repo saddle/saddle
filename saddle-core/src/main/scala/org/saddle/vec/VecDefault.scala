@@ -243,6 +243,16 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
         }
 
         override def needsCopy = true
+
+        override def update(offset: Int, value: T) = {
+          val loc = b + offset * stride
+          if (loc >= ub)
+            throw new ArrayIndexOutOfBoundsException(
+              "Cannot access location %d >= length %d".format(loc, ub)
+            )
+          self.update(loc, value)
+        }
+
       }
   }
 
@@ -273,6 +283,16 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
           scalarTag.missing
         else
           self.raw(loc)
+      }
+
+      override def update(offset: Int, value: T) = {
+        val loc = b + offset
+        if (loc >= e || loc < b)
+          throw new ArrayIndexOutOfBoundsException(
+            "Cannot access location %d (vec length %d)"
+              .format(offset, self.length)
+          )
+        self.update(loc, value)
       }
 
       override def needsCopy = true
@@ -848,4 +868,33 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * Returns a Vec with the last `i` elements removed
     */
   def dropRight(i: Int) = take(array.range(0, math.max(0, length - i)))
+
+  @inline def update(offset: Int, value: T) =
+    if (needsCopy) throw new RuntimeException("Update not implemented")
+    else {
+      values(offset) = value
+    }
+
+  def update(slice: Slice[Int], value: T) = {
+    val (from, until) = slice(IndexIntRange(length))
+    var i = from
+    while (i < until) {
+      update(i, value)
+      i += 1
+    }
+  }
+
+  def update(slice: Slice[Int], value: Vec[T]) = {
+    val (from, until) = slice(IndexIntRange(length))
+    if (until - from != value.length)
+      throw new RuntimeException(
+        s"Must have the correct length (slice: ${until - from}, argument: ${value.length})"
+      )
+    var i = from
+    while (i < until) {
+      update(i, value.raw(i - from))
+      i += 1
+    }
+  }
+
 }

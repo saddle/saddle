@@ -28,7 +28,44 @@ class VecCheck extends Specification with ScalaCheck {
 
   "Double Vec Tests" in {
     implicit val vec = Arbitrary(VecArbitraries.vecDoubleWithNA)
+    "update" in {
+      forAll { (v: Vec[Double], d: Double) =>
+        (v.length > 0) ==> {
+          val i = v.length / 2
+          v(i) = d
+          (v.raw(i) must_== d) and
+            (v.toArray(i) must_== d)
+        }
 
+      }
+    }
+    "update in slice" in {
+      val v = org.saddle.vec.ones(10)
+      val v2 = v.slice(2, 5)
+      v2(1) = 0d
+      v.toArray(3) must_== 0d
+    }
+    "update slice" in {
+      val v = org.saddle.vec.ones(5)
+      v(2 -> 3) = 0d
+      v.toSeq must_== Seq(1d, 1d, 0d, 0d, 1d)
+    }
+    "update slice" in {
+      val v = org.saddle.vec.ones(5)
+      v(2 -> *) = 0d
+      v.toSeq must_== Seq(1d, 1d, 0d, 0d, 0d)
+    }
+    "update slice with Vec" in {
+      val v = org.saddle.vec.ones(5)
+      v(2 -> *) = Vec(0d, 0d, 0d)
+      v.toSeq must_== Seq(1d, 1d, 0d, 0d, 0d)
+    }
+    "update slice with Vec in slice" in {
+      val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+      val v2 = v.slice(1, 8, 3)
+      v2(1 -> 3) = Vec(-1, -1)
+      v must_== Vec(0, 1, 2, 3, -1, 5, 6, -1, 8, 9)
+    }
     "takeLeft" in {
       forAll { (v: Vec[Double]) =>
         v.takeLeft(5) must_== v.toSeq.take(5).toVec

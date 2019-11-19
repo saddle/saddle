@@ -609,6 +609,24 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
     */
   def updated(offset: Int, value: T): Vec[T]
 
+  /** Updates (overwrites) a location in the Vec
+    *
+    * Mutates the underlying array
+    */
+  def update(offset: Int, value: T): Unit
+
+  /** Updates (overwrites) a range in the Vec
+    *
+    * Mutates the underlying array
+    */
+  def update(slice: Slice[Int], value: T): Unit
+
+  /** Updates (overwrites) a range in the Vec
+    *
+    * Mutates the underlying array
+    */
+  def update(slice: Slice[Int], value: Vec[T]): Unit
+
   /** Returns a new Vec with the values at `offset` set to `value
     *
     * Copies before mutating.
