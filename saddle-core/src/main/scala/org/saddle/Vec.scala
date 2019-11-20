@@ -634,4 +634,11 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
     */
   def updated(offsets: Array[Int], value: T): Vec[T]
 
+  /** Reshapes the Vec into a Mat
+    *
+    * May not copy. The new Mat instance may share data
+    * with this Vec.
+    */
+  def reshape(rows: Int, cols: Int): Mat[T]
+
 }

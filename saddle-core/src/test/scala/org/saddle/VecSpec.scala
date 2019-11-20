@@ -18,7 +18,10 @@ package org.saddle
 import org.specs2.mutable.Specification
 
 class VecSpec extends Specification {
-
+  "reshape" in {
+    Vec(1, 2, 3, 4, 5,
+      6).reshape(2, 3) must_== Mat(Vec(1, 2, 3), Vec(4, 5, 6)).T
+  }
   "Seq[A] converts to Vec" in {
     Seq(1).toVec must_== Vec(1)
   }

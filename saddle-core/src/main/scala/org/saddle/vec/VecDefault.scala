@@ -18,7 +18,7 @@ package org.saddle.vec
 import scala.{specialized => spec}
 import org.saddle.scalar.{Scalar, NA, ScalarTagDouble}
 import org.saddle.ops.NumericOps
-import org.saddle.{ST, Vec, array, NUM, util, ORD, PctMethod, RankTie}
+import org.saddle.{ST, Vec, array, NUM, util, ORD, PctMethod, RankTie, Mat}
 import org.saddle.index.Slice
 import org.saddle.index.IndexIntRange
 import java.io.OutputStream
@@ -894,6 +894,13 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     while (i < until) {
       update(i, value.raw(i - from))
       i += 1
+    }
+  }
+
+  def reshape(rows: Int, columns: Int): Mat[T] = {
+    if (rows * columns != length) throw new RuntimeException("Invalid size")
+    else {
+      Mat(rows, columns, toArray)
     }
   }
 
