@@ -475,6 +475,10 @@ class Mat[@spec(Boolean, Int, Long, Double) T](
   @inline def mutateSetCell(r: Int, c: Int, v: T): Unit = {
     values(r * numCols + c) = v
   }
+
+  def update(r: Int, c: Int, v: T): Unit =
+    mutateSetCell(r, c, v)
+
   def mutateSetRow(r: Int, v: T): Unit = {
     var i = 0
     val rr = r * numCols

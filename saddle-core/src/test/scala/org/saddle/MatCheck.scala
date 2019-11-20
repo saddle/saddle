@@ -1115,6 +1115,15 @@ class MatCheck extends Specification with ScalaCheck {
         }
       }
     }
+    "setCell works" in {
+      forAll { (m: Mat[Double]) =>
+        (m.numRows > 0 && m.numCols > 0) ==> {
+
+          m(0, 0) = 3.0
+          m.raw(0, 0) must_== 3.0
+        }
+      }
+    }
     "setRow works" in {
       forAll { (m: Mat[Double]) =>
         (m.numRows > 0 && m.numCols > 0) ==> {
