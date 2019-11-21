@@ -30,6 +30,11 @@ summaryLength = 0
     url = "/api/"
     weight = 3
 
+[[menu.main]]
+    name = "Code"
+    url = "https://github.com/pityka/saddle"
+    weight = 3
+
 [params]
   # homepage_button_link = '/docs'
   # homepage_intro = 'Whisper is a documentation theme built with Hugo. The design and functionality is intentionally minimal.'
