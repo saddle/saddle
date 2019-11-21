@@ -23,6 +23,7 @@ import groupby.{SeriesGrouper, IndexGrouper}
 import scalar.{Scalar, NA}
 import java.io.OutputStream
 import org.saddle.mat.MatCols
+import org.saddle.locator.Locator
 
 /**
   * `Series` is an immutable container for 1D homogeneous data which is indexed by a
@@ -398,7 +399,7 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
   def hasNA: Boolean = toVec.hasNA
 
   /** Return the series with the first occurence of each key
-   */
+    */
   def distinctIx: Series[X, T] = {
     val nix = index.distinct
     val offset = index(nix.toVec.toArray)
@@ -1071,4 +1072,18 @@ object Series extends BinOpSeries {
       Vec(values.map(_._2).toArray),
       Index(values.map(_._1).toArray)
     )
+
+  def table[T: ST: ORD](
+      data: Vec[T]
+  ): Series[T, Int] = {
+    val map = Locator[T]()
+    data.toArray.foreach { v =>
+      if (map.inc(v) == 0) {
+        map.put(v, 1)
+      }
+    }
+    val values = map.counts
+    val idx = map.keys
+    Series(Vec(values), Index(idx))
+  }
 }

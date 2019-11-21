@@ -18,7 +18,17 @@ package org.saddle
 import org.specs2.mutable.Specification
 
 class SeriesSpec extends Specification {
-
+  "table works" in {
+    Series.table(Vec(4, 1, 2, 2, 1, 3, 1)) must_== Series(
+      4 -> 1,
+      1 -> 3,
+      2 -> 2,
+      3 -> 1
+    )
+  }
+  "table works" in {
+    Series.table(Vec[Int]()) must_== Series[Int, Int]()
+  }
   "Factory methods work" in {
     Series(Vec(1, 2, 3), Index("a", "b", "c")) must_== Series(
       Index("a", "b", "c"),

@@ -1950,6 +1950,24 @@ object Frame extends BinOpFrame {
         Some(mat)
       )
     }
+
+  def table[RX: ST: ORD, CX: ST: ORD](
+      values: Vec[(RX, CX)]
+  ): Frame[RX, CX, Int] = {
+    val map = scala.collection.mutable.AnyRefMap[(RX, CX), Int]()
+    values.toArray.foreach { v =>
+      map.get(v) match {
+        case None    => map.update(v, 1)
+        case Some(c) => map.update(v, c + 1)
+      }
+    }
+    map
+      .map { case ((rx, cx), count) => (rx, cx, count) }
+      .toSeq
+      .toFrame
+      .sortedRIx
+      .sortedCIx
+  }
 }
 
 /**
@@ -2103,4 +2121,5 @@ object Panel {
       }
     }
   }
+
 }

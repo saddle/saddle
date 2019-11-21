@@ -343,4 +343,10 @@ class FrameSpec extends Specification {
     df2.colType[Int] must_!= Frame.empty[Int, Int, Int]
     df2.colType[String] must_!= Frame.empty[Int, Int, String]
   }
+  "table" in {
+    Frame.table(Vec(1 -> 'a', 1 -> 'a', 2 -> 'b')) must_== Frame(
+      1 -> Series('a' -> 2),
+      2 -> Series('b' -> 1)
+    ).T
+  }
 }
