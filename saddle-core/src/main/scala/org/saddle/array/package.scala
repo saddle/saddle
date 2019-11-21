@@ -80,12 +80,9 @@ package object array {
     val sz = arr.length * n
     val res = empty[T](sz)
     var i = 0
-    var j = 0
-    while (i < sz) {
-      res(i) = arr(j)
+    while (i < n) {
+      System.arraycopy(arr, 0, res, i * arr.length, arr.length)
       i += 1
-      j += 1
-      if (j >= n) j = 0
     }
     res
   }
@@ -654,8 +651,10 @@ package object array {
       arr: Array[T]
   )(implicit st: ST[T]): Array[Int] =
     st.makeSorter.argSorted(arr)
-    
-  def argsort[@spec(Double, Long, Int, Float) T: ST: ORD](vec: Vec[T]): Array[Int] = argsort(vec.toArray)
+
+  def argsort[@spec(Double, Long, Int, Float) T: ST: ORD](
+      vec: Vec[T]
+  ): Array[Int] = argsort(vec.toArray)
 
   /**
     * Stable sort of array argument (not destructive), using radix sort

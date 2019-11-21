@@ -54,6 +54,14 @@ class ArrayCheck extends Specification with ScalaCheck {
           array.sum(arr, locs, 0) must_== v.sum
       }
     }
+    "tile" in {
+      forAll { (arr1: Array[Int]) =>
+        (array.tile(arr1, 0).size must_== 0) and
+          (array
+            .tile(arr1, 3)
+            must_== (0 until 3 flatMap (_ => arr1.toSeq)).toArray)
+      }
+    }
     "insertion sort" in {
       forAll { (arr1: Seq[Int]) =>
         val p = Array.ofDim[Int](arr1.size)
