@@ -180,8 +180,9 @@ private[saddle] object VecImpl {
   def filterFoldLeft[
       @spec(Boolean, Int, Long, Double) A: ST,
       @spec(Boolean, Int, Long, Double) B
-  ](vec: Vec[A])(pred: (A) => Boolean)(init: B)(f: (B, A) => B): B = {
-    val sa = implicitly[ST[A]]
+  ](
+      vec: Vec[A]
+  )(pred: A => Boolean)(init: B)(f: (B, A) => B)(implicit sa: ST[A]): B = {
     var acc = init
     var i = 0
     while (i < vec.length) {
