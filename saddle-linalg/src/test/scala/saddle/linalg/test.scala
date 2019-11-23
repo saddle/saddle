@@ -29,6 +29,8 @@ class VV1Suite extends FunSuite {
 class VecSuite extends FunSuite {
   test("1x3") {
     val m1 = Vec(1d, 2d, 3d)
+    assert(m1.min2 == 1d)
+    assert(m1.max2 == 3d)
     assert(m1.sum2 == 6d)
     assert(m1.mean2 == 2d)
     assert(m1.demeaned == Vec(-1d, 0d, 1d))
