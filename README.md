@@ -28,9 +28,8 @@ and the Scala collections library.
 Documentation
 =============
 
- - [Docs](http://saddle.github.io/doc/)
- - [Quick Start Guide](http://saddle.github.io/doc/quickstart.html)
- - [scaladoc](https://pityka.github.io/saddle/org/saddle/Frame.html)
+ - [Docs](https://codecov.io/gh/pityka/saddle)
+ - [scaladoc](https://pityka.github.io/saddle/api/org/saddle/Frame.html)
 
 How to build the code
 =====================
