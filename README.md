@@ -28,7 +28,7 @@ and the Scala collections library.
 Documentation
 =============
 
- - [Docs](https://codecov.io/gh/pityka/saddle)
+ - [Docs](https://pityka.github.io/saddle)
  - [scaladoc](https://pityka.github.io/saddle/api/org/saddle/Frame.html)
 
 How to build the code
@@ -38,9 +38,6 @@ You need [sbt](https://www.scala-sbt.org/): `sbt test`
 How to build the website
 ========================
 You need [sbt](https://www.scala-sbt.org/) and [hugo](https://gohugo.io/): `sbt docs/mdoc docs/unidoc && cd website && hugo`
-
-
-
 
 License
 =======
