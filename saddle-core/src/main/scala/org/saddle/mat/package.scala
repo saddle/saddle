@@ -24,7 +24,7 @@ import scala.{specialized => spec}
 package object mat {
 
   /**
-    * Generate a uniform random Mat[Double] of a certain size
+    * Generate a uniform [0,1) random Mat[Double] of a certain size
     * @param rows Number of rows
     * @param cols Number of rows
     */
@@ -32,7 +32,7 @@ package object mat {
     Mat(rows, cols, array.randDouble(rows * cols))
 
   /**
-    * Generate a uniform random positive Mat[Double] of a certain size
+    * Generate a uniform random (0,1] Mat[Double] of a certain size
     * @param rows Number of rows
     * @param cols Number of rows
     */
@@ -72,7 +72,7 @@ package object mat {
     Mat(rows, cols, array.randIntPos(rows * cols))
 
   /**
-    * Generate a gaussian(0, 1) random Mat[Double] of a certain size
+    * Generate a standard normal random Mat[Double] of a certain size
     * @param rows Number of rows
     * @param cols Number of rows
     */

@@ -49,20 +49,20 @@ package object vec {
   def randpi(sz: Int): Vec[Int] = Vec(array.randIntPos(sz))
 
   /**
-    * Generate a uniform random Vec[Double] of a certain number of elements
+    * Generate a uniform [0,1) random Vec[Double] of a certain number of elements
     * @param sz Number of elements of random vector
     */
   def rand(sz: Int): Vec[Double] = Vec(array.randDouble(sz))
 
   /**
-    * Generate a uniform random positive Vec[Double] of a certain number of
+    * Generate a uniform (0,1] random  Vec[Double] of a certain number of
     * elements
     * @param sz Number of elements of random vector
     */
   def randp(sz: Int): Vec[Double] = Vec(array.randDoublePos(sz))
 
   /**
-    * Generate a gaussian(0, 1) random Vec[Double] of a certain number of
+    * Generate a standard normal random Vec[Double] of a certain number of
     * elements
     * @param sz Number of elements of random vector
     */
