@@ -52,7 +52,8 @@ package object array {
     * Return a uniform random permutation of the array
     */
   def shuffle[@spec(Boolean, Int, Long, Double) T: ST](
-      arr: Array[T]
+      arr: Array[T],
+      rng: Generator
   ): Array[T] = {
     var i = 0
     val sz = arr.length
@@ -60,7 +61,7 @@ package object array {
     while (i < sz) {
       // maintains the invariant that at position i in result, all items to the left of i
       // have been randomly selected from the remaining sz - i locations
-      val loc = i + math.floor((sz - i) * defaultRandom.nextDouble).toInt
+      val loc = i + math.floor((sz - i) * rng.nextDouble).toInt
       val tmp = result(i)
       result(i) = result(loc)
       result(loc) = tmp
@@ -68,6 +69,13 @@ package object array {
     }
     result
   }
+
+  /**
+    * Return a uniform random permutation of the array
+    */
+  def shuffle[@spec(Boolean, Int, Long, Double) T: ST](
+      arr: Array[T]
+  ): Array[T] = shuffle(arr, defaultRandom)
 
   /**
     * Repeat elements of the array some number of times
@@ -93,162 +101,21 @@ package object array {
   /**
     * Generate an array of random integers
     */
-  def randInt(sz: Int): Array[Int] = {
-    val arr = Array.ofDim[Int](sz)
-    defaultRandom.fillInts(arr)
-    arr
-  }
-
-  /**
-    * Generate an array of random positive integers in [from,to]
-    */
-  def randInt(sz: Int, from: Int, to: Int): Array[Int] = {
-    val arr = Array.ofDim[Int](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextInt(from, to)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of a random long integers
-    */
-  def randLong(sz: Int): Array[Long] = {
-    val arr = Array.ofDim[Long](sz)
-    defaultRandom.fillLongs(arr)
-    arr
-  }
-
-  /**
-    * Generate an array of a random long integers in [from,to]
-    */
-  def randLong(sz: Int, from: Long, to: Long): Array[Long] = {
-    val arr = Array.ofDim[Long](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextLong(from, to)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random doubles on [0,1)
-    */
-  def randDouble(sz: Int): Array[Double] = {
-    val arr = Array.ofDim[Double](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextDouble
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random doubles on [0,n)
-    */
-  def randDouble(sz: Int, n: Double): Array[Double] = {
-    val arr = Array.ofDim[Double](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextDouble(n)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random doubles on [min,until)
-    */
-  def randDouble(sz: Int, min: Double, until: Double): Array[Double] = {
-    val arr = Array.ofDim[Double](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextDouble(min, until)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random positive integers
-    */
-  def randIntPos(sz: Int): Array[Int] = {
-    val arr = Array.ofDim[Int](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextInt(0, Int.MaxValue)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random long positive integers
-    */
-  def randLongPos(sz: Int): Array[Long] = {
-    val arr = Array.ofDim[Long](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextLong(0, Long.MaxValue)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random positive doubles on (0, 1]
-    */
-  def randDoublePos(sz: Int): Array[Double] = {
-    val arr = Array.ofDim[Double](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = 1d - defaultRandom.nextDouble
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random doubles which is normally distributed
-    * with a mean of zero and stdev of one.
-    */
-  def randNormal(sz: Int): Array[Double] = {
-    val arr = Array.ofDim[Double](sz)
-    defaultRandom.fillGaussians(arr)
-    arr
-  }
-
-  /**
-    * Generate an array of random doubles which is normally distributed
-    * with a mean of mu and stdev of sigma.
-    */
-  def randNormal2(sz: Int, mu: Double, sigma: Double): Array[Double] = {
-    val arr = Array.ofDim[Double](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = defaultRandom.nextGaussian(mu, sigma)
-      i += 1
-    }
-    arr
-  }
-
-  /**
-    * Generate an array of random integers
-    */
-  def randInt(rng: Generator, sz: Int): Array[Int] = {
+  def randInt(sz: Int, rng: Generator): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     rng.fillInts(arr)
     arr
   }
 
   /**
-    * Generate an array of random positive integers in [from,to]
+    * Generate an array of random integers
     */
-  def randInt(rng: Generator, sz: Int, from: Int, to: Int): Array[Int] = {
+  def randInt(sz: Int): Array[Int] = randInt(sz, defaultRandom)
+
+  /**
+    * Generate an array of random integers in [from,to]
+    */
+  def randInt(sz: Int, from: Int, to: Int, rng: Generator): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     var i = 0
     while (i < sz) {
@@ -259,18 +126,30 @@ package object array {
   }
 
   /**
+    * Generate an array of random integers in [from,to]
+    */
+  def randInt(sz: Int, from: Int, to: Int): Array[Int] =
+    randInt(sz, from, to, defaultRandom)
+
+  /**
     * Generate an array of a random long integers
     */
-  def randLong(rng: Generator, sz: Int): Array[Long] = {
+  def randLong(sz: Int, rng: Generator): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     rng.fillLongs(arr)
     arr
   }
 
   /**
+    * Generate an array of a random long integers
+    */
+  def randLong(sz: Int): Array[Long] =
+    randLong(sz, defaultRandom)
+
+  /**
     * Generate an array of a random long integers in [from,to]
     */
-  def randLong(rng: Generator, sz: Int, from: Long, to: Long): Array[Long] = {
+  def randLong(sz: Int, from: Long, to: Long, rng: Generator): Array[Long] = {
     val arr = Array.ofDim[Long](sz)
     var i = 0
     while (i < sz) {
@@ -281,9 +160,15 @@ package object array {
   }
 
   /**
+    * Generate an array of a random long integers in [from,to]
+    */
+  def randLong(sz: Int, from: Long, to: Long): Array[Long] =
+    randLong(sz, from, to, defaultRandom)
+
+  /**
     * Generate an array of random doubles on [0,1)
     */
-  def randDouble(rng: Generator, sz: Int): Array[Double] = {
+  def randDouble(sz: Int, rng: Generator): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
     while (i < sz) {
@@ -294,9 +179,15 @@ package object array {
   }
 
   /**
+    * Generate an array of random doubles on [0,1)
+    */
+  def randDouble(sz: Int): Array[Double] =
+    randDouble(sz, defaultRandom)
+
+  /**
     * Generate an array of random doubles on [0,n)
     */
-  def randDouble(rng: Generator, sz: Int, n: Double): Array[Double] = {
+  def randDouble(sz: Int, n: Double, rng: Generator): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
     while (i < sz) {
@@ -307,13 +198,19 @@ package object array {
   }
 
   /**
+    * Generate an array of random doubles on [0,n)
+    */
+  def randDouble(sz: Int, n: Double): Array[Double] =
+    randDouble(sz, n, defaultRandom)
+
+  /**
     * Generate an array of random doubles on [min,until)
     */
   def randDouble(
-      rng: Generator,
       sz: Int,
       min: Double,
-      until: Double
+      until: Double,
+      rng: Generator
   ): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
@@ -325,13 +222,38 @@ package object array {
   }
 
   /**
+    * Generate an array of random doubles on [min,until)
+    */
+  def randDouble(sz: Int, min: Double, until: Double): Array[Double] =
+    randDouble(sz, min, until, defaultRandom)
+
+  /**
     * Generate an array of random positive integers
     */
-  def randIntPos(rng: Generator, sz: Int): Array[Int] = {
+  def randIntPos(sz: Int, rng: Generator): Array[Int] = {
     val arr = Array.ofDim[Int](sz)
     var i = 0
     while (i < sz) {
-      arr(i) = rng.nextInt(0, Int.MaxValue)
+      arr(i) = rng.nextInt(1, Int.MaxValue)
+      i += 1
+    }
+    arr
+  }
+
+  /**
+    * Generate an array of random positive integers
+    */
+  def randIntPos(sz: Int): Array[Int] =
+    randIntPos(sz, defaultRandom)
+
+  /**
+    * Generate an array of random long positive integers
+    */
+  def randLongPos(sz: Int, rng: Generator): Array[Long] = {
+    val arr = Array.ofDim[Long](sz)
+    var i = 0
+    while (i < sz) {
+      arr(i) = rng.nextLong(1L, Long.MaxValue)
       i += 1
     }
     arr
@@ -340,20 +262,13 @@ package object array {
   /**
     * Generate an array of random long positive integers
     */
-  def randLongPos(rng: Generator, sz: Int): Array[Long] = {
-    val arr = Array.ofDim[Long](sz)
-    var i = 0
-    while (i < sz) {
-      arr(i) = rng.nextLong(0, Long.MaxValue)
-      i += 1
-    }
-    arr
-  }
+  def randLongPos(sz: Int): Array[Long] =
+    randLongPos(sz, defaultRandom)
 
   /**
     * Generate an array of random positive doubles on (0, 1]
     */
-  def randDoublePos(rng: Generator, sz: Int): Array[Double] = {
+  def randDoublePos(sz: Int, rng: Generator): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
     while (i < sz) {
@@ -364,10 +279,16 @@ package object array {
   }
 
   /**
+    * Generate an array of random positive doubles on (0, 1]
+    */
+  def randDoublePos(sz: Int): Array[Double] =
+    randDoublePos(sz, defaultRandom)
+
+  /**
     * Generate an array of random doubles which is normally distributed
     * with a mean of zero and stdev of one.
     */
-  def randNormal(rng: Generator, sz: Int): Array[Double] = {
+  def randNormal(sz: Int, rng: Generator): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     rng.fillGaussians(arr)
     arr
@@ -375,13 +296,20 @@ package object array {
 
   /**
     * Generate an array of random doubles which is normally distributed
+    * with a mean of zero and stdev of one.
+    */
+  def randNormal(sz: Int): Array[Double] =
+    randNormal(sz, defaultRandom)
+
+  /**
+    * Generate an array of random doubles which is normally distributed
     * with a mean of mu and stdev of sigma.
     */
   def randNormal2(
-      rng: Generator,
       sz: Int,
       mu: Double,
-      sigma: Double
+      sigma: Double,
+      rng: Generator
   ): Array[Double] = {
     val arr = Array.ofDim[Double](sz)
     var i = 0
@@ -391,6 +319,13 @@ package object array {
     }
     arr
   }
+
+  /**
+    * Generate an array of random doubles which is normally distributed
+    * with a mean of mu and stdev of sigma.
+    */
+  def randNormal2(sz: Int, mu: Double, sigma: Double): Array[Double] =
+    randNormal2(sz, mu, sigma, defaultRandom)
 
   /**
     * Takes values from array arr at particular offsets so as to produce a new array.
@@ -613,6 +548,8 @@ package object array {
     * Returns num evenly spaced samples, calculated over the
     * interval [start, stop].
     *
+    * If start < stop, then the order of elements are decreasing.
+    *
     * The endpoint of the interval can optionally be excluded.
     */
   def linspace(
@@ -629,14 +566,12 @@ package object array {
       val result = Array.ofDim[Double](num)
       val step = (stop - start) / (num - (if (endpoint) 1 else 0))
 
-      var i = 1
-      val n = num - 1
-      result(0) = start
+      val n = num
+      var i = 0
       while (i < n) {
-        result(i) = result(i - 1) + step
+        result(i) = start + i * step
         i += 1
       }
-      result(n) = stop
       result
     }
   }
@@ -724,11 +659,7 @@ package object array {
 
     arrs.foreach { a =>
       val l = a.length
-      var j = 0
-      while (j < l) {
-        newArr(i + j) = a(j)
-        j += 1
-      }
+      System.arraycopy(a, 0, newArr, i, l)
       i += l
     }
 

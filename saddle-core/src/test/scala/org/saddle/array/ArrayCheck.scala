@@ -77,5 +77,75 @@ class ArrayCheck extends Specification with ScalaCheck {
           .map(_._2)
       }
     }
+    "shuffle" in {
+      forAll { (arr1: Array[Int]) =>
+        array.shuffle(arr1).toSet must_== arr1.toSet
+      }
+    }
+    "shuffle" in {
+      val ar1 = 0 until 10 toArray
+
+      ((0 until 10000) map (_ => array.shuffle(ar1).apply(0))).toSet must_== ar1.toSet
+    }
+    "randInt" in {
+      array.randInt(10000, -10, 10).toSet must_== (-10 to 10).toSet
+    }
+    "randIntPos" in {
+      val r = array.randIntPos(10000)
+      r.forall(_ > 0)
+    }
+    "randLongPos" in {
+      val r = array.randLongPos(10000)
+      r.forall(_ > 0)
+    }
+    "randDoublePos" in {
+      val r = array.randLongPos(10000)
+      r.forall(_ > 0)
+    }
+    "randLong" in {
+      array.randLong(10000, -10, 10).toSet must_== (-10L to 10L).toSet
+    }
+    "send" in {
+      array.send(Array(5, 6, 7), Array(2, 0, 1)) must_== Array(6, 7, 5)
+    }
+    "put" in {
+      array.put(Array(5, 6, 7), Array(0, 1), -1) must_== Array(-1, -1, 7)
+    }
+    "put" in {
+      array.put(Array(5, 6, 7), Array(true, false, true), -1) must_== Array(
+        -1,
+        6,
+        -1
+      )
+    }
+    "put" in {
+      array.putn(Array(5, 6, 7), Array(1, 2), Array(-1, -2)) must_== Array(
+        5,
+        -1,
+        -2
+      )
+    }
+    "linspace" in {
+      array.linspace(2d, 3d, 5, true) must_== Array(2d, 2.25, 2.5, 2.75, 3d)
+    }
+    "linspace" in {
+      array.linspace(0d, 1d, 3, true) must_== Array(0d, 0.5, 1d)
+    }
+    "linspace" in {
+      array.linspace(0d, 1d, 0, true) must_== Array[Double]()
+    }
+    "linspace" in {
+      array.linspace(1d, 0d, 3, true) must_== Array[Double](1d, 0.5, 0d)
+    }
+    "linspace" in {
+      array.linspace(2d, 3d, 5, false) must_== Array(
+        2,
+        2 + 1d / 5,
+        2 + 2d / 5,
+        2 + 3d / 5,
+        2 + 4d / 5
+      )
+    }
+
   }
 }
