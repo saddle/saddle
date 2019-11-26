@@ -18,10 +18,35 @@ package org.saddle.csv
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import org.saddle.{Index, Vec, Frame, na, ST}
+import java.nio.charset.Charset
 
 class CsvCheck extends Specification with ScalaCheck {
   val crlf = "\r\n"
   val lf = "\n"
+  "file reading works" in {
+    val tmp = java.io.File.createTempFile("test", "test")
+    val os = new java.io.FileOutputStream(tmp)
+    val text = "abcdefgh"
+    os.write(text.getBytes("US-ASCII"))
+    os.close
+    val text2 = CsvParser
+      .readFile(tmp, bufferSize = 2)
+      .map(_.toString)
+      .mkString
+    text must_== text2
+  }
+  "file reading works, utf16" in {
+    val tmp = java.io.File.createTempFile("test", "test")
+    val os = new java.io.FileOutputStream(tmp)
+    val text = "abcdefgh…πœ"
+    os.write(text.getBytes("UTF-16"))
+    os.close
+    val text2 = CsvParser
+      .readFile(tmp, bufferSize = 2, Charset.forName("UTF-16"))
+      .map(_.toString)
+      .mkString
+    text must_== text2
+  }
   "csv string parsing and writing works" in {
 
     val expect = Frame(
@@ -31,7 +56,7 @@ class CsvCheck extends Specification with ScalaCheck {
     ).setColIndex(Index("a", "b,c,d", "e"))
 
     val parsedBack = (CsvParser
-      .parse[String](
+      .parseSource[String](
         scala.io.Source
           .fromString(new String(CsvWriter.writeFrameToArray(expect)))
       )
@@ -50,7 +75,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2)
+        .parseSource[String](src, bufferSize = 2)
         .right
         .get
         .withColIndex(0)
@@ -69,7 +94,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parseHeader[Int](src, bufferSize = 2)
+        .parseSourceWithHeader[Int](src, bufferSize = 2)
         .right
         .get
         .resetRowIndex
@@ -87,7 +112,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2, maxLines = 2)
+        .parseSource[String](src, bufferSize = 2, maxLines = 2)
         .right
         .get
         .withColIndex(0)
@@ -106,7 +131,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2, maxLines = 1)
+        .parseSource[String](src, bufferSize = 2, maxLines = 1)
         .right
         .get
         .withColIndex(0)
@@ -125,7 +150,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2, recordSeparator = lf)
+        .parseSource[String](src, bufferSize = 2, recordSeparator = lf)
         .right
         .get
         .withColIndex(0)
@@ -144,7 +169,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2)
+        .parseSource[String](src, bufferSize = 2)
         .right
         .get
         .withColIndex(0)
@@ -163,7 +188,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2, recordSeparator = lf)
+        .parseSource[String](src, bufferSize = 2, recordSeparator = lf)
         .right
         .get
         .withColIndex(0)
@@ -184,7 +209,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2)
+        .parseSource[String](src, bufferSize = 2)
         .right
         .get
         .withColIndex(0)
@@ -201,7 +226,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2, recordSeparator = lf)
+        .parseSource[String](src, bufferSize = 2, recordSeparator = lf)
         .right
         .get
         .withColIndex(0)
@@ -218,7 +243,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
     val frame =
       CsvParser
-        .parse[String](src, bufferSize = 2)
+        .parseSource[String](src, bufferSize = 2)
         .right
         .get
         .withColIndex(0)
@@ -236,7 +261,7 @@ class CsvCheck extends Specification with ScalaCheck {
     val src = scala.io.Source.fromString(data)
 
     val frame = CsvParser
-      .parse[String](src)
+      .parseSource[String](src)
       .right
       .get
       .withColIndex(0)
@@ -253,7 +278,7 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
 
-    CsvParser.parse[String](src) must_== Left(
+    CsvParser.parseSource[String](src) must_== Left(
       "Incomplete line 1. Expected 3 fields, got 2.. line=1, field=2"
     )
   }
@@ -263,7 +288,7 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
 
-    CsvParser.parse[String](src) must_== Left(
+    CsvParser.parseSource[String](src) must_== Left(
       "quotes in quoted field must be escaped by doubling them.. line=0, field=0"
     )
   }
@@ -273,7 +298,7 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
 
-    CsvParser.parse[String](src) must_== Left(
+    CsvParser.parseSource[String](src) must_== Left(
       "Unclosed quote.. line=0, field=0"
     )
   }
@@ -285,6 +310,8 @@ class CsvCheck extends Specification with ScalaCheck {
 
     val src = scala.io.Source.fromString(data)
 
-    CsvParser.parse[String](src) must throwAn[ArrayIndexOutOfBoundsException].not
+    CsvParser.parseSource[String](src) must throwAn[
+      ArrayIndexOutOfBoundsException
+    ].not
   }
 }

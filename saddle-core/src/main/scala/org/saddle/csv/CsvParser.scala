@@ -22,18 +22,57 @@ import scala.annotation.tailrec
 import scala.io.Source
 import org.saddle.Buffer
 import scala.{specialized => spec}
+import java.nio.CharBuffer
+import java.io.File
+import java.nio.charset.Charset
 
 /**
   * Csv parsing utilities
   */
 object CsvParser {
 
+  def readFile(
+      file: File,
+      bufferSize: Int = 8192,
+      charset: Charset = Charset.forName("US-ASCII")
+  ): Iterator[CharBuffer] = {
+    val buffer = java.nio.ByteBuffer.allocate(bufferSize)
+    val is = new java.io.FileInputStream(file)
+    val channel = is.getChannel
+    var eof = false
+    def fillBuffer() = {
+      buffer.clear()
+      var count = channel.read(buffer)
+      while (count >= 0 && buffer.remaining > 0) {
+        count = channel.read(buffer)
+      }
+      if (count < 0) {
+        eof = true
+      }
+      buffer.flip
+    }
+    new Iterator[CharBuffer] {
+      def hasNext = !eof
+      def next = {
+        fillBuffer()
+        charset.decode(buffer)
+      }
+    }
+  }
+
   private class DataBuffer(
-      data: Iterator[Array[Char]],
-      var buffer: Array[Char],
+      data: Iterator[CharBuffer],
+      var buffer: CharBuffer,
       var position: Int,
       var save: Boolean
   ) {
+    def concat(buffer1: CharBuffer, buffer2: CharBuffer) = {
+      val b = CharBuffer.allocate(buffer1.remaining + buffer.remaining)
+      b.put(buffer1)
+      b.put(buffer2)
+      b.flip
+      b
+    }
     @tailrec
     private def fillBuffer: Boolean = {
       if (!data.hasNext) false
@@ -42,7 +81,7 @@ object CsvParser {
           buffer = data.next
           position = 0
         } else {
-          buffer = buffer ++ data.next
+          buffer = concat(buffer, data.next)
         }
         if (buffer.length > position) true
         else fillBuffer
@@ -52,18 +91,55 @@ object CsvParser {
 
     @inline def next =
       if (position < buffer.length) {
-        val c = buffer(position)
+        val c = buffer.get(position)
         position += 1
         c
       } else {
         fillBuffer
-        val c = buffer(position)
+        val c = buffer.get(position)
         position += 1
         c
       }
   }
 
-  def parse[@spec(Int, Double, Long, Float) T](
+  def parseFile[@spec(Int, Double, Long, Float) T](
+      file: File,
+      cols: Seq[Int] = Nil,
+      fieldSeparator: Char = ',',
+      quoteChar: Char = '"',
+      recordSeparator: String = "\r\n",
+      bufferSize: Int = 8192,
+      maxLines: Long = Long.MaxValue
+  )(implicit st: ST[T]): Either[String, Frame[Int, Int, T]] =
+    parseFromIterator(
+      readFile(file, bufferSize),
+      cols,
+      fieldSeparator,
+      quoteChar,
+      recordSeparator,
+      maxLines
+    ).map(_._1)
+
+  def parseFileWithHeader[@spec(Int, Double, Long, Float) T](
+      file: File,
+      cols: Seq[Int] = Nil,
+      fieldSeparator: Char = ',',
+      quoteChar: Char = '"',
+      recordSeparator: String = "\r\n",
+      bufferSize: Int = 8192,
+      maxLines: Long = Long.MaxValue
+  )(implicit st: ST[T]): Either[String, Frame[Int, String, T]] =
+    parseFromIterator(
+      readFile(file, bufferSize),
+      cols,
+      fieldSeparator,
+      quoteChar,
+      recordSeparator,
+      maxLines,
+      header = true
+    ).map { case (frame, colIndex) => frame.setColIndex(colIndex.get) }
+
+  def parseSource[@spec(Int, Double, Long, Float) T](
       source: Source,
       cols: Seq[Int] = Nil,
       fieldSeparator: Char = ',',
@@ -73,7 +149,7 @@ object CsvParser {
       maxLines: Long = Long.MaxValue
   )(implicit st: ST[T]): Either[String, Frame[Int, Int, T]] =
     parseFromIterator(
-      source.grouped(bufferSize).map(_.toArray),
+      source.grouped(bufferSize).map(v => CharBuffer.wrap(v.toArray)),
       cols,
       fieldSeparator,
       quoteChar,
@@ -81,7 +157,7 @@ object CsvParser {
       maxLines
     ).map(_._1)
 
-  def parseHeader[@spec(Int, Double, Long, Float) T](
+  def parseSourceWithHeader[@spec(Int, Double, Long, Float) T](
       source: Source,
       cols: Seq[Int] = Nil,
       fieldSeparator: Char = ',',
@@ -91,7 +167,7 @@ object CsvParser {
       maxLines: Long = Long.MaxValue
   )(implicit st: ST[T]): Either[String, Frame[Int, String, T]] =
     parseFromIterator(
-      source.grouped(bufferSize).map(_.toArray),
+      source.grouped(bufferSize).map(v => CharBuffer.wrap(v.toArray)),
       cols,
       fieldSeparator,
       quoteChar,
@@ -113,7 +189,7 @@ object CsvParser {
     * @param header indicates whether the first line should be set aside
     */
   def parseFromIterator[@spec(Int, Double, Long, Float) T](
-      source: Iterator[Array[Char]],
+      source: Iterator[CharBuffer],
       cols: Seq[Int] = Nil,
       fieldSeparator: Char = ',',
       quoteChar: Char = '"',
@@ -133,7 +209,7 @@ object CsvParser {
       Right((Frame.empty[Int, Int, T], None))
     else {
 
-      val data = new DataBuffer(source, Array.empty, 0, false)
+      val data = new DataBuffer(source, CharBuffer.allocate(0), 0, false)
 
       // sorted, unique column locations to parse
       var locs = Set(cols: _*).toArray[Int].sorted
@@ -244,8 +320,7 @@ object CsvParser {
     @inline def emit(offset: Int) = {
       if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
         callback(
-          String
-            .valueOf(data.buffer, curBegin, data.position - offset - curBegin),
+          data.buffer.subSequence(curBegin, data.position - offset).toString,
           locIdx
         )
         locIdx += 1
