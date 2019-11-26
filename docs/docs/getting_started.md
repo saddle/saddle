@@ -32,7 +32,7 @@ The actively maintained artifacts have minimal dependencies:
 import scala.io.Source
 import org.saddle._
 val irisURL = "https://gist.githubusercontent.com/pityka/d05bb892541d71c2a06a0efb6933b323/raw/639388c2cbc2120a14dcf466e85730eb8be498bb/iris.csv"
-val iris = csv.CsvParser.parseHeader[Double](
+val iris = csv.CsvParser.parseSourceWithHeader[Double](
       source = Source.fromURL(irisURL), 
       cols = List(0,1,2,3), 
       recordSeparator = "\n").right.get
