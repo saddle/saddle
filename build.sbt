@@ -82,8 +82,8 @@ lazy val core = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "spire" % "0.17.0-M1",
       "org.apache.commons" % "commons-math" % "2.2" % "test",
-      "org.specs2" %% "specs2-core" % "4.6.0" % "test",
-      "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"
+      "org.specs2" %% "specs2-core" % "4.8.1" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test"
     )
   )
 
@@ -96,8 +96,8 @@ lazy val time = project
       "joda-time" % "joda-time" % "2.1",
       "org.joda" % "joda-convert" % "1.2",
       "org.scala-saddle" % "google-rfc-2445" % "20110304",
-      "org.specs2" %% "specs2-core" % "4.6.0" % "test",
-      "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"
+      "org.specs2" %% "specs2-core" % "4.8.1" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test"
     )
   )
   .dependsOn(core)
@@ -109,8 +109,8 @@ lazy val stats = project
     name := "saddle-stats",
     libraryDependencies ++= Seq(
       "org.apache.commons" % "commons-math" % "2.2" % "test",
-      "org.specs2" %% "specs2-core" % "4.6.0" % "test",
-      "org.specs2" %% "specs2-scalacheck" % "4.6.0" % "test"
+      "org.specs2" %% "specs2-core" % "4.8.1" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test"
     )
   )
   .dependsOn(core)
