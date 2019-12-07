@@ -30,16 +30,19 @@ package object array {
     * not including, an upper bound, at a particular increment (default 1)
     */
   def range(from: Int, until: Int, step: Int = 1): Array[Int] = {
-    val sz = math.ceil((until - from) / step.toDouble).toInt
-    var i = from
-    var k = 0
-    val arr = Array.ofDim[Int](sz)
-    while (k < sz) {
-      arr(k) = i
-      k += 1
-      i += step
+    if (from >= until) Array.ofDim[Int](0)
+    else {
+      val sz = org.saddle.util.dividePositiveRoundUp(until - from, step)
+      var i = from
+      var k = 0
+      val arr = Array.ofDim[Int](sz)
+      while (k < sz) {
+        arr(k) = i
+        k += 1
+        i += step
+      }
+      arr
     }
-    arr
   }
 
   /**

@@ -62,8 +62,9 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
       values
     else {
       val buf = new Array[T](length)
+      val n = length
       var i = 0
-      while (i < length) {
+      while (i < n) {
         buf(i) = raw(i)
         i += 1
       }
@@ -231,7 +232,8 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
       new VecDefault(values, scalarTag) {
         private val ub = math.min(self.length, e)
 
-        override def length = math.ceil((ub - b) / stride.toDouble).toInt
+        override def length =
+          org.saddle.util.dividePositiveRoundUp(ub - b, stride)
 
         override def raw(i: Int): T = {
           val loc = b + i * stride

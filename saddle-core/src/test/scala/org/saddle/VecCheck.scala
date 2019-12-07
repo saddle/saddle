@@ -26,6 +26,15 @@ import org.saddle.scalar.Value
   */
 class VecCheck extends Specification with ScalaCheck {
 
+  "uprounding division" in {
+    forAll { (a: Int, b: Int) =>
+      (a >= 0 && b > 0) ==> {
+        org.saddle.util
+          .dividePositiveRoundUp(a, b) == math.ceil(a / b.toDouble).toInt
+      }
+    }
+  }
+
   "Double Vec Tests" in {
     implicit val vec = Arbitrary(VecArbitraries.vecDoubleWithNA)
     "update" in {

@@ -20,6 +20,11 @@ package org.saddle
   */
 package object util {
 
+  @inline def dividePositiveRoundUp(a: Int, b: Int) = {
+    val d = a / b
+    if (a == b * d) d else d + 1
+  }
+
   /**
     * Creates a string out of ''count'' number of elements extracted from ''total'' elements
     * between offsets [0 ... count / 2) and (total - count / 2 ... total), using a callback
