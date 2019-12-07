@@ -1007,8 +1007,8 @@ class Frame[RX: ST: ORD, CX: ST: ORD, @spec(Int, Long, Double) T](
     * @param pred Series[_, Boolean] (or Vec[Boolean] which will implicitly convert)
     */
   def where(pred: Vec[Boolean]): Frame[RX, CX, T] = {
-    val newVals = values.zipWithIndex.flatMap(
-      z => if (pred.raw(z._2)) Seq(z._1) else Seq.empty[Vec[T]]
+    val newVals = values.zipWithIndex.flatMap(z =>
+      if (pred.raw(z._2)) Seq(z._1) else Seq.empty[Vec[T]]
     )
     val newIdx = VecImpl.where(Vec(this.colIx.toArray))(pred.toArray)
     Frame(newVals, rowIx, Index(newIdx))

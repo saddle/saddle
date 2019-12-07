@@ -494,9 +494,10 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   def min(implicit na: NUM[T], st: ST[T]): Scalar[T] =
     if (count == 0) NA
     else {
-      val res: T = VecImpl.filterFoldLeft(this)(st.notMissing)(st.inf)(
-        (x: T, y: T) => if (na.lt(x, y)) x else y
-      )
+      val res: T =
+        VecImpl.filterFoldLeft(this)(st.notMissing)(st.inf)((x: T, y: T) =>
+          if (na.lt(x, y)) x else y
+        )
       Scalar(res)
     }
 
@@ -504,9 +505,10 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   def max(implicit na: NUM[T], st: ST[T]): Scalar[T] =
     if (count == 0) NA
     else {
-      val res: T = VecImpl.filterFoldLeft(this)(st.notMissing)(st.negInf)(
-        (x: T, y: T) => if (na.gt(x, y)) x else y
-      )
+      val res: T =
+        VecImpl.filterFoldLeft(this)(st.notMissing)(st.negInf)((x: T, y: T) =>
+          if (na.gt(x, y)) x else y
+        )
       Scalar(res)
     }
 
@@ -516,13 +518,11 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * referring to this.filterFoldLeft boxes
     */
   def sum(implicit na: NUM[T], st: ST[T]): T =
-    VecImpl.filterFoldLeft(this)(st.notMissing)(st.zero)(
-      (a, b) => na.plus(a, b)
+    VecImpl.filterFoldLeft(this)(st.notMissing)(st.zero)((a, b) => na.plus(a, b)
     )
 
   def prod(implicit na: NUM[T], st: ST[T]): T =
-    VecImpl.filterFoldLeft(this)(st.notMissing)(st.one)(
-      (a, b) => na.times(a, b)
+    VecImpl.filterFoldLeft(this)(st.notMissing)(st.one)((a, b) => na.times(a, b)
     )
 
   /**

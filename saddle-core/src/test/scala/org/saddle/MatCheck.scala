@@ -133,9 +133,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op <= works" in {
       forAll { (m: Mat[Double], b: Long) =>
-        (m <= b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v <= b
-        )
+        (m <= b) must_== m.map(v => if (stL.isMissing(b)) false else v <= b)
       }
     }
     "op > works" in {
@@ -145,23 +143,17 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op >= works" in {
       forAll { (m: Mat[Double], b: Long) =>
-        (m >= b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v >= b
-        )
+        (m >= b) must_== m.map(v => if (stL.isMissing(b)) false else v >= b)
       }
     }
     "op == works" in {
       forAll { (m: Mat[Double], b: Long) =>
-        (m =? b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v == b
-        )
+        (m =? b) must_== m.map(v => if (stL.isMissing(b)) false else v == b)
       }
     }
     "op <> works" in {
       forAll { (m: Mat[Double], b: Long) =>
-        (m <> b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v != b
-        )
+        (m <> b) must_== m.map(v => if (stL.isMissing(b)) false else v != b)
       }
     }
   }
@@ -173,9 +165,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op <= works" in {
       forAll { (m: Mat[Double], b: Int) =>
-        (m <= b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v <= b
-        )
+        (m <= b) must_== m.map(v => if (stI.isMissing(b)) false else v <= b)
       }
     }
     "op > works" in {
@@ -185,23 +175,17 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op >= works" in {
       forAll { (m: Mat[Double], b: Int) =>
-        (m >= b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v >= b
-        )
+        (m >= b) must_== m.map(v => if (stI.isMissing(b)) false else v >= b)
       }
     }
     "op == works" in {
       forAll { (m: Mat[Double], b: Int) =>
-        (m =? b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v == b
-        )
+        (m =? b) must_== m.map(v => if (stI.isMissing(b)) false else v == b)
       }
     }
     "op <> works" in {
       forAll { (m: Mat[Double], b: Int) =>
-        (m <> b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v != b
-        )
+        (m <> b) must_== m.map(v => if (stI.isMissing(b)) false else v != b)
       }
     }
   }
@@ -213,9 +197,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op <= works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m <= b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v <= b
-        )
+        (m <= b) must_== m.map(v => if (stL.isMissing(b)) false else v <= b)
       }
     }
     "op > works" in {
@@ -225,23 +207,17 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op >= works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m >= b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v >= b
-        )
+        (m >= b) must_== m.map(v => if (stL.isMissing(b)) false else v >= b)
       }
     }
     "op == works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m =? b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v == b
-        )
+        (m =? b) must_== m.map(v => if (stL.isMissing(b)) false else v == b)
       }
     }
     "op <> works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m <> b) must_== m.map(
-          v => if (stL.isMissing(b)) false else v != b
-        )
+        (m <> b) must_== m.map(v => if (stL.isMissing(b)) false else v != b)
       }
     }
   }
@@ -253,9 +229,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op <= works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m <= b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v <= b
-        )
+        (m <= b) must_== m.map(v => if (stI.isMissing(b)) false else v <= b)
       }
     }
     "op > works" in {
@@ -265,23 +239,17 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op >= works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m >= b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v >= b
-        )
+        (m >= b) must_== m.map(v => if (stI.isMissing(b)) false else v >= b)
       }
     }
     "op == works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m =? b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v == b
-        )
+        (m =? b) must_== m.map(v => if (stI.isMissing(b)) false else v == b)
       }
     }
     "op <> works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m <> b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v != b
-        )
+        (m <> b) must_== m.map(v => if (stI.isMissing(b)) false else v != b)
       }
     }
   }
@@ -293,9 +261,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op <= works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m <= b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v <= b
-        )
+        (m <= b) must_== m.map(v => if (stI.isMissing(b)) false else v <= b)
       }
     }
     "op > works" in {
@@ -305,23 +271,17 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op >= works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m >= b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v >= b
-        )
+        (m >= b) must_== m.map(v => if (stI.isMissing(b)) false else v >= b)
       }
     }
     "op == works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m =? b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v == b
-        )
+        (m =? b) must_== m.map(v => if (stI.isMissing(b)) false else v == b)
       }
     }
     "op <> works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m <> b) must_== m.map(
-          v => if (stI.isMissing(b)) false else v != b
-        )
+        (m <> b) must_== m.map(v => if (stI.isMissing(b)) false else v != b)
       }
     }
   }
@@ -450,8 +410,8 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op ** works" in {
       forAll { (m: Mat[Double], b: Long) =>
-        (m ** b) must_== m.map(
-          v => if (stL.isMissing(b)) Double.NaN else math.pow(v, b)
+        (m ** b) must_== m.map(v =>
+          if (stL.isMissing(b)) Double.NaN else math.pow(v, b)
         )
       }
     }
@@ -484,8 +444,8 @@ class MatCheck extends Specification with ScalaCheck {
     }
     "op ** works" in {
       forAll { (m: Mat[Double], b: Int) =>
-        (m ** b) must_== m.map(
-          v => if (stI.isMissing(b)) Double.NaN else math.pow(v, b)
+        (m ** b) must_== m.map(v =>
+          if (stI.isMissing(b)) Double.NaN else math.pow(v, b)
         )
       }
     }
@@ -509,8 +469,8 @@ class MatCheck extends Specification with ScalaCheck {
     "op / works" in {
       forAll { (m: Mat[Long], b: Long) =>
         (b != 0L) ==> {
-          (m / b) must_== m.map(
-            v => if (stL.isMissing(b)) stL.missing else v / b
+          (m / b) must_== m.map(v =>
+            if (stL.isMissing(b)) stL.missing else v / b
           )
         }
       }
@@ -518,38 +478,32 @@ class MatCheck extends Specification with ScalaCheck {
     "op % works" in {
       forAll { (m: Mat[Long], b: Long) =>
         (b != 0L) ==> {
-          (m % b) must_== m.map(
-            v => if (stL.isMissing(b)) stL.missing else v % b
+          (m % b) must_== m.map(v =>
+            if (stL.isMissing(b)) stL.missing else v % b
           )
         }
       }
     }
     "op ** works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m ** b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else math.pow(v, b).toLong
+        (m ** b) must_== m.map(v =>
+          if (stL.isMissing(b)) stL.missing else math.pow(v, b).toLong
         )
       }
     }
     "op & works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m & b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else v & b
-        )
+        (m & b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v & b)
       }
     }
     "op | works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m | b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else v | b
-        )
+        (m | b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v | b)
       }
     }
     "op ^ works" in {
       forAll { (m: Mat[Long], b: Long) =>
-        (m ^ b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else v ^ b
-        )
+        (m ^ b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v ^ b)
       }
     }
   }
@@ -572,8 +526,8 @@ class MatCheck extends Specification with ScalaCheck {
     "op / works" in {
       forAll { (m: Mat[Long], b: Int) =>
         (b != 0L) ==> {
-          (m / b) must_== m.map(
-            v => if (stI.isMissing(b)) stL.missing else v / b
+          (m / b) must_== m.map(v =>
+            if (stI.isMissing(b)) stL.missing else v / b
           )
         }
       }
@@ -581,38 +535,32 @@ class MatCheck extends Specification with ScalaCheck {
     "op % works" in {
       forAll { (m: Mat[Long], b: Int) =>
         (b != 0L) ==> {
-          (m % b) must_== m.map(
-            v => if (stI.isMissing(b)) stL.missing else v % b
+          (m % b) must_== m.map(v =>
+            if (stI.isMissing(b)) stL.missing else v % b
           )
         }
       }
     }
     "op ** works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m ** b) must_== m.map(
-          v => if (stI.isMissing(b)) stL.missing else math.pow(v, b).toLong
+        (m ** b) must_== m.map(v =>
+          if (stI.isMissing(b)) stL.missing else math.pow(v, b).toLong
         )
       }
     }
     "op & works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m & b) must_== m.map(
-          v => if (stI.isMissing(b)) stL.missing else v & b
-        )
+        (m & b) must_== m.map(v => if (stI.isMissing(b)) stL.missing else v & b)
       }
     }
     "op | works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m | b) must_== m.map(
-          v => if (stI.isMissing(b)) stL.missing else v | b
-        )
+        (m | b) must_== m.map(v => if (stI.isMissing(b)) stL.missing else v | b)
       }
     }
     "op ^ works" in {
       forAll { (m: Mat[Long], b: Int) =>
-        (m ^ b) must_== m.map(
-          v => if (stI.isMissing(b)) stL.missing else v ^ b
-        )
+        (m ^ b) must_== m.map(v => if (stI.isMissing(b)) stL.missing else v ^ b)
       }
     }
   }
@@ -635,8 +583,8 @@ class MatCheck extends Specification with ScalaCheck {
     "op / works" in {
       forAll { (m: Mat[Int], b: Long) =>
         (b != 0L) ==> {
-          (m / b) must_== m.map(
-            v => if (stL.isMissing(b)) stL.missing else v / b
+          (m / b) must_== m.map(v =>
+            if (stL.isMissing(b)) stL.missing else v / b
           )
         }
       }
@@ -644,38 +592,32 @@ class MatCheck extends Specification with ScalaCheck {
     "op % works" in {
       forAll { (m: Mat[Int], b: Long) =>
         (b != 0L) ==> {
-          (m % b) must_== m.map(
-            v => if (stL.isMissing(b)) stL.missing else v % b
+          (m % b) must_== m.map(v =>
+            if (stL.isMissing(b)) stL.missing else v % b
           )
         }
       }
     }
     "op ** works" in {
       forAll { (m: Mat[Int], b: Long) =>
-        (m ** b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else math.pow(v, b).toLong
+        (m ** b) must_== m.map(v =>
+          if (stL.isMissing(b)) stL.missing else math.pow(v, b).toLong
         )
       }
     }
     "op & works" in {
       forAll { (m: Mat[Int], b: Long) =>
-        (m & b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else v & b
-        )
+        (m & b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v & b)
       }
     }
     "op | works" in {
       forAll { (m: Mat[Int], b: Long) =>
-        (m | b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else v | b
-        )
+        (m | b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v | b)
       }
     }
     "op ^ works" in {
       forAll { (m: Mat[Int], b: Long) =>
-        (m ^ b) must_== m.map(
-          v => if (stL.isMissing(b)) stL.missing else v ^ b
-        )
+        (m ^ b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v ^ b)
       }
     }
   }
@@ -698,8 +640,8 @@ class MatCheck extends Specification with ScalaCheck {
     "op / works" in {
       forAll { (m: Mat[Int], b: Int) =>
         (b != 0L) ==> {
-          (m / b) must_== m.map(
-            v => if (stI.isMissing(b)) stI.missing else v / b
+          (m / b) must_== m.map(v =>
+            if (stI.isMissing(b)) stI.missing else v / b
           )
         }
       }
@@ -707,58 +649,52 @@ class MatCheck extends Specification with ScalaCheck {
     "op % works" in {
       forAll { (m: Mat[Int], b: Int) =>
         (b != 0L) ==> {
-          (m % b) must_== m.map(
-            v => if (stI.isMissing(b)) stI.missing else v % b
+          (m % b) must_== m.map(v =>
+            if (stI.isMissing(b)) stI.missing else v % b
           )
         }
       }
     }
     "op ** works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m ** b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else math.pow(v, b).toInt
+        (m ** b) must_== m.map(v =>
+          if (stI.isMissing(b)) stI.missing else math.pow(v, b).toInt
         )
       }
     }
     "op & works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m & b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else v & b
-        )
+        (m & b) must_== m.map(v => if (stI.isMissing(b)) stI.missing else v & b)
       }
     }
     "op | works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m | b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else v | b
-        )
+        (m | b) must_== m.map(v => if (stI.isMissing(b)) stI.missing else v | b)
       }
     }
     "op ^ works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m ^ b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else v ^ b
-        )
+        (m ^ b) must_== m.map(v => if (stI.isMissing(b)) stI.missing else v ^ b)
       }
     }
     "op << works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m << b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else v << b
+        (m << b) must_== m.map(v =>
+          if (stI.isMissing(b)) stI.missing else v << b
         )
       }
     }
     "op >> works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m >> b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else v >> b
+        (m >> b) must_== m.map(v =>
+          if (stI.isMissing(b)) stI.missing else v >> b
         )
       }
     }
     "op >>> works" in {
       forAll { (m: Mat[Int], b: Int) =>
-        (m >>> b) must_== m.map(
-          v => if (stI.isMissing(b)) stI.missing else v >>> b
+        (m >>> b) must_== m.map(v =>
+          if (stI.isMissing(b)) stI.missing else v >>> b
         )
       }
     }

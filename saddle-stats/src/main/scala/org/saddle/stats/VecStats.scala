@@ -317,9 +317,10 @@ class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
     if (r.count == 0)
       None
     else {
-      val res = r.filterFoldLeft(sd.notMissing)(sd.inf)(
-        (x: Double, y: Double) => if (x < y) x else y
-      )
+      val res =
+        r.filterFoldLeft(sd.notMissing)(sd.inf)((x: Double, y: Double) =>
+          if (x < y) x else y
+        )
       Some(res)
     }
 
@@ -327,9 +328,10 @@ class DoubleStats(r: Vec[Double]) extends VecStats[Double] {
     if (r.count == 0)
       None
     else {
-      val res: Double = r.filterFoldLeft(sd.notMissing)(sd.negInf)(
-        (x: Double, y: Double) => if (x > y) x else y
-      )
+      val res: Double =
+        r.filterFoldLeft(sd.notMissing)(sd.negInf)((x: Double, y: Double) =>
+          if (x > y) x else y
+        )
       Some(res)
     }
 
@@ -361,8 +363,8 @@ class IntStats(r: Vec[Int]) extends VecStats[Int] {
   def min: Option[Int] =
     if (r.count == 0) None
     else {
-      val res: Int = r.filterFoldLeft(si.notMissing)(si.inf)(
-        (x: Int, y: Int) => if (x < y) x else y
+      val res: Int = r.filterFoldLeft(si.notMissing)(si.inf)((x: Int, y: Int) =>
+        if (x < y) x else y
       )
       Some(res)
     }
@@ -370,9 +372,10 @@ class IntStats(r: Vec[Int]) extends VecStats[Int] {
   def max: Option[Int] =
     if (r.count == 0) None
     else {
-      val res: Int = r.filterFoldLeft(si.notMissing)(si.negInf)(
-        (x: Int, y: Int) => if (x > y) x else y
-      )
+      val res: Int =
+        r.filterFoldLeft(si.notMissing)(si.negInf)((x: Int, y: Int) =>
+          if (x > y) x else y
+        )
       Some(res)
     }
 
@@ -382,8 +385,8 @@ class IntStats(r: Vec[Int]) extends VecStats[Int] {
   def countif(test: Int => Boolean): Int =
     r.filterFoldLeft(t => si.notMissing(t) && test(t))(0)((a, _) => a + 1)
   def logsum: Double =
-    r.filterFoldLeft(si.notMissing)(0d)(
-      (x, y) => x + math.log(y.asInstanceOf[Double])
+    r.filterFoldLeft(si.notMissing)(0d)((x, y) =>
+      x + math.log(y.asInstanceOf[Double])
     )
   def mean: Double = sum.asInstanceOf[Double] / count
   def median: Double = _median(r)
@@ -408,18 +411,20 @@ class LongStats(r: Vec[Long]) extends VecStats[Long] {
   def min: Option[Long] =
     if (r.count == 0) None
     else {
-      val res: Long = r.filterFoldLeft(sl.notMissing)(sl.inf)(
-        (x: Long, y: Long) => if (x < y) x else y
-      )
+      val res: Long =
+        r.filterFoldLeft(sl.notMissing)(sl.inf)((x: Long, y: Long) =>
+          if (x < y) x else y
+        )
       Some(res)
     }
 
   def max: Option[Long] =
     if (r.count == 0) None
     else {
-      val res: Long = r.filterFoldLeft(sl.notMissing)(sl.negInf)(
-        (x: Long, y: Long) => if (x > y) x else y
-      )
+      val res: Long =
+        r.filterFoldLeft(sl.notMissing)(sl.negInf)((x: Long, y: Long) =>
+          if (x > y) x else y
+        )
       Some(res)
     }
 

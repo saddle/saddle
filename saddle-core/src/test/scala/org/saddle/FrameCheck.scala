@@ -103,10 +103,9 @@ class FrameCheck extends Specification with ScalaCheck {
     "colAt" in {
       forAll { (f: Frame[Int, Int, Double], cx: Seq[Int]) =>
         f.colAt(cx.filter(c => c >= 0 && c < f.numCols): _*) must_== cx
-          .flatMap(
-            c =>
-              if (c >= f.numCols || c < 0) Nil
-              else List(f.toColSeq(c))
+          .flatMap(c =>
+            if (c >= f.numCols || c < 0) Nil
+            else List(f.toColSeq(c))
           )
           .toFrame
       }

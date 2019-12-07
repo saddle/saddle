@@ -63,12 +63,12 @@ class DoubleExpandingStats(r: Vec[Double]) extends VecExpandingStats[Double] {
   def cumSum: Vec[Double] = r.filterScanLeft(sd.notMissing)(0d)(_ + _)
   def cumCount: Vec[Int] = r.filterScanLeft(sd.notMissing)(0)((a, _) => a + 1)
   def cumMin: Vec[Double] =
-    r.filterScanLeft(sd.notMissing)(sd.inf)(
-      (x: Double, y: Double) => if (x < y) x else y
+    r.filterScanLeft(sd.notMissing)(sd.inf)((x: Double, y: Double) =>
+      if (x < y) x else y
     )
   def cumMax: Vec[Double] =
-    r.filterScanLeft(sd.notMissing)(sd.negInf)(
-      (x: Double, y: Double) => if (x > y) x else y
+    r.filterScanLeft(sd.notMissing)(sd.negInf)((x: Double, y: Double) =>
+      if (x > y) x else y
     )
   def cumProd: Vec[Double] = r.filterScanLeft(sd.notMissing)(1d)(_ * _)
 }
@@ -79,12 +79,12 @@ class IntExpandingStats(r: Vec[Int]) extends VecExpandingStats[Int] {
   def cumSum: Vec[Int] = r.filterScanLeft(sa.notMissing)(0)(_ + _)
   def cumCount: Vec[Int] = r.filterScanLeft(sa.notMissing)(0)((a, _) => a + 1)
   def cumMin: Vec[Int] =
-    r.filterScanLeft(sa.notMissing)(sa.inf)(
-      (x: Int, y: Int) => if (x < y) x else y
+    r.filterScanLeft(sa.notMissing)(sa.inf)((x: Int, y: Int) =>
+      if (x < y) x else y
     )
   def cumMax: Vec[Int] =
-    r.filterScanLeft(sa.notMissing)(sa.negInf)(
-      (x: Int, y: Int) => if (x > y) x else y
+    r.filterScanLeft(sa.notMissing)(sa.negInf)((x: Int, y: Int) =>
+      if (x > y) x else y
     )
   def cumProd: Vec[Int] = r.filterScanLeft(sa.notMissing)(1)(_ * _)
 }
@@ -95,12 +95,12 @@ class LongExpandingStats(r: Vec[Long]) extends VecExpandingStats[Long] {
   def cumSum: Vec[Long] = r.filterScanLeft(sl.notMissing)(0L)(_ + _)
   def cumCount: Vec[Int] = r.filterScanLeft(sl.notMissing)(0)((a, _) => a + 1)
   def cumMin: Vec[Long] =
-    r.filterScanLeft(sl.notMissing)(sl.inf)(
-      (x: Long, y: Long) => if (x < y) x else y
+    r.filterScanLeft(sl.notMissing)(sl.inf)((x: Long, y: Long) =>
+      if (x < y) x else y
     )
   def cumMax: Vec[Long] =
-    r.filterScanLeft(sl.notMissing)(sl.negInf)(
-      (x: Long, y: Long) => if (x > y) x else y
+    r.filterScanLeft(sl.notMissing)(sl.negInf)((x: Long, y: Long) =>
+      if (x > y) x else y
     )
   def cumProd: Vec[Long] = r.filterScanLeft(sl.notMissing)(1L)(_ * _)
 }
