@@ -15,11 +15,11 @@
   */
 package org.saddle.circe
 import org.saddle._
-import org.scalatest.FunSuite
 import _root_.io.circe.syntax._
 import _root_.io.circe._
+import org.scalatest.funsuite.AnyFunSuite
 
-class BinarySuite extends FunSuite {
+class BinarySuite extends AnyFunSuite {
   test("2x3") {
     val frame = Frame(
       Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)),

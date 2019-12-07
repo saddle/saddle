@@ -16,9 +16,9 @@
 package org.saddle.linalg
 
 import org.saddle._
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class VV1Suite extends FunSuite {
+class VV1Suite extends AnyFunSuite {
   test("1x3") {
     val m1 = Vec(1d, 2d, 3d)
     val m2 = Vec(4d, 5d, 6d)
@@ -26,7 +26,7 @@ class VV1Suite extends FunSuite {
   }
 
 }
-class VecSuite extends FunSuite {
+class VecSuite extends AnyFunSuite {
   test("1x3") {
     val m1 = Vec(1d, 2d, 3d)
     assert(m1.min2 == 1d)
@@ -42,7 +42,7 @@ class VecSuite extends FunSuite {
 
 }
 
-class MV1Suite extends FunSuite {
+class MV1Suite extends AnyFunSuite {
   test("1x3") {
     val m1 = Mat(Vec(1d, 2d, 3d), Vec(4d, 5d, 6d)).T
     val m2 = Vec(3d, 4d, 5d)
@@ -51,7 +51,7 @@ class MV1Suite extends FunSuite {
 
 }
 
-class MVTSuite extends FunSuite {
+class MVTSuite extends AnyFunSuite {
   test("1x3") {
     val m1 = Mat(Vec(1d, 2d, 3d), Vec(4d, 5d, 6d))
     val m2 = Vec(3d, 4d, 5d)
@@ -60,7 +60,7 @@ class MVTSuite extends FunSuite {
 
 }
 
-class MMSuite extends FunSuite {
+class MMSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d))
     val m2 = Mat(Vec(3d, 4d))
@@ -86,7 +86,7 @@ class MMSuite extends FunSuite {
   }
 }
 
-class MMCSuite extends FunSuite {
+class MMCSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d))
     val m2 = Mat(Vec(3d, 4d))
@@ -95,7 +95,7 @@ class MMCSuite extends FunSuite {
 
 }
 
-class TMMCSuite extends FunSuite {
+class TMMCSuite extends AnyFunSuite {
   test("1x2 ") {
     val m1 = Mat(Vec(1d, 2d)).T
     val m2 = Mat(Vec(3d, 4d))
@@ -103,7 +103,7 @@ class TMMCSuite extends FunSuite {
   }
 }
 
-class TMMSuite extends FunSuite {
+class TMMSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d)).T
     val m2 = Mat(Vec(3d, 4d))
@@ -129,7 +129,7 @@ class TMMSuite extends FunSuite {
   }
 }
 
-class MMTCSuite extends FunSuite {
+class MMTCSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d))
     val m2 = Mat(Vec(3d, 4d))
@@ -137,7 +137,7 @@ class MMTCSuite extends FunSuite {
   }
 }
 
-class InnerSuite extends FunSuite {
+class InnerSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d))
 
@@ -151,7 +151,7 @@ class InnerSuite extends FunSuite {
   }
 }
 
-class InnerSuitePlus extends FunSuite {
+class InnerSuitePlus extends AnyFunSuite {
 
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(3d, 4d)).innerMpC(1.0, 1.0, mat.ones(2, 2))
@@ -160,7 +160,7 @@ class InnerSuitePlus extends FunSuite {
   }
 }
 
-class OuterSuite extends FunSuite {
+class OuterSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d)).outerM
 
@@ -169,7 +169,7 @@ class OuterSuite extends FunSuite {
 
 }
 
-class OuterSuitePlus extends FunSuite {
+class OuterSuitePlus extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d)).outerMpC(1.0, 1.0, Mat(Vec(1d, 1d), Vec(1d, 1d)))
 
@@ -178,7 +178,7 @@ class OuterSuitePlus extends FunSuite {
 
 }
 
-class MMTSuite extends FunSuite {
+class MMTSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d))
     val m2 = Mat(Vec(3d, 4d))
@@ -204,7 +204,7 @@ class MMTSuite extends FunSuite {
   }
 }
 
-class TMMTCSuite extends FunSuite {
+class TMMTCSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d)).T
     val m2 = Mat(Vec(3d, 4d))
@@ -212,7 +212,7 @@ class TMMTCSuite extends FunSuite {
   }
 }
 
-class TMMTSuite extends FunSuite {
+class TMMTSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d)).T
     val m2 = Mat(Vec(3d, 4d))
@@ -238,7 +238,7 @@ class TMMTSuite extends FunSuite {
   }
 }
 
-class InvertGeneralSuite extends FunSuite {
+class InvertGeneralSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(3d, 4d)).invert.roundTo(10)
 
@@ -247,7 +247,7 @@ class InvertGeneralSuite extends FunSuite {
 
 }
 
-class InvertPDSuite extends FunSuite {
+class InvertPDSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
@@ -262,7 +262,7 @@ class InvertPDSuite extends FunSuite {
 
 }
 
-class SVD extends FunSuite {
+class SVD extends AnyFunSuite {
 
   test("3x2") {
     val m = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
@@ -281,7 +281,7 @@ class SVD extends FunSuite {
   }
 }
 
-class SVDTruncated extends FunSuite {
+class SVDTruncated extends AnyFunSuite {
 
   test("3x2") {
     val m = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
@@ -309,7 +309,7 @@ class SVDTruncated extends FunSuite {
   }
 }
 
-class SingulvarValues extends FunSuite {
+class SingulvarValues extends AnyFunSuite {
 
   test("3x2") {
     val m = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
@@ -328,7 +328,7 @@ class SingulvarValues extends FunSuite {
   }
 }
 
-class TraceSuite extends FunSuite {
+class TraceSuite extends AnyFunSuite {
   test("1x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(3d, 4d))
 
@@ -337,7 +337,7 @@ class TraceSuite extends FunSuite {
 
 }
 
-class EigNSSuite extends FunSuite {
+class EigNSSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(3d, 4d))
     assert(
@@ -351,7 +351,7 @@ class EigNSSuite extends FunSuite {
 
 }
 
-class EigSSuite extends FunSuite {
+class EigSSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(2d, 1d))
     assert(
@@ -364,7 +364,7 @@ class EigSSuite extends FunSuite {
 
 }
 
-class EigSTruncSuite extends FunSuite {
+class EigSTruncSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(2d, 1d))
     assert(
@@ -384,7 +384,7 @@ class EigSTruncSuite extends FunSuite {
 
 }
 
-class DxMSuite extends FunSuite {
+class DxMSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
 
@@ -400,7 +400,7 @@ class DxMSuite extends FunSuite {
 
 }
 
-class MxDSuite extends FunSuite {
+class MxDSuite extends AnyFunSuite {
   test("2x2") {
     val m1 = Mat(Vec(1d, 2d, 3d), Vec(3d, 4d, 5d))
 
@@ -415,7 +415,7 @@ class MxDSuite extends FunSuite {
 
 }
 
-class DiagAxAt extends FunSuite {
+class DiagAxAt extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val diag = x.diagOuterM
@@ -429,7 +429,7 @@ class DiagAxAt extends FunSuite {
 
 }
 
-class DiagAtxA extends FunSuite {
+class DiagAtxA extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val diag = x.diagInnerM
@@ -443,7 +443,7 @@ class DiagAtxA extends FunSuite {
 
 }
 
-class RowColSums extends FunSuite {
+class RowColSums extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     assert(x.colSums.roundTo(3).col(0) == Vec(3d, 7d, 11d))
@@ -457,14 +457,14 @@ class RowColSums extends FunSuite {
   }
 
 }
-class ScalarSuite extends FunSuite {
+class ScalarSuite extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     assert(x.scalarOp(multiply = 2d, add = 1d) == x * 2 + 1)
   }
 
 }
-class AddDiagonalSuite extends FunSuite {
+class AddDiagonalSuite extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d))
     assert(x.addDiagonalMatrix(Vec(1d, 1d)) == x + mat.diag(vec.ones(2)))
@@ -472,7 +472,7 @@ class AddDiagonalSuite extends FunSuite {
 
 }
 
-class CholeskySuite extends FunSuite {
+class CholeskySuite extends AnyFunSuite {
   test("2x2") {
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
@@ -483,7 +483,7 @@ class CholeskySuite extends FunSuite {
   }
 
 }
-class SolvePDSuite extends FunSuite {
+class SolvePDSuite extends AnyFunSuite {
   test("2x2") {
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
@@ -502,7 +502,7 @@ class SolvePDSuite extends FunSuite {
 
 }
 
-class DeterminantPDSuite extends FunSuite {
+class DeterminantPDSuite extends AnyFunSuite {
   test("2x2") {
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
       .mmt(Mat(Vec(1d, 2d), Vec(3d, 4d)))
@@ -515,7 +515,7 @@ class DeterminantPDSuite extends FunSuite {
 
 }
 
-class DiagXAInverseXtSuite extends FunSuite {
+class DiagXAInverseXtSuite extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)).T
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
@@ -538,7 +538,7 @@ class DiagXAInverseXtSuite extends FunSuite {
   }
 
 }
-class DiagXAInverseXtSuite2 extends FunSuite {
+class DiagXAInverseXtSuite2 extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)).T
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
@@ -566,7 +566,7 @@ class DiagXAInverseXtSuite2 extends FunSuite {
   }
 
 }
-class SolveSuite extends FunSuite {
+class SolveSuite extends AnyFunSuite {
   test("2x2") {
     val b = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val a = Mat(Vec(1d, 2d), Vec(3d, 4d))
