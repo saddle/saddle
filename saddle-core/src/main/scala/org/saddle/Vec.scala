@@ -23,8 +23,9 @@ import ops.{BinOpVec, NumericOps}
 import scalar.{Scalar, ScalarTag}
 
 import java.io.OutputStream
+import org.saddle.ops.BinOpVecInPlace
 
-object Vec extends BinOpVec {
+object Vec extends BinOpVec with BinOpVecInPlace {
 
   /**
     * Factory method to create a Vec from an array of elements
@@ -572,7 +573,7 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   /**
     * Returns a Vec whose backing array has been copied
     */
-  protected def copy: Vec[T]
+  def copy: Vec[T]
 
   /* Returns an array containing the elements of the Vec
    *

@@ -325,3 +325,101 @@ trait BinOpVec {
   implicit def VecVecOuterOpIII(implicit opM: BinOp[Multiply, Int, Int, Int]) =
     new VecVecOuter[Int, Int, Int](opM)
 }
+
+trait BinOpVecInPlace {
+  // ***************
+
+  // Binary element-wise operation on one Vec and one scalar
+  final class VecSclrElemOpIp[
+      OP <: ScalarOp,
+      @spec(Boolean, Int, Long, Double) A,
+      @spec(Boolean, Int, Long, Double) B
+  ](val op: BinOp[OP, A, B, A])
+      extends BinOpInPlace[OP, Vec[A], B] {
+    def apply(v1: Vec[A], v2: B) = {
+      val sz = v1.length
+      var i = 0
+      while (i < sz) {
+        v1(i) = op(v1.raw(i), v2)
+        i += 1
+      }
+      ()
+    }
+  }
+
+  // math ops
+  implicit def VecSclrElmOpDDDIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Double, Double]
+  ) = new VecSclrElemOpIp[Op, Double, Double](op)
+  implicit def VecSclrElmOpDLDIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Long, Double]
+  ) = new VecSclrElemOpIp[Op, Double, Long](op)
+  implicit def VecSclrElmOpDIDIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Int, Double]
+  ) = new VecSclrElemOpIp[Op, Double, Int](op)
+
+  implicit def VecSclrElmOpLLLIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Long, Long]
+  ) = new VecSclrElemOpIp[Op, Long, Long](op)
+  implicit def VecSclrElmOpLILIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Int, Long]
+  ) = new VecSclrElemOpIp[Op, Long, Int](op)
+
+  implicit def VecSclrElmOpIIIIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Int, Int, Int]
+  ) = new VecSclrElemOpIp[Op, Int, Int](op)
+
+  // and, or ops
+  implicit def VecSclrElmOpBBBIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Boolean, Boolean, Boolean]
+  ) = new VecSclrElemOpIp[Op, Boolean, Boolean](op)
+
+  // ***************
+
+  // Binary element-wise operation on two Vecs
+  final class VecVecElemOpIp[
+      OP <: ScalarOp,
+      @spec(Boolean, Int, Long, Double) A,
+      @spec(Boolean, Int, Long, Double) B
+  ](op: BinOp[OP, A, B, A])
+      extends BinOpInPlace[OP, Vec[A], Vec[B]] {
+
+    def apply(v1: Vec[A], v2: Vec[B]) = {
+      require(v1.length == v2.length, "Vecs must have the same size!")
+      val sz = v1.length
+      var i = 0
+      while (i < sz) {
+        v1(i) = op(v1.raw(i), v2.raw(i))
+        i += 1
+      }
+      ()
+    }
+  }
+
+  // math ops
+  implicit def VecVelElemOpDDDIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Double, Double]
+  ) = new VecVecElemOpIp[Op, Double, Double](op)
+  implicit def VecVelElemOpDLDIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Long, Double]
+  ) = new VecVecElemOpIp[Op, Double, Long](op)
+  implicit def VecVelElemOpDIDIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Double, Int, Double]
+  ) = new VecVecElemOpIp[Op, Double, Int](op)
+
+  implicit def VecVelElemOpLLLIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Long, Long]
+  ) = new VecVecElemOpIp[Op, Long, Long](op)
+  implicit def VecVelElemOpLILIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Long, Int, Long]
+  ) = new VecVecElemOpIp[Op, Long, Int](op)
+
+  implicit def VecVelElemOpIIIIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Int, Int, Int]
+  ) = new VecVecElemOpIp[Op, Int, Int](op)
+
+  // and, or ops
+  implicit def VecVecElemOpBBBIp[Op <: ScalarOp](
+      implicit op: BinOp[Op, Boolean, Boolean, Boolean]
+  ) = new VecVecElemOpIp[Op, Boolean, Boolean](op)
+}

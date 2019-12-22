@@ -75,6 +75,28 @@ class VecCheck extends Specification with ScalaCheck {
       v2(1 -> 3) = Vec(-1, -1)
       v must_== Vec(0, 1, 2, 3, -1, 5, 6, -1, 8, 9)
     }
+    "scalar operation in place works" in {
+      forAll { (m: Vec[Double], b: Int) =>
+        val m2 = m * b
+        val m1 = m.copy
+        m1 *= b
+        m1 must_== m2
+      }
+    }
+    "scalar operations on slice with Vec in slice" in {
+      val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+      val v2 = v.slice(1, 8, 3)
+      val v3 = v2.slice(1, 3)
+      v3 *= 10
+      v must_== Vec(0, 1, 2, 3, 40, 5, 6, 70, 8, 9)
+    }
+    "vec operations on slice with Vec in slice" in {
+      val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+      val v2 = v.slice(1, 8, 3)
+      val v3 = v2.slice(1, 3)
+      v3 *= Vec(-10, 10)
+      v must_== Vec(0, 1, 2, 3, -40, 5, 6, 70, 8, 9)
+    }
     "takeLeft" in {
       forAll { (v: Vec[Double]) =>
         v.takeLeft(5) must_== v.toSeq.take(5).toVec
