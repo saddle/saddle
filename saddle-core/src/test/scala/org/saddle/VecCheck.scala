@@ -90,6 +90,12 @@ class VecCheck extends Specification with ScalaCheck {
       v3 *= 10
       v must_== Vec(0, 1, 2, 3, 40, 5, 6, 70, 8, 9)
     }
+    "scalar operations on slice with Vec in slice" in {
+      val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+      val v2 = v.slice(1, 8, 3)
+      v2(1 -> 3) *= 10
+      v must_== Vec(0, 1, 2, 3, 40, 5, 6, 70, 8, 9)
+    }
     "vec operations on slice with Vec in slice" in {
       val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
       val v2 = v.slice(1, 8, 3)
