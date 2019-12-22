@@ -610,6 +610,13 @@ class MatCheck extends Specification with ScalaCheck {
         (m & b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v & b)
       }
     }
+    "op & works" in {
+      forAll { (m: Mat[Int]) =>
+        (m & 0L) must_== m.map(v =>
+          if (stL.isMissing(0L)) stL.missing else v & 0L
+        )
+      }
+    }
     "op | works" in {
       forAll { (m: Mat[Int], b: Long) =>
         (m | b) must_== m.map(v => if (stL.isMissing(b)) stL.missing else v | b)

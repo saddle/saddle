@@ -16,19 +16,20 @@
 package org.saddle.linalg
 
 import org.saddle.Vec
-import annotation.implicitNotFound
+import NetLib._
 
-@implicitNotFound(msg = "${O} not found")
-trait VecBinOp[O, Res] {
-  def apply(a: Vec[Double], b: O): Res
-}
 class VecPimp(val self: Vec[Double]) {
   type B = Vec[Double]
 
   def linalg = this
 
-  def vv(other: Vec[Double])(
-      implicit op: VecBinOp[Vec[Double], Double]
-  ): Double = op(self, other)
+  def vv(other: Vec[Double]): Double = {
+    val a = self
+    val b = other
+    assert(a.length == b.length)
+    assert(a.length > 0)
+    BLAS.ddot(a.length, a.toArray, 1, b.toArray, 1)
+
+  }
 
 }

@@ -419,12 +419,12 @@ class DiagAxAt extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val diag = x.diagOuterM
-    assert(diag.roundTo(3).col(0) == (x mm x.T).diag)
+    assert(diag.roundTo(3) == (x mm x.T).diag)
   }
   test("3x2") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)).T
     val diag = x.diagOuterM
-    assert(diag.roundTo(3).col(0) == (x mm x.T).diag)
+    assert(diag.roundTo(3) == (x mm x.T).diag)
   }
 
 }
@@ -433,12 +433,12 @@ class DiagAtxA extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val diag = x.diagInnerM
-    assert(diag.roundTo(3).col(0) == (x.T mm x).diag)
+    assert(diag.roundTo(3) == (x.T mm x).diag)
   }
   test("3x2") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)).T
     val diag = x.diagInnerM
-    assert(diag.roundTo(3).col(0) == (x.T mm x).diag)
+    assert(diag.roundTo(3) == (x.T mm x).diag)
   }
 
 }
@@ -446,14 +446,14 @@ class DiagAtxA extends AnyFunSuite {
 class RowColSums extends AnyFunSuite {
   test("2x3") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
-    assert(x.colSums.roundTo(3).col(0) == Vec(3d, 7d, 11d))
-    assert(x.rowSums.roundTo(3).col(0) == Vec(9d, 12d))
+    assert(x.colSums.roundTo(3) == Vec(3d, 7d, 11d))
+    assert(x.rowSums.roundTo(3) == Vec(9d, 12d))
   }
   test("3x2") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)).T
 
-    assert(x.rowSums.roundTo(3).col(0) == Vec(3d, 7d, 11d))
-    assert(x.colSums.roundTo(3).col(0) == Vec(9d, 12d))
+    assert(x.rowSums.roundTo(3) == Vec(3d, 7d, 11d))
+    assert(x.colSums.roundTo(3) == Vec(9d, 12d))
   }
 
 }
@@ -533,7 +533,7 @@ class DiagXAInverseXtSuite extends AnyFunSuite {
 
     val z = cholesky.solveLowerTriangularForTransposed(x).get
     val diag2 = z.diagOuterM
-    assert(diag.get.roundTo(3) == diag2.roundTo(3).col(0))
+    assert(diag.get.roundTo(3) == diag2.roundTo(3))
 
   }
 
