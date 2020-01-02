@@ -84,7 +84,7 @@ class Mat[@spec(Boolean, Int, Long, Double) T](
     *
     * @param i index
     */
-  def raw(i: Int): T = values(i)
+  @inline def raw(i: Int): T = values(i)
 
   /**
     * Return unboxed value of matrix at row/column
@@ -92,7 +92,7 @@ class Mat[@spec(Boolean, Int, Long, Double) T](
     * @param r row index
     * @param c col index
     */
-  def raw(r: Int, c: Int): T = values(r * numCols + c)
+    @inline def raw(r: Int, c: Int): T = values(r * numCols + c)
 
   /**
     * Concatenate all rows into a single row-wise Vec instance

@@ -46,7 +46,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * Access an unboxed element of a Vec[A] at a single location
     * @param loc offset into Vec
     */
-  def raw(loc: Int): T = values(loc)
+    @inline def raw(loc: Int): T = values(loc)
 
   /** Returns an array containing the elements of this Vec in contiguous order
     *
