@@ -580,12 +580,17 @@ class MatPimp(val self: Mat[Double]) {
     val output = Array.ofDim[Double](x.numCols)
     var i = 0
     var j = 0
-    while (j < x.numCols) {
-      while (i < x.numRows) {
+    var s = 0d
+    val M = x.numCols
+    val N = x.numRows
+    while (j < M) {
+      while (i < N) {
         val v = x.raw(i, j)
-        output(j) += v * v
+        s += v * v
         i += 1
       }
+      output(j) = s
+      s = 0d
       i = 0
       j += 1
     }
@@ -604,12 +609,17 @@ class MatPimp(val self: Mat[Double]) {
     val output = Array.ofDim[Double](x.numRows)
     var i = 0
     var j = 0
-    while (i < x.numRows) {
-      while (j < x.numCols) {
+    val M = x.numCols
+    val N = x.numRows
+    var s = 0d
+    while (i < N) {
+      while (j < M) {
         val v = x.raw(i, j)
-        output(i) += v * v
+        s += v * v
         j += 1
       }
+      output(i) = s
+      s = 0d
       j = 0
       i += 1
     }
