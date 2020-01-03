@@ -273,7 +273,7 @@ trait BinOpMatInPlace {
         val nC2 = v2.numCols
         val v1a = v1.toArray
         val v2a = v2.toArray
-        val sz = v1a.size
+        val sz = v1a.length
         var i = 0
         while (i < sz) {
           val r1 = i / nC1
