@@ -61,16 +61,12 @@ import org.saddle.mat.{MatImpl, MatMath}
   * @tparam A Type of elements within the Mat
   */
 class Mat[@spec(Boolean, Int, Long, Double) T](
-    r: Int,
-    c: Int,
+    val numRows: Int,
+    val numCols: Int,
     values: Array[T],
     val scalarTag: ScalarTag[T]
 ) extends NumericOps[Mat[T]] {
   implicit private[this] def st = scalarTag
-
-  def numRows = r
-
-  def numCols = c
 
   /** Returns the backing array of this Mat
     * Mutations to this array are visible to this Mat
@@ -112,7 +108,7 @@ class Mat[@spec(Boolean, Int, Long, Double) T](
     * Makes a copy of this Mat
     *
     */
-  def copy: Mat[T] = new Mat(r, c, values.clone, scalarTag)
+  def copy: Mat[T] = new Mat(numRows, numCols, values.clone, scalarTag)
 
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (T) => B): Mat[B] =
     MatImpl.map(this)(f)
