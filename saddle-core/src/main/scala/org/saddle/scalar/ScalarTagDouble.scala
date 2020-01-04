@@ -25,9 +25,9 @@ import org.saddle.array.Sorter
   * Double ScalarTag
   */
 object ScalarTagDouble extends ScalarTag[Double] {
-  def missing: Double = Double.NaN
-  def isMissing(v: Double): Boolean = (v != v)
-  def notMissing(v: Double): Boolean = (v == v)
+  @inline def missing: Double = Double.NaN
+  @inline def isMissing(v: Double): Boolean = (v != v)
+  @inline def notMissing(v: Double): Boolean = (v == v)
 
   override def parse(s: String) =
     try {
@@ -39,12 +39,12 @@ object ScalarTagDouble extends ScalarTag[Double] {
     if (x == y) 0 else if (x > y) 1 else if (x < y) -1 else 0
 
   def toDouble(t: Double)(implicit ev: NUM[Double]): Double = t
-  override def isDouble = true
+  @inline override def isDouble = true
 
-  def zero(implicit ev: NUM[Double]) = 0d
-  def one(implicit ev: NUM[Double]) = 1d
-  def inf(implicit ev: NUM[Double]) = Double.PositiveInfinity
-  def negInf(implicit ev: NUM[Double]) = Double.NegativeInfinity
+  @inline def zero(implicit ev: NUM[Double]) = 0d
+  @inline def one(implicit ev: NUM[Double]) = 1d
+  @inline def inf(implicit ev: NUM[Double]) = Double.PositiveInfinity
+  @inline def negInf(implicit ev: NUM[Double]) = Double.NegativeInfinity
 
   def show(v: Double) =
     if (isMissing(v)) "%s" format "NA" else "%.4f" format (v)
