@@ -280,7 +280,7 @@ trait BinOpMatInPlace {
           val r2 = if (nR2 == 1) 0 else r1
           val c1 = i % nC1
           val c2 = if (nC2 == 1) 0 else c1
-          v1a(i) = op(v1a(r1 * nC1 + c1), v2a(r2 * nC2 + c2))
+          v1a(i) = (op(v1a(r1 * nC1 + c1), v2a(r2 * nC2 + c2)): @inline)
           i += 1
         }
       } else throw new RuntimeException("Incompatible sizes")

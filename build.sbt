@@ -87,6 +87,14 @@ lazy val core = project
     )
   )
 
+lazy val bench =
+  project
+    .in(file("saddle-jmh"))
+    .settings(commonSettings: _*)
+    .settings(skip in publish := true)
+    .dependsOn(core)
+    .enablePlugins(JmhPlugin)
+
 lazy val time = project
   .in(file("saddle-time"))
   .settings(commonSettings: _*)
