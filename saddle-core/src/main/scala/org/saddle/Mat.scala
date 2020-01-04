@@ -60,7 +60,7 @@ import org.saddle.mat.{MatImpl, MatMath}
   *
   * @tparam A Type of elements within the Mat
   */
-sealed class Mat[@spec(Boolean, Int, Long, Double) T](
+final class Mat[@spec(Boolean, Int, Long, Double) T](
     val numRows: Int,
     val numCols: Int,
     values: Array[T],
@@ -80,7 +80,7 @@ sealed class Mat[@spec(Boolean, Int, Long, Double) T](
     *
     * @param i index
     */
-  @inline final def raw(i: Int): T = values(i)
+  @inline def raw(i: Int): T = values(i)
 
   /**
     * Return unboxed value of matrix at row/column
@@ -88,7 +88,7 @@ sealed class Mat[@spec(Boolean, Int, Long, Double) T](
     * @param r row index
     * @param c col index
     */
-  @inline final def raw(r: Int, c: Int): T = values(r * numCols + c)
+  @inline def raw(r: Int, c: Int): T = values(r * numCols + c)
 
   /**
     * Concatenate all rows into a single row-wise Vec instance
@@ -468,11 +468,11 @@ sealed class Mat[@spec(Boolean, Int, Long, Double) T](
     */
   def toFrame = Frame(this)
 
-  @inline final def mutateSetCell(r: Int, c: Int, v: T): Unit = {
+  @inline def mutateSetCell(r: Int, c: Int, v: T): Unit = {
     values(r * numCols + c) = v
   }
 
-  @inline final def update(r: Int, c: Int, v: T): Unit =
+  @inline def update(r: Int, c: Int, v: T): Unit =
     mutateSetCell(r, c, v)
 
   def mutateSetRow(r: Int, v: T): Unit = {
