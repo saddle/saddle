@@ -4,6 +4,10 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.12.10",
   parallelExecution in Test := false,
   scalacOptions ++= Seq(
+    "-opt:l:method",
+    "-opt:l:inline",
+    "-opt-inline-from:org.saddle.**",
+    "-opt-warnings",
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
     "-encoding",
     "utf-8", // Specify character encoding used by source files.

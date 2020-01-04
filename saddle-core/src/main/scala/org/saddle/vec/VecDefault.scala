@@ -46,7 +46,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * Access an unboxed element of a Vec[A] at a single location
     * @param loc offset into Vec
     */
-    @inline def raw(loc: Int): T = values(loc)
+  def raw(loc: Int): T = values(loc)
 
   /** Returns an array containing the elements of this Vec in contiguous order
     *
@@ -871,7 +871,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     */
   def dropRight(i: Int) = take(array.range(0, math.max(0, length - i)))
 
-  @inline def update(offset: Int, value: T) =
+  def update(offset: Int, value: T) =
     if (needsCopy) throw new RuntimeException("Update not implemented")
     else {
       values(offset) = value

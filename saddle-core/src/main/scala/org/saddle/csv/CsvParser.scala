@@ -87,9 +87,9 @@ object CsvParser {
         else fillBuffer
       }
     }
-    @inline def hasNext = position < buffer.length || fillBuffer
+    @inline final def hasNext = position < buffer.length || fillBuffer
 
-    @inline def next =
+    @inline final def next =
       if (position < buffer.length) {
         val c = buffer.get(position)
         position += 1
@@ -312,12 +312,12 @@ object CsvParser {
 
     val allFields = locs.isEmpty
 
-    @inline def fail(str: String) = {
+    def fail(str: String) = {
       error = true
       errorMessage = str + s".. line=$lineIdx, field=$curField"
     }
 
-    @inline def emit(offset: Int) = {
+    def emit(offset: Int) = {
       if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
         callback(
           data.buffer.subSequence(curBegin, data.position - offset).toString,
@@ -327,16 +327,16 @@ object CsvParser {
       }
     }
 
-    @inline def close() = {
+    def close() = {
       curField += 1
       data.save = false
     }
-    @inline def open(offset: Int) = {
+    def open(offset: Int) = {
       curBegin = data.position - offset
       data.save = true
     }
 
-    @inline def newline() = {
+    def newline() = {
       if (locIdx < locs.size) {
         fail(
           s"Incomplete line $lineIdx. Expected ${locs.size} fields, got $locIdx"

@@ -20,7 +20,7 @@ package org.saddle
   */
 package object util {
 
-  @inline def dividePositiveRoundUp(a: Int, b: Int) = {
+  @inline final def dividePositiveRoundUp(a: Int, b: Int) = {
     val d = a / b
     if (a == b * d) d else d + 1
   }
