@@ -17,6 +17,7 @@ package org.saddle.linalg
 
 import org.saddle._
 import org.scalatest.funsuite.AnyFunSuite
+import org.saddle.ops.BinOps._
 
 class VV1Suite extends AnyFunSuite {
   test("1x3") {

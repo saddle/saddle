@@ -20,6 +20,7 @@ import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
 import org.saddle.scalar.Value
+import org.saddle.ops.BinOps._
 
 /**
   * Test on properties of Vec

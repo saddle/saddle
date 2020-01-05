@@ -19,7 +19,7 @@ import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
-
+import org.saddle.ops.BinOps._
 class SeriesCheck extends Specification with ScalaCheck {
 
   "Series[Int, Double] Tests" in {

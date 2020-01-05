@@ -1,6 +1,7 @@
 package org.saddle
 
 import scala.language.implicitConversions
+import org.saddle.ops.BinOps._
 
 package object stats {
   // stats implicits

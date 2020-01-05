@@ -17,6 +17,7 @@ package org.saddle
 
 import org.specs2.mutable.Specification
 import time._
+import org.saddle.ops.BinOps._
 
 class SeriesSpec extends Specification {
   "reindex works on dates" in {

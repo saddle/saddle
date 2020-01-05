@@ -813,6 +813,7 @@ class MatPimp(val self: Mat[Double]) {
   }
 
   def svd(max: Int): SVDResult = {
+    import org.saddle.macros.BinOps._
     val m = self
     val k = max
     assert(m.numCols > 0)

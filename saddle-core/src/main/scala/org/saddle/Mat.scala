@@ -16,7 +16,7 @@
 package org.saddle
 
 import scalar.{Scalar, ScalarTag}
-import ops.{BinOpMat, NumericOps, _}
+import ops.NumericOps
 import scala.{specialized => spec}
 import java.io.OutputStream
 import org.saddle.index.{Slice, IndexIntRange}
@@ -595,7 +595,7 @@ final class Mat[@spec(Boolean, Int, Long, Double) T](
 
 }
 
-object Mat extends BinOpMat with BinOpMatInPlace {
+object Mat {
 
   /**
     * Factory method to create a new Mat from raw materials

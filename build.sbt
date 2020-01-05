@@ -90,13 +90,24 @@ lazy val core = project
       "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test"
     )
   )
+lazy val inlinedOps = project
+  .in(file("saddle-ops-inlined"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "saddle-ops-inlined",
+    libraryDependencies ++= Seq(
+      "org.specs2" %% "specs2-core" % "4.8.1" % "test",
+      "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test"
+    )
+  )
+  .dependsOn(core % "compile->compile;test->test")
 
 lazy val bench =
   project
     .in(file("saddle-jmh"))
     .settings(commonSettings: _*)
     .settings(skip in publish := true)
-    .dependsOn(core)
+    .dependsOn(core, inlinedOps)
     .enablePlugins(JmhPlugin)
 
 lazy val time = project
@@ -138,7 +149,7 @@ lazy val linalg = project
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
     )
   )
-  .dependsOn(core)
+  .dependsOn(core, inlinedOps)
 
 lazy val binary = project
   .in(file("saddle-binary"))
@@ -186,6 +197,6 @@ lazy val root = (project in file("."))
   .settings(
     git.remoteRepo := ""
   )
-  .aggregate(core, time, stats, linalg, binary, circe, docs)
+  .aggregate(core, time, stats, linalg, binary, circe, docs, inlinedOps)
 
 parallelExecution in ThisBuild := false

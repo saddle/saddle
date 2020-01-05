@@ -398,19 +398,18 @@ package object array {
     *   sum(Array(1,2,3,4), Array(0,2,), 0)
     * }}}
     */
-  def sum[@spec(Boolean, Int, Long, Double) T: ST: NUM: ops.AddOp](
+  def sum[@spec(Boolean, Int, Long, Double) T: ST: NUM](
       arr: Array[T],
       offsets: Array[Int],
       missing: => T
   ): T = {
     val st = implicitly[ST[T]]
     val nm = implicitly[NUM[T]]
-    val op = implicitly[ops.AddOp[T]]
     var res = st.zero(nm)
     var i = 0
     while (i < offsets.length) {
       val idx = offsets(i)
-      res = if (idx == -1) op(res, missing) else op(res, arr(idx))
+      res = if (idx == -1) nm.plus(res, missing) else nm.plus(res, arr(idx))
       i += 1
     }
     res

@@ -19,6 +19,7 @@ import org.specs2.mutable.Specification
 import org.specs2.ScalaCheck
 import org.scalacheck.{Gen, Arbitrary}
 import org.scalacheck.Prop._
+import org.saddle.ops.BinOps._
 
 class FrameCheck extends Specification with ScalaCheck {
 

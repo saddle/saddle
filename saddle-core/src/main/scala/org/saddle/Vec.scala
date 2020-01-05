@@ -19,13 +19,12 @@ import scala.{specialized => spec}
 
 import vec.VecDefault
 import index.Slice
-import ops.{BinOpVec, NumericOps}
+import ops.NumericOps
 import scalar.{Scalar, ScalarTag}
 
 import java.io.OutputStream
-import org.saddle.ops.BinOpVecInPlace
 
-object Vec extends BinOpVec with BinOpVecInPlace {
+object Vec {
 
   /**
     * Factory method to create a Vec from an array of elements
