@@ -21,14 +21,30 @@ vec.rand(20)
 ```
 
 Operations:
-```scala mdoc
+```scala mdoc:nest
+import org.saddle.ops.BinOps._
+
 Vec(1,2,3) + Vec(4,5,6)
 Vec(1,2,3) * Vec(4,5,6)
 Vec(1,2,3) ** Vec(4,5,6)
 ```
+Note above, that you have to import that `BinOp` instances. 
+
+An alternative set of instances are also available which inline the innermost in Mat and Vec operations:
+```scala mdoc:reset
+// The macros package contains instances where the innermost loop is inlined.
+import org.saddle._
+import org.saddle.macros.BinOps._ 
+Vec(1,2,3) + Vec(4,5,6)
+Vec(1,2,3) * Vec(4,5,6)
+Vec(1,2,3) ** Vec(4,5,6)
+ 
+```
 
 Slicing:
-```scala mdoc
+```scala mdoc:reset
+import org.saddle._
+import org.saddle.ops.BinOps._
 Vec(1,2,3).at(2)
 Vec(1,2,3).raw(2)  
 Vec(1,2,3).apply(0,2)

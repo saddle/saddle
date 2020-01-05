@@ -7,6 +7,8 @@ Add any of these lines to your build.sbt:
 ```scala
 // The core library
 libraryDependencies += "io.github.pityka" % "saddle-core" % "@VERSION@"
+// Inlined binary operation instances for Mat and Vec
+libraryDependencies += "io.github.pityka" % "saddle-ops-inlined" % "@VERSION@"
 // Linear algebra interface to BLAS
 libraryDependencies += "io.github.pityka" % "saddle-linalg" % "@VERSION@"
 // Binary representation of data fames and matrices
