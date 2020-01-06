@@ -107,7 +107,7 @@ lazy val bench =
     .in(file("saddle-jmh"))
     .settings(commonSettings: _*)
     .settings(skip in publish := true)
-    .dependsOn(core, inlinedOps)
+    .dependsOn(core, inlinedOps, linalg)
     .enablePlugins(JmhPlugin)
 
 lazy val time = project
