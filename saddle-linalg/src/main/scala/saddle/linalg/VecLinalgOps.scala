@@ -33,27 +33,14 @@ class VecPimp(val self: Vec[Double]) {
   }
 
   def vv2(other: Vec[Double]): Double = {
-    if (self.needsCopy || other.needsCopy) {
-      var i = 0
-      var s = 0d
-      val N = self.length
-      while (i < N) {
-        s += self.raw(i) * other.raw(i)
-        i += 1
-      }
-      s
-    } else {
-      var i = 0
-      var s = 0d
-      val a1 = self.toArray
-      val N = a1.length
-      val a2 = other.toArray
-      while (i < N) {
-        s += a1(i) * a2(i)
-        i += 1
-      }
-      s
+    var i = 0
+    var s = 0d
+    val N = self.length
+    while (i < N) {
+      s += self.raw(i) * other.raw(i)
+      i += 1
     }
+    s
   }
 
 }

@@ -25,6 +25,7 @@ class VV1Suite extends AnyFunSuite {
     val m2 = Vec(4d, 5d, 6d)
     assert((m1 vv m2) == (4d + 10d + 18d))
     assert((m1 vv2 m2) == (4d + 10d + 18d))
+    assert((m1.slice(0, 1) vv2 m2.slice(0, 1)) == (4d))
   }
 
 }
