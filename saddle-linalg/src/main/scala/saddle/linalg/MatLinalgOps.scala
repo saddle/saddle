@@ -599,7 +599,6 @@ class MatPimp(val self: Mat[Double]) {
 
   }
 
-  /* diag( A x t(A) ) */
   def diagOuterM: Vec[Double] = {
     val x = self
     assert(x.numCols > 0)
@@ -612,11 +611,24 @@ class MatPimp(val self: Mat[Double]) {
     val M = x.numCols
     val N = x.numRows
     var s = 0d
+    val xa = x.toArray
     while (i < N) {
-      while (j < M) {
-        val v = x.raw(i, j)
+      val iM = i * M
+      val m = M % 5
+      while (j < m) {
+        val v = xa(iM + j)
         s += v * v
         j += 1
+      }
+
+      while (j < M) {
+        val v1 = xa(iM + j)
+        val v2 = xa(iM + j + 1)
+        val v3 = xa(iM + j + 2)
+        val v4 = xa(iM + j + 3)
+        val v5 = xa(iM + j + 4)
+        s += v1 * v1 + v2 * v2 + v3 * v3 + v4 * v4 + v5 * v5
+        j += 5
       }
       output(i) = s
       s = 0d

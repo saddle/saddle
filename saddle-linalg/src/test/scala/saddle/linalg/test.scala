@@ -423,11 +423,19 @@ class DiagAxAt extends AnyFunSuite {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d))
     val diag = x.diagOuterM
     assert(diag.roundTo(3) == (x mm x.T).diag)
+    assert(x.diagOuterM.roundTo(3) == (x mm x.T).diag)
+  }
+  test("2x333") {
+    val x = mat.randn(2, 333)
+    val diag = x.diagOuterM
+    assert(diag.roundTo(3) == (x mm x.T).diag.roundTo(3))
+    assert(x.diagOuterM.roundTo(3) == (x mm x.T).diag.roundTo(3))
   }
   test("3x2") {
     val x = Mat(Vec(1d, 2d), Vec(3d, 4d), Vec(5d, 6d)).T
     val diag = x.diagOuterM
     assert(diag.roundTo(3) == (x mm x.T).diag)
+    assert(x.diagOuterM.roundTo(3) == (x mm x.T).diag)
   }
 
 }
