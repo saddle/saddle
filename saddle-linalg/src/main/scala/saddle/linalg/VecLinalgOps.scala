@@ -16,7 +16,7 @@
 package org.saddle.linalg
 
 import org.saddle.Vec
-import NetLib._
+import NetLib.BLAS
 
 class VecPimp(val self: Vec[Double]) {
   type B = Vec[Double]
@@ -35,10 +35,23 @@ class VecPimp(val self: Vec[Double]) {
   def vv2(other: Vec[Double]): Double = {
     var i = 0
     var s = 0d
-    val N = self.length
-    while (i < N) {
+    val M = self.length
+
+    val m = M % 5
+    while (i < m) {
       s += self.raw(i) * other.raw(i)
       i += 1
+    }
+
+    while (i < M) {
+      val v1 = self.raw(i) * other.raw(i)
+      val v2 = self.raw(i + 1) * other.raw(i + 1)
+      val v3 = self.raw(i + 2) * other.raw(i + 2)
+      val v4 = self.raw(i + 3) * other.raw(i + 3)
+      val v5 = self.raw(i + 4) * other.raw(i + 4)
+
+      s += v1 + v2 + v3 + v4 + v5
+      i += 5
     }
     s
   }
