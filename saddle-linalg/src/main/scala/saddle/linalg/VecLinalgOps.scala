@@ -23,7 +23,10 @@ class VecPimp(val self: Vec[Double]) {
 
   def linalg = this
 
-  def vv(other: Vec[Double]): Double = {
+  def vv(other: Vec[Double]): Double =
+    if (self.length > 5000) vv_blas(other) else vv_java(other)
+
+  def vv_blas(other: Vec[Double]): Double = {
     val a = self
     val b = other
     assert(a.length == b.length)
@@ -32,7 +35,7 @@ class VecPimp(val self: Vec[Double]) {
 
   }
 
-  def vv2(other: Vec[Double]): Double = {
+  def vv_java(other: Vec[Double]): Double = {
     var i = 0
     var s = 0d
     val M = self.length

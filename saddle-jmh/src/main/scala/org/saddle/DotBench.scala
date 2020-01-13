@@ -7,7 +7,7 @@ import org.openjdk.jmh.annotations._
 @Fork(1)
 @Threads(1)
 class DotBench {
-  @Param(Array("100", "500", "1000", "10000"))
+  @Param(Array("500", "1000", "5000"))
   var size: Int = _
 
   var v1: Vec[Double] = _
@@ -21,12 +21,12 @@ class DotBench {
   @Benchmark
   def blas(): Double = {
     import org.saddle.linalg._
-    v1 vv v2
+    v1 vv_blas v2
   }
   @Benchmark
   def raw_unrolled(): Double = {
     import org.saddle.linalg._
-    v1 vv2 v2
+    v1 vv_java v2
   }
 
 }
