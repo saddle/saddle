@@ -66,7 +66,7 @@ object CsvParser {
       var position: Int,
       var save: Boolean
   ) {
-    def concat(buffer1: CharBuffer, buffer2: CharBuffer) = {
+    private def concat(buffer1: CharBuffer, buffer2: CharBuffer) = {
       val b = CharBuffer.allocate(buffer1.remaining + buffer2.remaining)
       b.put(buffer1)
       b.put(buffer2)
@@ -305,6 +305,7 @@ object CsvParser {
     var locIdx = 0 // current location within locs array
     var lineIdx = 0L
     var error = false
+    var openS = false
     var errorMessage = ""
     val empty = ""
 
@@ -335,11 +336,16 @@ object CsvParser {
 
     def close() = {
       curField += 1
+      openS = false
       data.save = false
     }
     def open(offset: Int) = {
       curBegin = data.position - offset
       data.save = true
+    }
+    def openNext() = {
+      openS = true
+      curBegin = data.position + 1
     }
 
     def newline() = {
@@ -359,7 +365,7 @@ object CsvParser {
         if (chr == separChar) {
           emit(1)
           close()
-          open(-1)
+          openNext()
         } else if (chr == quoteChar) {
           state = 2
           open(0)
@@ -380,7 +386,7 @@ object CsvParser {
         if (chr == separChar) {
           emit(1)
           close()
-          open(-1)
+          openNext()
           state = 0
         } else if (chr == quoteChar) {
           fail("quote must not occur in unquoted field")
@@ -404,7 +410,7 @@ object CsvParser {
         } else if (chr == separChar) {
           emit(2)
           close()
-          open(-1)
+          openNext()
           state = 0
         } else if (chr == CR) {
           if (singleRecordSeparator) {
@@ -430,7 +436,7 @@ object CsvParser {
           callback(s"$CR", locIdx)
           locIdx += 1
           curField += 1
-          open(-1)
+          openNext()
           state = 0
         } else if (chr == quoteChar) {
           fail("invalid quote")
@@ -448,7 +454,7 @@ object CsvParser {
         } else if (chr == separChar) {
           emit(1)
           close()
-          open(-1)
+          openNext()
           state = 0
         } else if (chr == quoteChar) {
           fail("invalid quote")
@@ -475,10 +481,10 @@ object CsvParser {
       emit(1)
     } else if (state == 2) {
       fail("Unclosed quote")
-    } else if (state == 0 && data.save) {
+    } else if (state == 0 && openS) {
       emit(0)
     }
-    data.save = false
+    openS = false
 
     errorMessage
 
