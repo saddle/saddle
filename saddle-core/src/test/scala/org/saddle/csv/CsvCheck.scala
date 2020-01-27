@@ -305,13 +305,20 @@ class CsvCheck extends Specification with ScalaCheck {
 
   "csv parsing still works when final field is empty" in {
     val data =
-      """1,2,3
-       |1,2,""".stripMargin
+      """,""".stripMargin
 
     val src = scala.io.Source.fromString(data)
 
-    CsvParser.parseSource[String](src) must throwAn[
-      ArrayIndexOutOfBoundsException
-    ].not
+    CsvParser.parseSource[String](src) must_== Right(Frame(Vec(""), Vec("")))
+  }
+  "csv parsing works with consecutive empty fields" in {
+    val data =
+      s"""a,,c,d${crlf},,"",""".stripMargin
+
+    val src = scala.io.Source.fromString(data)
+
+    CsvParser.parseSource[String](src) must_== Right(
+      Frame(Vec("a", ""), Vec("", ""), Vec("c", ""), Vec("d", ""))
+    )
   }
 }

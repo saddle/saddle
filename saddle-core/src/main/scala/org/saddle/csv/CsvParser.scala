@@ -67,7 +67,7 @@ object CsvParser {
       var save: Boolean
   ) {
     def concat(buffer1: CharBuffer, buffer2: CharBuffer) = {
-      val b = CharBuffer.allocate(buffer1.remaining + buffer.remaining)
+      val b = CharBuffer.allocate(buffer1.remaining + buffer2.remaining)
       b.put(buffer1)
       b.put(buffer2)
       b.flip
@@ -273,7 +273,10 @@ object CsvParser {
             Vec(b.toArray)
           }
 
-          Right((Frame(columns: _*), colIndex))
+          if (columns.map(_.length).distinct.size != 1)
+            Left(s"Uneven length ${columns.map(_.length).toVector} columns")
+          else
+            Right((Frame(columns: _*), colIndex))
         }
       }
     }
@@ -298,11 +301,12 @@ object CsvParser {
     var state = 0
 
     var curField = 0 // current field of parse
-    var curBegin = 0 // offset of start of current field in buffer
+    var curBegin = data.position // offset of start of current field in buffer
     var locIdx = 0 // current location within locs array
     var lineIdx = 0L
     var error = false
     var errorMessage = ""
+    val empty = ""
 
     val CR = recordSeparator.head
     val LF =
@@ -320,7 +324,9 @@ object CsvParser {
     def emit(offset: Int) = {
       if (allFields || (locs.size > locIdx && curField == locs(locIdx))) {
         callback(
-          data.buffer.subSequence(curBegin, data.position - offset).toString,
+          if (curBegin >= (data.position - offset)) empty
+          else
+            data.buffer.subSequence(curBegin, data.position - offset).toString,
           locIdx
         )
         locIdx += 1
@@ -353,6 +359,7 @@ object CsvParser {
         if (chr == separChar) {
           emit(1)
           close()
+          open(-1)
         } else if (chr == quoteChar) {
           state = 2
           open(0)
@@ -373,6 +380,7 @@ object CsvParser {
         if (chr == separChar) {
           emit(1)
           close()
+          open(-1)
           state = 0
         } else if (chr == quoteChar) {
           fail("quote must not occur in unquoted field")
@@ -396,6 +404,7 @@ object CsvParser {
         } else if (chr == separChar) {
           emit(2)
           close()
+          open(-1)
           state = 0
         } else if (chr == CR) {
           if (singleRecordSeparator) {
@@ -421,6 +430,7 @@ object CsvParser {
           callback(s"$CR", locIdx)
           locIdx += 1
           curField += 1
+          open(-1)
           state = 0
         } else if (chr == quoteChar) {
           fail("invalid quote")
@@ -438,6 +448,7 @@ object CsvParser {
         } else if (chr == separChar) {
           emit(1)
           close()
+          open(-1)
           state = 0
         } else if (chr == quoteChar) {
           fail("invalid quote")
@@ -464,7 +475,10 @@ object CsvParser {
       emit(1)
     } else if (state == 2) {
       fail("Unclosed quote")
+    } else if (state == 0 && data.save) {
+      emit(0)
     }
+    data.save = false
 
     errorMessage
 
