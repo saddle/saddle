@@ -169,7 +169,7 @@ lazy val circe = project
   .settings(
     name := "saddle-circe",
     libraryDependencies ++= Seq(
-      "io.circe" %% "circe-core" % "0.12.3",
+      "io.circe" %% "circe-core" % "0.13.0",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
     )
   )
