@@ -157,7 +157,7 @@ lazy val binary = project
   .settings(
     name := "saddle-binary",
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "ujson" % "0.9.9",
+      "com.lihaoyi" %% "ujson" % "1.0.0",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
     )
   )
