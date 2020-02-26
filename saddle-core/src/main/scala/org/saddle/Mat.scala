@@ -113,10 +113,7 @@ final class Mat[@spec(Boolean, Int, Long, Double) T](
   def map[@spec(Boolean, Int, Long, Double) B: ST](f: (T) => B): Mat[B] =
     MatImpl.map(this)(f)
 
-  // Cache the transpose: it's much faster to transpose and slice a continuous
-  // bound than to take large strides, especially on large matrices where it
-  // seems to eject cache lines on each stride (something like 10x slowdown)
-  lazy val cachedT = {
+  def transpose = {
     val arrT = values.clone()
 
     if (this.isSquare)
@@ -126,8 +123,6 @@ final class Mat[@spec(Boolean, Int, Long, Double) T](
 
     new Mat(numCols, numRows, arrT, scalarTag)
   }
-
-  def transpose = cachedT
 
   def T = transpose
 
@@ -317,7 +312,8 @@ final class Mat[@spec(Boolean, Int, Long, Double) T](
     */
   def col(c: Int): Vec[T] = {
     assert(c >= 0 && c < numCols, "Array index %d out of bounds" format c)
-    flattenT.slice(c * numRows, (c + 1) * numRows)
+    val offsets = array.range(c, values.length, numCols)
+    toVec.view(offsets)
   }
 
   /**
@@ -404,8 +400,6 @@ final class Mat[@spec(Boolean, Int, Long, Double) T](
     map(rounder)
   }
 
-  private def flattenT: Vec[T] = T.toVec
-
   /**
     * Creates a string representation of Mat
     * @param nrows Max number of rows to include
@@ -424,9 +418,7 @@ final class Mat[@spec(Boolean, Int, Long, Double) T](
         .map(scalarTag.show(_))
         .foldLeft(0)(maxStrLen)
     val colIdx = util.grab(Range(0, numCols), halfc)
-    val lenSeq = colIdx.map { c =>
-      c -> maxColLen(col(c))
-    }
+    val lenSeq = colIdx.map { c => c -> maxColLen(col(c)) }
     val lenMap = lenSeq.toMap.withDefault(_ => 1)
 
     // function to build a row

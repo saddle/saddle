@@ -24,6 +24,7 @@ import org.saddle.array._
 import org.saddle.framework._
 import org.saddle.scalar.{ScalarTagLong => stL, ScalarTagInt => stI}
 import org.saddle.ops.BinOps._
+
 /**
   * Test Mat
   */
@@ -31,98 +32,62 @@ class MatCheck extends Specification with ScalaCheck {
 
   "Elementwise matrix operations with scalar (D,D) => B" in {
     "op < works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m < b) must_== m.map(_ < b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m < b) must_== m.map(_ < b) }
     }
     "op <= works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m <= b) must_== m.map(_ <= b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m <= b) must_== m.map(_ <= b) }
     }
     "op > works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m > b) must_== m.map(_ > b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m > b) must_== m.map(_ > b) }
     }
     "op >= works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m >= b) must_== m.map(_ >= b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m >= b) must_== m.map(_ >= b) }
     }
     "op == works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m =? b) must_== m.map(_ == b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m =? b) must_== m.map(_ == b) }
     }
     "op <> works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m <> b) must_== m.map(_ != b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m <> b) must_== m.map(_ != b) }
     }
   }
   "Elementwise matrix operations with scalar (L,D) => B" in {
     "op < works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m < b) must_== m.map(_ < b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m < b) must_== m.map(_ < b) }
     }
     "op <= works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m <= b) must_== m.map(_ <= b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m <= b) must_== m.map(_ <= b) }
     }
     "op > works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m > b) must_== m.map(_ > b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m > b) must_== m.map(_ > b) }
     }
     "op >= works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m >= b) must_== m.map(_ >= b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m >= b) must_== m.map(_ >= b) }
     }
     "op == works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m =? b) must_== m.map(_ == b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m =? b) must_== m.map(_ == b) }
     }
     "op <> works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m <> b) must_== m.map(_ != b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m <> b) must_== m.map(_ != b) }
     }
   }
   "Elementwise matrix operations with scalar (I,D) => B" in {
     "op < works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m < b) must_== m.map(_ < b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m < b) must_== m.map(_ < b) }
     }
     "op <= works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m <= b) must_== m.map(_ <= b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m <= b) must_== m.map(_ <= b) }
     }
     "op > works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m > b) must_== m.map(_ > b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m > b) must_== m.map(_ > b) }
     }
     "op >= works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m >= b) must_== m.map(_ >= b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m >= b) must_== m.map(_ >= b) }
     }
     "op == works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m =? b) must_== m.map(_ == b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m =? b) must_== m.map(_ == b) }
     }
     "op <> works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m <> b) must_== m.map(_ != b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m <> b) must_== m.map(_ != b) }
     }
   }
   "Elementwise matrix operations with scalar (D,L) => B" in {
@@ -288,29 +253,19 @@ class MatCheck extends Specification with ScalaCheck {
 
   "Elementwise matrix operations with scalar (D,D) => D" in {
     "op + works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m + b) must_== m.map(_ + b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m + b) must_== m.map(_ + b) }
     }
     "op - works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m - b) must_== m.map(_ - b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m - b) must_== m.map(_ - b) }
     }
     "op * works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m * b) must_== m.map(_ * b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m * b) must_== m.map(_ * b) }
     }
     "op / works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m / b) must_== m.map(_ / b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m / b) must_== m.map(_ / b) }
     }
     "op % works" in {
-      forAll { (m: Mat[Double], b: Double) =>
-        (m % b) must_== m.map(_ % b)
-      }
+      forAll { (m: Mat[Double], b: Double) => (m % b) must_== m.map(_ % b) }
     }
     "op ** works" in {
       forAll { (m: Mat[Double], b: Double) =>
@@ -320,29 +275,19 @@ class MatCheck extends Specification with ScalaCheck {
   }
   "Elementwise matrix operations with scalar (L,D) => D" in {
     "op + works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m + b) must_== m.map(_ + b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m + b) must_== m.map(_ + b) }
     }
     "op - works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m - b) must_== m.map(_ - b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m - b) must_== m.map(_ - b) }
     }
     "op * works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m * b) must_== m.map(_ * b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m * b) must_== m.map(_ * b) }
     }
     "op / works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m / b) must_== m.map(_ / b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m / b) must_== m.map(_ / b) }
     }
     "op % works" in {
-      forAll { (m: Mat[Long], b: Double) =>
-        (m % b) must_== m.map(_ % b)
-      }
+      forAll { (m: Mat[Long], b: Double) => (m % b) must_== m.map(_ % b) }
     }
     "op ** works" in {
       forAll { (m: Mat[Long], b: Double) =>
@@ -352,29 +297,19 @@ class MatCheck extends Specification with ScalaCheck {
   }
   "Elementwise matrix operations with scalar (I,D) => D" in {
     "op + works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m + b) must_== m.map(_ + b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m + b) must_== m.map(_ + b) }
     }
     "op - works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m - b) must_== m.map(_ - b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m - b) must_== m.map(_ - b) }
     }
     "op * works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m * b) must_== m.map(_ * b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m * b) must_== m.map(_ * b) }
     }
     "op / works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m / b) must_== m.map(_ / b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m / b) must_== m.map(_ / b) }
     }
     "op % works" in {
-      forAll { (m: Mat[Int], b: Double) =>
-        (m % b) must_== m.map(_ % b)
-      }
+      forAll { (m: Mat[Int], b: Double) => (m % b) must_== m.map(_ % b) }
     }
     "op ** works" in {
       forAll { (m: Mat[Int], b: Double) =>
@@ -708,14 +643,10 @@ class MatCheck extends Specification with ScalaCheck {
   }
   "Elementwise matrix operations with scalar (B,B) => B" in {
     "op && works" in {
-      forAll { (m: Mat[Boolean], b: Boolean) =>
-        (m && b) must_== m.map(_ && b)
-      }
+      forAll { (m: Mat[Boolean], b: Boolean) => (m && b) must_== m.map(_ && b) }
     }
     "op || works" in {
-      forAll { (m: Mat[Boolean], b: Boolean) =>
-        (m || b) must_== m.map(_ || b)
-      }
+      forAll { (m: Mat[Boolean], b: Boolean) => (m || b) must_== m.map(_ || b) }
     }
     "op xor works" in {
       forAll { (m: Mat[Boolean], b: Boolean) =>
@@ -802,9 +733,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
 
     "isSquare works" in {
-      forAll { (m: Mat[Double]) =>
-        m.isSquare must_== (m.numRows == m.numCols)
-      }
+      forAll { (m: Mat[Double]) => m.isSquare must_== (m.numRows == m.numCols) }
     }
 
     "map works" in {
@@ -911,9 +840,7 @@ class MatCheck extends Specification with ScalaCheck {
     }
 
     "rowsWithNA works (no NA)" in {
-      forAll { (m: Mat[Double]) =>
-        m.rowsWithNA must_== Set.empty[Double]
-      }
+      forAll { (m: Mat[Double]) => m.rowsWithNA must_== Set.empty[Double] }
     }
 
     "rowsWithNA works (with NA)" in {
@@ -1132,6 +1059,18 @@ class MatCheck extends Specification with ScalaCheck {
             j <- 0 to i
           } yield m.raw(i, j) == cl.raw(i, j)
           upper and lower.forall(identity)
+        }
+      }
+    }
+    "mutating over col view" in {
+      forAll { (m: Mat[Double]) =>
+        (m.numRows > 0 && m.numCols > 0) ==> {
+          val m2 = m.copy
+          val col = m2.col(0)
+          col *= 0
+          m2 == Mat(m.cols.zipWithIndex.map {
+            case (col, idx) => if (idx == 0) col * 0d else col
+          }: _*)
         }
       }
     }

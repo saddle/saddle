@@ -259,6 +259,42 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   }
 
   /**
+    * Creates a view into original vector at arbitrary indexes. Data is not copied.
+    *
+    * @param offsets1 indexes into the original array
+    */
+  def view(offsets1: Array[Int]) = {
+    val offsets = offsets1.filter(v => v >= 0 && v < self.length)
+    if (offsets.length == 0) Vec.empty
+    else
+      new VecDefault(values, scalarTag) {
+
+        override def length = offsets.length
+
+        override def raw(i: Int): T = {
+
+          if (i >= offsets.length)
+            throw new ArrayIndexOutOfBoundsException(
+              "Cannot access location %d >= length %d".format(i, offsets.length)
+            )
+          self.raw(offsets(i))
+        }
+
+        override def needsCopy = true
+
+        override def update(offset: Int, value: T) = {
+          if (offset >= offsets.length)
+            throw new ArrayIndexOutOfBoundsException(
+              "Cannot access location %d >= length %d"
+                .format(offset, offsets.length)
+            )
+          self.update(offsets(offset), value)
+        }
+
+      }
+  }
+
+  /**
     * Creates a view into original Vec, but shifted so that n
     * values at the beginning or end of the Vec are NA's. Data
     * is not copied.
@@ -518,11 +554,13 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     * referring to this.filterFoldLeft boxes
     */
   def sum(implicit na: NUM[T], st: ST[T]): T =
-    VecImpl.filterFoldLeft(this)(st.notMissing)(st.zero)((a, b) => na.plus(a, b)
+    VecImpl.filterFoldLeft(this)(st.notMissing)(st.zero)((a, b) =>
+      na.plus(a, b)
     )
 
   def prod(implicit na: NUM[T], st: ST[T]): T =
-    VecImpl.filterFoldLeft(this)(st.notMissing)(st.one)((a, b) => na.times(a, b)
+    VecImpl.filterFoldLeft(this)(st.notMissing)(st.one)((a, b) =>
+      na.times(a, b)
     )
 
   /**

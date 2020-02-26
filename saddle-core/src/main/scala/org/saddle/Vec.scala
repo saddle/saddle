@@ -473,6 +473,13 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
   def slice(from: Int, until: Int, stride: Int = 1): Vec[T]
 
   /**
+    * Creates a view into original vector at arbitrary indexes. Data is not copied.
+    *
+    * @param offsets1 indexes into the original array
+    */
+  def view(offsets1: Array[Int]): Vec[T]
+
+  /**
     * Creates a view into original vector from an offset up to, and including,
     * another offset. Data is not copied.
     *
