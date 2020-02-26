@@ -402,7 +402,7 @@ class Series[X: ST: ORD, @spec(Int, Long, Double) T: ST](
     */
   def distinctIx: Series[X, T] = {
     val nix = index.distinct
-    val offset = index(nix.toVec.toArray)
+    val offset = index.firsts(nix.toVec.toArray)
     Series(values.take(offset), nix)
   }
 

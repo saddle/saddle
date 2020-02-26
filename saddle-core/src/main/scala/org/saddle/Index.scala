@@ -87,6 +87,28 @@ trait Index[@spec(Boolean, Int, Long, Double) T] {
   def at(locs: Int*): Index[T] = take(locs.toArray)
 
   /**
+    * Given a sequence of keys, return the sequence of first locations in the index
+    * at which those keys correspondingly occur, ignoring keys which do not
+    * exist.
+    * @param keys Sequence of keys to find
+    */
+  def firsts(keys: Array[T]): Array[Int] = {
+    val szhint = keys.length
+    val result = new Buffer(new Array[Int](szhint), 0)
+    var i = 0
+    while (i < szhint) {
+      val elems = get(keys(i))
+      var k = 0
+      while (k < math.min(1, elems.length)) {
+        result.+=(elems(k))
+        k += 1
+      }
+      i += 1
+    }
+    result.toArray
+  }
+
+  /**
     * Given a sequence of keys, return the sequence of locations in the index
     * at which those keys correspondingly occur, ignoring keys which do not
     * exist.

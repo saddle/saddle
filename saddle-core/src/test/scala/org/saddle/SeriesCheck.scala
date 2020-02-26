@@ -43,6 +43,16 @@ class SeriesCheck extends Specification with ScalaCheck {
           (s.distinctIx.values must_== s(s.index.toSeq.distinct: _*).values)
       }
     }
+    "distinct works" in {
+      forAll { (s1: Series[Int, Double]) =>
+        val s = s1 concat s1
+        (s.distinctIx.index.toSeq must_== s.toSeq.map(_._1).distinct) and
+          (s.distinctIx.values must_== s.index.toSeq.distinct
+            .map(v => s.get(v))
+            .toVec
+            .map(_.getOrElse(Double.NaN)))
+      }
+    }
 
     "series equality" in {
       forAll { (s: Series[Int, Double]) =>
@@ -449,9 +459,7 @@ class SeriesCheck extends Specification with ScalaCheck {
 
     "pivot/melt are opposites" in {
       implicit val frame = Arbitrary(FrameArbitraries.frameDoubleWithNA)
-      forAll { (f: Frame[Int, Int, Double]) =>
-        f.melt.pivot must_== f
-      }
+      forAll { (f: Frame[Int, Int, Double]) => f.melt.pivot must_== f }
     }
 
   }
