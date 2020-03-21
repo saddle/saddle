@@ -159,49 +159,19 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
 
   /**
     * Access an unboxed element of a Vec[A] at a single location
+    * Same as apply
     * @param loc offset into Vec
     */
   def raw(loc: Int): T
 
   /**
-    * Slice a Vec at a sequence of locations, e.g.
-    *
-    * val v = Vec(1,2,3,4,5)
-    * v(1,3) == Vec(2,4)
-    *
-    * @param locs locations at which to slice
-    */
-  def apply(locs: Int*): Vec[T]
-
-  /**
-    * Slice a Vec at a sequence of locations, e.g.
-    *
-    * val v = Vec(1,2,3,4,5)
-    * v(Array(1,3)) == Vec(2,4)
+    * Access an unboxed element of a Vec[A] at a single location
+    * Same as raw
+    * @param loc offset into Vec
     *
     * @param locs locations at which to slice
     */
-  def apply(locs: Array[Int]): Vec[T]
-
-  /**
-    * Slice a Vec at a sequence of locations, e.g.
-    *
-    * val v = Vec(1,2,3,4,5)
-    * v(Vec(1,3)) == Vec(2,4)
-    *
-    * @param locs locations at which to slice
-    */
-  def apply(locs: Vec[Int]): Vec[T]
-
-  /**
-    * Slice a Vec at a bound of locations, e.g.
-    *
-    * val v = Vec(1,2,3,4,5)
-    * v(1->3) == Vec(2,3,4)
-    *
-    * @param rng evaluates to IRange
-    */
-  def apply(rng: Slice[Int]): Vec[T]
+  def apply(loc: Int): T
 
   /**
     * Access the first element of a Vec[A], or NA if length is zero
@@ -248,6 +218,18 @@ trait Vec[@spec(Boolean, Int, Long, Double) T] extends NumericOps[Vec[T]] {
     * @param locs Location of elements to take
     */
   def take(locs: Array[Int]): Vec[T]
+
+  def take(locs: Int*): Vec[T]
+
+  /**
+    * Slice a Vec at a bound of locations, e.g.
+    *
+    * val v = Vec(1,2,3,4,5)
+    * v(1->3) == Vec(2,3,4)
+    *
+    * @param rng evaluates to IRange
+    */
+  def take(rng: Slice[Int]): Vec[T]
 
   /**
     * Returns a Vec with the first `i` elements

@@ -84,7 +84,7 @@ class VecCheck extends Specification with ScalaCheck {
     "scalar operations on slice with Vec in slice" in {
       val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
       val v2 = v.slice(1, 8, 3)
-      v2(1 -> 3) *= 10
+      v2.take(1 -> 3) *= 10
       v must_== Vec(0, 1, 2, 3, 40, 5, 6, 70, 8, 9)
     }
     "vec operations on slice with Vec in slice" in {
@@ -96,9 +96,7 @@ class VecCheck extends Specification with ScalaCheck {
     }
     "Elementwise vec operations with scalar (D,D) => D" in {
       "op + works" in {
-        forAll { (m: Vec[Double], b: Double) =>
-          (m + b) must_== m.map(_ + b)
-        }
+        forAll { (m: Vec[Double], b: Double) => (m + b) must_== m.map(_ + b) }
       }
     }
     "Elementwise vec in place operations with scalar (D,D) => D" in {

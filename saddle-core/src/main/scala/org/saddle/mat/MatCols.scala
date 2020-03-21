@@ -47,7 +47,7 @@ private[saddle] class MatCols[@spec(Int, Long, Double) A](
   def appendRow(v: Vec[A]) =
     new MatCols(cols.zipWithIndex.map {
       case (col, i) =>
-        col.concat(v.apply(i))
+        col.concat(v.take(i))
     })
 
   def ++(other: MatCols[A]) = new MatCols(cols ++ other.cols)

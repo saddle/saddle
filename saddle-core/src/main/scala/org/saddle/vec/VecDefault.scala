@@ -95,6 +95,8 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   def take(locs: Array[Int]): Vec[T] =
     Vec(array.take[T](toArray, locs, scalarTag.missing))
 
+  def take(locs: Int*): Vec[T] = take(locs.toArray)
+
   /**
     * The complement of the take operation; slice out
     * elements NOT specified in list.
@@ -346,26 +348,9 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
   }
 
   /**
-    * Slice a Vec at a sequence of locations, e.g.
-    *
-    * val v = Vec(1,2,3,4,5)
-    * v(1,3) == Vec(2,4)
-    *
-    * @param locs locations at which to slice
+    * Same as raw
     */
-  def apply(locs: Int*): Vec[T] = take(locs.toArray)
-
-  def apply(locs: Vec[Int]): Vec[T] = take(locs.toArray)
-
-  /**
-    * Slice a Vec at a sequence of locations, e.g.
-    *
-    * val v = Vec(1,2,3,4,5)
-    * v(Array(1,3)) == Vec(2,4)
-    *
-    * @param locs locations at which to slice
-    */
-  def apply(locs: Array[Int]): Vec[T] = take(locs)
+  def apply(loc: Int): T = raw(loc)
 
   /**
     * Slice a Vec at a bound of locations, e.g.
@@ -375,7 +360,7 @@ class VecDefault[@spec(Boolean, Int, Long, Double) T](
     *
     * @param rng evaluates to IRange
     */
-  def apply(rng: Slice[Int]): Vec[T] = {
+  def take(rng: Slice[Int]): Vec[T] = {
     val idx = new IndexIntRange(length)
     val pair = rng(idx)
     slice(pair._1, pair._2)

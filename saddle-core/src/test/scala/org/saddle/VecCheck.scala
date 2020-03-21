@@ -49,11 +49,31 @@ class VecCheck extends Specification with ScalaCheck {
 
       }
     }
+    "assignment operator in view" in {
+      val v = org.saddle.vec.ones(2)
+
+      v.view(Array(0)) += 1d
+      v must_== Vec(2d, 1d)
+    }
+    "apply+update in apply" in {
+      val v = org.saddle.vec.ones(2)
+
+      v(0) += 1d
+      v must_== Vec(2d, 1d)
+    }
     "update in slice" in {
       val v = org.saddle.vec.ones(10)
       val v2 = v.slice(2, 5)
       v2(1) = 0d
       v.toArray(3) must_== 0d
+    }
+    "apply+update in slice" in {
+      val v = org.saddle.vec.ones(10)
+      val v2 = v.slice(2, 5)
+      v2(1) += -1d
+      v.toArray(4) must_== 1d
+      v.toArray(3) must_== 0d
+      v.toArray(2) must_== 1d
     }
     "update slice" in {
       val v = org.saddle.vec.ones(5)
@@ -94,7 +114,7 @@ class VecCheck extends Specification with ScalaCheck {
     "scalar operations on slice with Vec in slice" in {
       val v = Vec(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
       val v2 = v.slice(1, 8, 3)
-      v2(1 -> 3) *= 10
+      v2.take(1 -> 3) *= 10
       v must_== Vec(0, 1, 2, 3, 40, 5, 6, 70, 8, 9)
     }
     "vec operations on slice with Vec in slice" in {
@@ -105,9 +125,7 @@ class VecCheck extends Specification with ScalaCheck {
       v must_== Vec(0, 1, 2, 3, -40, 5, 6, 70, 8, 9)
     }
     "takeLeft" in {
-      forAll { (v: Vec[Double]) =>
-        v.takeLeft(5) must_== v.toSeq.take(5).toVec
-      }
+      forAll { (v: Vec[Double]) => v.takeLeft(5) must_== v.toSeq.take(5).toVec }
     }
     "takeRight" in {
       forAll { (v: Vec[Double]) =>
@@ -115,9 +133,7 @@ class VecCheck extends Specification with ScalaCheck {
       }
     }
     "dropLeft" in {
-      forAll { (v: Vec[Double]) =>
-        v.dropLeft(5) must_== v.toSeq.drop(5).toVec
-      }
+      forAll { (v: Vec[Double]) => v.dropLeft(5) must_== v.toSeq.drop(5).toVec }
     }
     "dropRight" in {
       forAll { (v: Vec[Double]) =>
@@ -150,12 +166,12 @@ class VecCheck extends Specification with ScalaCheck {
           val idx = Gen.choose(0, v.length - 2)
           val data = v.contents
           forAll(idx) { i =>
-            v(i, i + 1) must_== Vec(data(i), data(i + 1))
-            v(i -> (i + 1)) must_== Vec(data(i), data(i + 1))
-            v((i + 1) -> i) must_== Vec.empty[Double]
-            v(i -> *) must_== Vec(Range(i, v.length).map(data(_)): _*)
-            v(* -> i) must_== Vec(Range(0, i + 1).map(data(_)): _*)
-            v(*) must_== v
+            v.take(i, i + 1) must_== Vec(data(i), data(i + 1))
+            v.take(i -> (i + 1)) must_== Vec(data(i), data(i + 1))
+            v.take((i + 1) -> i) must_== Vec.empty[Double]
+            v.take(i -> *) must_== Vec(Range(i, v.length).map(data(_)): _*)
+            v.take(* -> i) must_== Vec(Range(0, i + 1).map(data(_)): _*)
+            v.take(*) must_== v
           }
         }
       }
@@ -200,9 +216,7 @@ class VecCheck extends Specification with ScalaCheck {
     }
 
     "zipmap works" in {
-      forAll { (v: Vec[Double]) =>
-        v.zipMap(v)(_ + _) must_== v * 2.0
-      }
+      forAll { (v: Vec[Double]) => v.zipMap(v)(_ + _) must_== v * 2.0 }
     }
 
     "dropNA works" in {
@@ -279,9 +293,7 @@ class VecCheck extends Specification with ScalaCheck {
     "forall works" in {
       forAll { (v: Vec[Double]) =>
         var c = 0
-        v.forall(_ > 0.5) { i =>
-          if (!i.isNaN) c += 1
-        }
+        v.forall(_ > 0.5) { i => if (!i.isNaN) c += 1 }
         val exp = v.filter(_ > 0.5).count
         c must_== exp
       }
@@ -290,9 +302,7 @@ class VecCheck extends Specification with ScalaCheck {
     "foreach works" in {
       forAll { (v: Vec[Double]) =>
         var c = 0
-        v.foreach { i =>
-          if (!i.isNaN) c += 1
-        }
+        v.foreach { i => if (!i.isNaN) c += 1 }
         val exp = v.count
         c must_== exp
       }
@@ -400,7 +410,7 @@ class VecCheck extends Specification with ScalaCheck {
             val res = v.take(i.toArray)
             val exp = Vec(i.toArray.map(v.raw(_)))
             res must_== exp
-            res must_== v(i: _*)
+            res must_== v.take(i: _*)
           }
         }
       }
